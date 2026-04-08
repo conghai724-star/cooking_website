@@ -1,0 +1,19 @@
+﻿# Enforce UTF-8 text files across common source types
+*.php  text working-tree-encoding=UTF-8 eol=lf
+*.sql  text working-tree-encoding=UTF-8 eol=lf
+*.js   text working-tree-encoding=UTF-8 eol=lf
+*.css  text working-tree-encoding=UTF-8 eol=lf
+*.html text working-tree-encoding=UTF-8 eol=lf
+*.json text working-tree-encoding=UTF-8 eol=lf
+*.md   text working-tree-encoding=UTF-8 eol=lf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.docx binary

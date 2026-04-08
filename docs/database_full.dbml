@@ -1,0 +1,419 @@
+﻿Project cooking_website {
+  database_type: 'MySQL'
+}
+
+Table admin_action_logs {
+  id int [pk, increment, not null]
+  admin_id int
+  action_key varchar(100) [not null]
+  target_type varchar(50) [not null]
+  target_id int
+  details text
+  created_at datetime [not null, default: `current_timestamp()`]
+}
+
+Table admin_notification_campaigns {
+  id int [pk, increment, not null]
+  created_by int
+  title varchar(255) [not null]
+  message text [not null]
+  action_url varchar(255)
+  target_scope enum('all','role','users') [not null, default: 'all']
+  target_value text
+  sent_count int [not null, default: 0]
+  created_at datetime [not null, default: `current_timestamp()`]
+}
+
+Table categories {
+  id int [pk, increment, not null]
+  name varchar(100) [not null]
+  type enum('recipe','ingredient','knowledge') [not null, default: 'recipe']
+  created_at datetime [not null, default: `current_timestamp()`]
+}
+
+Table comments {
+  id int [pk, increment, not null]
+  recipe_id int
+  content_type enum('recipe','tip','ingredient') [not null, default: 'recipe']
+  content_id int
+  user_id int [not null]
+  parent_id int
+  content text [not null]
+  like_count int [not null, default: 0]
+  reply_count int [not null, default: 0]
+  status enum('active','hidden','deleted') [not null, default: 'active']
+  is_edited boolean [not null, default: 0]
+  edited_at datetime
+  deleted_at datetime
+  deleted_by int
+  delete_reason varchar(255)
+  created_at datetime [not null, default: `current_timestamp()`]
+  updated_at datetime
+}
+
+Table email_change_requests {
+  id int [pk, increment, not null]
+  user_id int [not null]
+  new_email varchar(255) [not null]
+  token_hash char(64) [not null]
+  expires_at datetime [not null]
+  used_at datetime
+  created_at datetime [not null, default: `current_timestamp()`]
+}
+
+Table follows {
+  follower_id int [not null]
+  following_id int [not null]
+  created_at datetime [not null, default: `current_timestamp()`]
+
+  indexes {
+    (follower_id, following_id) [pk]
+  }
+}
+
+Table home_banners {
+  id int [pk, increment, not null]
+  title varchar(255) [not null]
+  subtitle text
+  image_url varchar(255)
+  cta_text varchar(80)
+  cta_url varchar(255)
+  is_active boolean [not null, default: 1]
+  start_at datetime
+  end_at datetime
+  updated_at datetime [not null, default: `current_timestamp()`]
+  created_at datetime [not null, default: `current_timestamp()`]
+}
+
+Table home_featured_recipes {
+  id int [pk, increment, not null]
+  recipe_id int [not null]
+  sort_order int [not null, default: 0]
+  is_active boolean [not null, default: 1]
+  created_at datetime [not null, default: `current_timestamp()`]
+}
+
+Table home_recipe_of_day {
+  id int [pk, increment, not null]
+  for_date date [not null]
+  recipe_id int [not null]
+  updated_at datetime [not null, default: `current_timestamp()`]
+  created_at datetime [not null, default: `current_timestamp()`]
+}
+
+Table ingredients {
+  id int [pk, increment, not null]
+  category_id int
+  name varchar(100) [not null]
+  image varchar(255)
+  description text
+  preparation text
+  storage text
+  created_at datetime [not null, default: `current_timestamp()`]
+  status enum('pending','approved','rejected') [not null, default: 'approved']
+  rejection_reason text
+  user_id int
+}
+
+Table ingredient_nutrition {
+  id int [pk, increment, not null]
+  ingredient_id int [not null]
+  calories float
+  protein float
+  fat float
+  carb float
+}
+
+Table login_attempts {
+  id int [pk, increment, not null]
+  credential varchar(255) [not null]
+  ip_address varchar(45) [not null]
+  failed_count int [not null, default: 0]
+  lock_until datetime
+  last_attempt_at datetime
+  updated_at datetime [not null, default: `current_timestamp()`]
+}
+
+Table meal_plans {
+  id int [pk, increment, not null]
+  user_id int [not null]
+  plan_date date [not null]
+  recipe_id int [not null]
+  meal_type enum('breakfast','lunch','dinner') [not null]
+  dish_role enum('main','side','soup','dessert','drink','other') [not null, default: 'main']
+  created_at datetime [not null, default: `current_timestamp()`]
+}
+
+Table meal_plan_day_locks {
+  user_id int [not null]
+  lock_date date [not null]
+  is_locked boolean [not null, default: 0]
+  created_at datetime [not null, default: `current_timestamp()`]
+  updated_at datetime [not null, default: `current_timestamp()`]
+
+  indexes {
+    (user_id, lock_date) [pk]
+  }
+}
+
+Table meal_plan_settings {
+  user_id int [pk, not null]
+  visibility enum('private','public','followers','friends','link') [not null, default: 'private']
+  share_token varchar(64)
+  created_at datetime [not null, default: `current_timestamp()`]
+  updated_at datetime [not null, default: `current_timestamp()`]
+}
+
+Table meal_plan_week_locks {
+  user_id int [not null]
+  week_start_date date [not null]
+  is_locked boolean [not null, default: 0]
+  created_at datetime [not null, default: `current_timestamp()`]
+  updated_at datetime [not null, default: `current_timestamp()`]
+
+  indexes {
+    (user_id, week_start_date) [pk]
+  }
+}
+
+Table moderation_reports {
+  id int [pk, increment, not null]
+  reporter_id int [not null]
+  target_type enum('recipe','comment','user') [not null]
+  target_id int [not null]
+  context_type enum('recipe','tip','ingredient','account') [not null, default: 'account']
+  reason text [not null]
+  details text
+  status enum('pending','reviewed','resolved') [not null, default: 'pending']
+  created_at datetime [not null, default: `current_timestamp()`]
+}
+
+Table notifications {
+  id int [pk, increment, not null]
+  user_id int [not null]
+  type varchar(50) [not null]
+  message text [not null]
+  action_url varchar(255)
+  is_read boolean [not null, default: 0]
+  created_at datetime [not null, default: `current_timestamp()`]
+}
+
+Table permissions {
+  id int [pk, increment, not null]
+  permission_name varchar(100) [not null]
+  description text
+}
+
+Table ratings {
+  id int [pk, increment, not null]
+  recipe_id int [not null]
+  user_id int [not null]
+  star tinyint [not null]
+  created_at datetime [not null, default: `current_timestamp()`]
+}
+
+Table recipes {
+  id int [pk, increment, not null]
+  user_id int [not null]
+  category_id int
+  title varchar(255) [not null]
+  description text [not null]
+  image varchar(255)
+  cooking_time int
+  difficulty enum('easy','medium','hard') [not null, default: 'easy']
+  status varchar(20) [default: 'draft']
+  user_state varchar(20) [default: 'draft']
+  view_count int [not null, default: 0]
+  created_at datetime [not null, default: `current_timestamp()`]
+  updated_at datetime
+  deleted_at datetime
+}
+
+Table recipe_ingredients {
+  id int [pk, increment, not null]
+  recipe_id int [not null]
+  ingredient_id int [not null]
+  quantity varchar(50)
+  unit varchar(50)
+}
+
+Table recipe_steps {
+  id int [pk, increment, not null]
+  recipe_id int [not null]
+  step_number int [not null]
+  content text [not null]
+  image varchar(255)
+}
+
+Table reports {
+  id int [pk, increment, not null]
+  reporter_id int [not null]
+  recipe_id int
+  target_type varchar(20)
+  target_id int
+  reason text [not null]
+  details text
+  status enum('pending','reviewed','resolved') [not null, default: 'pending']
+  created_at datetime [not null, default: `current_timestamp()`]
+  updated_at datetime [not null, default: `current_timestamp()`]
+}
+
+Table roles {
+  id int [pk, increment, not null]
+  role_name varchar(50) [not null]
+  description text
+}
+
+Table role_permissions {
+  role_id int [not null]
+  permission_id int [not null]
+
+  indexes {
+    (role_id, permission_id) [pk]
+  }
+}
+
+Table saved_items {
+  id int [pk, increment, not null]
+  user_id int [not null]
+  item_id int [not null]
+  item_type enum('recipe','ingredient') [not null]
+  created_at datetime [not null, default: `current_timestamp()`]
+}
+
+Table system_logs {
+  id bigint [pk, increment, not null]
+  event_type varchar(50) [not null]
+  action_key varchar(120) [not null]
+  actor_id int
+  actor_role varchar(50)
+  target_type varchar(50)
+  target_id int
+  result varchar(20) [not null, default: 'success']
+  reason varchar(255)
+  meta_json text
+  ip_address varchar(45)
+  user_agent varchar(255)
+  created_at datetime [not null, default: `current_timestamp()`]
+}
+
+Table tips {
+  id int [pk, increment, not null]
+  user_id int
+  title varchar(255) [not null]
+  slug varchar(255) [not null]
+  excerpt text
+  content longtext [not null]
+  cover_image varchar(255)
+  author_name varchar(150)
+  status enum('draft','pending','approved','rejected') [not null, default: 'pending']
+  view_count int [not null, default: 0]
+  created_at datetime [not null, default: `current_timestamp()`]
+  updated_at datetime
+  rejection_reason text
+}
+
+Table tip_saves {
+  id int [pk, increment, not null]
+  user_id int [not null]
+  tip_id int [not null]
+  created_at datetime [not null, default: `current_timestamp()`]
+}
+
+Table users {
+  id int [pk, increment, not null]
+  username varchar(50)
+  name varchar(120) [not null]
+  full_name varchar(100)
+  email varchar(150) [not null]
+  password varchar(255) [not null]
+  avatar varchar(255)
+  bio text
+  role varchar(50) [not null, default: 'user']
+  status enum('active','banned') [not null, default: 'active']
+  deleted_at datetime
+  ban_reason text
+  banned_until datetime
+  created_at datetime [not null, default: `current_timestamp()`]
+  updated_at datetime
+}
+
+Table user_bans {
+  id int [pk, increment, not null]
+  user_id int [not null]
+  banned_by int
+  reason text
+  ban_type enum('temporary','permanent') [not null, default: 'temporary']
+  ban_until datetime
+  created_at datetime [not null, default: `current_timestamp()`]
+  updated_at datetime
+  is_active boolean [not null, default: 1]
+}
+
+Table user_blocks {
+  id int [pk, increment, not null]
+  blocker_id int [not null]
+  blocked_user_id int [not null]
+  created_at datetime [not null, default: `current_timestamp()`]
+}
+
+Table user_penalties {
+  id int [pk, increment, not null]
+  user_id int [not null]
+  admin_id int
+  source_type enum('comment','recipe','tip','ingredient','account') [not null, default: 'account']
+  source_id int
+  action enum('warn','comment_lock_temp','comment_lock_permanent','recipe_post_lock_temp','recipe_post_lock_permanent','tip_post_lock_temp','tip_post_lock_permanent','ingredient_post_lock_temp','ingredient_post_lock_permanent','follow_lock_temp','follow_lock_permanent','ban_temp','ban_permanent') [not null]
+  reason text
+  duration_days int
+  banned_until datetime
+  created_at datetime [not null, default: `current_timestamp()`]
+  is_active boolean [not null, default: 1]
+}
+
+Table user_roles {
+  user_id int [not null]
+  role_id int [not null]
+
+  indexes {
+    (user_id, role_id) [pk]
+  }
+}
+
+Ref: comments.deleted_by > users.id
+Ref: comments.parent_id > comments.id
+Ref: comments.recipe_id > recipes.id
+Ref: comments.user_id > users.id
+Ref: email_change_requests.user_id > users.id
+Ref: follows.follower_id > users.id
+Ref: follows.following_id > users.id
+Ref: ingredients.category_id > categories.id
+Ref: ingredient_nutrition.ingredient_id > ingredients.id
+Ref: meal_plans.recipe_id > recipes.id
+Ref: meal_plans.user_id > users.id
+Ref: meal_plan_day_locks.user_id > users.id
+Ref: meal_plan_settings.user_id > users.id
+Ref: meal_plan_week_locks.user_id > users.id
+Ref: moderation_reports.reporter_id > users.id
+Ref: notifications.user_id > users.id
+Ref: ratings.recipe_id > recipes.id
+Ref: ratings.user_id > users.id
+Ref: recipes.category_id > categories.id
+Ref: recipes.user_id > users.id
+Ref: recipe_ingredients.ingredient_id > ingredients.id
+Ref: recipe_ingredients.recipe_id > recipes.id
+Ref: recipe_steps.recipe_id > recipes.id
+Ref: reports.reporter_id > users.id
+Ref: role_permissions.permission_id > permissions.id
+Ref: role_permissions.role_id > roles.id
+Ref: saved_items.user_id > users.id
+Ref: tip_saves.tip_id > tips.id
+Ref: tip_saves.user_id > users.id
+Ref: user_bans.banned_by > users.id
+Ref: user_bans.user_id > users.id
+Ref: user_blocks.blocked_user_id > users.id
+Ref: user_blocks.blocker_id > users.id
+Ref: user_penalties.admin_id > users.id
+Ref: user_penalties.user_id > users.id
+Ref: user_roles.role_id > roles.id
+Ref: user_roles.user_id > users.id

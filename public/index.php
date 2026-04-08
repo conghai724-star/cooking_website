@@ -1,0 +1,157 @@
+<?php
+declare(strict_types=1);
+require_once __DIR__ . '/../config/config.php';
+require_once APPROOT . '/app/helpers/auth_helper.php';
+require_once APPROOT . '/app/helpers/upload_helper.php';
+require_once APPROOT . '/app/helpers/mail_helper.php';
+require_once APPROOT . '/app/helpers/system_log_helper.php';
+require_once APPROOT . '/app/helpers/csrf_helper.php';
+require_once APPROOT . '/app/core/Router.php';
+require_once APPROOT . '/app/core/Controller.php';
+require_once APPROOT . '/app/core/Model.php';
+require_once APPROOT . '/app/models/Database.php';
+
+header('Content-Type: text/html; charset=UTF-8');
+csrf_token();
+$router = new Router();
+$adminPermission = static fn(string $permission): array => [middleware_require_admin_permission($permission)];
+$userLogin = static fn(): array => [middleware_require_login()];
+$userPermission = static fn(string $permission): array => [middleware_require_user_permission($permission)];
+$commentWritePermission = static function (): void {
+    $parentId = (int) ($_POST['parent_id'] ?? 0);
+    require_user_permission($parentId > 0 ? 'user.comments.reply' : 'user.comments.create');
+};
+
+$router->get('/', ['HomeController', 'index']);
+
+$router->get('/login', ['AuthController', 'login']);
+$router->post('/login', ['AuthController', 'login']);
+$router->get('/forgot-password', ['AuthController', 'forgotPassword']);
+$router->post('/forgot-password', ['AuthController', 'forgotPassword']);
+$router->get('/register', ['AuthController', 'register']);
+$router->post('/register', ['AuthController', 'register']);
+$router->post('/logout', ['AuthController', 'logout']);
+
+$router->get('/admin/login', ['AuthController', 'adminLogin']);
+$router->post('/admin/login', ['AuthController', 'adminLogin']);
+$router->post('/admin/logout', ['AuthController', 'adminLogout']);
+
+$router->get('/profile', ['UserController', 'profile'], $userPermission('user.profile.manage'));
+$router->get('/users/{id}', ['UserController', 'show']);
+$router->get('/users/{id}/followers', ['UserController', 'followers']);
+$router->get('/users/{id}/following', ['UserController', 'following']);
+$router->post('/users/{id}/follow', ['UserController', 'follow'], $userPermission('user.follow.manage'));
+$router->post('/users/{id}/unfollow', ['UserController', 'unfollow'], $userPermission('user.follow.manage'));
+$router->post('/users/{id}/remove-follower', ['UserController', 'removeFollower'], $userPermission('user.follow.manage'));
+$router->get('/notifications/{id}/open', ['UserController', 'openNotification'], $userLogin());
+$router->post('/users/{id}/report', ['UserController', 'reportUser'], $userLogin());
+$router->post('/users/{id}/block', ['UserController', 'blockUser'], $userLogin());
+$router->get('/profile/edit', ['UserController', 'edit'], $userPermission('user.profile.manage'));
+$router->post('/profile/edit', ['UserController', 'edit'], $userPermission('user.profile.manage'));
+$router->get('/profile/verify-email-change', ['UserController', 'verifyEmailChange'], $userPermission('user.profile.manage'));
+$router->get('/profile/change-password', ['UserController', 'changePassword'], $userPermission('user.profile.manage'));
+$router->post('/profile/change-password', ['UserController', 'changePassword'], $userPermission('user.profile.manage'));
+
+$router->get('/recipes', ['RecipeController', 'index']);
+$router->get('/ingredients', ['IngredientController', 'index']);
+$router->get('/ingredients/my', ['IngredientController', 'myIngredients'], $userLogin());
+$router->get('/ingredients/create', ['IngredientController', 'create'], $userPermission('user.ingredients.suggest'));
+$router->post('/ingredients/create', ['IngredientController', 'create'], $userPermission('user.ingredients.suggest'));
+$router->get('/ingredients/{id}', ['IngredientController', 'show']);
+$router->post('/ingredients/save', ['IngredientController', 'save'], $userPermission('user.ingredients.save'));
+$router->post('/ingredients/{id}/report', ['IngredientController', 'report'], $userPermission('user.ingredients.report'));
+$router->post('/ingredients/{id}/resubmit', ['IngredientController', 'resubmit'], $userPermission('user.ingredients.resubmit_own'));
+$router->get('/tips', ['TipsController', 'index']);
+$router->get('/tips/my', ['TipsController', 'myTips'], $userLogin());
+$router->get('/tips/create', ['TipsController', 'create'], $userPermission('user.tips.suggest'));
+$router->post('/tips/create', ['TipsController', 'create'], $userPermission('user.tips.suggest'));
+$router->get('/tips/{slug}', ['TipsController', 'show']);
+$router->post('/tips/save', ['TipsController', 'save'], $userPermission('user.tips.save'));
+$router->post('/tips/{id}/report', ['TipsController', 'report'], $userPermission('user.tips.report'));
+$router->post('/tips/{id}/resubmit', ['TipsController', 'resubmit'], $userPermission('user.tips.resubmit_own'));
+$router->get('/meal-plans', ['MealPlanController', 'index'], $userPermission('user.mealplans.manage'));
+$router->post('/meal-plans/assign', ['MealPlanController', 'assign'], $userPermission('user.mealplans.manage'));
+$router->post('/meal-plans/assign-week-auto', ['MealPlanController', 'assignWeekAuto'], $userPermission('user.mealplans.manage'));
+$router->post('/meal-plans/remove', ['MealPlanController', 'remove'], $userPermission('user.mealplans.manage'));
+$router->post('/meal-plans/week-lock', ['MealPlanController', 'updateWeekLock'], $userPermission('user.mealplans.lock'));
+$router->post('/meal-plans/day-lock', ['MealPlanController', 'updateDayLock'], $userPermission('user.mealplans.lock'));
+$router->post('/meal-plans/visibility', ['MealPlanController', 'updateVisibility'], $userPermission('user.mealplans.manage'));
+$router->post('/meal-plans/regenerate-link', ['MealPlanController', 'regenerateLink'], $userPermission('user.mealplans.share'));
+$router->get('/meal-plans/shared/{token}', ['MealPlanController', 'shared']);
+$router->get('/users/{id}/meal-plans', ['MealPlanController', 'userPlans']);
+$router->get('/recipes/create', ['RecipeController', 'create'], $userPermission('user.recipes.create'));
+$router->post('/recipes/create', ['RecipeController', 'create'], $userPermission('user.recipes.create'));
+$router->get('/recipes/my', ['RecipeController', 'myRecipes'], $userLogin());
+$router->get('/recipes/{id}', ['RecipeController', 'show']);
+$router->get('/recipes/{id}/edit', ['RecipeController', 'edit'], $userPermission('user.recipes.edit_own'));
+$router->post('/recipes/{id}/edit', ['RecipeController', 'edit'], $userPermission('user.recipes.edit_own'));
+$router->post('/recipes/{id}/delete', ['RecipeController', 'delete'], $userPermission('user.recipes.delete_own'));
+$router->post('/recipes/{id}/move-to-draft', ['RecipeController', 'moveToDraft'], $userPermission('user.recipes.edit_own'));
+$router->post('/recipes/{id}/submit', ['RecipeController', 'submit'], $userPermission('user.recipes.submit'));
+$router->post('/recipes/{id}/resubmit', ['RecipeController', 'resubmit'], $userPermission('user.recipes.submit'));
+$router->post('/recipes/save', ['RecipeController', 'save'], $userPermission('user.recipes.save'));
+$router->post('/recipes/report', ['RecipeController', 'report'], $userPermission('user.recipes.report'));
+$router->post('/recipes/toggleFollow', ['RecipeController', 'toggleFollow'], $userPermission('user.follow.manage'));
+
+$router->post('/comments/store', ['CommentController', 'store'], [middleware_require_login(), $commentWritePermission]);
+$router->post('/comments/{id}/report', ['CommentController', 'report'], $userPermission('user.comments.report'));
+
+$router->post('/chat', ['ChatController', 'ask']);
+
+$router->get('/admin', ['admin/DashboardController', 'index'], $adminPermission('admin.dashboard.view'));
+$router->get('/admin/users', ['admin/UserController', 'manageUsers'], $adminPermission('admin.users.view'));
+$router->get('/admin/relationships', ['admin/UserController', 'manageRelationships'], $adminPermission('admin.relationships.view'));
+$router->post('/admin/relationships/remove', ['admin/UserController', 'removeRelationship'], $adminPermission('admin.relationships.moderate'));
+$router->post('/admin/relationships/lock', ['admin/UserController', 'updateRelationshipLock'], $adminPermission('admin.relationships.moderate'));
+$router->post('/admin/users/create-admin', ['admin/UserController', 'createAdminAccount'], $adminPermission('admin.users.role.assign'));
+$router->post('/admin/users/{id}/role', ['admin/UserController', 'updateUserRole'], $adminPermission('admin.users.role.assign'));
+$router->post('/admin/users/{id}/ban', ['admin/UserController', 'banUser'], $adminPermission('admin.users.ban'));
+$router->post('/admin/users/{id}/unban', ['admin/UserController', 'unbanUser'], $adminPermission('admin.users.ban'));
+$router->post('/admin/users/{id}/delete', ['admin/UserController', 'deleteUser'], $adminPermission('admin.users.ban'));
+$router->post('/admin/users/{id}/restore', ['admin/UserController', 'restoreUser'], $adminPermission('admin.users.ban'));
+$router->post('/admin/users/{id}/penalize', ['admin/UserController', 'penalizeUser'], $adminPermission('admin.users.ban'));
+$router->get('/admin/bans', ['admin/UserController', 'manageBans'], $adminPermission('admin.users.ban'));
+$router->post('/admin/bans/release', ['admin/UserController', 'releaseBan'], $adminPermission('admin.users.ban'));
+$router->get('/admin/recipes', ['admin/RecipeController', 'manageRecipes'], $adminPermission('admin.recipes.review'));
+$router->get('/admin/recipes/{id}', ['admin/RecipeController', 'showRecipe'], $adminPermission('admin.recipes.review'));
+$router->post('/admin/recipes/create', ['admin/RecipeController', 'createRecipe'], $adminPermission('admin.recipes.manage'));
+$router->post('/admin/recipes/{id}/approve', ['admin/RecipeController', 'approveRecipe'], $adminPermission('admin.recipes.review'));
+$router->post('/admin/recipes/{id}/reject', ['admin/RecipeController', 'rejectRecipe'], $adminPermission('admin.recipes.review'));
+$router->post('/admin/recipes/{id}/resubmit', ['admin/RecipeController', 'resubmitRecipe'], $adminPermission('admin.recipes.review'));
+$router->post('/admin/recipes/{id}/delete', ['admin/RecipeController', 'deleteRecipe'], $adminPermission('admin.recipes.manage'));
+$router->get('/admin/categories', ['admin/CategoryController', 'manageCategories'], $adminPermission('admin.categories.manage'));
+$router->get('/admin/comments', ['admin/CommentController', 'manageComments'], $adminPermission('admin.comments.moderate'));
+$router->post('/admin/comments/{id}/hide', ['admin/CommentController', 'hideComment'], $adminPermission('admin.comments.moderate'));
+$router->post('/admin/comments/{id}/restore', ['admin/CommentController', 'restoreComment'], $adminPermission('admin.comments.moderate'));
+$router->post('/admin/comments/{id}/delete', ['admin/CommentController', 'deleteComment'], $adminPermission('admin.comments.moderate'));
+$router->get('/admin/reports', ['admin/ModerationController', 'manageReports'], $adminPermission('admin.reports.view'));
+$router->post('/admin/reports/status', ['admin/ModerationController', 'updateReportStatus'], $adminPermission('admin.reports.resolve'));
+$router->post('/admin/reports/action', ['admin/ModerationController', 'handleReportAction'], $adminPermission('admin.reports.resolve'));
+$router->get('/admin/tips', ['admin/RecipeController', 'manageTips'], $adminPermission('admin.tips.review'));
+$router->post('/admin/tips/{id}/approve', ['admin/RecipeController', 'approveTip'], $adminPermission('admin.tips.review'));
+$router->post('/admin/tips/{id}/reject', ['admin/RecipeController', 'rejectTip'], $adminPermission('admin.tips.review'));
+$router->post('/admin/tips/{id}/delete', ['admin/RecipeController', 'deleteTip'], $adminPermission('admin.tips.manage'));
+$router->get('/admin/ingredients', ['admin/IngredientController', 'manageIngredients'], $adminPermission('admin.ingredients.review'));
+$router->get('/admin/ingredients/{id}', ['admin/IngredientController', 'showIngredient'], $adminPermission('admin.ingredients.review'));
+$router->post('/admin/ingredients/create', ['admin/IngredientController', 'createIngredient'], $adminPermission('admin.ingredients.manage'));
+$router->get('/admin/ingredients/{id}/edit', ['admin/IngredientController', 'editIngredient'], $adminPermission('admin.ingredients.manage'));
+$router->post('/admin/ingredients/{id}/edit', ['admin/IngredientController', 'editIngredient'], $adminPermission('admin.ingredients.manage'));
+$router->post('/admin/ingredients/{id}/approve', ['admin/IngredientController', 'approveIngredient'], $adminPermission('admin.ingredients.review'));
+$router->post('/admin/ingredients/{id}/reject', ['admin/IngredientController', 'rejectIngredient'], $adminPermission('admin.ingredients.review'));
+$router->post('/admin/ingredients/{id}/delete', ['admin/IngredientController', 'deleteIngredient'], $adminPermission('admin.ingredients.manage'));
+$router->get('/admin/banners', ['admin/BannerController', 'manage'], $adminPermission('admin.banners.manage'));
+$router->post('/admin/banners/banner', ['admin/BannerController', 'saveBanner'], $adminPermission('admin.banners.manage'));
+$router->post('/admin/banners/featured', ['admin/BannerController', 'saveFeatured'], $adminPermission('admin.banners.manage'));
+$router->post('/admin/banners/today', ['admin/BannerController', 'saveToday'], $adminPermission('admin.banners.manage'));
+$router->get('/admin/notifications', ['admin/NotificationController', 'manageNotifications'], $adminPermission('admin.notifications.manage'));
+$router->post('/admin/notifications/send', ['admin/NotificationController', 'sendSystemNotification'], $adminPermission('admin.notifications.manage'));
+$router->get('/admin/stats', ['admin/StatsController', 'manageStats'], $adminPermission('admin.stats.view'));
+$router->get('/admin/stats/export', ['admin/StatsController', 'exportStatsCsv'], $adminPermission('admin.stats.view'));
+$router->get('/admin/logs', ['admin/LogController', 'manage'], $adminPermission('admin.logs.view'));
+$router->get('/admin/chat-histories', ['admin/ChatHistoryController', 'manage'], $adminPermission('admin.logs.view'));
+$router->get('/admin/mealplans', ['admin/MealPlanController', 'manageMealPlans'], $adminPermission('admin.mealplans.view'));
+$router->post('/admin/mealplans/{id}/delete', ['admin/MealPlanController', 'deleteMealPlan'], $adminPermission('admin.mealplans.moderate'));
+
+$router->dispatch($_SERVER['REQUEST_URI'] ?? '/', $_SERVER['REQUEST_METHOD'] ?? 'GET');
+
+

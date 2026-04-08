@@ -1,0 +1,44 @@
+public function manageLogs(): void
+    {
+        require_admin_permission('admin.logs.view');
+        $filters = [
+            'event_type' => trim((string) ($_GET['event_type'] ?? '')),
+            'result' => trim((string) ($_GET['result'] ?? '')),
+            'action_key' => trim((string) ($_GET['action_key'] ?? '')),
+            'actor_id' => (int) ($_GET['actor_id'] ?? 0),
+            'from' => trim((string) ($_GET['from'] ?? '')),
+            'to' => trim((string) ($_GET['to'] ?? '')),
+            'q' => trim((string) ($_GET['q'] ?? '')),
+        ];
+        if (!in_array($filters['event_type'], ['', 'auth', 'user_action', 'content_action', 'admin_action'], true)) {
+            $filters['event_type'] = '';
+        }
+        if (!in_array($filters['result'], ['', 'success', 'failed', 'blocked'], true)) {
+            $filters['result'] = '';
+        }
+        if ($filters['actor_id'] < 0) {
+            $filters['actor_id'] = 0;
+        }
+
+        $page = max(1, (int) ($_GET['page'] ?? 1));
+        $perPage = 30;
+        $offset = ($page - 1) * $perPage;
+
+        /** @var SystemLogModel $logModel */
+        $logModel = $this->model('SystemLogModel');
+        $total = $logModel->countFiltered($filters);
+        $rows = $logModel->listFiltered($perPage, $offset, $filters);
+        $totalPages = max(1, (int) ceil($total / $perPage));
+        if ($page > $totalPages) {
+            $page = $totalPages;
+        }
+
+        $this->adminView('admin/manage_logs', [
+            'rows' => $rows,
+            'filters' => $filters,
+            'page' => $page,
+            'perPage' => $perPage,
+            'total' => $total,
+            'totalPages' => $totalPages,
+        ]);
+    }

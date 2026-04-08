@@ -1,0 +1,15 @@
+﻿#!/usr/bin/env sh
+# Abort commit if probable mojibake is detected in staged text files.
+
+if command -v pwsh >/dev/null 2>&1; then
+  pwsh -NoProfile -ExecutionPolicy Bypass -File "scripts/check-mojibake.ps1" -Staged
+  exit $?
+fi
+
+if command -v powershell.exe >/dev/null 2>&1; then
+  powershell.exe -NoProfile -ExecutionPolicy Bypass -File "scripts/check-mojibake.ps1" -Staged
+  exit $?
+fi
+
+echo "[pre-commit] PowerShell (pwsh/powershell.exe) not found, skip mojibake check."
+exit 0
