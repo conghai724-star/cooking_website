@@ -120,6 +120,20 @@ foreach ($comments as $comment) {
 
                 <p class="text-sm leading-6 text-slate-700"><?= nl2br(htmlspecialchars($rawContent, ENT_QUOTES, 'UTF-8')); ?></p>
 
+                <div class="mt-2 flex items-center gap-2">
+                    <button
+                        type="button"
+                        class="rounded-md border border-slate-200 px-2.5 py-1 text-xs font-semibold text-slate-600 hover:border-primary hover:text-primary"
+                        data-comment-vote
+                        data-comment-id="<?= $commentId; ?>"
+                        data-vote-url="<?= URLROOT; ?>/comments/<?= $commentId; ?>/vote"
+                        data-csrf-token="<?= htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8'); ?>"
+                    >
+                        Upvote
+                    </button>
+                    <span class="text-xs text-slate-500" data-comment-like-count="<?= $commentId; ?>"><?= (int) ($item['like_count'] ?? 0); ?></span>
+                </div>
+
                 <?php if (is_logged_in() && function_exists('user_has_permission') && user_has_permission('user.comments.reply') && $allowReply && $depth < $maxReplyDepth): ?>
                     <details class="mt-3">
                         <summary class="cursor-pointer text-xs font-semibold text-primary"><?= html_entity_decode('Tr&#7843; l&#7901;i b&#236;nh lu&#7853;n', ENT_QUOTES, 'UTF-8'); ?></summary>
@@ -159,4 +173,7 @@ foreach ($comments as $comment) {
         <p class="rounded-xl border border-slate-200 bg-white p-4 text-sm text-slate-500"><?= htmlspecialchars($emptyText, ENT_QUOTES, 'UTF-8'); ?></p>
     <?php endif; ?>
 </div>
+
+
+
 

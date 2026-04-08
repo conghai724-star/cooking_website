@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 $ingredient = is_array($ingredient ?? null) ? $ingredient : [];
 $nutrition = is_array($ingredient['nutrition'] ?? null) ? $ingredient['nutrition'] : [];
 $comments = is_array($comments ?? null) ? $comments : [];
@@ -23,7 +23,7 @@ $authorName = (string) (($authorUser['name'] ?? null) ?: ($ingredient['author_na
 ?>
 
 <div class="w-full">
-    <div class="mx-auto max-w-6xl px-2 py-4 sm:px-4">
+    <div class="mx-auto max-w-7xl px-2 py-4 sm:px-4">
         <?php
         $ingredientHeroImage = $hero;
         $ingredientHeroTitle = $name;
@@ -32,26 +32,17 @@ $authorName = (string) (($authorUser['name'] ?? null) ?: ($ingredient['author_na
         require APPROOT . '/app/views/partials/ingredient/hero.php';
         ?>
 
-        <div class="grid grid-cols-1 gap-10 lg:grid-cols-12">
-            <div class="lg:col-span-8">
+        <?php require APPROOT . '/app/views/partials/ingredient/nutrition_card.php'; ?>
+
+        <style>.detail-layout{display:flex;gap:2rem;align-items:flex-start}.detail-main{flex:1 1 auto;min-width:0}.detail-side{flex:0 0 300px;max-width:300px}@media (max-width:700px){.detail-layout{display:block}.detail-side{max-width:none;width:auto}}</style>
+        <div class="detail-layout">
+            <div class="detail-main" style="min-width:0;">
                 <?php
                 $ingredientDescription = $description;
                 $ingredientUsage = $usage;
                 $ingredientPreparation = $preparation;
                 $ingredientStorage = $storage;
                 require APPROOT . '/app/views/partials/ingredient/info_card.php';
-
-                $commentsRootId = 'ingredient-comments-section';
-                $commentsTitle = 'Bình luận về nguyên liệu';
-                $contentType = 'ingredient';
-                $contentId = $ingredientId;
-                $redirectTo = '/ingredients/' . $ingredientId;
-                $showCount = true;
-                $allowReply = false;
-                $maxReplyDepth = 0;
-                $emptyText = 'Chưa có bình luận nào cho nguyên liệu này.';
-                $formPlaceholder = 'Chia sẻ ý kiến của bạn...';
-                require APPROOT . '/app/views/partials/shared/content_comments.php';
                 ?>
             </div>
 
@@ -68,6 +59,20 @@ $authorName = (string) (($authorUser['name'] ?? null) ?: ($ingredient['author_na
             require APPROOT . '/app/views/partials/ingredient/sidebar.php';
             ?>
         </div>
+
+        <?php
+        $commentsRootId = 'ingredient-comments-section';
+        $commentsTitle = 'Bình luận về nguyên liệu';
+        $contentType = 'ingredient';
+        $contentId = $ingredientId;
+        $redirectTo = '/ingredients/' . $ingredientId;
+        $showCount = true;
+        $allowReply = false;
+        $maxReplyDepth = 0;
+        $emptyText = 'Chưa có bình luận nào cho nguyên liệu này.';
+        $formPlaceholder = 'Chia sẻ ý kiến của bạn...';
+        require APPROOT . '/app/views/partials/shared/content_comments.php';
+        ?>
     </div>
 </div>
 <?php
@@ -81,3 +86,16 @@ $reportModalErrorToast = 'Không thể gửi báo cáo nguyên liệu.';
 $reportModalHiddenFields = ['redirect_to' => '/ingredients/' . $ingredientId];
 require APPROOT . '/app/views/partials/shared/content_report_modal.php';
 ?>
+
+
+
+
+
+
+
+
+
+
+
+
+

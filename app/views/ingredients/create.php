@@ -7,13 +7,13 @@ $success = (bool) ($success ?? false);
 <section class="w-full">
     <div class="mx-auto w-full max-w-3xl rounded-2xl border border-slate-200 bg-white p-6">
         <div class="mb-6">
-            <h1 class="text-2xl font-bold text-slate-900">G�p � nguy�n li?u m?i</h1>
-            <p class="mt-2 text-sm text-slate-500">Nguy�n li?u s? ? tr?ng th�i ch? duy?t tru?c khi hi?n th? cho m?i ngu?i.</p>
+            <h1 class="text-2xl font-bold text-slate-900">Góp ý nguyên liệu mới</h1>
+            <p class="mt-2 text-sm text-slate-500">Nguyên liệu sẽ ở trạng thái chờ duyệt trước khi hiển thị cho mọi người.</p>
         </div>
 
         <?php if ($success): ?>
             <div class="mb-5 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
-                C?m on b?n! Nguy�n li?u d� du?c g?i v� dang ch? duy?t.
+                Cảm ơn bạn! Nguyên liệu đã được gửi và đang chờ duyệt.
             </div>
         <?php endif; ?>
 
@@ -26,7 +26,7 @@ $success = (bool) ($success ?? false);
         <form class="grid grid-cols-1 gap-4 md:grid-cols-2" method="post" enctype="multipart/form-data">
             <?= csrf_field(); ?>
             <div>
-                <label class="mb-1 block text-xs font-semibold text-slate-500">T�n nguy�n li?u *</label>
+                <label class="mb-1 block text-xs font-semibold text-slate-500">Tên nguyên liệu *</label>
                 <input class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" name="name" required>
             </div>
             <div>
@@ -39,23 +39,23 @@ $success = (bool) ($success ?? false);
                 </select>
             </div>
             <div class="md:col-span-2">
-                <label class="mb-1 block text-xs font-semibold text-slate-500">M� t?</label>
+                <label class="mb-1 block text-xs font-semibold text-slate-500">Mô tả</label>
                 <textarea class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" name="description" rows="3"></textarea>
             </div>
             <div class="md:col-span-2">
-                <label class="mb-1 block text-xs font-semibold text-slate-500">C�ng d?ng</label>
+                <label class="mb-1 block text-xs font-semibold text-slate-500">Công dụng</label>
                 <textarea class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" name="usage" rows="2"></textarea>
             </div>
             <div>
-                <label class="mb-1 block text-xs font-semibold text-slate-500">C�ch so ch?</label>
+                <label class="mb-1 block text-xs font-semibold text-slate-500">Cách sơ chế</label>
                 <textarea class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" name="preparation" rows="2"></textarea>
             </div>
             <div>
-                <label class="mb-1 block text-xs font-semibold text-slate-500">C�ch b?o qu?n</label>
+                <label class="mb-1 block text-xs font-semibold text-slate-500">Cách bảo quản</label>
                 <textarea class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" name="storage" rows="2"></textarea>
             </div>
             <div class="md:col-span-2">
-                <label class="mb-1 block text-xs font-semibold text-slate-500">H�nh ?nh</label>
+                <label class="mb-1 block text-xs font-semibold text-slate-500">Hình ảnh</label>
                 <input class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" type="file" name="image" accept="image/*">
             </div>
             <div>
@@ -75,7 +75,7 @@ $success = (bool) ($success ?? false);
                 <input class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" name="carb">
             </div>
             <div class="md:col-span-2 flex justify-end">
-                <button class="rounded-lg bg-primary px-5 py-2 text-sm font-semibold text-white" type="submit">G?i duy?t</button>
+                <button class="rounded-lg bg-primary px-5 py-2 text-sm font-semibold text-white" type="submit">Gửi duyệt</button>
             </div>
         </form>
     </div>

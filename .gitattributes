@@ -6,6 +6,13 @@
 *.html text working-tree-encoding=UTF-8 eol=lf
 *.json text working-tree-encoding=UTF-8 eol=lf
 *.md   text working-tree-encoding=UTF-8 eol=lf
+*.txt  text working-tree-encoding=UTF-8 eol=lf
+*.yml  text working-tree-encoding=UTF-8 eol=lf
+*.yaml text working-tree-encoding=UTF-8 eol=lf
+*.xml  text working-tree-encoding=UTF-8 eol=lf
+*.env  text working-tree-encoding=UTF-8 eol=lf
+*.ps1  text working-tree-encoding=UTF-8 eol=lf
+*.sh   text working-tree-encoding=UTF-8 eol=lf
 
 # Binary files
 *.png binary

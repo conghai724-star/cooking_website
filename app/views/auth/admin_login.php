@@ -14,7 +14,7 @@
         <div class="p-8 sm:p-12">
             <div class="mx-auto w-full max-w-md">
                 <h1 class="text-3xl font-bold text-slate-900">Đăng nhập quản trị</h1>
-                <p class="mt-2 text-slate-500">Vui lĂ²ng xĂ¡c thA�»±c tĂ i khoA�º£n admin.</p>
+                <p class="mt-2 text-slate-500">Vui lĂ²ng xĂ¡c thực tĂ i khoản admin.</p>
 
                 <?php if (!empty($error)): ?>
                     <p class="mt-4 rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700"><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></p>

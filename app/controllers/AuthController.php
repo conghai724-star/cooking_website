@@ -14,7 +14,7 @@ class AuthController extends Controller
         $success = '';
 
         if (isset($_GET['registered']) && $_GET['registered'] === '1') {
-            $success = 'Đăng ký thành công. Vui lòng đăng nhập.';
+            $success = 'A�A�ƒng kĂ½ thĂ nh cĂ´ng. Vui lĂ²ng A�‘A�ƒng nhA�º­p.';
         }
 
         if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
@@ -79,7 +79,7 @@ class AuthController extends Controller
         }
 
         $this->view('auth/forgot_password', [
-            'title' => 'Quên mật khẩu',
+            'title' => 'QuĂªn mA�º­t khA�º©u',
             'useRecipeHubLayout' => true,
             'error' => $error,
             'success' => $success,
@@ -159,7 +159,7 @@ class AuthController extends Controller
         }
 
         $this->view('auth/register', [
-            'title' => 'Đăng ký',
+            'title' => 'Ä‚â€Ă‚ÂÄ‚â€Ă†â€™ng kĂ„â€Ă‚Â½',
             'useRecipeHubLayout' => true,
             'error' => $error,
             'old' => $old,

@@ -301,7 +301,7 @@ final class AdminService
             $status = '';
         }
         $type = (string) ($query['type'] ?? '');
-        if (!in_array($type, ['', 'recipe', 'tip', 'ingredient', 'comment', 'account'], true)) {
+        if (!in_array($type, ['', 'recipe', 'tip', 'ingredient', 'comment', 'account', 'post'], true)) {
             $type = '';
         }
         $keyword = trim((string) ($query['q'] ?? ''));
@@ -363,6 +363,7 @@ final class AdminService
             $targetLink = match ($contentType) {
                 'tip' => URLROOT . '/tips/' . ($targetSlug !== '' ? rawurlencode($targetSlug) : $targetId),
                 'ingredient' => URLROOT . '/ingredients/' . $targetId,
+                'post' => URLROOT . '/posts/' . $targetId,
                 default => URLROOT . '/admin/recipes/' . $targetId,
             };
             $targetUserId = (int) ($item['target_user_id'] ?? 0);
@@ -1051,3 +1052,5 @@ final class AdminService
         return true;
     }
 }
+
+

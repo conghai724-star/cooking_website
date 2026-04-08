@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 $pageTitle = $title ?? SITENAME;
 $userNotifications = [];
 $unreadNotificationCount = 0;
@@ -75,7 +75,10 @@ $notificationTypeLabel = static function (string $type): string {
                 <a class="text-sm font-semibold text-primary" href="<?= URLROOT; ?>/recipes">Công thức</a>
                 <a class="text-sm font-semibold hover:text-primary" href="<?= URLROOT; ?>/ingredients">Nguyên liệu</a>
                 <a class="text-sm font-semibold hover:text-primary" href="<?= URLROOT; ?>/tips">Mẹo vặt</a>
+                <a class="text-sm font-semibold hover:text-primary" href="<?= URLROOT; ?>/posts">Cộng đồng</a>
+                <a class="text-sm font-semibold hover:text-primary" href="<?= URLROOT; ?>/ai/ingredient-vision">AI</a>
                 <?php if (is_logged_in()): ?>
+                    <a class="text-sm font-semibold hover:text-primary" href="<?= URLROOT; ?>/quizzes">Quiz</a>
                     <a class="text-sm font-semibold hover:text-primary" href="<?= URLROOT; ?>/meal-plans">Lập kế hoạch</a>
                     <a class="text-sm font-semibold hover:text-primary" href="<?= URLROOT; ?>/recipes/my">Công thức của tôi</a>
                 <?php endif; ?>
@@ -85,7 +88,8 @@ $notificationTypeLabel = static function (string $type): string {
             <?php if (is_logged_in()): ?>
                 <details class="relative">
                     <summary class="list-none cursor-pointer rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700">
-                        <span class="material-symbols-outlined align-middle">notifications</span><?= $unreadNotificationCount > 0 ? ' (' . $unreadNotificationCount . ')' : ''; ?>
+                        <span class="material-symbols-outlined align-middle">notifications</span>
+                        Thông báo<?= $unreadNotificationCount > 0 ? ' (' . $unreadNotificationCount . ')' : ''; ?>
                     </summary>
                     <div class="absolute right-0 z-50 mt-2 w-96 max-w-[90vw] rounded-xl border border-slate-200 bg-white p-2 shadow-lg">
                         <?php if ($userNotifications === []): ?>
@@ -107,15 +111,8 @@ $notificationTypeLabel = static function (string $type): string {
                                         <div class="mt-1 flex items-center justify-between gap-2">
                                             <div class="text-xs text-slate-400"><?= htmlspecialchars($timeText, ENT_QUOTES, 'UTF-8'); ?></div>
                                             <div class="flex items-center gap-2">
-                                                <button type="button"
-                                                        class="rounded border border-slate-300 px-2 py-0.5 text-xs font-semibold text-slate-600 hover:bg-slate-50"
-                                                        onclick='navigator.clipboard.writeText(<?= json_encode($copyText, JSON_UNESCAPED_UNICODE); ?>)'>
-                                                    Copy
-                                                </button>
-                                                <a href="<?= URLROOT; ?>/notifications/<?= (int) ($n['id'] ?? 0); ?>/open"
-                                                   class="rounded border border-primary/30 px-2 py-0.5 text-xs font-semibold text-primary hover:bg-primary/10">
-                                                    Mở
-                                                </a>
+                                                <button type="button" class="rounded border border-slate-300 px-2 py-0.5 text-xs font-semibold text-slate-600 hover:bg-slate-50" onclick='navigator.clipboard.writeText(<?= json_encode($copyText, JSON_UNESCAPED_UNICODE); ?>)'>Copy</button>
+                                                <a href="<?= URLROOT; ?>/notifications/<?= (int) ($n['id'] ?? 0); ?>/open" class="rounded border border-primary/30 px-2 py-0.5 text-xs font-semibold text-primary hover:bg-primary/10">Mở</a>
                                             </div>
                                         </div>
                                     </div>
@@ -151,6 +148,9 @@ $notificationTypeLabel = static function (string $type): string {
             <a href="<?= URLROOT; ?>/recipes">Công thức</a>
             <a href="<?= URLROOT; ?>/ingredients">Nguyên liệu</a>
             <a href="<?= URLROOT; ?>/tips">Mẹo vặt</a>
+            <a href="<?= URLROOT; ?>/posts">Cộng đồng</a>
+            <a href="<?= URLROOT; ?>/quizzes">Quiz</a>
+            <a href="<?= URLROOT; ?>/ai/ingredient-vision">AI</a>
             <?php if (is_logged_in()): ?>
                 <details class="notification-dropdown" style="position:relative;display:inline-block;">
                     <summary style="cursor:pointer;">Thông báo<?= $unreadNotificationCount > 0 ? ' (' . $unreadNotificationCount . ')' : ''; ?></summary>
@@ -173,11 +173,8 @@ $notificationTypeLabel = static function (string $type): string {
                                         <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px;">
                                             <div style="font-size:12px;color:#888;"><?= htmlspecialchars($timeText, ENT_QUOTES, 'UTF-8'); ?></div>
                                             <div style="display:flex;align-items:center;gap:6px;">
-                                                <button type="button"
-                                                        style="border:1px solid #d1d5db;border-radius:6px;padding:2px 8px;background:#fff;font-size:12px;cursor:pointer;"
-                                                        onclick='navigator.clipboard.writeText(<?= json_encode($copyText, JSON_UNESCAPED_UNICODE); ?>)'>Copy</button>
-                                                <a href="<?= URLROOT; ?>/notifications/<?= (int) ($n['id'] ?? 0); ?>/open"
-                                                   style="border:1px solid #fdba74;border-radius:6px;padding:2px 8px;text-decoration:none;font-size:12px;color:#c2410c;background:#fff;">Mở</a>
+                                                <button type="button" style="border:1px solid #d1d5db;border-radius:6px;padding:2px 8px;background:#fff;font-size:12px;cursor:pointer;" onclick='navigator.clipboard.writeText(<?= json_encode($copyText, JSON_UNESCAPED_UNICODE); ?>)'>Copy</button>
+                                                <a href="<?= URLROOT; ?>/notifications/<?= (int) ($n['id'] ?? 0); ?>/open" style="border:1px solid #fdba74;border-radius:6px;padding:2px 8px;text-decoration:none;font-size:12px;color:#c2410c;background:#fff;">Mở</a>
                                             </div>
                                         </div>
                                     </div>
@@ -188,6 +185,7 @@ $notificationTypeLabel = static function (string $type): string {
                 </details>
                 <a href="<?= URLROOT; ?>/meal-plans">Lập kế hoạch</a>
                 <a href="<?= URLROOT; ?>/recipes/my">Công thức của tôi</a>
+                <a href="<?= URLROOT; ?>/quizzes/my-certificates">Chứng nhận</a>
                 <a href="<?= URLROOT; ?>/profile">Hồ sơ</a>
                 <form method="post" action="<?= URLROOT; ?>/logout" class="inline-form">
                     <?= csrf_field(); ?>
@@ -219,7 +217,7 @@ $notificationTypeLabel = static function (string $type): string {
         <div data-chat-messages class="max-h-80 space-y-2 overflow-y-auto bg-slate-50 p-3 text-sm"></div>
         <div class="space-y-2 border-t border-slate-100 p-3">
             <div class="flex flex-wrap gap-2" data-chat-suggestions>
-                <button type="button" data-chat-quick="Tôi muốn vào tài khoản" class="rounded-full border border-slate-300 px-3 py-1 text-xs text-slate-700">Vào tài khoản</button>
+                <button type="button" data-chat-quick="Tôi muốn đăng nhập vào tài khoản" class="rounded-full border border-slate-300 px-3 py-1 text-xs text-slate-700">Vào tài khoản</button>
                 <button type="button" data-chat-quick="Có món ăn ít calo không?" class="rounded-full border border-slate-300 px-3 py-1 text-xs text-slate-700">Món ít calo</button>
                 <button type="button" data-chat-quick="Xem kế hoạch bữa ăn của tôi ở đâu?" class="rounded-full border border-slate-300 px-3 py-1 text-xs text-slate-700">Kế hoạch bữa ăn</button>
             </div>
@@ -230,3 +228,4 @@ $notificationTypeLabel = static function (string $type): string {
         </div>
     </div>
 </div>
+

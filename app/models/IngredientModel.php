@@ -547,6 +547,36 @@ class IngredientModel extends Model
         return $this->db->resultSet();
     }
 
+    public function findBasicByIds(array $ingredientIds): array
+    {
+        $ids = array_values(array_unique(array_filter(
+            array_map('intval', $ingredientIds),
+            static fn(int $v): bool => $v > 0
+        )));
+
+        if ($ids === []) {
+            return [];
+        }
+
+        $placeholders = [];
+        foreach ($ids as $index => $_id) {
+            $placeholders[] = ':id' . $index;
+        }
+
+        $sql = 'SELECT id, name
+                FROM ingredients
+                WHERE id IN (' . implode(', ', $placeholders) . ')
+                ORDER BY name ASC';
+
+        $query = $this->db->query($sql);
+        foreach ($ids as $index => $id) {
+            $query->bind(':id' . $index, $id, PDO::PARAM_INT);
+        }
+        $query->execute();
+
+        return $query->resultSet();
+    }
+
     public function findLowCalorieIngredientIds(int $maxCaloriesPer100g = 120, int $limit = 24): array
     {
         $maxCaloriesPer100g = max(10, min(400, $maxCaloriesPer100g));

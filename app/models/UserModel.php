@@ -106,7 +106,7 @@ class UserModel extends Model
 
     public function findById(int $id): array|false
     {
-        $this->db->query('SELECT id, username, name, full_name, email, avatar, bio, role, created_at FROM users WHERE id = :id LIMIT 1')
+        $this->db->query('SELECT id, username, name, full_name, email, avatar, bio, reputation_points, role, created_at FROM users WHERE id = :id LIMIT 1')
             ->bind(':id', $id)
             ->execute();
 

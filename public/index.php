@@ -6,6 +6,7 @@ require_once APPROOT . '/app/helpers/upload_helper.php';
 require_once APPROOT . '/app/helpers/mail_helper.php';
 require_once APPROOT . '/app/helpers/system_log_helper.php';
 require_once APPROOT . '/app/helpers/csrf_helper.php';
+require_once APPROOT . '/app/helpers/profanity_filter_helper.php';
 require_once APPROOT . '/app/core/Router.php';
 require_once APPROOT . '/app/core/Controller.php';
 require_once APPROOT . '/app/core/Model.php';
@@ -69,6 +70,19 @@ $router->get('/tips/{slug}', ['TipsController', 'show']);
 $router->post('/tips/save', ['TipsController', 'save'], $userPermission('user.tips.save'));
 $router->post('/tips/{id}/report', ['TipsController', 'report'], $userPermission('user.tips.report'));
 $router->post('/tips/{id}/resubmit', ['TipsController', 'resubmit'], $userPermission('user.tips.resubmit_own'));
+$router->get('/posts', ['PostController', 'index']);
+$router->get('/posts/create', ['PostController', 'create'], $userLogin());
+$router->post('/posts/create', ['PostController', 'create'], $userLogin());
+$router->get('/posts/{id}', ['PostController', 'show']);
+$router->get('/posts/{id}/edit', ['PostController', 'edit'], $userLogin());
+$router->post('/posts/{id}/edit', ['PostController', 'edit'], $userLogin());
+$router->post('/posts/{id}/delete', ['PostController', 'delete'], $userLogin());
+$router->post('/posts/{id}/report', ['PostController', 'report'], $userLogin());
+$router->get('/quizzes', ['QuizController', 'index']);
+$router->get('/quizzes/my-certificates', ['QuizController', 'myCertificates'], $userLogin());
+$router->get('/quizzes/{id}', ['QuizController', 'show']);
+$router->post('/quizzes/{id}/submit', ['QuizController', 'submitAttempt'], $userLogin());
+$router->get('/ai/ingredient-vision', ['IngredientVisionController', 'ui']);
 $router->get('/meal-plans', ['MealPlanController', 'index'], $userPermission('user.mealplans.manage'));
 $router->post('/meal-plans/assign', ['MealPlanController', 'assign'], $userPermission('user.mealplans.manage'));
 $router->post('/meal-plans/assign-week-auto', ['MealPlanController', 'assignWeekAuto'], $userPermission('user.mealplans.manage'));
@@ -95,6 +109,12 @@ $router->post('/recipes/toggleFollow', ['RecipeController', 'toggleFollow'], $us
 
 $router->post('/comments/store', ['CommentController', 'store'], [middleware_require_login(), $commentWritePermission]);
 $router->post('/comments/{id}/report', ['CommentController', 'report'], $userPermission('user.comments.report'));
+$router->post('/comments/{id}/vote', ['CommentController', 'vote'], $userLogin());
+
+$router->get('/ml/suggest-recipes', ['IngredientVisionController', 'suggestRecipes']);
+$router->post('/ml/suggest-recipes', ['IngredientVisionController', 'suggestRecipes']);
+$router->post('/ml/detect-ingredients', ['IngredientVisionController', 'detectIngredients']);
+$router->get('/ml/health', ['IngredientVisionController', 'health']);
 
 $router->post('/chat', ['ChatController', 'ask']);
 
@@ -115,6 +135,13 @@ $router->post('/admin/bans/release', ['admin/UserController', 'releaseBan'], $ad
 $router->get('/admin/recipes', ['admin/RecipeController', 'manageRecipes'], $adminPermission('admin.recipes.review'));
 $router->get('/admin/recipes/{id}', ['admin/RecipeController', 'showRecipe'], $adminPermission('admin.recipes.review'));
 $router->post('/admin/recipes/create', ['admin/RecipeController', 'createRecipe'], $adminPermission('admin.recipes.manage'));
+$router->get('/admin/quizzes', ['admin/QuizController', 'manage'], $adminPermission('admin.recipes.review'));
+$router->get('/admin/quizzes/{id}', ['admin/QuizController', 'show'], $adminPermission('admin.recipes.review'));
+$router->get('/admin/quizzes/{id}/users', ['admin/QuizController', 'users'], $adminPermission('admin.recipes.review'));
+$router->post('/admin/quizzes/create', ['admin/QuizController', 'create'], $adminPermission('admin.recipes.review'));
+$router->post('/admin/quizzes/{id}/update', ['admin/QuizController', 'update'], $adminPermission('admin.recipes.review'));
+$router->post('/admin/quizzes/{id}/delete', ['admin/QuizController', 'delete'], $adminPermission('admin.recipes.review'));
+$router->post('/admin/quiz-certificates/{id}/delete', ['admin/QuizController', 'deleteCertificate'], $adminPermission('admin.recipes.review'));
 $router->post('/admin/recipes/{id}/approve', ['admin/RecipeController', 'approveRecipe'], $adminPermission('admin.recipes.review'));
 $router->post('/admin/recipes/{id}/reject', ['admin/RecipeController', 'rejectRecipe'], $adminPermission('admin.recipes.review'));
 $router->post('/admin/recipes/{id}/resubmit', ['admin/RecipeController', 'resubmitRecipe'], $adminPermission('admin.recipes.review'));
@@ -153,5 +180,7 @@ $router->get('/admin/mealplans', ['admin/MealPlanController', 'manageMealPlans']
 $router->post('/admin/mealplans/{id}/delete', ['admin/MealPlanController', 'deleteMealPlan'], $adminPermission('admin.mealplans.moderate'));
 
 $router->dispatch($_SERVER['REQUEST_URI'] ?? '/', $_SERVER['REQUEST_METHOD'] ?? 'GET');
+
+
 
 

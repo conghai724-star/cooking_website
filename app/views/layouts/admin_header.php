@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 $admin = current_admin() ?? [];
 $adminName = $admin['name'] ?? 'Admin';
 $adminRoleKey = (string) ($admin['role'] ?? 'admin');
@@ -46,21 +46,22 @@ $canAny = static function (array $permissions) use ($can): bool {
     return false;
 };
 $adminNavItems = [
-    ['path' => '/admin', 'icon' => 'dashboard', 'label' => 'B?ng di?u khi?n', 'permissions' => ['admin.dashboard.view'], 'exact' => true],
-    ['path' => '/admin/users', 'icon' => 'group', 'label' => 'Qu?n l� ngu?i d�ng', 'permissions' => ['admin.users.view', 'admin.users.manage', 'admin.users.role.assign']],
-    ['path' => '/admin/recipes', 'icon' => 'restaurant_menu', 'label' => 'Qu?n l� c�ng th?c', 'permissions' => ['admin.recipes.manage', 'admin.recipes.review']],
-    ['path' => '/admin/tips', 'icon' => 'lightbulb', 'label' => 'Qu?n l� m?o v?t', 'permissions' => ['admin.tips.manage', 'admin.tips.review']],
-    ['path' => '/admin/ingredients', 'icon' => 'grocery', 'label' => 'Qu?n l� nguy�n li?u', 'permissions' => ['admin.ingredients.manage', 'admin.ingredients.review']],
-    ['path' => '/admin/categories', 'icon' => 'category', 'label' => 'Danh m?c', 'permissions' => ['admin.categories.manage']],
-    ['path' => '/admin/reports', 'icon' => 'report', 'label' => 'B�o c�o vi ph?m', 'permissions' => ['admin.reports.view', 'admin.reports.resolve']],
-    ['path' => '/admin/bans', 'icon' => 'gpp_bad', 'label' => 'Danh s�ch ban', 'permissions' => ['admin.users.ban']],
-    ['path' => '/admin/relationships', 'icon' => 'hub', 'label' => 'M?i quan h?', 'permissions' => ['admin.relationships.view', 'admin.relationships.moderate']],
+    ['path' => '/admin', 'icon' => 'dashboard', 'label' => 'Bảng điều khiển', 'permissions' => ['admin.dashboard.view'], 'exact' => true],
+    ['path' => '/admin/users', 'icon' => 'group', 'label' => 'Quản lý người dùng', 'permissions' => ['admin.users.view', 'admin.users.manage', 'admin.users.role.assign']],
+    ['path' => '/admin/recipes', 'icon' => 'restaurant_menu', 'label' => 'Quản lý công thức', 'permissions' => ['admin.recipes.manage', 'admin.recipes.review']],
+    ['path' => '/admin/quizzes', 'icon' => 'quiz', 'label' => 'Bộ câu hỏi', 'permissions' => ['admin.recipes.review']],
+    ['path' => '/admin/tips', 'icon' => 'lightbulb', 'label' => 'Quản lý mẹo vặt', 'permissions' => ['admin.tips.manage', 'admin.tips.review']],
+    ['path' => '/admin/ingredients', 'icon' => 'grocery', 'label' => 'Quản lý nguyên liệu', 'permissions' => ['admin.ingredients.manage', 'admin.ingredients.review']],
+    ['path' => '/admin/categories', 'icon' => 'category', 'label' => 'Danh mục', 'permissions' => ['admin.categories.manage']],
+    ['path' => '/admin/reports', 'icon' => 'report', 'label' => 'Báo cáo vi phạm', 'permissions' => ['admin.reports.view', 'admin.reports.resolve']],
+    ['path' => '/admin/bans', 'icon' => 'gpp_bad', 'label' => 'Danh sách ban', 'permissions' => ['admin.users.ban']],
+    ['path' => '/admin/relationships', 'icon' => 'hub', 'label' => 'Mối quan hệ', 'permissions' => ['admin.relationships.view', 'admin.relationships.moderate']],
     ['path' => '/admin/banners', 'icon' => 'flag', 'label' => 'Banner', 'permissions' => ['admin.banners.manage']],
-    ['path' => '/admin/notifications', 'icon' => 'notifications', 'label' => 'Th�ng b�o', 'permissions' => ['admin.notifications.manage']],
-    ['path' => '/admin/stats', 'icon' => 'monitoring', 'label' => 'Th?ng k�', 'permissions' => ['admin.stats.view']],
-    ['path' => '/admin/mealplans', 'icon' => 'calendar_month', 'label' => 'K? ho?ch b?a an', 'permissions' => ['admin.mealplans.view', 'admin.mealplans.moderate']],
-    ['path' => '/admin/logs', 'icon' => 'history', 'label' => 'Nh?t k� h? th?ng', 'permissions' => ['admin.logs.view']],
-    ['path' => '/admin/chat-histories', 'icon' => 'chat', 'label' => 'Lich su chat', 'permissions' => ['admin.logs.view']],
+    ['path' => '/admin/notifications', 'icon' => 'notifications', 'label' => 'Thông báo', 'permissions' => ['admin.notifications.manage']],
+    ['path' => '/admin/stats', 'icon' => 'monitoring', 'label' => 'Thống kê', 'permissions' => ['admin.stats.view']],
+    ['path' => '/admin/mealplans', 'icon' => 'calendar_month', 'label' => 'Kế hoạch bữa ăn', 'permissions' => ['admin.mealplans.view', 'admin.mealplans.moderate']],
+    ['path' => '/admin/logs', 'icon' => 'history', 'label' => 'Nhật ký hệ thống', 'permissions' => ['admin.logs.view']],
+    ['path' => '/admin/chat-histories', 'icon' => 'chat', 'label' => 'Lịch sử chat', 'permissions' => ['admin.logs.view']],
 ];
 ?>
 <!doctype html>
@@ -68,31 +69,31 @@ $adminNavItems = [
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang qu?n tr? - <?= SITENAME; ?></title>
+    <title>Trang quản trị - <?= SITENAME; ?></title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap">
     <script>
         tailwind.config = {
-            darkMode: "class",
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#f59f0a",
-                        "background-light": "#f8f7f5",
-                        "background-dark": "#221c10",
+                        primary: '#f59f0a',
+                        'background-light': '#f8f7f5',
+                        'background-dark': '#221c10'
                     },
                     fontFamily: {
-                        "display": ["Work Sans"]
+                        display: ['Work Sans']
                     },
                     borderRadius: {
-                        "DEFAULT": "0.75rem",
-                        "lg": "1rem",
-                        "xl": "1.5rem",
-                        "full": "9999px"
-                    },
-                },
-            },
+                        DEFAULT: '0.75rem',
+                        lg: '1rem',
+                        xl: '1.5rem',
+                        full: '9999px'
+                    }
+                }
+            }
         };
     </script>
     <style>
@@ -104,9 +105,7 @@ $adminNavItems = [
 <div class="flex min-h-screen">
     <aside class="w-64 bg-white border-r border-slate-200 flex flex-col h-screen sticky top-0">
         <div class="p-6 flex items-center gap-3">
-            <div class="bg-primary rounded-lg p-2 text-white">
-                <span class="material-symbols-outlined">skillet</span>
-            </div>
+            <div class="bg-primary rounded-lg p-2 text-white"><span class="material-symbols-outlined">skillet</span></div>
             <div>
                 <h1 class="font-bold text-xl tracking-tight">RecipeAdmin</h1>
                 <p class="text-xs text-slate-500">Cooking Portal</p>
@@ -126,7 +125,7 @@ $adminNavItems = [
                 <?= csrf_field(); ?>
                 <button class="w-full flex items-center gap-3 px-4 py-3 rounded text-red-500 hover:bg-red-50 transition-colors" type="submit">
                     <span class="material-symbols-outlined">logout</span>
-                    <span>�ang xu?t</span>
+                    <span>Đăng xuất</span>
                 </button>
             </form>
         </div>
@@ -136,7 +135,7 @@ $adminNavItems = [
             <div class="flex-1 max-w-md">
                 <div class="relative">
                     <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
-                    <input class="w-full pl-10 pr-4 py-2 bg-slate-100 border-none rounded-lg focus:ring-2 focus:ring-primary text-sm" placeholder="T�m c�ng th?c, ngu?i d�ng..." type="text">
+                    <input class="w-full pl-10 pr-4 py-2 bg-slate-100 border-none rounded-lg focus:ring-2 focus:ring-primary text-sm" placeholder="Tìm công thức, người dùng..." type="text">
                 </div>
             </div>
             <div class="flex items-center gap-4">
@@ -153,9 +152,7 @@ $adminNavItems = [
                     <div class="w-10 h-10 rounded-full bg-slate-200 bg-cover bg-center border border-slate-300" style="background-image: url('https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80');"></div>
                     <form method="post" action="<?= URLROOT; ?>/admin/logout">
                         <?= csrf_field(); ?>
-                        <button class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-50" type="submit">
-                            �ang xu?t
-                        </button>
+                        <button class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-50" type="submit">Đăng xuất</button>
                     </form>
                 </div>
             </div>

@@ -72,7 +72,7 @@ $buildPageUrl = static function (int $targetPage) use ($keyword): string {
                                         <?= htmlspecialchars((string) ($tip['title'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>
                                     </h2>
                                     <p class="mb-8 text-base font-normal leading-relaxed text-slate-600 md:text-lg">
-                                        <?= htmlspecialchars((string) ($tip['excerpt'] ?? 'Một mẹo vặt hữu A�ch cho gian bếp của bạn.'), ENT_QUOTES, 'UTF-8'); ?>
+                                        <?= htmlspecialchars((string) ($tip['excerpt'] ?? 'Một mẹo vặt hữu ích cho gian bếp của bạn.'), ENT_QUOTES, 'UTF-8'); ?>
                                     </p>
                                 </div>
 
@@ -154,7 +154,7 @@ $buildPageUrl = static function (int $targetPage) use ($keyword): string {
         <?php endif; ?>
 
         <div class="mt-12 flex flex-col items-center justify-between gap-6 border-t border-primary/5 py-10 md:flex-row">
-            <p class="text-sm text-slate-400">� 2024 CookMaster. All rights reserved.</p>
+            <p class="text-sm text-slate-400">© 2024 CookMaster. All rights reserved.</p>
             <div class="flex gap-6">
                 <a class="text-slate-400 transition-colors hover:text-primary" href="#"><span class="material-symbols-outlined">rss_feed</span></a>
                 <a class="text-slate-400 transition-colors hover:text-primary" href="#"><span class="material-symbols-outlined">share</span></a>

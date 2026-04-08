@@ -64,6 +64,50 @@ class TagModel extends Model
         return array_values(array_unique($ids));
     }
 
+    public function getKeywordMapByType(string $type): array
+    {
+        $type = trim($type);
+        if ($type === '') {
+            return [];
+        }
+
+        try {
+            $this->db->query(
+                'SELECT t.slug, ts.keyword_norm
+                 FROM tags t
+                 LEFT JOIN tag_synonyms ts ON ts.tag_id = t.id
+                 WHERE t.type = :type
+                 ORDER BY t.slug ASC, ts.keyword_norm ASC'
+            )->bind(':type', $type)->execute();
+        } catch (Throwable $e) {
+            return [];
+        }
+
+        $rows = $this->db->resultSet();
+        $map = [];
+        foreach ($rows as $row) {
+            $slug = $this->normalizeText((string) ($row['slug'] ?? ''));
+            if ($slug === '') {
+                continue;
+            }
+
+            if (!isset($map[$slug])) {
+                $map[$slug] = [$slug];
+            }
+
+            $alias = $this->normalizeText((string) ($row['keyword_norm'] ?? ''));
+            if ($alias !== '') {
+                $map[$slug][] = $alias;
+            }
+        }
+
+        foreach ($map as $slug => $aliases) {
+            $map[$slug] = array_values(array_unique(array_filter($aliases, static fn($v): bool => is_string($v) && $v !== '')));
+        }
+
+        return $map;
+    }
+
     private function normalizeText(string $text): string
     {
         $text = trim($text);

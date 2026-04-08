@@ -1,5 +1,8 @@
-{
-    "chatgpt.openOnStartup":  true,
-    "files.encoding":  "utf8",
-    "files.autoGuessEncoding":  false
+﻿{
+    "chatgpt.openOnStartup": true,
+    "files.encoding": "utf8",
+    "files.autoGuessEncoding": false,
+    "files.eol": "\n",
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true
 }

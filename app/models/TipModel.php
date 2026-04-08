@@ -370,23 +370,53 @@ class TipModel extends Model
         if ($this->saveTableReady) {
             return;
         }
-        $this->db->query("CREATE TABLE IF NOT EXISTS tip_saves (
+
+        $this->db->query("CREATE TABLE IF NOT EXISTS saved_items (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 user_id INT NOT NULL,
-                tip_id INT NOT NULL,
+                item_id INT NOT NULL,
+                item_type ENUM('recipe', 'ingredient', 'tip') NOT NULL,
                 created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                CONSTRAINT fk_tip_saves_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-                CONSTRAINT fk_tip_saves_tip FOREIGN KEY (tip_id) REFERENCES tips(id) ON DELETE CASCADE,
-                UNIQUE KEY uq_tip_saves_once (user_id, tip_id),
-                INDEX idx_tip_saves_tip (tip_id)
+                CONSTRAINT fk_saved_items_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+                UNIQUE KEY uq_saved_items_once (user_id, item_id, item_type),
+                INDEX idx_saved_items_user (user_id),
+                INDEX idx_saved_items_type_id (item_type, item_id)
             )")->execute();
+
+        $this->db->query("SHOW COLUMNS FROM saved_items LIKE 'item_type'")->execute();
+        $itemTypeCol = $this->db->single();
+        if (is_array($itemTypeCol)) {
+            $typeDef = strtolower((string) ($itemTypeCol['Type'] ?? ''));
+            if ($typeDef !== '' && !str_contains($typeDef, "'tip'")) {
+                $this->db->query("ALTER TABLE saved_items
+                                  MODIFY item_type ENUM('recipe', 'ingredient', 'tip') NOT NULL")->execute();
+            }
+        }
+
+        // Backfill from legacy tip_saves when table still exists.
+        $this->db->query("SELECT 1
+                          FROM information_schema.tables
+                          WHERE table_schema = DATABASE()
+                            AND table_name = 'tip_saves'
+                          LIMIT 1")->execute();
+        if ($this->db->single()) {
+            $this->db->query("INSERT IGNORE INTO saved_items (user_id, item_id, item_type, created_at)
+                              SELECT ts.user_id, ts.tip_id, 'tip', ts.created_at
+                              FROM tip_saves ts")->execute();
+        }
+
         $this->saveTableReady = true;
     }
 
     public function isSaved(int $userId, int $tipId): bool
     {
         $this->ensureSaveTable();
-        $this->db->query('SELECT 1 FROM tip_saves WHERE user_id = :user_id AND tip_id = :tip_id LIMIT 1')
+        $this->db->query('SELECT 1
+                          FROM saved_items
+                          WHERE user_id = :user_id
+                            AND item_id = :tip_id
+                            AND item_type = "tip"
+                          LIMIT 1')
             ->bind(':user_id', $userId)
             ->bind(':tip_id', $tipId)
             ->execute();
@@ -398,14 +428,18 @@ class TipModel extends Model
         $this->ensureSaveTable();
         if ($this->isSaved($userId, $tipId)) {
             return $this->db
-                ->query('DELETE FROM tip_saves WHERE user_id = :user_id AND tip_id = :tip_id')
+                ->query('DELETE FROM saved_items
+                         WHERE user_id = :user_id
+                           AND item_id = :tip_id
+                           AND item_type = "tip"')
                 ->bind(':user_id', $userId)
                 ->bind(':tip_id', $tipId)
                 ->execute();
         }
 
         return $this->db
-            ->query('INSERT INTO tip_saves (user_id, tip_id, created_at) VALUES (:user_id, :tip_id, NOW())')
+            ->query('INSERT INTO saved_items (user_id, item_id, item_type, created_at)
+                     VALUES (:user_id, :tip_id, "tip", NOW())')
             ->bind(':user_id', $userId)
             ->bind(':tip_id', $tipId)
             ->execute();
@@ -415,10 +449,11 @@ class TipModel extends Model
     {
         $this->ensureSaveTable();
         $this->db->query('SELECT t.*
-                          FROM tip_saves ts
-                          INNER JOIN tips t ON t.id = ts.tip_id
-                          WHERE ts.user_id = :user_id
-                          ORDER BY ts.created_at DESC')
+                          FROM saved_items s
+                          INNER JOIN tips t ON t.id = s.item_id
+                          WHERE s.user_id = :user_id
+                            AND s.item_type = "tip"
+                          ORDER BY s.created_at DESC')
             ->bind(':user_id', $userId)
             ->execute();
         return $this->db->resultSet();

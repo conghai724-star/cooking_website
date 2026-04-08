@@ -18,6 +18,44 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.classList.remove('flex');
     };
 
+    const parseResponseData = async (response, options = {}) => {
+        const allowTextSuccess = options && options.allowTextSuccess === true;
+        const rawText = await response.text();
+        const text = String(rawText || '').trim();
+        const contentType = String(response.headers.get('content-type') || '').toLowerCase();
+        const looksLikeJson = text.startsWith('{') || text.startsWith('[');
+
+        if (text !== '' && (contentType.includes('application/json') || looksLikeJson)) {
+            try {
+                return JSON.parse(text);
+            } catch (_err) {
+                return {
+                    success: false,
+                    message: 'Server tra ve JSON khong hop le.',
+                    raw: text,
+                };
+            }
+        }
+
+        if (text === '') {
+            return {
+                success: false,
+                message: 'Server khong tra ve du lieu.',
+            };
+        }
+
+        if (allowTextSuccess && response.ok) {
+            return {
+                success: true,
+                message: text,
+            };
+        }
+
+        return {
+            success: false,
+            message: text,
+        };
+    };
     const setupShareButtons = () => {
         document.querySelectorAll('[data-share-btn]').forEach((btn) => {
             if (btn.dataset.shareBound === '1') return;
@@ -81,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const sync = () => {
                 const v = (select.value || '').trim().toLowerCase();
-                target.classList.toggle('hidden', v !== 'khac' && v !== 'khác');
+                target.classList.toggle('hidden', v !== 'khac' && v !== 'khĂ¡c');
             };
 
             sync();
@@ -123,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (form.dataset.confirmBound === '1') return;
             form.dataset.confirmBound = '1';
             form.addEventListener('submit', (e) => {
-                const message = form.getAttribute('data-confirm') || 'Bạn có chắc muốn tiếp tục?';
+                const message = form.getAttribute('data-confirm') || 'BA�º¡n cĂ³ chA�º¯c muA�»‘n tiA�º¿p tA�»¥c?';
                 if (!window.confirm(message)) e.preventDefault();
             });
         });
@@ -132,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (el.dataset.confirmBound === '1') return;
             el.dataset.confirmBound = '1';
             el.addEventListener('click', (e) => {
-                const message = el.getAttribute('data-confirm-click') || 'Bạn có chắc muốn tiếp tục?';
+                const message = el.getAttribute('data-confirm-click') || 'BA�º¡n cĂ³ chA�º¯c muA�»‘n tiA�º¿p tA�»¥c?';
                 if (!window.confirm(message)) e.preventDefault();
             });
         });
@@ -155,11 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         headers: { 'X-Requested-With': 'XMLHttpRequest' },
                         credentials: 'same-origin',
                     });
-
-                    const contentType = response.headers.get('content-type') || '';
-                    const data = contentType.includes('application/json')
-                        ? await response.json()
-                        : { success: response.ok, message: await response.text() };
+                    const data = await parseResponseData(response, { allowTextSuccess: true });
 
                     if (!response.ok || data.success === false) {
                         throw new Error(data.message || 'Request failed');
@@ -170,7 +204,64 @@ document.addEventListener('DOMContentLoaded', () => {
                     const closeTarget = form.getAttribute('data-close-target');
                     if (closeTarget) closeModalBySelector(closeTarget);
                 } catch (err) {
-                    showToast((err && err.message) ? String(err.message) : 'Không thể xử lý lúc này');
+                    showToast((err && err.message) ? String(err.message) : 'KhĂ´ng thA�»ƒ xA�»­ lĂ½ lĂºc nĂ y');
+                } finally {
+                    if (submitBtn) submitBtn.disabled = false;
+                }
+            });
+        });
+    };
+    const setupCommentAjax = () => {
+        document.querySelectorAll('form[data-comment-ajax]').forEach((form) => {
+            if (form.dataset.commentAjaxBound === '1') return;
+            form.dataset.commentAjaxBound = '1';
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const submitBtn = form.querySelector('button[type="submit"]');
+                if (submitBtn) submitBtn.disabled = true;
+
+                try {
+                    const response = await fetch(form.action, {
+                        method: (form.method || 'POST').toUpperCase(),
+                        body: new FormData(form),
+                        headers: {
+                            Accept: 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest',
+                        },
+                        credentials: 'same-origin',
+                    });
+                    const data = await parseResponseData(response);
+                    if (!response.ok || data.success === false) {
+                        throw new Error((data && data.message) ? data.message : 'Khong the gui binh luan');
+                    }
+
+                    const selector = form.getAttribute('data-comments-root') || '';
+                    const redirectUrl = ((data && data.data && data.data.redirect) ? data.data.redirect : '').trim();
+
+                    if (selector && redirectUrl) {
+                        const htmlResponse = await fetch(redirectUrl, {
+                            method: 'GET',
+                            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                            credentials: 'same-origin',
+                        });
+                        const htmlText = await htmlResponse.text();
+                        const parser = new DOMParser();
+                        const nextDoc = parser.parseFromString(htmlText, 'text/html');
+                        const nextRoot = nextDoc.querySelector(selector);
+                        const currentRoot = document.querySelector(selector);
+                        if (nextRoot && currentRoot) {
+                            currentRoot.replaceWith(nextRoot);
+                            setupCommentAjax();
+                            setupCommentVotes();
+                        }
+                    }
+
+                    const textarea = form.querySelector('textarea[name="content"]');
+                    if (textarea) textarea.value = '';
+                    showToast((data && data.message) ? data.message : 'Da dang binh luan');
+                } catch (err) {
+                    showToast((err && err.message) ? String(err.message) : 'Khong the gui binh luan');
                 } finally {
                     if (submitBtn) submitBtn.disabled = false;
                 }
@@ -208,26 +299,26 @@ document.addEventListener('DOMContentLoaded', () => {
             const normalized = String(text || '').trim();
             if (!normalized) return '';
             const map = {
-                'Toi chua hieu ro cau hoi. Ban thu hoi theo mau ben duoi.': 'Tôi chưa hiểu rõ câu hỏi. Bạn thử hỏi theo mẫu bên dưới.',
-                'Toi muon vao tai khoan': 'Tôi muốn vào tài khoản',
-                'Co mon an it calo khong?': 'Có món ăn ít calo không?',
-                'Xem ke hoach bua an o dau?': 'Xem kế hoạch bữa ăn ở đâu?',
-                'Ban vao trang Dang nhap de truy cap tai khoan.': 'Bạn vào trang Đăng nhập để truy cập tài khoản.',
-                'Ban vao trang Dang ky de tao tai khoan moi.': 'Bạn vào trang Đăng ký để tạo tài khoản mới.',
-                'Ban vao trang Quen mat khau de dat lai mat khau.': 'Bạn vào trang Quên mật khẩu để đặt lại mật khẩu.',
-                'Ban co the xem danh sach cong thuc tai trang Cong thuc.': 'Bạn có thể xem danh sách công thức tại trang Công thức.',
-                'Toi co the goi y mon an phu hop.': 'Tôi có thể gợi ý món ăn phù hợp.',
-                'Ban vao trang Lap ke hoach de xem va quan ly thuc don.': 'Bạn vào trang Lập kế hoạch để xem và quản lý thực đơn.',
-                'Toi co the goi y mon giam can theo bua sang trua toi.': 'Tôi có thể gợi ý món giảm cân theo bữa sáng, trưa, tối.',
-                'Toi co the goi y mon it calo theo muc kcal ban muon.': 'Tôi có thể gợi ý món ít calo theo mức kcal bạn muốn.',
-                'Toi co the uoc tinh calo cho mon gan nhat ma ban dang xem.': 'Tôi có thể ước tính calo cho món gần nhất mà bạn đang xem.',
-                'Ban co the xem ho so tai trang Ho so.': 'Bạn có thể xem hồ sơ tại trang Hồ sơ.',
-                'Ban muon bua nao?': 'Bạn muốn bữa nào?',
-                'Ban co nguyen lieu gi?': 'Bạn có nguyên liệu gì?',
-                'Ban muon tranh nguyen lieu nao?': 'Bạn muốn tránh nguyên liệu nào?',
-                'Ban muon gioi han bao nhieu kcal?': 'Bạn muốn giới hạn bao nhiêu kcal?',
-                'Ban uu tien mon thit hay mon chay?': 'Bạn ưu tiên món thịt hay món chay?',
-                'Neu ban muon chinh xac hon, hay gui ten mon cu the.': 'Nếu bạn muốn chính xác hơn, hãy gửi tên món cụ thể.',
+                'Toi chua hieu ro cau hoi. Ban thu hoi theo mau ben duoi.': 'TĂ´i chA�°a hiA�»ƒu rĂµ cĂ¢u hA�»i. BA�º¡n thA�»­ hA�»i theo mA�º«u bĂªn dA�°A�»›i.',
+                'Toi muon vao tai khoan': 'TĂ´i muA�»‘n vĂ o tĂ i khoA�º£n',
+                'Co mon an it calo khong?': 'CĂ³ mĂ³n A�ƒn Ă­t calo khĂ´ng?',
+                'Xem ke hoach bua an o dau?': 'Xem kA�º¿ hoA�º¡ch bA�»¯a A�ƒn A�»Ÿ A�‘Ă¢u?',
+                'Ban vao trang Dang nhap de truy cap tai khoan.': 'BA�º¡n vĂ o trang A�A�ƒng nhA�º­p A�‘A�»ƒ truy cA�º­p tĂ i khoA�º£n.',
+                'Ban vao trang Dang ky de tao tai khoan moi.': 'BA�º¡n vĂ o trang A�A�ƒng kĂ½ A�‘A�»ƒ tA�º¡o tĂ i khoA�º£n mA�»›i.',
+                'Ban vao trang Quen mat khau de dat lai mat khau.': 'BA�º¡n vĂ o trang QuĂªn mA�º­t khA�º©u A�‘A�»ƒ A�‘A�º·t lA�º¡i mA�º­t khA�º©u.',
+                'Ban co the xem danh sach cong thuc tai trang Cong thuc.': 'BA�º¡n cĂ³ thA�»ƒ xem danh sĂ¡ch cĂ´ng thA�»©c tA�º¡i trang CĂ´ng thA�»©c.',
+                'Toi co the goi y mon an phu hop.': 'TĂ´i cĂ³ thA�»ƒ gA�»£i Ă½ mĂ³n A�ƒn phĂ¹ hA�»£p.',
+                'Ban vao trang Lap ke hoach de xem va quan ly thuc don.': 'BA�º¡n vĂ o trang LA�º­p kA�º¿ hoA�º¡ch A�‘A�»ƒ xem vĂ  quA�º£n lĂ½ thA�»±c A�‘A�¡n.',
+                'Toi co the goi y mon giam can theo bua sang trua toi.': 'TĂ´i cĂ³ thA�»ƒ gA�»£i Ă½ mĂ³n giA�º£m cĂ¢n theo bA�»¯a sĂ¡ng, trA�°a, tA�»‘i.',
+                'Toi co the goi y mon it calo theo muc kcal ban muon.': 'TĂ´i cĂ³ thA�»ƒ gA�»£i Ă½ mĂ³n Ă­t calo theo mA�»©c kcal bA�º¡n muA�»‘n.',
+                'Toi co the uoc tinh calo cho mon gan nhat ma ban dang xem.': 'TĂ´i cĂ³ thA�»ƒ A�°A�»›c tĂ­nh calo cho mĂ³n gA�º§n nhA�º¥t mĂ  bA�º¡n A�‘ang xem.',
+                'Ban co the xem ho so tai trang Ho so.': 'BA�º¡n cĂ³ thA�»ƒ xem hA�»“ sA�¡ tA�º¡i trang HA�»“ sA�¡.',
+                'Ban muon bua nao?': 'BA�º¡n muA�»‘n bA�»¯a nĂ o?',
+                'Ban co nguyen lieu gi?': 'BA�º¡n cĂ³ nguyĂªn liA�»‡u gĂ¬?',
+                'Ban muon tranh nguyen lieu nao?': 'BA�º¡n muA�»‘n trĂ¡nh nguyĂªn liA�»‡u nĂ o?',
+                'Ban muon gioi han bao nhieu kcal?': 'BA�º¡n muA�»‘n giA�»›i hA�º¡n bao nhiĂªu kcal?',
+                'Ban uu tien mon thit hay mon chay?': 'BA�º¡n A�°u tiĂªn mĂ³n thA�»‹t hay mĂ³n chay?',
+                'Neu ban muon chinh xac hon, hay gui ten mon cu the.': 'NA�º¿u bA�º¡n muA�»‘n chĂ­nh xĂ¡c hA�¡n, hĂ£y gA�»­i tĂªn mĂ³n cA�»¥ thA�»ƒ.',
             };
             return map[normalized] || normalized;
         };
@@ -290,7 +381,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const togglePanel = (show) => {
             panel.hidden = !show;
             if (show && messages.childElementCount === 0) {
-                appendMessage('Xin chào, tôi có thể hỗ trợ gì cho bạn?');
+                appendMessage('Xin chĂ o, tĂ´i cĂ³ thA�»ƒ hA�»— trA�»£ gĂ¬ cho bA�º¡n?');
             }
         };
 
@@ -299,7 +390,7 @@ document.addEventListener('DOMContentLoaded', () => {
             sendBtn.disabled = loading;
             input.disabled = loading;
             sendBtn.textContent = loading ? 'Đang gửi...' : defaultSendLabel;
-            input.placeholder = loading ? 'Đang xử lý...' : defaultInputPlaceholder;
+            input.placeholder = loading ? 'A�ang xA�»­ lĂ½...' : defaultInputPlaceholder;
         };
 
         const showTyping = () => {
@@ -341,21 +432,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     },
                     body,
                 });
-
-                const contentType = response.headers.get('content-type') || '';
-                const data = contentType.includes('application/json')
-                    ? await response.json()
-                    : { success: false, message: await response.text() };
+                const data = await parseResponseData(response);
 
                 if (!response.ok || !data.success) {
-                    throw new Error((data && data.message) || 'Không thể xử lý');
+                    throw new Error((data && data.message) || 'KhĂ´ng thA�»ƒ xA�»­ lĂ½');
                 }
 
                 hideTyping();
-                appendMessage(data.message || 'Đã nhận câu hỏi của bạn.');
+                appendMessage(data.message || 'A�Ă£ nhA�º­n cĂ¢u hA�»i cA�»§a bA�º¡n.');
                 const suggestions = Array.isArray(data.suggestions) ? data.suggestions : [];
                 if (suggestions.length > 0) {
-                    appendMessage('Gợi ý tiếp: ' + suggestions.slice(0, 2).map(localizeChatText).join(' | '));
+                    appendMessage('GA�»£i Ă½ tiA�º¿p: ' + suggestions.slice(0, 2).map(localizeChatText).join(' | '));
                 }
 
                 const actions = Array.isArray(data.actions) ? data.actions : [];
@@ -372,8 +459,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } catch (err) {
                 hideTyping();
-                const errMsg = (err && err.message) ? String(err.message) : 'Không xác định';
-                appendMessage('Lỗi: ' + errMsg);
+                const errMsg = (err && err.message) ? String(err.message) : 'KhĂ´ng xĂ¡c A�‘A�»‹nh';
+                appendMessage('LÄ‚Â¡Ă‚Â»Ă¢â‚¬â€i: ' + errMsg);
                 if (window.console && console.error) {
                     console.error('chat_error', err);
                 }
@@ -406,7 +493,54 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     };
+    const setupCommentVotes = () => {
+        document.querySelectorAll('[data-comment-vote]').forEach((btn) => {
+            if (btn.dataset.voteBound === '1') return;
+            btn.dataset.voteBound = '1';
 
+            btn.addEventListener('click', async () => {
+                const commentId = (btn.getAttribute('data-comment-id') || '').trim();
+                const voteUrl = (btn.getAttribute('data-vote-url') || '').trim();
+                const csrfToken = (btn.getAttribute('data-csrf-token') || '').trim();
+                if (!commentId || !voteUrl || !csrfToken) return;
+
+                btn.disabled = true;
+                try {
+                    const body = new FormData();
+                    body.append('_csrf', csrfToken);
+
+                    const response = await fetch(voteUrl, {
+                        method: 'POST',
+                        body,
+                        credentials: 'same-origin',
+                        headers: {
+                            Accept: 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRF-Token': csrfToken,
+                        },
+                    });
+                const data = await parseResponseData(response);
+
+                    if (!response.ok || !data.success) {
+                        throw new Error((data && data.message) ? data.message : 'Vote failed');
+                    }
+
+                    const payload = data.data || {};
+                    const liked = !!payload.liked;
+                    const likeCount = Number(payload.like_count || 0);
+                    btn.classList.toggle('border-primary', liked);
+                    btn.classList.toggle('text-primary', liked);
+
+                    const countEl = document.querySelector('[data-comment-like-count="' + commentId + '"]');
+                    if (countEl) countEl.textContent = String(likeCount);
+                } catch (err) {
+                    showToast((err && err.message) ? String(err.message) : 'Khong the vote luc nay');
+                } finally {
+                    btn.disabled = false;
+                }
+            });
+        });
+    };
     window.AppUI = {
         showToast,
         setupShareButtons,
@@ -415,6 +549,8 @@ document.addEventListener('DOMContentLoaded', () => {
         setupModalToggles,
         setupConfirmActions,
         setupAjaxForms,
+        setupCommentAjax,
+        setupCommentVotes,
         setupChatWidget,
     };
 
@@ -436,7 +572,14 @@ document.addEventListener('DOMContentLoaded', () => {
     safeRun(setupModalToggles, 'modal');
     safeRun(setupConfirmActions, 'confirm');
     safeRun(setupAjaxForms, 'ajax-form');
+    safeRun(setupCommentAjax, 'comment-ajax');
+    safeRun(setupCommentVotes, 'comment-vote');
 });
+
+
+
+
+
 
 
 

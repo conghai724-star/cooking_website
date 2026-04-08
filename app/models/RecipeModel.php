@@ -958,7 +958,11 @@ class RecipeModel extends Model
     ): array {
         $limit = max(1, min(20, $limit));
 
-        $sql = 'SELECT r.id, r.title, r.description, r.image, COALESCE(SUM(COALESCE(inu.calories, 0)), 0) AS estimated_kcal
+        $keywordFilter = $this->buildKeywordFilterParts($keyword, ['r.title', 'r.description', 'i.name'], 'chat_kwf');
+        $keywordScore = $this->buildKeywordScoreParts($keyword, ['r.title', 'r.description', 'i.name'], 'chat_kws');
+
+        $sql = 'SELECT r.id, r.title, r.description, r.image, COALESCE(SUM(COALESCE(inu.calories, 0)), 0) AS estimated_kcal,
+                       ' . $keywordScore['sql'] . ' AS keyword_score
                 FROM recipes r
                 LEFT JOIN recipe_ingredients ri ON ri.recipe_id = r.id
                 LEFT JOIN ingredients i ON i.id = ri.ingredient_id
@@ -966,8 +970,8 @@ class RecipeModel extends Model
 
         $conditions = $this->publicRecipeConditions('r');
 
-        if ($keyword !== null && trim($keyword) !== '') {
-            $conditions[] = '(r.title LIKE :kw_title OR r.description LIKE :kw_desc OR i.name LIKE :kw_ing)';
+        if ($keywordFilter['sql'] !== '') {
+            $conditions[] = '(' . $keywordFilter['sql'] . ')';
         }
 
         if ($meal !== null && trim($meal) !== '') {
@@ -993,33 +997,29 @@ class RecipeModel extends Model
             $sql .= ' HAVING estimated_kcal <= :max_calories';
         }
 
-        $sql .= ' ORDER BY estimated_kcal ASC, r.id DESC LIMIT :limit';
+        $sql .= ' ORDER BY keyword_score DESC, estimated_kcal ASC, r.id DESC LIMIT :limit';
 
-        $this->db->query($sql)
+        $query = $this->db->query($sql)
             ->bind(':limit', $limit, PDO::PARAM_INT);
 
-        if ($keyword !== null && trim($keyword) !== '') {
-            $like = '%' . trim($keyword) . '%';
-            $this->db->bind(':kw_title', $like);
-            $this->db->bind(':kw_desc', $like);
-            $this->db->bind(':kw_ing', $like);
-        }
+        $this->bindLikeParams($query, $keywordFilter['bindings']);
+        $this->bindLikeParams($query, $keywordScore['bindings']);
 
         if ($meal !== null && trim($meal) !== '') {
             $mealLike = '%' . trim($meal) . '%';
-            $this->db->bind(':meal_kw', $mealLike);
+            $query->bind(':meal_kw', $mealLike);
         }
 
         foreach ($allergies as $idx => $allergy) {
-            $this->db->bind(':allergy_' . $idx, '%' . trim((string) $allergy) . '%');
+            $query->bind(':allergy_' . $idx, '%' . trim((string) $allergy) . '%');
         }
 
         if ($maxCalories !== null && $maxCalories > 0) {
-            $this->db->bind(':max_calories', $maxCalories, PDO::PARAM_INT);
+            $query->bind(':max_calories', $maxCalories, PDO::PARAM_INT);
         }
 
-        $this->db->execute();
-        return $this->db->resultSet();
+        $query->execute();
+        return $query->resultSet();
     }
 
     public function recommendByIngredientIds(
@@ -1041,6 +1041,9 @@ class RecipeModel extends Model
             $candidatePlaceholders[] = ':cid' . $idx;
         }
 
+        $keywordFilter = $this->buildKeywordFilterParts($keyword, ['r.title', 'r.description', 'i.name'], 'ing_kwf');
+        $keywordScore = $this->buildKeywordScoreParts($keyword, ['r.title', 'r.description', 'i.name'], 'ing_kws');
+
         $sql = 'SELECT
                     r.id,
                     r.title,
@@ -1048,9 +1051,11 @@ class RecipeModel extends Model
                     r.image,
                     COALESCE(nut.total_kcal, 0) AS estimated_kcal,
                     COUNT(DISTINCT CASE WHEN ri.ingredient_id IN (' . implode(', ', $candidatePlaceholders) . ') THEN ri.ingredient_id END) AS matched_count,
-                    COUNT(DISTINCT ri.ingredient_id) AS total_ingredients
+                    COUNT(DISTINCT ri.ingredient_id) AS total_ingredients,
+                    ' . $keywordScore['sql'] . ' AS keyword_score
                 FROM recipes r
                 INNER JOIN recipe_ingredients ri ON ri.recipe_id = r.id
+                LEFT JOIN ingredients i ON i.id = ri.ingredient_id
                 LEFT JOIN (
                     SELECT ri2.recipe_id, SUM(COALESCE(inu.calories, 0)) AS total_kcal
                     FROM recipe_ingredients ri2
@@ -1059,8 +1064,8 @@ class RecipeModel extends Model
                 ) nut ON nut.recipe_id = r.id';
 
         $conditions = $this->publicRecipeConditions('r');
-        if ($keyword !== null && trim($keyword) !== '') {
-            $conditions[] = '(r.title LIKE :kw_title OR r.description LIKE :kw_desc)';
+        if ($keywordFilter['sql'] !== '') {
+            $conditions[] = '(' . $keywordFilter['sql'] . ')';
         }
         foreach ($allergies as $idx => $allergy) {
             $conditions[] = 'NOT EXISTS (
@@ -1085,6 +1090,7 @@ class RecipeModel extends Model
                   ORDER BY
                     ranked.matched_count DESC,
                     (ranked.matched_count / NULLIF(ranked.total_ingredients, 0)) DESC,
+                    ranked.keyword_score DESC,
                     ranked.estimated_kcal ASC,
                     ranked.id DESC
                   LIMIT :limit';
@@ -1095,11 +1101,8 @@ class RecipeModel extends Model
         foreach ($ingredientIds as $idx => $ingredientId) {
             $query->bind(':cid' . $idx, $ingredientId, PDO::PARAM_INT);
         }
-        if ($keyword !== null && trim($keyword) !== '') {
-            $like = '%' . trim($keyword) . '%';
-            $query->bind(':kw_title', $like);
-            $query->bind(':kw_desc', $like);
-        }
+        $this->bindLikeParams($query, $keywordFilter['bindings']);
+        $this->bindLikeParams($query, $keywordScore['bindings']);
         foreach ($allergies as $idx => $allergy) {
             $query->bind(':allergy_' . $idx, '%' . trim((string) $allergy) . '%');
         }
@@ -1109,6 +1112,100 @@ class RecipeModel extends Model
         $query->bind(':limit', $limit, PDO::PARAM_INT)->execute();
 
         return $query->resultSet();
+    }
+
+    private function buildKeywordFilterParts(?string $keyword, array $fields, string $prefix): array
+    {
+        $tokens = $this->tokenizeKeyword($keyword);
+        if ($tokens === []) {
+            return ['sql' => '', 'bindings' => []];
+        }
+
+        $bindings = [];
+        $orParts = [];
+        foreach ($fields as $fieldIndex => $field) {
+            $exactParam = ':' . $prefix . '_exact_' . $fieldIndex;
+            $orParts[] = $field . ' LIKE ' . $exactParam;
+            $bindings[$exactParam] = '%' . implode(' ', $tokens) . '%';
+
+            foreach ($tokens as $tokenIndex => $token) {
+                $tokenParam = ':' . $prefix . '_tok_' . $fieldIndex . '_' . $tokenIndex;
+                $orParts[] = $field . ' LIKE ' . $tokenParam;
+                $bindings[$tokenParam] = '%' . $token . '%';
+            }
+        }
+
+        return [
+            'sql' => implode(' OR ', $orParts),
+            'bindings' => $bindings,
+        ];
+    }
+
+    private function buildKeywordScoreParts(?string $keyword, array $fields, string $prefix): array
+    {
+        $tokens = $this->tokenizeKeyword($keyword);
+        if ($tokens === []) {
+            return ['sql' => '0', 'bindings' => []];
+        }
+
+        $exactWeights = [100, 40, 25];
+        $tokenWeights = [16, 7, 5];
+        $bindings = [];
+        $parts = [];
+
+        foreach ($fields as $fieldIndex => $field) {
+            $exactWeight = (int) ($exactWeights[$fieldIndex] ?? 15);
+            $tokenWeight = (int) ($tokenWeights[$fieldIndex] ?? 4);
+            $exactParam = ':' . $prefix . '_exact_' . $fieldIndex;
+            $parts[] = 'MAX(CASE WHEN ' . $field . ' LIKE ' . $exactParam . ' THEN ' . $exactWeight . ' ELSE 0 END)';
+            $bindings[$exactParam] = '%' . implode(' ', $tokens) . '%';
+
+            foreach ($tokens as $tokenIndex => $token) {
+                $tokenParam = ':' . $prefix . '_tok_' . $fieldIndex . '_' . $tokenIndex;
+                $parts[] = 'MAX(CASE WHEN ' . $field . ' LIKE ' . $tokenParam . ' THEN ' . $tokenWeight . ' ELSE 0 END)';
+                $bindings[$tokenParam] = '%' . $token . '%';
+            }
+        }
+
+        return [
+            'sql' => implode(' + ', $parts),
+            'bindings' => $bindings,
+        ];
+    }
+
+    private function tokenizeKeyword(?string $keyword): array
+    {
+        $text = $this->normalizeKeywordText((string) ($keyword ?? ''));
+        if ($text === '') {
+            return [];
+        }
+
+        $tokens = preg_split('/\s+/', $text) ?: [];
+        $tokens = array_values(array_unique(array_filter(
+            array_map(static fn($v): string => trim((string) $v), $tokens),
+            static fn(string $v): bool => $v !== '' && strlen($v) >= 2
+        )));
+
+        return array_slice($tokens, 0, 6);
+    }
+
+    private function normalizeKeywordText(string $text): string
+    {
+        $text = trim($text);
+        if ($text === '') {
+            return '';
+        }
+        $text = function_exists('mb_strtolower') ? mb_strtolower($text, 'UTF-8') : strtolower($text);
+        $text = (string) preg_replace('/[^[:alnum:]\s]/u', ' ', $text);
+        $text = (string) preg_replace('/\s+/', ' ', $text);
+        return trim($text);
+    }
+
+    private function bindLikeParams($query, array $bindings): void
+    {
+        foreach ($bindings as $name => $value) {
+            $query->bind((string) $name, (string) $value);
+        }
     }
 
     public function recommendByTagIds(

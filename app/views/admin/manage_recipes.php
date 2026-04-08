@@ -1,13 +1,13 @@
-<?php
+﻿<?php
 $recipes = is_array($recipes ?? null) ? $recipes : [];
 $categories = is_array($categories ?? null) ? $categories : [];
 $success = isset($_GET['success']) && $_GET['success'] === '1';
 $error = (string) ($_GET['error'] ?? '');
 $errorMessage = '';
 if ($error === 'missing') {
-    $errorMessage = 'Vui l�ng nh?p ti�u d? v� m� t?.';
+    $errorMessage = 'Vui lòng nhập tiêu đề và mô tả.';
 } elseif ($error === 'save_failed') {
-    $errorMessage = 'Kh�ng th? luu c�ng th?c.';
+    $errorMessage = 'Không thể lưu công thức.';
 }
 
 $pendingRecipes = [];
@@ -31,12 +31,12 @@ $approvedCount = count($approvedRecipes);
 
 <div class="flex flex-col gap-6">
     <div class="flex flex-col gap-2">
-        <h1 class="text-2xl font-bold text-slate-900">Qu?n l� c�ng th?c</h1>
-        <p class="text-sm text-slate-500">Ki?m duy?t, c?p nh?t v� qu?n l� n?i dung c�ng th?c.</p>
+        <h1 class="text-2xl font-bold text-slate-900">Quản lý công thức</h1>
+        <p class="text-sm text-slate-500">Kiểm duyệt, cập nhật và quản lý nội dung công thức.</p>
     </div>
 
     <?php if ($success): ?>
-        <div class="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">�� th�m c�ng th?c m?i.</div>
+        <div class="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">Đã thêm công thức mới.</div>
     <?php endif; ?>
     <?php if ($errorMessage !== ''): ?>
         <div class="rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700"><?= htmlspecialchars($errorMessage, ENT_QUOTES, 'UTF-8'); ?></div>
@@ -46,10 +46,10 @@ $approvedCount = count($approvedRecipes);
         <div class="p-6 border-b border-slate-100 flex flex-wrap items-center justify-between gap-3">
             <div class="flex items-center gap-2 text-sm text-slate-500">
                 <span class="material-symbols-outlined text-base">restaurant_menu</span>
-                <span>Danh s�ch c�ng th?c</span>
+                <span>Danh sách công thức</span>
             </div>
             <div class="flex items-center gap-3">
-                <button id="toggle-recipe-form" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600" type="button">Th�m m?i</button>
+                <button id="toggle-recipe-form" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600" type="button">Thêm mới</button>
             </div>
         </div>
 
@@ -57,40 +57,40 @@ $approvedCount = count($approvedRecipes);
             <form class="grid grid-cols-1 gap-4 md:grid-cols-2" method="post" action="<?= URLROOT; ?>/admin/recipes/create" enctype="multipart/form-data">
                 <?= csrf_field(); ?>
                 <div>
-                    <label class="mb-1 block text-xs font-semibold text-slate-500">Ti�u d? *</label>
+                    <label class="mb-1 block text-xs font-semibold text-slate-500">Tiêu đề *</label>
                     <input class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" name="title" required>
                 </div>
                 <div>
-                    <label class="mb-1 block text-xs font-semibold text-slate-500">Danh m?c</label>
+                    <label class="mb-1 block text-xs font-semibold text-slate-500">Danh mục</label>
                     <select class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" name="category_id">
-                        <option value="">-- Ch?n danh m?c --</option>
+                        <option value="">-- Chọn danh mục --</option>
                         <?php foreach ($categories as $category): ?>
                             <option value="<?= (int) $category['id']; ?>"><?= htmlspecialchars($category['name'], ENT_QUOTES, 'UTF-8'); ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="md:col-span-2">
-                    <label class="mb-1 block text-xs font-semibold text-slate-500">M� t? *</label>
+                    <label class="mb-1 block text-xs font-semibold text-slate-500">Mô tả *</label>
                     <textarea class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" name="description" rows="3" required></textarea>
                 </div>
                 <div>
-                    <label class="mb-1 block text-xs font-semibold text-slate-500">Th?i gian n?u (ph�t)</label>
+                    <label class="mb-1 block text-xs font-semibold text-slate-500">Thời gian nấu (phút)</label>
                     <input class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" name="cooking_time" type="number" min="0">
                 </div>
                 <div>
-                    <label class="mb-1 block text-xs font-semibold text-slate-500">�? kh�</label>
+                    <label class="mb-1 block text-xs font-semibold text-slate-500">Độ khó</label>
                     <select class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" name="difficulty">
-                        <option value="easy">D?</option>
-                        <option value="medium">Trung b�nh</option>
-                        <option value="hard">Kh�</option>
+                        <option value="easy">Dễ</option>
+                        <option value="medium">Trung bình</option>
+                        <option value="hard">Khó</option>
                     </select>
                 </div>
                 <div class="md:col-span-2">
-                    <label class="mb-1 block text-xs font-semibold text-slate-500">H�nh ?nh</label>
+                    <label class="mb-1 block text-xs font-semibold text-slate-500">Hình ảnh</label>
                     <input class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" type="file" name="image" accept="image/*">
                 </div>
                 <div class="md:col-span-2 flex justify-end">
-                    <button class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white" type="submit">Luu c�ng th?c</button>
+                    <button class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white" type="submit">Lưu công thức</button>
                 </div>
             </form>
         </div>
@@ -98,27 +98,27 @@ $approvedCount = count($approvedRecipes);
         <div class="border-b border-slate-100 px-6 pt-4">
             <div class="flex flex-wrap gap-6 text-sm font-semibold">
                 <button class="admin-tab border-b-2 pb-3 border-primary text-primary" type="button" data-target="pending-section">
-                    Ch? duy?t (<?= (int) $pendingCount; ?>)
+                    Chờ duyệt (<?= (int) $pendingCount; ?>)
                 </button>
                 <button class="admin-tab border-b-2 pb-3 border-transparent text-slate-500 hover:text-primary" type="button" data-target="approved-section">
-                    �� duy?t (<?= (int) $approvedCount; ?>)
+                    Đã duyệt (<?= (int) $approvedCount; ?>)
                 </button>
             </div>
         </div>
 
         <div id="pending-section" class="admin-section">
             <?php if ($pendingCount === 0): ?>
-                <div class="p-6 text-sm text-slate-500">Kh�ng c� c�ng th?c n�o dang ch? duy?t.</div>
+                <div class="p-6 text-sm text-slate-500">Không có công thức nào đang chờ duyệt.</div>
             <?php else: ?>
                 <div class="p-6 overflow-x-auto">
                     <table class="w-full text-left text-sm">
                         <thead class="bg-background-light text-slate-500">
                         <tr>
                             <th class="px-6 py-4 font-semibold uppercase text-[11px] tracking-wider">ID</th>
-                            <th class="px-6 py-4 font-semibold uppercase text-[11px] tracking-wider">Ti�u d?</th>
-                            <th class="px-6 py-4 font-semibold uppercase text-[11px] tracking-wider">T�c gi?</th>
-                            <th class="px-6 py-4 font-semibold uppercase text-[11px] tracking-wider">Tr?ng th�i</th>
-                            <th class="px-6 py-4 font-semibold uppercase text-[11px] tracking-wider">H�nh d?ng</th>
+                            <th class="px-6 py-4 font-semibold uppercase text-[11px] tracking-wider">Tiêu đề</th>
+                            <th class="px-6 py-4 font-semibold uppercase text-[11px] tracking-wider">Tác giả</th>
+                            <th class="px-6 py-4 font-semibold uppercase text-[11px] tracking-wider">Trạng thái</th>
+                            <th class="px-6 py-4 font-semibold uppercase text-[11px] tracking-wider">Hành động</th>
                         </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100">
@@ -129,13 +129,13 @@ $approvedCount = count($approvedRecipes);
                                 ? 'bg-emerald-100 text-emerald-700'
                                 : ($status === 'rejected' ? 'bg-rose-100 text-rose-700' : 'bg-yellow-100 text-yellow-700');
                             $statusLabel = $status === 'approved'
-                                ? '�� duy?t'
-                                : ($status === 'rejected' ? 'T? ch?i' : 'Ch? duy?t');
+                                ? 'Đã duyệt'
+                                : ($status === 'rejected' ? 'Từ chối' : 'Chờ duyệt');
                             ?>
                             <tr>
                                 <td class="px-6 py-4 text-slate-500"><?= (int) $recipe['id']; ?></td>
                                 <td class="px-6 py-4 font-medium text-slate-900"><?= htmlspecialchars($recipe['title'], ENT_QUOTES, 'UTF-8'); ?></td>
-                                <td class="px-6 py-4 text-slate-600"><?= htmlspecialchars($recipe['author_name'] ?? 'Kh�ng r�', ENT_QUOTES, 'UTF-8'); ?></td>
+                                <td class="px-6 py-4 text-slate-600"><?= htmlspecialchars($recipe['author_name'] ?? 'Không rõ', ENT_QUOTES, 'UTF-8'); ?></td>
                                 <td class="px-6 py-4"><span class="rounded-full px-3 py-1 text-xs font-semibold <?= $statusClass; ?>"><?= $statusLabel; ?></span></td>
                                 <td class="px-6 py-4">
                                     <div class="flex flex-wrap gap-2">
@@ -143,11 +143,11 @@ $approvedCount = count($approvedRecipes);
                                         <?php if ($status !== 'approved'): ?>
                                             <form method="post" action="<?= URLROOT; ?>/admin/recipes/<?= (int) $recipe['id']; ?>/approve">
                                                 <?= csrf_field(); ?>
-                                                <button class="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700" type="submit">Duy?t</button>
+                                                <button class="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700" type="submit">Duyệt</button>
                                             </form>
-                                            <form method="post" action="<?= URLROOT; ?>/admin/recipes/<?= (int) $recipe['id']; ?>/reject" onsubmit="return confirm('T? ch?i c�ng th?c n�y?');">
+                                            <form method="post" action="<?= URLROOT; ?>/admin/recipes/<?= (int) $recipe['id']; ?>/reject" onsubmit="return confirm('Từ chối công thức này?');">
                                                 <?= csrf_field(); ?>
-                                                <button class="rounded-md border border-rose-200 bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-700" type="submit">T? ch?i</button>
+                                                <button class="rounded-md border border-rose-200 bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-700" type="submit">Từ chối</button>
                                             </form>
                                         <?php endif; ?>
                                     </div>
@@ -162,17 +162,17 @@ $approvedCount = count($approvedRecipes);
 
         <div id="approved-section" class="admin-section hidden">
             <?php if ($approvedCount === 0): ?>
-                <div class="p-6 text-sm text-slate-500">Chua c� c�ng th?c d� duy?t.</div>
+                <div class="p-6 text-sm text-slate-500">Chưa có công thức đã duyệt.</div>
             <?php else: ?>
                 <div class="p-6 overflow-x-auto">
                     <table class="w-full text-left text-sm">
                         <thead class="bg-background-light text-slate-500">
                         <tr>
                             <th class="px-6 py-4 font-semibold uppercase text-[11px] tracking-wider">ID</th>
-                            <th class="px-6 py-4 font-semibold uppercase text-[11px] tracking-wider">Ti�u d?</th>
-                            <th class="px-6 py-4 font-semibold uppercase text-[11px] tracking-wider">T�c gi?</th>
-                            <th class="px-6 py-4 font-semibold uppercase text-[11px] tracking-wider">Tr?ng th�i</th>
-                            <th class="px-6 py-4 font-semibold uppercase text-[11px] tracking-wider">H�nh d?ng</th>
+                            <th class="px-6 py-4 font-semibold uppercase text-[11px] tracking-wider">Tiêu đề</th>
+                            <th class="px-6 py-4 font-semibold uppercase text-[11px] tracking-wider">Tác giả</th>
+                            <th class="px-6 py-4 font-semibold uppercase text-[11px] tracking-wider">Trạng thái</th>
+                            <th class="px-6 py-4 font-semibold uppercase text-[11px] tracking-wider">Hành động</th>
                         </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100">
@@ -180,14 +180,14 @@ $approvedCount = count($approvedRecipes);
                             <tr>
                                 <td class="px-6 py-4 text-slate-500"><?= (int) $recipe['id']; ?></td>
                                 <td class="px-6 py-4 font-medium text-slate-900"><?= htmlspecialchars($recipe['title'], ENT_QUOTES, 'UTF-8'); ?></td>
-                                <td class="px-6 py-4 text-slate-600"><?= htmlspecialchars($recipe['author_name'] ?? 'Kh�ng r�', ENT_QUOTES, 'UTF-8'); ?></td>
-                                <td class="px-6 py-4"><span class="rounded-full px-3 py-1 text-xs font-semibold bg-emerald-100 text-emerald-700">�� duy?t</span></td>
+                                <td class="px-6 py-4 text-slate-600"><?= htmlspecialchars($recipe['author_name'] ?? 'Không rõ', ENT_QUOTES, 'UTF-8'); ?></td>
+                                <td class="px-6 py-4"><span class="rounded-full px-3 py-1 text-xs font-semibold bg-emerald-100 text-emerald-700">Đã duyệt</span></td>
                                 <td class="px-6 py-4">
                                     <div class="flex flex-wrap gap-2">
                                         <a class="rounded-md border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-600" href="<?= URLROOT; ?>/admin/recipes/<?= (int) $recipe['id']; ?>">Xem</a>
-                                        <form method="post" action="<?= URLROOT; ?>/admin/recipes/<?= (int) $recipe['id']; ?>/delete" onsubmit="return confirm('X�a c�ng th?c d� duy?t n�y?');">
+                                        <form method="post" action="<?= URLROOT; ?>/admin/recipes/<?= (int) $recipe['id']; ?>/delete" onsubmit="return confirm('Xóa công thức đã duyệt này?');">
                                             <?= csrf_field(); ?>
-                                            <button class="rounded-md border border-rose-200 bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-700" type="submit">X�a</button>
+                                            <button class="rounded-md border border-rose-200 bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-700" type="submit">Xóa</button>
                                         </form>
                                     </div>
                                 </td>
@@ -238,3 +238,5 @@ $approvedCount = count($approvedRecipes);
         }
     })();
 </script>
+
+

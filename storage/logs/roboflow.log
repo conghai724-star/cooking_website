@@ -1,0 +1,27 @@
+[2026-04-04 13:59:08] [api] Khong nhan duoc phan hoi tu Roboflow.
+[2026-04-04 14:00:55] [api] Forbidden
+[2026-04-04 14:00:55] [fallback] Switching to python driver after API failure.
+[2026-04-04 14:02:46] [api] Forbidden
+[2026-04-04 14:02:46] [fallback] Switching to python driver after API failure.
+[2026-04-04 14:05:42] [api] Khong nhan duoc phan hoi tu Roboflow.
+[2026-04-04 14:08:58] [api] Requested Roboflow resource not found. Make sure that workspace, project or model you referred in request exists.
+[2026-04-04 14:08:58] [fallback] Switching to python driver after API failure.
+[2026-04-04 14:11:12] [api] Khong nhan duoc phan hoi tu Roboflow.
+[2026-04-04 14:21:38] [api] Requested Roboflow resource not found. Make sure that workspace, project or model you referred in request exists.
+[2026-04-04 14:21:38] [fallback] Switching to python driver after API failure.
+[2026-04-04 14:23:48] [api] Khong nhan duoc phan hoi tu Roboflow.
+[2026-04-04 14:27:49] [api] Requested Roboflow resource not found. Make sure that workspace, project or model you referred in request exists. [rf_debug] http=404 url=https://detect.roboflow.com/fruit-lpwjt-vnikm/1?api_key=***&confidence=35 raw={"message":"Requested Roboflow resource not found. Make sure that workspace, project or model you referred in request exists."}
+[2026-04-04 14:27:49] [fallback] Switching to python driver after API failure.
+[2026-04-04 14:32:07] [api] Khong nhan duoc phan hoi tu Roboflow. [rf_debug] http=0 curl=Could not resolve host: detect.roboflow.com url=https://detect.roboflow.com/fruit-lpwjt-vnikm/1?api_key=***&confidence=35
+[2026-04-04 14:43:38] [api] Requested Roboflow resource not found. Make sure that workspace, project or model you referred in request exists. [rf_debug] http=404 url=https://detect.roboflow.com/fruit-lpwjt-vnikm/1?api_key=***&confidence=35 raw={"message":"Requested Roboflow resource not found. Make sure that workspace, project or model you referred in request exists."}
+[2026-04-04 14:43:38] [fallback] Switching to python driver after API failure.
+[2026-04-04 14:43:56] [api] Requested Roboflow resource not found. Make sure that workspace, project or model you referred in request exists. [rf_debug] http=404 url=https://detect.roboflow.com/fruit-lpwjt-vnikm/1?api_key=***&confidence=35 raw={"message":"Requested Roboflow resource not found. Make sure that workspace, project or model you referred in request exists."}
+[2026-04-04 14:43:56] [fallback] Switching to python driver after API failure.
+[2026-04-04 14:46:55] [api] Requested Roboflow resource not found. Make sure that workspace, project or model you referred in request exists. [rf_debug] http=404 url=https://detect.roboflow.com/fruit-lpwjt-vnikm/1?api_key=***&confidence=35 raw={"message":"Requested Roboflow resource not found. Make sure that workspace, project or model you referred in request exists."}
+[2026-04-04 14:51:48] [api] Requested Roboflow resource not found. Make sure that workspace, project or model you referred in request exists. [rf_debug] http=404 url=https://detect.roboflow.com/fruit-lpwjt-vnikm/1?api_key=***&confidence=35 raw={"message":"Requested Roboflow resource not found. Make sure that workspace, project or model you referred in request exists."}
+[2026-04-04 14:53:49] [api] Roboflow tra ve loi HTTP 405 [rf_debug] http=405 url=https://detect.roboflow.com/hi-cng-s-workspace/fruit-lpwjt-vnikm/1?api_key=***&confidence=35 raw={"detail":"Method Not Allowed"}
+[2026-04-04 15:02:13] [api] Roboflow tra ve loi HTTP 405 [rf_debug] http=405 url=https://detect.roboflow.com/hi-cng-s-workspace/fruit-lpwjt-vnikm/1?api_key=***&confidence=35 raw={"detail":"Method Not Allowed"}
+[2026-04-04 15:03:49] [api] Roboflow tra ve loi HTTP 405 [rf_debug] http=405 url=https://detect.roboflow.com/hi-cng-s-workspace/fruit-lpwjt-vnikm/1?api_key=***&confidence=35 raw={"detail":"Method Not Allowed"}
+[2026-04-04 15:05:48] [api] Requested Roboflow resource not found. Make sure that workspace, project or model you referred in request exists. [rf_debug] http=404 url=https://detect.roboflow.com/fruit-lpwjt-vnikm/1?api_key=***&confidence=35 raw={"message":"Requested Roboflow resource not found. Make sure that workspace, project or model you referred in request exists."}
+[2026-04-06 07:04:19] [api] Requested Roboflow resource not found. Make sure that workspace, project or model you referred in request exists. [rf_debug] http=404 url=https://detect.roboflow.com/fruit-lpwjt-1n27n/6?api_key=***&confidence=35 raw={"message":"Requested Roboflow resource not found. Make sure that workspace, project or model you referred in request exists."}
+[2026-04-06 07:30:53] [api] Requested Roboflow resource not found. Make sure that workspace, project or model you referred in request exists. [rf_debug] http=404 url=https://detect.roboflow.com/fruit-lpwjt-1n27n/6?api_key=***&confidence=35 raw={"message":"Requested Roboflow resource not found. Make sure that workspace, project or model you referred in request exists."}

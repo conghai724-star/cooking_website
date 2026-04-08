@@ -5,11 +5,17 @@ declare(strict_types=1);
 require_once APPROOT . '/app/models/RecipeModel.php';
 require_once APPROOT . '/app/models/IngredientAliasModel.php';
 require_once APPROOT . '/app/models/IngredientModel.php';
-require_once APPROOT . '/app/models/TipModel.php';
 require_once APPROOT . '/app/models/TagModel.php';
 
 final class DietHandler
 {
+    private const MEALS = ['sang', 'trua', 'toi'];
+    private const METHOD_FALLBACK = ['canh', 'chien', 'xao', 'hap', 'nuong', 'kho'];
+    private const FLAVOR_FALLBACK = ['cay', 'chua', 'ngot', 'man', 'thanh'];
+    private const ALLERGY_TOKENS = ['tom', 'cua', 'ca', 'bo', 'heo', 'ga', 'trung', 'sua', 'dau phong', 'lac'];
+
+    private array $tagKeywordMapCache = [];
+
     public function handle(array $intent, string $message, array $context = []): array
     {
         $intentId = (string) ($intent['id'] ?? '');
@@ -25,41 +31,27 @@ final class DietHandler
         $meal = $this->resolveMeal($matchedEntities, $chatState);
         $calories = $this->resolveCaloriesLimit($matchedEntities, $chatState, $message);
         $allergies = $this->resolveAllergies($message, $chatState);
-
         $keyword = $this->extractSearchKeyword($message);
         $methodKeywords = $this->resolveCookingMethodKeywords($matchedEntities, $message);
         $flavorKeywords = $this->resolveFlavorKeywords($matchedEntities, $message);
         $recipeKeyword = $this->mergeRecipeKeyword($keyword, $methodKeywords, $flavorKeywords);
         $ingredientIds = $this->extractIngredientIds($message);
-        $tagIds = $this->extractTagIds($message);
 
         $isLowCalorieIntent = in_array($intentId, ['diet_low_calorie', 'diet_weight_loss'], true);
         if ($isLowCalorieIntent && $ingredientIds === []) {
             $ingredientIds = $this->resolveLowCalorieIngredientIds($calories);
         }
 
-        $hasSpecificFilters = $keyword !== null || $methodKeywords !== [] || $flavorKeywords !== [] || $ingredientIds !== [] || $tagIds !== [];
-
         try {
             $recipeModel = new RecipeModel();
-            $recipes = $this->findExactRecipes(
-                $recipeModel,
-                $ingredientIds,
-                $tagIds,
-                $meal,
-                $calories,
-                $recipeKeyword,
-                $keyword,
-                $methodKeywords,
-                $flavorKeywords,
-                $allergies,
-                5
-            );
+            $recipes = $ingredientIds !== []
+                ? $recipeModel->recommendByIngredientIds($ingredientIds, $calories, $recipeKeyword, $allergies, 5)
+                : $recipeModel->recommendForChat($meal, $calories, $recipeKeyword, $allergies, 5);
         } catch (Throwable $e) {
             return [
                 'success' => true,
                 'code' => 'DIET_TEMP_UNAVAILABLE',
-                'message' => 'Tinh nang goi y tam thoi chua san sang. Ban thu lai sau it phut.',
+                'message' => 'Tinh nang goi y dinh duong tam thoi chua san sang. Ban thu lai sau.',
                 'source' => 'diet_handler',
             ];
         }
@@ -71,42 +63,14 @@ final class DietHandler
             'allergies' => $allergies,
         ];
 
-        if ($items !== []) {
+        if ($items === []) {
             return [
                 'success' => true,
-                'code' => 'DIET_MATCHED',
-                'message' => (string) ($intent['response'] ?? 'Minh da tim duoc mot so mon phu hop cho ban.'),
-                'items' => $items,
-                'actions' => $this->buildActionsFromItems($items),
+                'code' => 'DIET_NO_RESULT',
+                'message' => 'Toi chua tim duoc mon phu hop theo bo loc hien tai. Ban thu doi keyword hoac muc kcal.',
                 'suggestions' => (array) ($intent['suggest_next'] ?? []),
                 'context_updates' => [
-                    'last_recipe' => (string) ($items[0]['title'] ?? ''),
-                    'last_keyword' => $recipeKeyword ?? $keyword,
-                    'chat_state' => $nextState,
-                ],
-                'source' => 'diet_handler',
-            ];
-        }
-
-        $supportItems = $this->buildSupportSuggestions($message, $keyword, $methodKeywords, $flavorKeywords);
-        if ($supportItems !== []) {
-            $supportMessage = $hasSpecificFilters
-                ? 'Khong co cong thuc mon do theo dung tieu chi, nhung minh da noi long dieu kien de goi y cac mon gan giong.'
-                : 'Chua co mon khop hoan toan, nhung minh co vai goi y gan dung de ban chon nhanh.';
-
-            return [
-                'success' => true,
-                'code' => 'DIET_SUPPORT_SUGGESTED',
-                'message' => $supportMessage,
-                'items' => $supportItems,
-                'actions' => $this->buildActionsFromItems($supportItems),
-                'suggestions' => [
-                    'Goi y mon xao it calo',
-                    'Mon xao cay duoi 500 kcal',
-                    'Mon xao khong thit bo',
-                ],
-                'context_updates' => [
-                    'last_keyword' => $recipeKeyword ?? $keyword,
+                    'last_keyword' => $keyword,
                     'chat_state' => $nextState,
                 ],
                 'source' => 'diet_handler',
@@ -115,16 +79,13 @@ final class DietHandler
 
         return [
             'success' => true,
-            'code' => 'DIET_NO_RESULT',
-            'message' => 'Minh chua tim thay noi dung phu hop. Ban vao trang Cong thuc de xem toan bo va loc them theo nhu cau.',
-            'actions' => [[
-                'type' => 'link',
-                'label' => 'Mo trang Cong thuc',
-                'url' => '/recipes',
-                'method' => 'GET',
-            ]],
+            'code' => 'DIET_MATCHED',
+            'message' => (string) ($intent['response'] ?? 'Toi da tim duoc mot so mon phu hop.'),
+            'items' => $items,
+            'actions' => $this->buildActionsFromItems($items),
             'suggestions' => (array) ($intent['suggest_next'] ?? []),
             'context_updates' => [
+                'last_recipe' => (string) ($items[0]['title'] ?? ''),
                 'last_keyword' => $recipeKeyword ?? $keyword,
                 'chat_state' => $nextState,
             ],
@@ -132,248 +93,21 @@ final class DietHandler
         ];
     }
 
-    private function findExactRecipes(
-        RecipeModel $recipeModel,
-        array $ingredientIds,
-        array $tagIds,
-        ?string $meal,
-        ?int $calories,
-        ?string $recipeKeyword,
-        ?string $keyword,
-        array $methodKeywords,
-        array $flavorKeywords,
-        array $allergies,
-        int $limit
-    ): array {
-        $candidates = $this->buildKeywordCandidates($recipeKeyword, $keyword, $methodKeywords, $flavorKeywords);
-        if ($candidates === []) {
-            $candidates = [null];
-        }
-
-        if ($tagIds !== []) {
-            foreach ($candidates as $candidate) {
-                $rows = $recipeModel->recommendByTagIds($tagIds, $calories, $candidate, $allergies, $limit);
-                if ($rows !== []) {
-                    return $rows;
-                }
-            }
-
-            // If keyword is too strict, keep tag filter and relax text filter.
-            $rows = $recipeModel->recommendByTagIds($tagIds, $calories, null, $allergies, $limit);
-            if ($rows !== []) {
-                return $rows;
-            }
-        }
-        if ($ingredientIds !== []) {
-            foreach ($candidates as $candidate) {
-                $rows = $recipeModel->recommendByIngredientIds($ingredientIds, $calories, $candidate, $allergies, $limit);
-                if ($rows !== []) {
-                    return $rows;
-                }
-            }
-            return [];
-        }
-
-        foreach ($candidates as $candidate) {
-            $rows = $recipeModel->recommendForChat($meal, $calories, $candidate, $allergies, $limit);
-            if ($rows !== []) {
-                return $rows;
-            }
-        }
-
-        return [];
-    }
-
-    private function buildKeywordCandidates(?string $recipeKeyword, ?string $keyword, array $methodKeywords, array $flavorKeywords): array
-    {
-        $candidates = [];
-
-        if (is_string($recipeKeyword) && trim($recipeKeyword) !== '') {
-            $candidates[] = trim($recipeKeyword);
-        }
-        if (is_string($keyword) && trim($keyword) !== '') {
-            $candidates[] = trim($keyword);
-        }
-
-        foreach ($methodKeywords as $method) {
-            $method = trim((string) $method);
-            if ($method !== '') {
-                $candidates[] = $method;
-            }
-        }
-
-        foreach ($flavorKeywords as $flavor) {
-            $flavor = trim((string) $flavor);
-            if ($flavor !== '') {
-                $candidates[] = $flavor;
-            }
-        }
-
-        $normalized = [];
-        $seen = [];
-        foreach ($candidates as $candidate) {
-            $key = trim((string) $candidate);
-            if ($key === '' || isset($seen[$key])) {
-                continue;
-            }
-            $seen[$key] = true;
-            $normalized[] = $key;
-        }
-
-        return $normalized;
-    }
-
-    private function buildSupportSuggestions(string $message, ?string $keyword, array $methodKeywords, array $flavorKeywords): array
-    {
-        $items = [];
-        $mainKeyword = $this->pickSupportKeyword($message, $keyword, $methodKeywords, $flavorKeywords);
-
-        try {
-            $recipeModel = new RecipeModel();
-            $rows = $recipeModel->recommendForChat(null, null, $mainKeyword, [], 3);
-            if ($rows === []) {
-                $rows = $recipeModel->recommendForChat(null, null, null, [], 3);
-            }
-            foreach ($this->mapRecipeItems($rows) as $item) {
-                $items[] = $item;
-            }
-        } catch (Throwable $e) {
-            // no-op
-        }
-
-        try {
-            $ingredientModel = new IngredientModel();
-            $rows = $ingredientModel->allPaged('approved', 'library', 2, 0, $mainKeyword);
-            if ($rows === []) {
-                $rows = $ingredientModel->allPaged(null, 'library', 2, 0, $mainKeyword);
-            }
-            foreach ($rows as $row) {
-                $id = (int) ($row['id'] ?? 0);
-                $name = trim((string) ($row['name'] ?? ''));
-                if ($id <= 0 || $name === '') {
-                    continue;
-                }
-                $items[] = [
-                    'id' => $id,
-                    'title' => 'Nguyen lieu: ' . $name,
-                    'url' => '/ingredients/' . $id,
-                ];
-            }
-        } catch (Throwable $e) {
-            // no-op
-        }
-
-        try {
-            $tipModel = new TipModel();
-            $rows = $tipModel->allPaged('approved', 2, 0, $mainKeyword);
-            if ($rows === []) {
-                $rows = $tipModel->allPaged(null, 2, 0, $mainKeyword);
-            }
-            foreach ($rows as $row) {
-                $slug = trim((string) ($row['slug'] ?? ''));
-                $title = trim((string) ($row['title'] ?? ''));
-                if ($slug === '' || $title === '') {
-                    continue;
-                }
-                $items[] = [
-                    'id' => (int) ($row['id'] ?? 0),
-                    'title' => 'Meo: ' . $title,
-                    'url' => '/tips/' . $slug,
-                ];
-            }
-        } catch (Throwable $e) {
-            // no-op
-        }
-
-        return array_slice($this->uniqueItems($items), 0, 6);
-    }
-
-    private function pickSupportKeyword(string $message, ?string $keyword, array $methodKeywords, array $flavorKeywords): ?string
-    {
-        if (is_string($keyword) && trim($keyword) !== '') {
-            return trim($keyword);
-        }
-        if ($methodKeywords !== []) {
-            return (string) $methodKeywords[0];
-        }
-        if ($flavorKeywords !== []) {
-            return (string) $flavorKeywords[0];
-        }
-
-        $normalized = $this->normalizeText($message);
-        return $normalized !== '' ? $normalized : null;
-    }
-
-    private function uniqueItems(array $items): array
-    {
-        $seen = [];
-        $result = [];
-        foreach ($items as $item) {
-            if (!is_array($item)) {
-                continue;
-            }
-
-            $title = trim((string) ($item['title'] ?? ''));
-            $url = trim((string) ($item['url'] ?? ''));
-            if ($title === '' || $url === '') {
-                continue;
-            }
-
-            $key = strtolower($title . '|' . $url);
-            if (isset($seen[$key])) {
-                continue;
-            }
-            $seen[$key] = true;
-            $result[] = $item;
-        }
-
-        return $result;
-    }
-
-    private function mapRecipeItems(array $recipes): array
-    {
-        $items = [];
-        foreach ($recipes as $recipe) {
-            if (!is_array($recipe)) {
-                continue;
-            }
-
-            $recipeId = (int) ($recipe['id'] ?? 0);
-            if ($recipeId <= 0) {
-                continue;
-            }
-
-            $title = (string) ($recipe['title'] ?? ('Recipe #' . $recipeId));
-            $kcal = (float) ($recipe['estimated_kcal'] ?? 0);
-            $items[] = [
-                'id' => $recipeId,
-                'title' => $kcal > 0 ? ($title . ' (~' . (int) round($kcal) . ' kcal)') : $title,
-                'url' => '/recipes/' . $recipeId,
-            ];
-        }
-
-        return $items;
-    }
-
     private function resolveMeal(array $matchedEntities, array $chatState): ?string
     {
         $raw = isset($matchedEntities['meal'][0])
-            ? (string) $matchedEntities['meal'][0]
-            : ((string) ($chatState['meal'] ?? ''));
+            ? (string) ($matchedEntities['meal'][0])
+            : (string) ($chatState['meal'] ?? '');
 
         $raw = $this->normalizeText($raw);
         if ($raw === '') {
             return null;
         }
 
-        if (str_contains($raw, 'sang')) {
-            return 'sang';
-        }
-        if (str_contains($raw, 'trua')) {
-            return 'trua';
-        }
-        if (str_contains($raw, 'toi')) {
-            return 'toi';
+        foreach (self::MEALS as $meal) {
+            if ($this->containsWholeToken($raw, $meal)) {
+                return $meal;
+            }
         }
 
         return null;
@@ -398,6 +132,7 @@ final class DietHandler
             if (!is_scalar($candidate)) {
                 continue;
             }
+
             if (preg_match('/(\d{2,4})\s*(kcal|calo)?/ui', (string) $candidate, $m) === 1) {
                 $limit = (int) $m[1];
                 if ($limit >= 50 && $limit <= 3000) {
@@ -411,7 +146,6 @@ final class DietHandler
 
     private function resolveAllergies(string $message, array $chatState): array
     {
-        $known = ['tom', 'cua', 'ca', 'bo', 'heo', 'ga', 'trung', 'sua', 'dau phong', 'lac'];
         $normalized = $this->normalizeText($message);
 
         if (str_contains($normalized, 'khong di ung') || str_contains($normalized, 'bo di ung')) {
@@ -419,18 +153,18 @@ final class DietHandler
         }
 
         $detected = [];
-        foreach ($known as $token) {
-            if (
-                str_contains($normalized, 'di ung ' . $token)
-                || str_contains($normalized, 'khong an ' . $token)
-                || str_contains($normalized, 'tranh ' . $token)
-            ) {
+        foreach (self::ALLERGY_TOKENS as $token) {
+            if (preg_match('/(?<![a-z0-9])(di ung|khong an|tranh)\s+' . preg_quote($token, '/') . '(?![a-z0-9])/u', $normalized) === 1) {
                 $detected[] = $token;
             }
         }
 
         $previous = is_array($chatState['allergies'] ?? null) ? $chatState['allergies'] : [];
-        return array_values(array_unique(array_filter(array_merge($previous, $detected), static fn($v): bool => is_string($v) && trim($v) !== '')));
+
+        return array_values(array_unique(array_filter(
+            array_merge($previous, $detected),
+            static fn($v): bool => is_string($v) && trim($v) !== ''
+        )));
     }
 
     private function extractIngredientIds(string $message): array
@@ -443,14 +177,98 @@ final class DietHandler
         }
     }
 
-    private function extractTagIds(string $message): array
+    private function resolveCookingMethodKeywords(array $matchedEntities, string $message): array
     {
-        try {
-            $tagModel = new TagModel();
-            return $tagModel->findTagIdsFromMessage($message, 12);
-        } catch (Throwable $e) {
-            return [];
+        $values = [];
+        $normalizedMessage = $this->normalizeText($message);
+        $keywordMap = $this->getTagKeywordMapByType('method', self::METHOD_FALLBACK);
+
+        foreach ((array) ($matchedEntities['cooking_method'] ?? []) as $value) {
+            $token = $this->normalizeText((string) $value);
+            $canonical = $this->resolveCanonicalFromKeywordMap($token, $keywordMap);
+            if ($canonical !== null) {
+                $values[] = $canonical;
+            }
         }
+
+        if ($values === []) {
+            foreach ($keywordMap as $canonical => $aliases) {
+                foreach ($aliases as $alias) {
+                    if ($this->containsWholeToken($normalizedMessage, (string) $alias)) {
+                        $values[] = (string) $canonical;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return array_values(array_unique($values));
+    }
+
+    private function resolveFlavorKeywords(array $matchedEntities, string $message): array
+    {
+        $values = [];
+        $normalizedMessage = $this->normalizeText($message);
+        $keywordMap = $this->getTagKeywordMapByType('taste', self::FLAVOR_FALLBACK);
+
+        foreach ((array) ($matchedEntities['flavor'] ?? []) as $value) {
+            $token = $this->normalizeText((string) $value);
+            $canonical = $this->resolveCanonicalFromKeywordMap($token, $keywordMap);
+            if ($canonical !== null) {
+                $values[] = $canonical;
+            }
+        }
+
+        if ($values === []) {
+            foreach ($keywordMap as $canonical => $aliases) {
+                foreach ($aliases as $alias) {
+                    if ($this->containsWholeToken($normalizedMessage, (string) $alias)) {
+                        $values[] = (string) $canonical;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return array_values(array_unique($values));
+    }
+
+    private function mergeRecipeKeyword(?string $keyword, array $methodKeywords, array $flavorKeywords): ?string
+    {
+        $baseKeyword = is_string($keyword) ? trim($keyword) : '';
+        if ($baseKeyword !== '') {
+            return $baseKeyword;
+        }
+
+        $method = '';
+        foreach ($methodKeywords as $token) {
+            $token = trim((string) $token);
+            if ($token !== '') {
+                $method = $token;
+                break;
+            }
+        }
+
+        $flavor = '';
+        foreach ($flavorKeywords as $token) {
+            $token = trim((string) $token);
+            if ($token !== '') {
+                $flavor = $token;
+                break;
+            }
+        }
+
+        if ($method !== '' && $flavor !== '' && $method !== $flavor) {
+            return $method . ' ' . $flavor;
+        }
+        if ($method !== '') {
+            return $method;
+        }
+        if ($flavor !== '') {
+            return $flavor;
+        }
+
+        return null;
     }
 
     private function buildActionsFromItems(array $items): array
@@ -476,86 +294,6 @@ final class DietHandler
         }
 
         return $actions;
-    }
-
-    private function resolveCookingMethodKeywords(array $matchedEntities, string $message): array
-    {
-        $accepted = ['canh', 'chien', 'xao', 'hap', 'nuong', 'kho'];
-        $normalizedMessage = $this->normalizeText($message);
-        $values = [];
-
-        foreach ((array) ($matchedEntities['cooking_method'] ?? []) as $value) {
-            $token = $this->normalizeText((string) $value);
-            if ($token !== '' && in_array($token, $accepted, true)) {
-                $values[] = $token;
-            }
-        }
-
-        if ($values === []) {
-            foreach ($accepted as $token) {
-                if (str_contains($normalizedMessage, $token)) {
-                    $values[] = $token;
-                }
-            }
-        }
-
-        if ($values === [] && str_contains($normalizedMessage, 'xoa')) {
-            $values[] = 'xao';
-        }
-
-        return array_values(array_unique($values));
-    }
-
-    private function resolveFlavorKeywords(array $matchedEntities, string $message): array
-    {
-        $accepted = ['cay', 'chua', 'ngot', 'man', 'thanh'];
-        $normalizedMessage = $this->normalizeText($message);
-        $values = [];
-
-        foreach ((array) ($matchedEntities['flavor'] ?? []) as $value) {
-            $token = $this->normalizeText((string) $value);
-            if ($token !== '' && in_array($token, $accepted, true)) {
-                $values[] = $token;
-            }
-        }
-
-        if ($values === []) {
-            foreach ($accepted as $token) {
-                if (str_contains($normalizedMessage, $token)) {
-                    $values[] = $token;
-                }
-            }
-        }
-
-        return array_values(array_unique($values));
-    }
-
-    private function mergeRecipeKeyword(?string $keyword, array $methodKeywords, array $flavorKeywords): ?string
-    {
-        $parts = [];
-
-        if (is_string($keyword) && trim($keyword) !== '') {
-            $parts[] = trim($keyword);
-        }
-        foreach ($methodKeywords as $token) {
-            $token = trim((string) $token);
-            if ($token !== '') {
-                $parts[] = $token;
-            }
-        }
-        foreach ($flavorKeywords as $token) {
-            $token = trim((string) $token);
-            if ($token !== '') {
-                $parts[] = $token;
-            }
-        }
-
-        $parts = array_values(array_unique($parts));
-        if ($parts === []) {
-            return null;
-        }
-
-        return implode(' ', $parts);
     }
 
     private function resolveLowCalorieIngredientIds(?int $requestedCalories): array
@@ -591,7 +329,7 @@ final class DietHandler
             return [
                 'success' => true,
                 'code' => 'CALORIES_NEED_RECIPE',
-                'message' => 'Ban hay gui ten mon cu the de minh uoc tinh calo chinh xac hon.',
+                'message' => 'Ban hay gui ten mon cu the de toi uoc tinh calo chinh xac hon.',
                 'suggestions' => (array) ($intent['suggest_next'] ?? []),
                 'source' => 'diet_handler',
             ];
@@ -604,7 +342,7 @@ final class DietHandler
             return [
                 'success' => true,
                 'code' => 'CALORIES_TEMP_UNAVAILABLE',
-                'message' => 'Hien tai minh chua lay duoc du lieu calo. Ban thu lai sau.',
+                'message' => 'Hien tai toi chua lay duoc du lieu calo. Ban thu lai sau.',
                 'source' => 'diet_handler',
             ];
         }
@@ -613,7 +351,7 @@ final class DietHandler
             return [
                 'success' => true,
                 'code' => 'CALORIES_NO_RESULT',
-                'message' => 'Minh chua tim thay mon phu hop de tinh calo. Ban thu gui ten mon day du hon.',
+                'message' => 'Toi chua tim thay mon phu hop de tinh calo. Ban thu gui ten mon day du hon.',
                 'source' => 'diet_handler',
             ];
         }
@@ -628,7 +366,7 @@ final class DietHandler
             'code' => 'CALORIES_MATCHED',
             'message' => $kcal > 0
                 ? ($title . ' uoc tinh khoang ' . $kcal . ' kcal.')
-                : ('Minh chua co so kcal cho mon ' . $title . '.'),
+                : ('Toi chua co so kcal cho mon ' . $title . '.'),
             'actions' => $recipeId > 0 ? [[
                 'type' => 'link',
                 'label' => 'Xem mon',
@@ -650,16 +388,9 @@ final class DietHandler
             return null;
         }
 
-        $stopPhrases = [
+        $trimPhrases = [
             'toi co',
             'toi muon',
-            'cach nau',
-            'nau mon',
-            'huong dan nau',
-            'chi cach nau',
-            'chi toi cach nau',
-            'cach lam',
-            'lam mon',
             'an gi',
             'goi y mon',
             'goi y cong thuc',
@@ -676,15 +407,62 @@ final class DietHandler
             'bao nhieu',
             'cong thuc',
             'mon',
+            'cach nau',
+            'nau mon',
+            'huong dan nau',
+            'cach lam',
+            'lam mon',
         ];
 
-        foreach ($stopPhrases as $phrase) {
-            $text = str_replace($phrase, ' ', $text);
+        $escaped = array_map(static fn(string $phrase): string => preg_quote($phrase, '/'), $trimPhrases);
+        usort($escaped, static fn(string $a, string $b): int => strlen($b) <=> strlen($a));
+        if ($escaped !== []) {
+            $prefixPattern = '/^(?:' . implode('|', $escaped) . ')\s+/u';
+            $suffixPattern = '/\s+(?:' . implode('|', $escaped) . ')$/u';
+            do {
+                $before = $text;
+                $text = (string) preg_replace($prefixPattern, '', $text);
+                $text = (string) preg_replace($suffixPattern, '', $text);
+                $text = trim($text);
+            } while ($text !== $before && $text !== '');
         }
 
         $text = (string) preg_replace('/\d+/', ' ', $text);
         $text = (string) preg_replace('/\s+/', ' ', $text);
         $text = trim($text);
+
+        $methodMap = $this->getTagKeywordMapByType('method', self::METHOD_FALLBACK);
+        $flavorMap = $this->getTagKeywordMapByType('taste', self::FLAVOR_FALLBACK);
+        $reserved = [];
+        foreach ([$methodMap, $flavorMap] as $map) {
+            foreach ($map as $canonical => $aliases) {
+                $reserved[] = (string) $canonical;
+                foreach ((array) $aliases as $alias) {
+                    $reserved[] = (string) $alias;
+                }
+            }
+        }
+
+        $reserved = array_values(array_unique(array_filter(array_map(
+            fn(string $v): string => $this->normalizeText($v),
+            $reserved
+        ), static fn(string $v): bool => $v !== '')));
+
+        if ($text !== '' && $reserved !== []) {
+            $tokens = preg_split('/\s+/', $text) ?: [];
+            $filtered = [];
+            foreach ($tokens as $token) {
+                $token = $this->normalizeText((string) $token);
+                if ($token === '') {
+                    continue;
+                }
+                if (in_array($token, $reserved, true)) {
+                    continue;
+                }
+                $filtered[] = $token;
+            }
+            $text = trim(implode(' ', array_values(array_unique($filtered))));
+        }
 
         if ($text === '' || strlen($text) < 2) {
             return null;
@@ -720,5 +498,96 @@ final class DietHandler
         $text = (string) preg_replace('/\s+/', ' ', $text);
 
         return trim($text);
+    }
+
+    private function getTagKeywordMapByType(string $type, array $fallback): array
+    {
+        $type = trim($type);
+        if ($type === '') {
+            return $this->buildFallbackKeywordMap($fallback);
+        }
+
+        if (!array_key_exists($type, $this->tagKeywordMapCache)) {
+            try {
+                $tagModel = new TagModel();
+                $map = $tagModel->getKeywordMapByType($type);
+                $this->tagKeywordMapCache[$type] = is_array($map) ? $map : [];
+            } catch (Throwable $e) {
+                $this->tagKeywordMapCache[$type] = [];
+            }
+        }
+
+        $result = $this->tagKeywordMapCache[$type] ?? [];
+        if (!is_array($result) || $result === []) {
+            return $this->buildFallbackKeywordMap($fallback);
+        }
+
+        return $result;
+    }
+
+    private function buildFallbackKeywordMap(array $fallback): array
+    {
+        $map = [];
+        foreach ($fallback as $token) {
+            $normalized = $this->normalizeText((string) $token);
+            if ($normalized === '') {
+                continue;
+            }
+            $map[$normalized] = [$normalized];
+        }
+
+        return $map;
+    }
+
+    private function resolveCanonicalFromKeywordMap(string $token, array $keywordMap): ?string
+    {
+        if ($token === '') {
+            return null;
+        }
+
+        foreach ($keywordMap as $canonical => $aliases) {
+            if ($token === (string) $canonical || in_array($token, (array) $aliases, true)) {
+                return (string) $canonical;
+            }
+        }
+
+        return null;
+    }
+
+    private function containsWholeToken(string $text, string $token): bool
+    {
+        $text = trim($text);
+        $token = trim($token);
+        if ($text === '' || $token === '') {
+            return false;
+        }
+
+        return preg_match('/(?<![a-z0-9])' . preg_quote($token, '/') . '(?![a-z0-9])/u', $text) === 1;
+    }
+
+    private function mapRecipeItems(array $recipes): array
+    {
+        $items = [];
+
+        foreach ($recipes as $recipe) {
+            if (!is_array($recipe)) {
+                continue;
+            }
+
+            $recipeId = (int) ($recipe['id'] ?? 0);
+            if ($recipeId <= 0) {
+                continue;
+            }
+
+            $title = (string) ($recipe['title'] ?? ('Recipe #' . $recipeId));
+            $kcal = (float) ($recipe['estimated_kcal'] ?? 0);
+            $items[] = [
+                'id' => $recipeId,
+                'title' => $kcal > 0 ? ($title . ' (~' . (int) round($kcal) . ' kcal)') : $title,
+                'url' => '/recipes/' . $recipeId,
+            ];
+        }
+
+        return $items;
     }
 }

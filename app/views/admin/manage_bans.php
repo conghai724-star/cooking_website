@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 $rows = is_array($rows ?? null) ? $rows : [];
 $keyword = (string) ($keyword ?? '');
 $type = (string) ($type ?? '');
@@ -6,16 +6,16 @@ $status = (string) ($status ?? '');
 $notice = (string) ($notice ?? '');
 
 $noticeText = match ($notice) {
-    'released' => '�� g? ban th�nh c�ng.',
-    'release_failed' => 'Kh�ng th? g? ban. Vui l�ng th? l?i.',
+    'released' => 'Đã gỡ ban thành công.',
+    'release_failed' => 'Không thể gỡ ban. Vui lòng thử lại.',
     default => '',
 };
 ?>
 
 <div class="flex flex-col gap-6">
     <div class="flex flex-col gap-2">
-        <h1 class="text-2xl font-bold text-slate-900">Danh s�ch ban</h1>
-        <p class="text-sm text-slate-500">Theo d�i v� g? c�c h�nh th?c ban/kh�a hi?n h�nh.</p>
+        <h1 class="text-2xl font-bold text-slate-900">Danh sách ban</h1>
+        <p class="text-sm text-slate-500">Theo dõi và gỡ các hình thức ban/khóa hiện hành.</p>
     </div>
 
     <?php if ($noticeText !== ''): ?>
@@ -30,44 +30,44 @@ $noticeText = match ($notice) {
                 type="text"
                 name="q"
                 value="<?= htmlspecialchars($keyword, ENT_QUOTES, 'UTF-8'); ?>"
-                placeholder="T�m ngu?i d�ng, email, l� do"
+                placeholder="Tìm người dùng, email, lý do"
                 class="w-80 max-w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
             >
             <select name="type" class="rounded-lg border border-slate-300 px-3 py-2 text-sm">
-                <option value="" <?= $type === '' ? 'selected' : ''; ?>>T?t c? lo?i</option>
-                <option value="account" <?= $type === 'account' ? 'selected' : ''; ?>>Ban t�i kho?n</option>
-                <option value="comment" <?= $type === 'comment' ? 'selected' : ''; ?>>Kh�a b�nh lu?n</option>
-                <option value="recipe" <?= $type === 'recipe' ? 'selected' : ''; ?>>Kh�a dang b�i</option>
+                <option value="" <?= $type === '' ? 'selected' : ''; ?>>Tất cả loại</option>
+                <option value="account" <?= $type === 'account' ? 'selected' : ''; ?>>Ban tài khoản</option>
+                <option value="comment" <?= $type === 'comment' ? 'selected' : ''; ?>>Khóa bình luận</option>
+                <option value="recipe" <?= $type === 'recipe' ? 'selected' : ''; ?>>Khóa đăng bài</option>
             </select>
             <select name="status" class="rounded-lg border border-slate-300 px-3 py-2 text-sm">
-                <option value="" <?= $status === '' ? 'selected' : ''; ?>>T?t c? tr?ng th�i</option>
-                <option value="active" <?= $status === 'active' ? 'selected' : ''; ?>>�ang hi?u l?c</option>
+                <option value="" <?= $status === '' ? 'selected' : ''; ?>>Tất cả trạng thái</option>
+                <option value="active" <?= $status === 'active' ? 'selected' : ''; ?>>Đang hiệu lực</option>
             </select>
-            <button type="submit" class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white">L?c</button>
+            <button type="submit" class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white">Lọc</button>
         </form>
     </div>
 
     <div class="rounded-lg border border-slate-200 bg-white overflow-hidden">
         <div class="border-b border-slate-100 px-4 py-3">
-            <h2 class="font-semibold text-slate-900">Danh s�ch (<?= count($rows); ?>)</h2>
+            <h2 class="font-semibold text-slate-900">Danh sách (<?= count($rows); ?>)</h2>
         </div>
         <div class="overflow-x-auto">
             <table class="w-full text-left text-sm">
                 <thead class="bg-slate-50 text-slate-600">
                     <tr>
-                        <th class="px-4 py-3 font-semibold">Ngu?i d�ng</th>
-                        <th class="px-4 py-3 font-semibold">L� do</th>
-                        <th class="px-4 py-3 font-semibold">Lo?i</th>
-                        <th class="px-4 py-3 font-semibold">Th?i gian</th>
-                        <th class="px-4 py-3 font-semibold">H?t h?n</th>
-                        <th class="px-4 py-3 font-semibold">Tr?ng th�i</th>
-                        <th class="px-4 py-3 font-semibold">H�nh d?ng</th>
+                        <th class="px-4 py-3 font-semibold">Người dùng</th>
+                        <th class="px-4 py-3 font-semibold">Lý do</th>
+                        <th class="px-4 py-3 font-semibold">Loại</th>
+                        <th class="px-4 py-3 font-semibold">Thời gian</th>
+                        <th class="px-4 py-3 font-semibold">Hết hạn</th>
+                        <th class="px-4 py-3 font-semibold">Trạng thái</th>
+                        <th class="px-4 py-3 font-semibold">Hành động</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
                 <?php if (empty($rows)): ?>
                     <tr>
-                        <td colspan="7" class="px-4 py-8 text-center text-slate-500">Kh�ng c� d? li?u ban.</td>
+                        <td colspan="7" class="px-4 py-8 text-center text-slate-500">Không có dữ liệu ban.</td>
                     </tr>
                 <?php else: ?>
                     <?php foreach ($rows as $row): ?>
@@ -86,7 +86,7 @@ $noticeText = match ($notice) {
                                 <div class="text-xs text-slate-500"><?= htmlspecialchars($userEmail, ENT_QUOTES, 'UTF-8'); ?></div>
                             </td>
                             <td class="px-4 py-3 max-w-[320px]">
-                                <div class="line-clamp-2 text-slate-700"><?= htmlspecialchars($reason !== '' ? $reason : 'Kh�ng c�', ENT_QUOTES, 'UTF-8'); ?></div>
+                                <div class="line-clamp-2 text-slate-700"><?= htmlspecialchars($reason !== '' ? $reason : 'Không có', ENT_QUOTES, 'UTF-8'); ?></div>
                             </td>
                             <td class="px-4 py-3">
                                 <span class="rounded-full bg-indigo-100 px-2 py-0.5 text-xs font-semibold text-indigo-700">
@@ -95,7 +95,7 @@ $noticeText = match ($notice) {
                             </td>
                             <td class="px-4 py-3 text-slate-600"><?= htmlspecialchars($startedAt, ENT_QUOTES, 'UTF-8'); ?></td>
                             <td class="px-4 py-3 text-slate-600">
-                                <?= htmlspecialchars($expiresAt !== '' ? $expiresAt : 'Vinh vi?n', ENT_QUOTES, 'UTF-8'); ?>
+                                <?= htmlspecialchars($expiresAt !== '' ? $expiresAt : 'Vĩnh viễn', ENT_QUOTES, 'UTF-8'); ?>
                             </td>
                             <td class="px-4 py-3">
                                 <span class="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-700">
@@ -103,7 +103,7 @@ $noticeText = match ($notice) {
                                 </span>
                             </td>
                             <td class="px-4 py-3">
-                                <form method="post" action="<?= URLROOT; ?>/admin/bans/release" onsubmit="return confirm('X�c nh?n g? ban/kh�a?');">
+                                <form method="post" action="<?= URLROOT; ?>/admin/bans/release" onsubmit="return confirm('Xác nhận gỡ ban/khóa?');">
                                     <?= csrf_field(); ?>
                                     <input type="hidden" name="source" value="<?= htmlspecialchars((string) ($row['source'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>">
                                     <input type="hidden" name="row_id" value="<?= (int) ($row['row_id'] ?? 0); ?>">
@@ -113,7 +113,7 @@ $noticeText = match ($notice) {
                                     <input type="hidden" name="return_type" value="<?= htmlspecialchars($type, ENT_QUOTES, 'UTF-8'); ?>">
                                     <input type="hidden" name="return_status" value="<?= htmlspecialchars($status, ENT_QUOTES, 'UTF-8'); ?>">
                                     <button type="submit" class="rounded border border-sky-300 px-2 py-1 text-xs font-semibold text-sky-700 hover:bg-sky-50">
-                                        G? ban
+                                        Gỡ ban
                                     </button>
                                 </form>
                             </td>

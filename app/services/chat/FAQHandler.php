@@ -14,7 +14,7 @@ final class FAQHandler
             return [
                 'success' => true,
                 'code' => 'LOGIN_REQUIRED',
-                'message' => 'Tính năng này cần đăng nhập trước khi sử dụng.',
+                'message' => 'TĂ­nh nA�ƒng nĂ y cA�º§n A�‘A�ƒng nhA�º­p trA�°A�»›c khi sA�»­ dA�»¥ng.',
                 'route' => $loginRoute,
                 'actions' => $this->buildActionsFromRoute($loginRoute, 'Đăng nhập'),
                 'source' => 'faq',
@@ -25,7 +25,7 @@ final class FAQHandler
         return [
             'success' => true,
             'code' => 'FAQ_MATCHED',
-            'message' => (string) ($intent['response'] ?? 'Bạn có thể thao tác theo hướng dẫn trên website.'),
+            'message' => (string) ($intent['response'] ?? 'BA�º¡n cĂ³ thA�»ƒ thao tĂ¡c theo hA�°A�»›ng dA�º«n trĂªn website.'),
             'route' => $route,
             'actions' => $this->buildActionsFromRoute($route),
             'source' => 'faq',
@@ -42,7 +42,7 @@ final class FAQHandler
 
         return [[
             'type' => 'link',
-            'label' => $label ?? 'Mở trang liên quan',
+            'label' => $label ?? 'MA�»Ÿ trang liĂªn quan',
             'url' => $path,
             'method' => 'GET',
         ]];

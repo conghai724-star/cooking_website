@@ -76,7 +76,7 @@ $buildPageUrl = static function (int $targetPage) use ($keyword): string {
     </div>
 
     <?php if (empty($ingredients)): ?>
-        <div class="rounded-xl border border-slate-200 bg-white p-6 text-sm text-slate-500">Chua c� nguy�n li?u du?c duy?t.</div>
+        <div class="rounded-xl border border-slate-200 bg-white p-6 text-sm text-slate-500">Chưa có nguyên liệu được duyệt.</div>
     <?php else: ?>
         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             <?php foreach ($ingredients as $ingredient): ?>
@@ -100,7 +100,7 @@ $buildPageUrl = static function (int $targetPage) use ($keyword): string {
                     </div>
                     <div class="flex flex-1 flex-col p-5">
                         <h3 class="mb-2 text-lg font-bold text-slate-900"><?= htmlspecialchars((string) ($ingredient['name'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></h3>
-                        <p class="mb-6 flex-1 text-sm leading-relaxed text-slate-500"><?= htmlspecialchars((string) ($ingredient['description'] ?? 'M� t? dang du?c c?p nh?t.'), ENT_QUOTES, 'UTF-8'); ?></p>
+                        <p class="mb-6 flex-1 text-sm leading-relaxed text-slate-500"><?= htmlspecialchars((string) ($ingredient['description'] ?? 'Mô tả đang được cập nhật.'), ENT_QUOTES, 'UTF-8'); ?></p>
                         <a class="flex w-full items-center justify-center gap-2 rounded-lg bg-primary/10 py-3 text-sm font-bold text-primary transition-all hover:bg-primary hover:text-white" href="<?= URLROOT; ?>/ingredients/<?= (int) ($ingredient['id'] ?? 0); ?>">
                             <span>Xem chi tiết</span>
                             <span class="material-symbols-outlined text-sm">arrow_forward</span>

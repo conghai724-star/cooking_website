@@ -1,0 +1,2 @@
+﻿run_id,train_date,model,epochs,imgsz,batch,augment,classes,mAP50,mAP50_95,precision,recall,f1,latency_ms,notes
+exp_001,2026-04-04,yolov11n,100,640,16,default,20,,,,,,,

@@ -170,7 +170,7 @@ $heroBgSrc = (str_starts_with($heroBg, 'http://') || str_starts_with($heroBg, 'h
                     <div class="flex items-center justify-between gap-3">
                         <div>
                             <p class="text-sm font-semibold">Thảo Nguyên</p>
-                            <p class="text-[11px] text-slate-500">Blogger Ẩm thực</p>
+                            <p class="text-[11px] text-slate-500">Blogger ẩm thực</p>
                         </div>
                         <button class="rounded-full border border-primary px-3 py-1 text-xs font-bold text-primary">Follow</button>
                     </div>

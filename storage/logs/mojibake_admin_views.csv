@@ -1,0 +1,5 @@
+﻿"File","Line","Pattern","Text"
+"D:\xampp\htdocs\cooking_website\app\views\admin\manage_relationships.php","16","\u00C3","'removed' => 'Đã gỡ mối quan hệ follow.',"
+"D:\xampp\htdocs\cooking_website\app\views\admin\manage_relationships.php","18","\u00C3","'lock_updated' => 'Đã cập nhật trạng thái khóa follow.',"
+"D:\xampp\htdocs\cooking_website\app\views\admin\manage_tips.php","6","\u00C3","'approved' => ['Đã duyệt', 'bg-emerald-100 text-emerald-700'],"
+"D:\xampp\htdocs\cooking_website\app\views\admin\partials\comments_table.php","44","\u00C3","<?= htmlspecialchars((string) ($item['target_title'] ?? 'Nội dung đã xóa'), ENT_QUOTES, 'UTF-8'); ?>"

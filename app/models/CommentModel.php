@@ -6,6 +6,7 @@ class CommentModel extends Model
 {
     private bool $schemaReady = false;
     private bool $reportTableReady = false;
+    private bool $voteTableReady = false;
 
     private function tableExists(string $table): bool
     {
@@ -30,14 +31,21 @@ class CommentModel extends Model
         foreach ($this->db->resultSet() as $row) {
             $field = (string) ($row['Field'] ?? '');
             if ($field !== '') {
-                $columns[$field] = true;
+                $columns[$field] = $row;
             }
         }
 
         if (!isset($columns['content_type'])) {
             $this->db->query("ALTER TABLE comments
-                              ADD COLUMN content_type ENUM('recipe','tip','ingredient') NOT NULL DEFAULT 'recipe' AFTER recipe_id")
+                              ADD COLUMN content_type ENUM('recipe','tip','ingredient','post') NOT NULL DEFAULT 'recipe' AFTER recipe_id")
                 ->execute();
+        } else {
+            $contentTypeDef = strtolower((string) ($columns['content_type']['Type'] ?? ''));
+            if ($contentTypeDef !== '' && !str_contains($contentTypeDef, "'post'")) {
+                $this->db->query("ALTER TABLE comments
+                                  MODIFY content_type ENUM('recipe','tip','ingredient','post') NOT NULL DEFAULT 'recipe'")
+                    ->execute();
+            }
         }
 
         if (!isset($columns['content_id'])) {
@@ -148,6 +156,21 @@ class CommentModel extends Model
                 ->execute();
         }
 
+        // Ensure post table exists before admin/report joins use content_type = post.
+        $this->db->query("CREATE TABLE IF NOT EXISTS posts (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT NOT NULL,
+                title VARCHAR(255) NOT NULL,
+                content TEXT NOT NULL,
+                image VARCHAR(255) NULL,
+                status ENUM('approved', 'hidden', 'deleted') NOT NULL DEFAULT 'approved',
+                created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                updated_at DATETIME NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+                deleted_at DATETIME NULL DEFAULT NULL,
+                INDEX idx_posts_status_created (status, created_at),
+                INDEX idx_posts_user (user_id)
+            )")->execute();
+
         $this->schemaReady = true;
     }
 
@@ -233,6 +256,26 @@ class CommentModel extends Model
         $this->reportTableReady = true;
     }
 
+    private function ensureVoteTable(): void
+    {
+        if ($this->voteTableReady) {
+            return;
+        }
+
+        $this->db->query('CREATE TABLE IF NOT EXISTS comment_votes (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                comment_id INT NOT NULL,
+                user_id INT NOT NULL,
+                created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                CONSTRAINT fk_comment_votes_comment FOREIGN KEY (comment_id) REFERENCES comments(id) ON DELETE CASCADE,
+                CONSTRAINT fk_comment_votes_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+                UNIQUE KEY uq_comment_votes_once (comment_id, user_id),
+                INDEX idx_comment_votes_user (user_id)
+            )')->execute();
+
+        $this->voteTableReady = true;
+    }
+
     public function findById(int $commentId): ?array
     {
         $this->ensureUnifiedSchema();
@@ -271,13 +314,14 @@ class CommentModel extends Model
                        c.created_at,
                        u.name AS author_name,
                        c.content_id AS target_id,
-                       COALESCE(r.title, t.title, i.name) AS target_title,
+                       COALESCE(r.title, t.title, i.name, p.title) AS target_title,
                        (SELECT COUNT(*) FROM reports cr WHERE cr.target_type = 'comment' AND cr.target_id = c.id) AS report_count
                 FROM comments c
                 LEFT JOIN users u ON u.id = c.user_id
                 LEFT JOIN recipes r ON c.content_type = 'recipe' AND r.id = c.content_id
                 LEFT JOIN tips t ON c.content_type = 'tip' AND t.id = c.content_id
                 LEFT JOIN ingredients i ON c.content_type = 'ingredient' AND i.id = c.content_id
+                LEFT JOIN posts p ON c.content_type = 'post' AND p.id = c.content_id
                 WHERE (:status_null IS NULL OR c.status = :status_eq)
                 ORDER BY c.created_at DESC, c.id DESC";
 
@@ -334,7 +378,7 @@ class CommentModel extends Model
         if (!in_array($status, ['active', 'hidden', 'deleted'], true)) {
             return false;
         }
-        if (!in_array($contentType, ['recipe', 'tip', 'ingredient'], true)) {
+        if (!in_array($contentType, ['recipe', 'tip', 'ingredient', 'post'], true)) {
             return false;
         }
         return $this->db
@@ -354,7 +398,7 @@ class CommentModel extends Model
     public function softDeleteByType(int $commentId, string $contentType, ?int $deletedBy = null, ?string $reason = null): bool
     {
         $this->ensureUnifiedSchema();
-        if (!in_array($contentType, ['recipe', 'tip', 'ingredient'], true)) {
+        if (!in_array($contentType, ['recipe', 'tip', 'ingredient', 'post'], true)) {
             return false;
         }
         return $this->db
@@ -375,7 +419,7 @@ class CommentModel extends Model
     public function restoreByType(int $commentId, string $contentType): bool
     {
         $this->ensureUnifiedSchema();
-        if (!in_array($contentType, ['recipe', 'tip', 'ingredient'], true)) {
+        if (!in_array($contentType, ['recipe', 'tip', 'ingredient', 'post'], true)) {
             return false;
         }
         return $this->db
@@ -451,6 +495,26 @@ class CommentModel extends Model
         return $this->db->resultSet();
     }
 
+    public function byPost(int $postId): array
+    {
+        $this->ensureUnifiedSchema();
+        $sql = 'SELECT c.*, u.name
+                FROM comments c
+                LEFT JOIN users u ON u.id = c.user_id
+                WHERE c.content_type = :content_type
+                  AND c.content_id = :content_id
+                  AND c.status = :status
+                ORDER BY c.id DESC';
+
+        $this->db->query($sql)
+            ->bind(':content_type', 'post')
+            ->bind(':content_id', $postId)
+            ->bind(':status', 'active')
+            ->execute();
+
+        return $this->db->resultSet();
+    }
+
     public function create(int $userId, int $recipeId, string $content): bool
     {
         $this->ensureUnifiedSchema();
@@ -515,6 +579,22 @@ class CommentModel extends Model
             ->execute();
     }
 
+    public function createPost(int $userId, int $postId, string $content, ?int $parentId = null): bool
+    {
+        $this->ensureUnifiedSchema();
+        $sql = 'INSERT INTO comments (user_id, recipe_id, content_type, content_id, parent_id, content, created_at)
+                VALUES (:user_id, NULL, :content_type, :content_id, :parent_id, :content, NOW())';
+
+        return $this->db
+            ->query($sql)
+            ->bind(':user_id', $userId)
+            ->bind(':content_type', 'post')
+            ->bind(':content_id', $postId)
+            ->bind(':parent_id', $parentId)
+            ->bind(':content', $content)
+            ->execute();
+    }
+
     public function findTipCommentById(int $commentId): ?array
     {
         $this->ensureUnifiedSchema();
@@ -532,6 +612,17 @@ class CommentModel extends Model
         $this->db->query('SELECT *, content_id AS ingredient_id FROM comments WHERE id = :id AND content_type = :content_type LIMIT 1')
             ->bind(':id', $commentId)
             ->bind(':content_type', 'ingredient')
+            ->execute();
+        $row = $this->db->single();
+        return is_array($row) ? $row : null;
+    }
+
+    public function findPostCommentById(int $commentId): ?array
+    {
+        $this->ensureUnifiedSchema();
+        $this->db->query('SELECT *, content_id AS post_id FROM comments WHERE id = :id AND content_type = :content_type LIMIT 1')
+            ->bind(':id', $commentId)
+            ->bind(':content_type', 'post')
             ->execute();
         $row = $this->db->single();
         return is_array($row) ? $row : null;
@@ -618,7 +709,7 @@ class CommentModel extends Model
                        c.status AS comment_status,
                        c.user_id AS target_user_id,
                        c.content_id AS target_id,
-                       COALESCE(r.title, t.title, i.name) AS target_title,
+                       COALESCE(r.title, t.title, i.name, p.title) AS target_title,
                        t.slug AS target_slug
                 FROM reports cr
                 LEFT JOIN comments c ON c.id = cr.target_id
@@ -626,6 +717,7 @@ class CommentModel extends Model
                 LEFT JOIN recipes r ON c.content_type = 'recipe' AND r.id = c.content_id
                 LEFT JOIN tips t ON c.content_type = 'tip' AND t.id = c.content_id
                 LEFT JOIN ingredients i ON c.content_type = 'ingredient' AND i.id = c.content_id
+                LEFT JOIN posts p ON c.content_type = 'post' AND p.id = c.content_id
                 WHERE cr.target_type = 'comment'
                   AND (:status_null IS NULL OR cr.status = :status_eq)
                 ORDER BY cr.created_at DESC, cr.id DESC";
@@ -651,6 +743,54 @@ class CommentModel extends Model
             ->execute();
     }
 
+    public function toggleVote(int $commentId, int $userId): array|false
+    {
+        $this->ensureUnifiedSchema();
+        $this->ensureVoteTable();
+
+        $this->db->query('SELECT id FROM comments WHERE id = :id LIMIT 1')
+            ->bind(':id', $commentId)
+            ->execute();
+        if (!$this->db->single()) {
+            return false;
+        }
+
+        $this->db->query('SELECT id FROM comment_votes WHERE comment_id = :comment_id AND user_id = :user_id LIMIT 1')
+            ->bind(':comment_id', $commentId)
+            ->bind(':user_id', $userId)
+            ->execute();
+        $existing = $this->db->single();
+
+        $liked = false;
+        if (is_array($existing)) {
+            $this->db->query('DELETE FROM comment_votes WHERE id = :id')
+                ->bind(':id', (int) ($existing['id'] ?? 0))
+                ->execute();
+            $this->db->query('UPDATE comments SET like_count = GREATEST(like_count - 1, 0) WHERE id = :id')
+                ->bind(':id', $commentId)
+                ->execute();
+        } else {
+            $this->db->query('INSERT INTO comment_votes (comment_id, user_id, created_at) VALUES (:comment_id, :user_id, NOW())')
+                ->bind(':comment_id', $commentId)
+                ->bind(':user_id', $userId)
+                ->execute();
+            $this->db->query('UPDATE comments SET like_count = like_count + 1 WHERE id = :id')
+                ->bind(':id', $commentId)
+                ->execute();
+            $liked = true;
+        }
+
+        $this->db->query('SELECT like_count FROM comments WHERE id = :id LIMIT 1')
+            ->bind(':id', $commentId)
+            ->execute();
+        $row = $this->db->single();
+
+        return [
+            'liked' => $liked,
+            'like_count' => (int) ($row['like_count'] ?? 0),
+        ];
+    }
+
     private function normalizeStatus(string $status): string
     {
         return match ($status) {
@@ -659,3 +799,6 @@ class CommentModel extends Model
         };
     }
 }
+
+
+

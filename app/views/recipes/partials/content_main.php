@@ -3,7 +3,7 @@ $recipe = is_array($recipe ?? null) ? $recipe : [];
 $ingredients = is_array($ingredients ?? null) ? $ingredients : [];
 $steps = is_array($steps ?? null) ? $steps : [];
 ?>
-<div class="lg:col-span-8">
+<div class="detail-main" style="min-width:0;">
     <div class="mb-8 grid grid-cols-2 gap-4 md:grid-cols-4">
         <div class="rounded-2xl border border-primary/20 bg-primary/10 p-4 text-center">
             <p class="text-xs font-bold uppercase tracking-wide text-slate-500">Chuẩn bị</p>
@@ -78,4 +78,24 @@ $steps = is_array($steps ?? null) ? $steps : [];
     <?php if (is_logged_in() && (int) current_user_id() === (int) ($recipe['user_id'] ?? 0)): ?>
         <a class="inline-block rounded-xl bg-primary px-5 py-3 font-bold text-white hover:bg-primary/90" href="<?= URLROOT; ?>/recipes/<?= (int) ($recipe['id'] ?? 0); ?>/edit">Chỉnh sửa công thức</a>
     <?php endif; ?>
+
+    <div class="mt-8 max-w-3xl">
+        <?php
+        $commentsRootId = 'recipe-comments-section';
+        $commentsTitle = 'Bình luận cộng đồng';
+        $contentType = 'recipe';
+        $contentId = (int) ($recipe['id'] ?? 0);
+        $comments = is_array($comments ?? null) ? $comments : [];
+        $showCount = false;
+        $allowReply = true;
+        $maxReplyDepth = 50;
+        $emptyText = 'Chưa có bình luận nào.';
+        $formPlaceholder = 'Viết bình luận của bạn...';
+        $commentExtraHiddenFields = ['recipe_id' => (string) ((int) ($recipe['id'] ?? 0))];
+        require APPROOT . '/app/views/partials/shared/content_comments.php';
+        ?>
+    </div>
 </div>
+
+
+
