@@ -6,16 +6,16 @@ $success = isset($_GET['success']) && $_GET['success'] === '1';
 $error = (string) ($_GET['error'] ?? '');
 $errorMessage = '';
 if ($error === 'missing_name') {
-    $errorMessage = 'Vui lĂ²ng nhA�º­p tĂªn nguyĂªn liA�»‡u.';
+    $errorMessage = 'Vui l\u00f2ng nh\u1eadp t\u00ean nguy\u00ean li\u1ec7u.';
 } elseif ($error === 'save_failed') {
-    $errorMessage = 'KhA�ng thA�»ƒ lA�°u nguyĂªn liA�»‡u. Vui lĂ²ng thA�»­ lA�º¡i.';
+    $errorMessage = 'Kh\u00f4ng th\u1ec3 l\u01b0u nguy\u00ean li\u1ec7u. Vui l\u00f2ng th\u1eed l\u1ea1i.';
 }
 ?>
 
 <div class="flex flex-col gap-6">
     <div class="flex flex-col gap-2">
-        <h1 class="text-2xl font-bold text-slate-900">ThA�° viA�»‡n nguyĂªn liA�»‡u</h1>
-        <p class="text-sm text-slate-500">Admin cĂ³ thA�»ƒ tA�º¡o, sA�»­a, xĂ³a. NgA�°A�»i dĂ¹ng gA�»­i nguyĂªn liA�»‡u sA�º½ A�»Ÿ trA�º¡ng thĂ¡i chA�» duyA�»‡t.</p>
+        <h1 class="text-2xl font-bold text-slate-900">Th\u01b0 vi\u1ec7n nguy\u00ean li\u1ec7u</h1>
+        <p class="text-sm text-slate-500">Admin c\u00f3 th\u1ec3 t\u1ea1o, s\u1eda, x\u00f3a. Ng\u01b0\u1eddi d\u00f9ng g\u1eedi nguy\u00ean li\u1ec7u s\u1ebd \u1ở tr\u1ea1ng th\u00e1i ch\u1edd duy\u1ec7t.</p>
     </div>
 
     <?php if ($success): ?>
@@ -32,31 +32,31 @@ if ($error === 'missing_name') {
 
     <div class="bg-white rounded shadow-sm border border-slate-100 overflow-hidden">
         <div class="p-6 border-b border-slate-100 flex items-center justify-between">
-            <h3 class="font-semibold text-slate-800">ThĂªm nguyĂªn liA�»‡u (Admin)</h3>
-            <button id="toggle-ingredient-form" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600" type="button">ThĂªm mA�»›i</button>
+            <h3 class="font-semibold text-slate-800">Th\u00eam nguy\u00ean li\u1ec7u (Admin)</h3>
+            <button id="toggle-ingredient-form" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600" type="button">Th\u00eam m\u1edbi</button>
         </div>
         <div id="ingredient-form" class="hidden">
             <form class="p-6 grid grid-cols-1 gap-4 md:grid-cols-2" method="post" action="<?= URLROOT; ?>/admin/ingredients/create" enctype="multipart/form-data">
                 <?= csrf_field(); ?>
                 <div>
-                    <label class="mb-1 block text-xs font-semibold text-slate-500">TĂªn nguyĂªn liA�»‡u *</label>
+                    <label class="mb-1 block text-xs font-semibold text-slate-500">T\u00ean nguy\u00ean li\u1ec7u *</label>
                     <input class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" name="name" required>
                 </div>
                 <div>
-                    <label class="mb-1 block text-xs font-semibold text-slate-500">Danh mA�»¥c</label>
+                    <label class="mb-1 block text-xs font-semibold text-slate-500">Danh m\u1ee5c</label>
                     <select class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" name="category_id">
-                        <option value="">-- ChA�»n danh mA�»¥c --</option>
+                        <option value="">-- Ch\u1ecdn danh m\u1ee5c --</option>
                         <?php foreach ($categories as $category): ?>
                             <option value="<?= (int) $category['id']; ?>"><?= htmlspecialchars($category['name'], ENT_QUOTES, 'UTF-8'); ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="md:col-span-2">
-                    <label class="mb-1 block text-xs font-semibold text-slate-500">MĂ´ tA�º£</label>
+                    <label class="mb-1 block text-xs font-semibold text-slate-500">M\u00f4 t\u1ea3</label>
                     <textarea class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" name="description" rows="3"></textarea>
                 </div>
                 <div class="md:col-span-2">
-                    <label class="mb-1 block text-xs font-semibold text-slate-500">CĂ´ng dA�»¥ng</label>
+                    <label class="mb-1 block text-xs font-semibold text-slate-500">C\u00f4ng d\u1ee5ng</label>
                     <textarea class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" name="usage" rows="2"></textarea>
                 </div>
                 <div>
@@ -88,7 +88,7 @@ if ($error === 'missing_name') {
                     <input class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" name="carb">
                 </div>
                 <div class="md:col-span-2 flex justify-end">
-                    <button class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white" type="submit">LA�°u nguyĂªn liA�»‡u</button>
+                    <button class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white" type="submit">L\u01b0u nguy\u00ean li\u1ec7u</button>
                 </div>
             </form>
         </div>
@@ -96,7 +96,7 @@ if ($error === 'missing_name') {
 
     <div class="bg-white rounded shadow-sm border border-slate-100 overflow-hidden">
         <div class="p-6 border-b border-slate-100 flex items-center justify-between">
-            <h3 class="font-semibold text-slate-800">Danh sĂ¡ch nguyĂªn liA�»‡u</h3>
+            <h3 class="font-semibold text-slate-800">Danh s\u00e1ch nguy\u00ean li\u1ec7u</h3>
         </div>
         <?php if (empty($ingredients)): ?>
             <div class="p-6 text-sm text-slate-500">ChA�°a cĂ³ nguyĂªn liA�»‡u nĂ o.</div>
