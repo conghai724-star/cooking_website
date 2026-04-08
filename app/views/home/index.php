@@ -6,17 +6,17 @@ $recipeOfDay = is_array($recipeOfDay ?? null) ? $recipeOfDay : null;
 $todayMealPlans = is_array($todayMealPlans ?? null) ? $todayMealPlans : [];
 
 $mealRows = [
-    'breakfast' => ['label' => 'SÄ‚Â¡ng', 'icon' => 'breakfast_dining', 'icon_class' => 'text-orange-600'],
-    'lunch' => ['label' => 'TrĂ†Â°a', 'icon' => 'lunch_dining', 'icon_class' => 'text-green-600'],
+    'breakfast' => ['label' => 'SĂ¡ng', 'icon' => 'breakfast_dining', 'icon_class' => 'text-orange-600'],
+    'lunch' => ['label' => 'TrĂ†°a', 'icon' => 'lunch_dining', 'icon_class' => 'text-green-600'],
     'dinner' => ['label' => 'TA�»‘i', 'icon' => 'dinner_dining', 'icon_class' => 'text-blue-600'],
 ];
 $dishRoleLabels = [
-    'main' => 'MÄ‚Â³n chÄ‚Â­nh',
+    'main' => 'MĂ³n chĂ­nh',
     'side' => 'Món phA�»¥',
     'soup' => 'Canh',
     'dessert' => 'TrĂ¡ng miA�»‡ng',
     'drink' => 'Đồ uống',
-    'other' => 'KhÄ‚Â¡c',
+    'other' => 'KhĂ¡c',
 ];
 $todayPlanMap = [];
 foreach ($todayMealPlans as $planItem) {
@@ -69,7 +69,7 @@ $heroBgSrc = (str_starts_with($heroBg, 'http://') || str_starts_with($heroBg, 'h
                         <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary">search</span>
                         <input name="q" type="search" placeholder="TĂ¬m mĂ³n A�ƒn phĂ¹ hA�»£p..." class="h-12 w-full rounded-xl border-none bg-slate-50 px-12 text-sm ring-1 ring-primary/10 focus:ring-2 focus:ring-primary">
                     </div>
-                    <button type="submit" class="h-12 rounded-xl bg-primary px-5 text-sm font-bold text-white hover:opacity-90">TÄ‚Â¬m mÄ‚Â³n</button>
+                    <button type="submit" class="h-12 rounded-xl bg-primary px-5 text-sm font-bold text-white hover:opacity-90">Tìm mĂ³n</button>
                 </form>
                 <div class="mt-4 flex flex-wrap gap-2">
                     <span class="rounded-full bg-primary px-4 py-1.5 text-[11px] font-bold tracking-wide text-white">TA�º¥t cA�º£</span>
@@ -140,13 +140,13 @@ $heroBgSrc = (str_starts_with($heroBg, 'http://') || str_starts_with($heroBg, 'h
                                 <p class="text-[10px] font-black uppercase tracking-widest text-slate-500"><?= htmlspecialchars($meta['label'], ENT_QUOTES, 'UTF-8'); ?></p>
                             </div>
                             <?php if ($items === []): ?>
-                                <p class="text-sm font-semibold text-slate-400">Chưa có mÄ‚Â³n</p>
+                                <p class="text-sm font-semibold text-slate-400">Chưa có mĂ³n</p>
                             <?php else: ?>
                                 <div class="space-y-1">
                                     <?php foreach ($items as $item): ?>
                                         <?php
                                         $dishRole = (string) ($item['dish_role'] ?? 'main');
-                                        $dishRoleLabel = $dishRoleLabels[$dishRole] ?? 'KhÄ‚Â¡c';
+                                        $dishRoleLabel = $dishRoleLabels[$dishRole] ?? 'KhĂ¡c';
                                         ?>
                                         <a href="<?= URLROOT; ?>/recipes/<?= (int) ($item['recipe_id'] ?? 0); ?>" class="flex items-center justify-between gap-2 text-sm font-semibold text-slate-800 hover:text-primary">
                                             <span class="line-clamp-1"><?= htmlspecialchars((string) ($item['title'] ?? 'CĂ´ng thA�»©c'), ENT_QUOTES, 'UTF-8'); ?></span>
@@ -172,7 +172,7 @@ $heroBgSrc = (str_starts_with($heroBg, 'http://') || str_starts_with($heroBg, 'h
                     </div>
                     <div class="flex items-center justify-between gap-3">
                         <div>
-                            <p class="text-sm font-semibold">HoÄ‚Â ng BÄ‚Â¡ch</p>
+                            <p class="text-sm font-semibold">HoĂ ng BĂ¡ch</p>
                             <p class="text-[11px] text-slate-500">Đầu bếp tại gia</p>
                         </div>
                         <button class="rounded-full border border-primary px-3 py-1 text-xs font-bold text-primary">Follow</button>

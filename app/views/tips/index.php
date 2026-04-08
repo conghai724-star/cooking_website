@@ -16,11 +16,11 @@ $buildPageUrl = static function (int $targetPage) use ($keyword): string {
 <div class="w-full">
     <div class="mx-auto flex max-w-[1000px] flex-1 flex-col">
         <div class="mb-8 flex flex-wrap items-center justify-between gap-3">
-            <h1 class="text-4xl font-black leading-tight tracking-tight text-slate-900 md:text-5xl">Mẹo vặt nA�º¥u A�ƒn</h1>
+            <h1 class="text-4xl font-black leading-tight tracking-tight text-slate-900 md:text-5xl">Mẹo vặt nấu ăn</h1>
             <?php if (is_logged_in()): ?>
                 <div class="flex items-center gap-2">
-                    <a class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600" href="<?= URLROOT; ?>/tips/my">Mẹo vặt cA�»§a tĂ´i</a>
-                    <a class="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white shadow-sm" href="<?= URLROOT; ?>/tips/create">ThĂªm mA�º¹o vA�º·t</a>
+                    <a class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600" href="<?= URLROOT; ?>/tips/my">Mẹo vặt của tôi</a>
+                    <a class="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white shadow-sm" href="<?= URLROOT; ?>/tips/create">Thêm mẹo vặt</a>
                 </div>
             <?php endif; ?>
         </div>
@@ -35,17 +35,17 @@ $buildPageUrl = static function (int $targetPage) use ($keyword): string {
                 type="text"
                 name="q"
                 value="<?= htmlspecialchars($keyword, ENT_QUOTES, 'UTF-8'); ?>"
-                placeholder="TĂ¬m mA�º¹o vA�º·t..."
+                placeholder="Tìm mẹo vặt..."
                 class="w-full max-w-md rounded-xl border border-slate-200 px-4 py-2.5 text-sm focus:border-primary focus:ring-2 focus:ring-primary/30"
             >
-            <button type="submit" class="rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-800">TĂ¬m kiA�º¿m</button>
+            <button type="submit" class="rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-800">Tìm kiếm</button>
             <?php if ($keyword !== ''): ?>
-                <a href="<?= URLROOT; ?>/tips" class="rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50">XĂ³a lA�»c</a>
+                <a href="<?= URLROOT; ?>/tips" class="rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50">Xóa lọc</a>
             <?php endif; ?>
         </form>
 
         <?php if (empty($tips)): ?>
-            <div class="rounded-xl border border-slate-200 bg-white p-6 text-sm text-slate-500">ChA�°a cĂ³ mA�º¹o vA�º·t A�‘A�°A�»£c duyA�»‡t.</div>
+            <div class="rounded-xl border border-slate-200 bg-white p-6 text-sm text-slate-500">Chưa có mẹo vặt được duyệt.</div>
         <?php else: ?>
             <div class="grid grid-cols-1 gap-6">
                 <?php foreach ($tips as $tip): ?>
@@ -65,14 +65,14 @@ $buildPageUrl = static function (int $targetPage) use ($keyword): string {
                             <div class="flex w-full flex-col justify-between p-6 md:p-10 @3xl:w-1/2">
                                 <div>
                                     <div class="mb-4 flex items-center gap-2">
-                                        <span class="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">KA�»¹ thuA�º­t</span>
-                                        <span class="text-xs text-slate-400">A�‰ˆ 5 phĂºt A�‘A�»c</span>
+                                        <span class="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">Kỹ thuật</span>
+                                        <span class="text-xs text-slate-400">🕒 5 phút đọc</span>
                                     </div>
                                     <h2 class="mb-4 text-2xl font-bold leading-tight text-slate-900 md:text-3xl">
                                         <?= htmlspecialchars((string) ($tip['title'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>
                                     </h2>
                                     <p class="mb-8 text-base font-normal leading-relaxed text-slate-600 md:text-lg">
-                                        <?= htmlspecialchars((string) ($tip['excerpt'] ?? 'MA�»™t mA�º¹o vA�º·t hA�»¯u Ă­ch cho gian bA�º¿p cA�»§a bA�º¡n.'), ENT_QUOTES, 'UTF-8'); ?>
+                                        <?= htmlspecialchars((string) ($tip['excerpt'] ?? 'Một mẹo vặt hữu ích cho gian bếp của bạn.'), ENT_QUOTES, 'UTF-8'); ?>
                                     </p>
                                 </div>
 
@@ -81,8 +81,8 @@ $buildPageUrl = static function (int $targetPage) use ($keyword): string {
                                         <div class="flex items-center gap-3">
                                             <div class="size-12 rounded-full bg-cover bg-center ring-2 ring-primary/20" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCLYFpIw51h0h8kulmRseDdMcqlG9jEo3wTTp0Q_4GHhZ7GPRBihFvkAZ4da3n9bPeUMXc0A28hLhia2aT4NAclsuxQCC8diLGC--lbNtHmWsnc77WbBUnsc67Ik733wNZKSEnRmktsAPIx4wk9-Or18jg1JZoM6zBBFjS7ok1th-QxMdMtS7p9_ru4FGDJy0gkva3EtKdNTHlMV3BKZJuWTJxywLVpNn1FbgCW00Rgks3vpQEROHFdGkHWQDQIVDq2392p-eYpD6nB");'></div>
                                             <div class="flex flex-col">
-                                                <p class="mb-1 text-sm font-bold leading-none text-slate-900"><?= htmlspecialchars((string) ($tip['author_name'] ?? 'NgĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚Â Ä‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â°Ă„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡Ä‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â»Ä‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Âi Ă„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¢Ă„â€Ă‚Â¢Ä‚Â¢Ă¢â€Â¬Ă‚ÂÄ‚â€Ă‚Â¬Ă„â€Ă¢â‚¬Â¹Ä‚â€¦Ă¢â‚¬Å“Ă„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚Â Ă„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¢ng'), ENT_QUOTES, 'UTF-8'); ?></p>
-                                                <p class="text-xs font-medium leading-none text-primary">Chia sA�º» mA�º¹o vA�º·t</p>
+                                                <p class="mb-1 text-sm font-bold leading-none text-slate-900"><?= htmlspecialchars((string) ($tip['author_name'] ?? 'CookMaster Admin'), ENT_QUOTES, 'UTF-8'); ?></p>
+                                                <p class="text-xs font-medium leading-none text-primary">Chia sẻ mẹo vặt</p>
                                             </div>
                                         </div>
                                         <div class="flex items-center gap-4">
@@ -127,7 +127,7 @@ $buildPageUrl = static function (int $targetPage) use ($keyword): string {
                     if ($start > 1): ?>
                         <a class="flex size-10 items-center justify-center rounded-full text-sm font-semibold text-slate-700 transition-colors hover:bg-primary/10" href="<?= $buildPageUrl(1); ?>">1</a>
                         <?php if ($start > 2): ?>
-                            <span class="flex size-10 items-center justify-center text-sm font-semibold text-slate-400">A�€¦</span>
+                            <span class="flex size-10 items-center justify-center text-sm font-semibold text-slate-400">...</span>
                         <?php endif; ?>
                     <?php endif; ?>
 
@@ -141,7 +141,7 @@ $buildPageUrl = static function (int $targetPage) use ($keyword): string {
 
                     <?php if ($end < $totalPages): ?>
                         <?php if ($end < $totalPages - 1): ?>
-                            <span class="flex size-10 items-center justify-center text-sm font-semibold text-slate-400">A�€¦</span>
+                            <span class="flex size-10 items-center justify-center text-sm font-semibold text-slate-400">...</span>
                         <?php endif; ?>
                         <a class="flex size-10 items-center justify-center rounded-full text-sm font-semibold text-slate-700 transition-colors hover:bg-primary/10" href="<?= $buildPageUrl($totalPages); ?>"><?= $totalPages; ?></a>
                     <?php endif; ?>
@@ -163,4 +163,3 @@ $buildPageUrl = static function (int $targetPage) use ($keyword): string {
         </div>
     </div>
 </div>
-

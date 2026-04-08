@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 $recipe = is_array($recipe ?? null) ? $recipe : [];
 $ingredients = is_array($ingredients ?? null) ? $ingredients : [];
 $steps = is_array($steps ?? null) ? $steps : [];
@@ -15,9 +15,9 @@ $statusLabel = $status === 'approved'
     <div class="flex items-center justify-between">
         <div>
             <h1 class="text-2xl font-bold text-slate-900"><?= htmlspecialchars((string) ($recipe['title'] ?? 'Chi tiết công thức'), ENT_QUOTES, 'UTF-8'); ?></h1>
-            <p class="text-sm text-slate-500">Tác giả: <?= htmlspecialchars((string) ($recipe['author_name'] ?? 'Không rĂµ'), ENT_QUOTES, 'UTF-8'); ?></p>
+            <p class="text-sm text-slate-500">Tác giả: <?= htmlspecialchars((string) ($recipe['author_name'] ?? 'Không rõ'), ENT_QUOTES, 'UTF-8'); ?></p>
         </div>
-        <a class="text-sm font-semibold text-slate-500 hover:text-slate-900" href="<?= URLROOT; ?>/admin/recipes">Quay láº¡i</a>
+        <a class="text-sm font-semibold text-slate-500 hover:text-slate-900" href="<?= URLROOT; ?>/admin/recipes">Quay lại</a>
     </div>
 
     <div class="rounded-xl border border-slate-100 bg-white p-6 shadow-sm">
@@ -41,15 +41,15 @@ $statusLabel = $status === 'approved'
                 <p class="text-sm text-slate-700"><?= htmlspecialchars((string) ($recipe['category_name'] ?? 'Chưa phân loại'), ENT_QUOTES, 'UTF-8'); ?></p>
             </div>
             <div>
-                <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">Độ khA�</p>
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">Độ khó</p>
                 <p class="text-sm text-slate-700"><?= htmlspecialchars((string) ($recipe['difficulty'] ?? 'N/A'), ENT_QUOTES, 'UTF-8'); ?></p>
             </div>
             <div>
                 <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">Thời gian nấu</p>
-                <p class="text-sm text-slate-700"><?= htmlspecialchars((string) ($recipe['cooking_time'] ?? 'N/A'), ENT_QUOTES, 'UTF-8'); ?> phĂºt</p>
+                <p class="text-sm text-slate-700"><?= htmlspecialchars((string) ($recipe['cooking_time'] ?? 'N/A'), ENT_QUOTES, 'UTF-8'); ?> phút</p>
             </div>
             <div>
-                <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">NgĂ y táº¡o</p>
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">Ngày tạo</p>
                 <p class="text-sm text-slate-700"><?= htmlspecialchars((string) ($recipe['created_at'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></p>
             </div>
         </div>
@@ -59,14 +59,14 @@ $statusLabel = $status === 'approved'
         <?php endif; ?>
 
         <div class="mt-6">
-            <h3 class="text-lg font-semibold text-slate-900">MĂ´ táº£</h3>
+            <h3 class="text-lg font-semibold text-slate-900">Mô tả</h3>
             <p class="mt-2 text-sm leading-relaxed text-slate-600"><?= nl2br(htmlspecialchars((string) ($recipe['description'] ?? ''), ENT_QUOTES, 'UTF-8')); ?></p>
         </div>
     </div>
 
     <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <div class="rounded-xl border border-slate-100 bg-white p-6 shadow-sm">
-            <h3 class="text-lg font-semibold text-slate-900">NguyĂªn liá»‡u</h3>
+            <h3 class="text-lg font-semibold text-slate-900">Nguyên liệu</h3>
             <?php if (empty($ingredients)): ?>
                 <p class="mt-3 text-sm text-slate-500">Chưa có nguyên liệu.</p>
             <?php else: ?>
@@ -89,7 +89,7 @@ $statusLabel = $status === 'approved'
                 <ol class="mt-3 space-y-3 text-sm text-slate-700">
                     <?php foreach ($steps as $step): ?>
                         <li>
-                            <p class="font-semibold">BÆ°á»›c <?= (int) ($step['step_number'] ?? 0); ?></p>
+                            <p class="font-semibold">Bước <?= (int) ($step['step_number'] ?? 0); ?></p>
                             <p class="text-slate-600"><?= nl2br(htmlspecialchars((string) ($step['content'] ?? ''), ENT_QUOTES, 'UTF-8')); ?></p>
                         </li>
                     <?php endforeach; ?>
@@ -98,5 +98,3 @@ $statusLabel = $status === 'approved'
         </div>
     </div>
 </div>
-
-

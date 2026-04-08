@@ -132,7 +132,7 @@ $noticeText = match ($notice) {
                             <?php else: ?>
                                 <form method="post" action="<?= URLROOT; ?>/users/<?= $profileUserId; ?>/follow">
                                     <?= csrf_field(); ?>
-                                    <button class="flex h-10 items-center justify-center rounded-lg bg-primary px-6 text-sm font-bold text-white hover:brightness-105" type="submit">Theo dÄ‚Âµi</button>
+                                    <button class="flex h-10 items-center justify-center rounded-lg bg-primary px-6 text-sm font-bold text-white hover:brightness-105" type="submit">Theo dõi</button>
                                 </form>
                             <?php endif; ?>
 
@@ -252,7 +252,7 @@ $noticeText = match ($notice) {
             <div class="mb-4 flex gap-2 border-b border-slate-200">
                 <button class="profile-subtab border-b-2 border-primary px-4 py-2 text-sm font-bold text-primary" type="button" data-subtab-group="ingredients" data-subtab="mine">CA�»§a tĂ´i</button>
                 <?php if ($isOwner): ?>
-                    <button class="profile-subtab border-b-2 border-transparent px-4 py-2 text-sm font-bold text-slate-500" type="button" data-subtab-group="ingredients" data-subtab="saved">Ă„ÂÄ‚Â£ lĂ†Â°u</button>
+                    <button class="profile-subtab border-b-2 border-transparent px-4 py-2 text-sm font-bold text-slate-500" type="button" data-subtab-group="ingredients" data-subtab="saved">Ă„Ă£ lưu</button>
                 <?php endif; ?>
             </div>
 
@@ -315,7 +315,7 @@ $noticeText = match ($notice) {
             <div class="mb-4 flex gap-2 border-b border-slate-200">
                 <button class="profile-subtab border-b-2 border-primary px-4 py-2 text-sm font-bold text-primary" type="button" data-subtab-group="tips" data-subtab="mine">CA�»§a tĂ´i</button>
                 <?php if ($isOwner): ?>
-                    <button class="profile-subtab border-b-2 border-transparent px-4 py-2 text-sm font-bold text-slate-500" type="button" data-subtab-group="tips" data-subtab="saved">Ă„ÂÄ‚Â£ lĂ†Â°u</button>
+                    <button class="profile-subtab border-b-2 border-transparent px-4 py-2 text-sm font-bold text-slate-500" type="button" data-subtab-group="tips" data-subtab="saved">Ă„Ă£ lưu</button>
                 <?php endif; ?>
             </div>
 

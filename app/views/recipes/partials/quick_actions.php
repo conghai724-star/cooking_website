@@ -1,6 +1,6 @@
 <aside class="detail-side space-y-6" >
     <?php
-    $quickInfoTitle = 'ThÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â´ng tin nhanh';
+    $quickInfoTitle = 'ThĂ�??�€�?Ă�??�´ng tin nhanh';
     $quickInfoItems = [
         ['label' => 'Danh mục', 'value' => (string) ($recipe['category_name'] ?? 'ChA�°a phĂ¢n loA�º¡i')],
         ['label' => 'LA�°A�»£t xem', 'value' => (string) (int) ($recipe['view_count'] ?? 0)],

@@ -136,3 +136,62 @@
 2026-04-08 14:47:26,583 - INFO - Fixed app\views\admin\users\index.php: 'XÄ‚Â³a' -> 'Xóa'
 2026-04-08 14:47:26,587 - INFO - Fixed app\views\admin\moderation\reports\index.php: 'Khóa đăng nguyÄ‚Âªn liĂ¡Â»â€¡u' -> 'Khóa đăng nguyên liệu', 'XÄ‚Â³a' -> 'Xóa'
 2026-04-08 14:47:26,588 - INFO - Fixed 11 files.
+2026-04-08 14:49:38,762 - INFO - Starting automatic mojibake fix using decodeURIComponent(escape()) method
+2026-04-08 14:49:38,763 - INFO - Found 85 files to check
+2026-04-08 14:49:38,842 - INFO - Dry run complete. Would fix 0 files.
+2026-04-08 14:52:53,463 - INFO - Starting automatic mojibake fix using decodeURIComponent(escape()) method
+2026-04-08 14:52:53,465 - INFO - Found 85 files to check
+2026-04-08 14:52:53,542 - INFO - Fixed 0 files.
+2026-04-08 14:53:19,197 - INFO - Loaded 128 mojibake fixes
+2026-04-08 14:53:19,202 - INFO - Found 85 files to check
+2026-04-08 14:53:19,248 - INFO - Fixed 0 files.
+2026-04-08 15:15:56,813 - INFO - Loaded 128 mojibake fixes
+2026-04-08 15:15:56,819 - INFO - Found 85 files to check
+2026-04-08 15:16:27,779 - INFO - Loaded 128 mojibake fixes
+2026-04-08 15:16:27,785 - INFO - Found 85 files to check
+2026-04-08 15:16:27,787 - INFO - Would fix app\views\ai\ingredient_drag_search.php: auto repair
+2026-04-08 15:16:27,790 - INFO - Would fix app\views\ai\ingredient_vision.php: auto repair
+2026-04-08 15:16:27,792 - INFO - Would fix app\views\auth\admin_login.php: auto repair
+2026-04-08 15:16:27,794 - INFO - Would fix app\views\home\index.php: auto repair
+2026-04-08 15:16:27,800 - INFO - Would fix app\views\mealplans\index.php: auto repair
+2026-04-08 15:16:27,807 - INFO - Would fix app\views\recipes\create.php: auto repair
+2026-04-08 15:16:27,813 - INFO - Would fix app\views\recipes\edit.php: auto repair
+2026-04-08 15:16:27,819 - INFO - Would fix app\views\tips\index.php: auto repair
+2026-04-08 15:16:27,821 - INFO - Would fix app\views\user\connections.php: auto repair
+2026-04-08 15:16:27,825 - INFO - Would fix app\views\user\profile.php: auto repair
+2026-04-08 15:16:27,827 - INFO - Would fix app\views\tips\partials\sidebar.php: auto repair
+2026-04-08 15:16:27,828 - INFO - Would fix app\views\recipes\partials\quick_actions.php: auto repair
+2026-04-08 15:16:27,829 - INFO - Would fix app\views\recipes\partials\report_modal.php: auto repair
+2026-04-08 15:16:27,831 - INFO - Would fix app\views\partials\ingredient\quick_info_actions_card.php: auto repair
+2026-04-08 15:16:27,833 - INFO - Would fix app\views\partials\shared\comment_report_dropdown.php: auto repair
+2026-04-08 15:16:27,835 - INFO - Would fix app\views\partials\shared\content_action_buttons.php: auto repair
+2026-04-08 15:16:27,836 - INFO - Would fix app\views\partials\shared\content_report_modal.php: auto repair
+2026-04-08 15:16:27,837 - INFO - Would fix app\views\partials\shared\report_content_form.php: auto repair
+2026-04-08 15:16:27,855 - INFO - Would fix app\views\admin\recipes\show.php: auto repair
+2026-04-08 15:16:27,858 - INFO - Would fix app\views\admin\users\index.php: auto repair
+2026-04-08 15:16:27,863 - INFO - Would fix app\views\admin\moderation\reports\index.php: auto repair
+2026-04-08 15:16:27,864 - INFO - Dry run complete. Would fix 21 files.
+2026-04-08 15:16:35,082 - INFO - Loaded 128 mojibake fixes
+2026-04-08 15:16:35,089 - INFO - Found 85 files to check
+2026-04-08 15:16:35,092 - INFO - Fixed app\views\ai\ingredient_drag_search.php: auto repair
+2026-04-08 15:16:35,096 - INFO - Fixed app\views\ai\ingredient_vision.php: auto repair
+2026-04-08 15:16:35,099 - INFO - Fixed app\views\auth\admin_login.php: auto repair
+2026-04-08 15:16:35,104 - INFO - Fixed app\views\home\index.php: auto repair
+2026-04-08 15:16:35,110 - INFO - Fixed app\views\mealplans\index.php: auto repair
+2026-04-08 15:16:35,122 - INFO - Fixed app\views\recipes\create.php: auto repair
+2026-04-08 15:16:35,131 - INFO - Fixed app\views\recipes\edit.php: auto repair
+2026-04-08 15:16:35,139 - INFO - Fixed app\views\tips\index.php: auto repair
+2026-04-08 15:16:35,146 - INFO - Fixed app\views\user\connections.php: auto repair
+2026-04-08 15:16:35,153 - INFO - Fixed app\views\user\profile.php: auto repair
+2026-04-08 15:16:35,154 - INFO - Fixed app\views\tips\partials\sidebar.php: auto repair
+2026-04-08 15:16:35,159 - INFO - Fixed app\views\recipes\partials\quick_actions.php: auto repair
+2026-04-08 15:16:35,166 - INFO - Fixed app\views\recipes\partials\report_modal.php: auto repair
+2026-04-08 15:16:35,169 - INFO - Fixed app\views\partials\ingredient\quick_info_actions_card.php: auto repair
+2026-04-08 15:16:35,175 - INFO - Fixed app\views\partials\shared\comment_report_dropdown.php: auto repair
+2026-04-08 15:16:35,185 - INFO - Fixed app\views\partials\shared\content_action_buttons.php: auto repair
+2026-04-08 15:16:35,195 - INFO - Fixed app\views\partials\shared\content_report_modal.php: auto repair
+2026-04-08 15:16:35,202 - INFO - Fixed app\views\partials\shared\report_content_form.php: auto repair
+2026-04-08 15:16:35,230 - INFO - Fixed app\views\admin\recipes\show.php: auto repair
+2026-04-08 15:16:35,233 - INFO - Fixed app\views\admin\users\index.php: auto repair
+2026-04-08 15:16:35,246 - INFO - Fixed app\views\admin\moderation\reports\index.php: auto repair
+2026-04-08 15:16:35,248 - INFO - Fixed 21 files.

@@ -542,7 +542,7 @@ $renderActions = static function (
 
     <div class="rounded-lg border border-slate-200 bg-white overflow-hidden">
         <div class="border-b border-slate-100 px-4 py-3">
-            <h2 class="font-semibold text-slate-900">Danh sách bÄ‚Â¡o cÄ‚Â¡o (<?= count($rows); ?>)</h2>
+            <h2 class="font-semibold text-slate-900">Danh sách bĂ¡o cĂ¡o (<?= count($rows); ?>)</h2>
         </div>
         <div class="overflow-x-auto">
             <table class="w-full text-left text-sm">

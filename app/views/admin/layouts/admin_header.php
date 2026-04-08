@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 $admin = current_admin() ?? [];
 $adminName = $admin['name'] ?? 'Admin';
 $adminRoleKey = (string) ($admin['role'] ?? 'admin');
@@ -70,7 +70,7 @@ $adminNavItems = [
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang qu\u1ea3n tr\u1ecb - <?= SITENAME; ?></title>
+    <title>Trang quản trị - <?= SITENAME; ?></title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap">
@@ -137,7 +137,7 @@ $adminNavItems = [
             <div class="flex-1 max-w-md">
                 <div class="relative">
                     <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
-                    <input class="w-full pl-10 pr-4 py-2 bg-slate-100 border-none rounded-lg focus:ring-2 focus:ring-primary text-sm" placeholder="T\u00ecm c\u00f4ng th\u1ee9c, ng\u01b0\u1eddi d\u00f9ng..." type="text">
+                    <input class="w-full pl-10 pr-4 py-2 bg-slate-100 border-none rounded-lg focus:ring-2 focus:ring-primary text-sm" placeholder="Tìm công thức, người dùng..." type="text">
                 </div>
             </div>
             <div class="flex items-center gap-4">
@@ -160,4 +160,3 @@ $adminNavItems = [
             </div>
         </header>
         <div class="p-8 space-y-8">
-

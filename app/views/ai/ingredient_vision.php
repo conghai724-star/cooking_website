@@ -60,7 +60,7 @@ $csrf = csrf_token();
                     </div>
                     <div>
                         <label for="ai-keyword" class="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">TA�»« khóa mĂ³n</label>
-                        <input id="ai-keyword" type="text" class="w-full rounded-xl border-slate-300 text-sm focus:border-primary focus:ring-primary" placeholder="xÄ‚Â o, canh, chay...">
+                        <input id="ai-keyword" type="text" class="w-full rounded-xl border-slate-300 text-sm focus:border-primary focus:ring-primary" placeholder="xĂ o, canh, chay...">
                     </div>
                 </div>
 

@@ -170,11 +170,11 @@ value="<?= htmlspecialchars($currentListPath, ENT_QUOTES, 'UTF-8'); ?>">
 
 <button class="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 js-follow-btn"
 data-state="following"
-data-text-following="Ă„Âang theo dÄ‚Âµi"
+data-text-following="Ă„ang theo dõi"
 data-text-follow="Theo dĂµi lA�º¡i"
 data-class-following="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50"
 data-class-follow="rounded-md bg-black px-3 py-1.5 text-xs font-semibold text-white hover:bg-slate-800">
-Ă„Âang theo dÄ‚Âµi
+Ă„ang theo dõi
 </button>
 
 </form>
@@ -192,7 +192,7 @@ value="<?= htmlspecialchars($currentListPath, ENT_QUOTES, 'UTF-8'); ?>">
 
 <button class="rounded-md bg-black px-3 py-1.5 text-xs font-semibold text-white hover:bg-slate-800 js-follow-btn"
 data-state="follow"
-data-text-following="Ă„Âang theo dÄ‚Âµi"
+data-text-following="Ă„ang theo dõi"
 data-text-follow="Theo dĂµi lA�º¡i"
 data-class-following="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50"
 data-class-follow="rounded-md bg-black px-3 py-1.5 text-xs font-semibold text-white hover:bg-slate-800">
@@ -248,7 +248,7 @@ data-class-follow="rounded-md bg-black px-3 py-1.5 text-xs font-semibold text-wh
                 <h1 class="text-xl font-bold text-slate-900"><?= htmlspecialchars($name, ENT_QUOTES, 'UTF-8'); ?></h1>
                 <p class="text-xs font-semibold text-primary"><?= htmlspecialchars($scopeText, ENT_QUOTES, 'UTF-8'); ?></p>
             </div>
-            <a class="text-xs font-semibold text-slate-500 hover:text-slate-900" href="<?= URLROOT; ?>/users/<?= $profileUserId; ?>">Ă„ÂÄ‚Â³ng</a>
+            <a class="text-xs font-semibold text-slate-500 hover:text-slate-900" href="<?= URLROOT; ?>/users/<?= $profileUserId; ?>">Ă„Ă³ng</a>
         </div>
 
         <div class="mb-4 flex flex-wrap gap-2 text-xs font-semibold">
@@ -327,7 +327,7 @@ document.addEventListener('click', function (event) {
   }).then(function () {
     const nextState = state === 'following' ? 'follow' : 'following';
     const nextText = nextState === 'following'
-      ? (button.dataset.textFollowing || 'Ă„Âang theo dÄ‚Âµi')
+      ? (button.dataset.textFollowing || 'Ă„ang theo dõi')
       : (button.dataset.textFollow || 'Theo dĂµi lA�º¡i');
 
     const nextClass = nextState === 'following'

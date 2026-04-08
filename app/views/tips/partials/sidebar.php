@@ -9,7 +9,7 @@ $sidebarTipId = (int) ($sidebarTipId ?? 0);
 $sidebarTipPath = (string) ($sidebarTipPath ?? '/tips');
 $sidebarTitle = (string) ($sidebarTitle ?? 'Mẹo vặt');
 
-$quickInfoTitle = 'ThÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â´ng tin nhanh';
+$quickInfoTitle = 'ThĂ�??�€�?Ă�??�´ng tin nhanh';
 $quickInfoItems = [
     ['label' => 'Danh mục', 'value' => $sidebarCategory !== '' ? $sidebarCategory : 'ChA�°a phĂ¢n loA�º¡i'],
     ['label' => 'LA�°A�»£t xem', 'value' => (string) $sidebarViews],

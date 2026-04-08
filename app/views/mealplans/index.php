@@ -258,7 +258,7 @@ $noticeText = match ($notice) {
                           $entryRecipeId = (int) ($entry['recipe_id'] ?? 0);
                           $entryPlanId = (int) ($entry['meal_plan_id'] ?? 0);
                           $entryDishRole = (string) ($entry['dish_role'] ?? 'main');
-                          $entryDishRoleLabel = $dishRoleLabels[$entryDishRole] ?? 'KhÄ‚Â¡c';
+                          $entryDishRoleLabel = $dishRoleLabels[$entryDishRole] ?? 'KhĂ¡c';
                         ?>
                         <article class="js-slot-item rounded-lg border border-slate-200 bg-white p-2" data-plan-item-id="<?= $entryPlanId; ?>">
                           <img class="mb-2 h-20 w-full rounded-lg object-cover" src="<?= htmlspecialchars($entryImage, ENT_QUOTES, 'UTF-8'); ?>" alt="A�º¢nh cĂ´ng thA�»©c">

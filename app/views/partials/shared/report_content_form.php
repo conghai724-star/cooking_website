@@ -15,9 +15,9 @@ $reportHiddenFields = is_array($reportHiddenFields ?? null) ? $reportHiddenField
 
     <select name="<?= htmlspecialchars($reportReasonField, ENT_QUOTES, 'UTF-8'); ?>" data-report-reason-select data-report-other-target="#<?= htmlspecialchars($reportOtherTargetId, ENT_QUOTES, 'UTF-8'); ?>" class="w-full rounded border border-slate-300 px-2 py-1.5 text-sm">
         <option value="NA�»™i dung khĂ´ng phĂ¹ hA�»£p">NA�»™i dung khĂ´ng phĂ¹ hA�»£p</option>
-        <option value="Sai thÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â´ng tin">Sai thÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â´ng tin</option>
+        <option value="Sai thĂ�??�€�?Ă�??�´ng tin">Sai thĂ�??�€�?Ă�??�´ng tin</option>
         <option value="Spam hoA�º·c quA�º£ng cĂ¡o">Spam hoA�º·c quA�º£ng cĂ¡o</option>
-        <option value="KhÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡c">KhÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡c</option>
+        <option value="KhĂ�??�€�?Ă�??�¡c">KhĂ�??�€�?Ă�??�¡c</option>
     </select>
 
     <input id="<?= htmlspecialchars($reportOtherTargetId, ENT_QUOTES, 'UTF-8'); ?>" type="text" name="<?= htmlspecialchars($reportDetailsField, ENT_QUOTES, 'UTF-8'); ?>" class="hidden w-full rounded border border-slate-300 px-2 py-1.5 text-sm" placeholder="Chi tiA�º¿t thĂªm (nA�º¿u chA�»n KhĂ¡c)">

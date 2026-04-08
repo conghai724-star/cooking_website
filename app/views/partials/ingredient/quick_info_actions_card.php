@@ -8,7 +8,7 @@ $sidebarIsSaved = (bool) ($sidebarIsSaved ?? false);
 $sidebarIngredientId = (int) ($sidebarIngredientId ?? 0);
 $sidebarIngredientName = (string) ($sidebarIngredientName ?? 'Nguyên liệu');
 
-$quickInfoTitle = 'ThÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â´ng tin nhanh';
+$quickInfoTitle = 'ThĂ�??�€�?Ă�??�´ng tin nhanh';
 $quickInfoItems = [
     ['label' => 'Danh mA�»¥c', 'value' => $sidebarCategory],
     ['label' => 'LA�°A�»£t xem', 'value' => (string) $sidebarViews],

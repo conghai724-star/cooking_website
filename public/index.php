@@ -7,6 +7,7 @@ require_once APPROOT . '/app/helpers/mail_helper.php';
 require_once APPROOT . '/app/helpers/system_log_helper.php';
 require_once APPROOT . '/app/helpers/csrf_helper.php';
 require_once APPROOT . '/app/helpers/profanity_filter_helper.php';
+require_once APPROOT . '/app/helpers/encoding_helper.php';
 require_once APPROOT . '/app/core/Router.php';
 require_once APPROOT . '/app/core/Controller.php';
 require_once APPROOT . '/app/core/Model.php';

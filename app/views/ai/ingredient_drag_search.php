@@ -29,7 +29,7 @@ $csrf = csrf_token();
                             $categoryName === 'ThA�»‹t' => 'đŸ¥©',
                             $categoryName === 'HA�º£i sA�º£n' => 'đŸŸ',
                             $categoryName === 'Gia vA�»‹' => 'đŸ§�?',
-                            strcasecmp($categoryName, 'Spices') === 0 => 'Ä‘Å¸Â§â€',
+                            strcasecmp($categoryName, 'Spices') === 0 => 'đŸ§'',
                             default => 'đŸ§º',
                         };
                         $groupEntries[] = ['name' => $categoryName, 'emoji' => $emoji, 'items' => $items];
@@ -284,7 +284,7 @@ $csrf = csrf_token();
             }
             const parts = [];
             if (mc != null && ti != null && ti > 0) {
-                parts.push(`${mc}/${ti} trong mÄ‚Â³n`);
+                parts.push(`${mc}/${ti} trong mĂ³n`);
             }
             if (pctSel != null && mc != null) {
                 parts.push(`${pctSel}% nguyĂªn liA�»‡u bA�º¡n chA�»n (${mc}/${basketN})`);
@@ -295,7 +295,7 @@ $csrf = csrf_token();
                     ${imageUrl ? `<img src="${imageUrl}" alt="A�º¢nh mĂ³n A�ƒn" class="h-36 w-full object-cover">` : ''}
                     <div class="p-3">
                         <div class="flex flex-wrap items-start justify-between gap-2">
-                            <p class="text-[11px] font-semibold text-slate-400">MÄ‚Â³n #${index + 1}</p>
+                            <p class="text-[11px] font-semibold text-slate-400">MĂ³n #${index + 1}</p>
                             ${pctRecipe != null ? `<span class="rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-bold text-primary">${pctRecipe}% nguyĂªn liA�»‡u mĂ³n</span>` : ''}
                         </div>
                         <h4 class="mt-1 line-clamp-2 text-sm font-bold text-slate-900">${title}</h4>
@@ -317,7 +317,7 @@ $csrf = csrf_token();
             return;
         }
 
-        setStatus('Ă„Âang tÄ‚Â¬m mÄ‚Â³n...');
+        setStatus('Ă„ang tìm mĂ³n...');
         setError('');
 
         try {
