@@ -39,7 +39,7 @@ $noticeText = match ($notice) {
 
     <div class="rounded-lg border border-slate-200 bg-white overflow-hidden">
         <div class="border-b border-slate-100 px-4 py-3">
-            <h2 class="font-semibold text-slate-900">Danh sÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡ch (<?= count($rows); ?>)</h2>
+            <h2 class="font-semibold text-slate-900">Danh sách (<?= count($rows); ?>)</h2>
         </div>
         <div class="overflow-x-auto">
             <table class="w-full text-left text-sm">
@@ -49,7 +49,7 @@ $noticeText = match ($notice) {
                     <th class="px-4 py-3 font-semibold">MA�»¥c tiĂªu</th>
                     <th class="px-4 py-3 font-semibold">Lý do khiA�º¿u nA�º¡i</th>
                     <th class="px-4 py-3 font-semibold">TrA�º¡ng thĂ¡i</th>
-                    <th class="px-4 py-3 font-semibold">HÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â nh Ă„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‹Å“Ă„â€Ă‚Â¡Ä‚â€Ă‚Â»Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¢ng</th>
+                    <th class="px-4 py-3 font-semibold">Hành động</th>
                 </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">

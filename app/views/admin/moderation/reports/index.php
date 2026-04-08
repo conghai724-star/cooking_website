@@ -159,7 +159,7 @@ $ACTION_MAP = [
                 ],
                 false => [
                     'action' => 'recipe_delete',
-                    'label' => 'XÄ‚Â³a bÄ‚Â i',
+                    'label' => 'Xóa bài',
                     'confirm' => 'XĂ³a cĂ´ng thA�»©c nĂ y?',
                     'class' => 'border-rose-300 text-rose-700 hover:bg-rose-50',
                 ],
@@ -171,16 +171,16 @@ $ACTION_MAP = [
             'actions' => [
                 true => [
                     'action' => 'user_recipe_unlock',
-                    'label' => 'GĂ¡Â»Â¡ khÄ‚Â³a Ă„â€˜Ă„Æ’ng',
+                    'label' => 'Gỡ khóa đăng',
                     'confirm' => 'GA�»¡ khóa A�‘A�ƒng cho tĂ i khoA�º£n nĂ y?',
                     'class' => 'border-emerald-300 text-emerald-700 hover:bg-emerald-50',
                 ],
                 false => [
                     'action' => 'user_recipe_lock',
-                    'label' => 'KhÄ‚Â³a Ă„â€˜Ă„Æ’ng',
+                    'label' => 'Khóa đăng',
                     'confirm' => 'XĂ¡c nhA�º­n khóa quyA�»n A�‘A�ƒng bĂ i?',
                     'with_duration' => 'lock_days',
-                    'duration_label' => 'ThĂ¡Â»Âi gian khÄ‚Â³a Ă„â€˜Ă„Æ’ng',
+                    'duration_label' => 'Thời gian khóa đăng',
                     'reason_default' => 'Vi phA�º¡m cĂ´ng thA�»©c bA�»‹ bĂ¡o cĂ¡o',
                     'class' => 'border-indigo-300 text-indigo-700 hover:bg-indigo-50',
                 ],
@@ -292,16 +292,16 @@ $ACTION_MAP = [
             'actions' => [
                 true => [
                     'action' => 'user_tip_unlock',
-                    'label' => 'GĂ¡Â»Â¡ khÄ‚Â³a Ă„â€˜Ă„Æ’ng m?o',
+                    'label' => 'Gỡ khóa đăng mới',
                     'confirm' => 'GA�»¡ khóa A�‘A�ƒng mA�º¹o cho tĂ i khoA�º£n nĂ y?',
                     'class' => 'border-emerald-300 text-emerald-700 hover:bg-emerald-50',
                 ],
                 false => [
                     'action' => 'user_tip_lock',
-                    'label' => 'KhÄ‚Â³a Ă„â€˜Ă„Æ’ng m?o',
+                    'label' => 'Khóa đăng m?o',
                     'confirm' => 'XĂ¡c nhA�º­n khóa A�‘A�ƒng mA�º¹o?',
                     'with_duration' => 'lock_days',
-                    'duration_label' => 'ThĂ¡Â»Âi gian khÄ‚Â³a Ă„â€˜Ă„Æ’ng',
+                    'duration_label' => 'Thời gian khóa đăng',
                     'reason_default' => 'Vi phA�º¡m mA�º¹o vA�º·t bA�»‹ bĂ¡o cĂ¡o',
                     'class' => 'border-indigo-300 text-indigo-700 hover:bg-indigo-50',
                 ],
@@ -358,10 +358,10 @@ $ACTION_MAP = [
                 ],
                 false => [
                     'action' => 'user_ingredient_lock',
-                    'label' => 'KhÄ‚Â³a Ă„â€˜Ă„Æ’ng nguyÄ‚Âªn liĂ¡Â»â€¡u',
+                    'label' => 'Khóa đăng nguyÄ‚Âªn liĂ¡Â»â€¡u',
                     'confirm' => 'XĂ¡c nhA�º­n khóa A�‘A�ƒng nguyĂªn liA�»‡u?',
                     'with_duration' => 'lock_days',
-                    'duration_label' => 'ThĂ¡Â»Âi gian khÄ‚Â³a Ă„â€˜Ă„Æ’ng',
+                    'duration_label' => 'Thời gian khóa đăng',
                     'reason_default' => 'Vi phA�º¡m nguyĂªn liA�»‡u bA�»‹ bĂ¡o cĂ¡o',
                     'class' => 'border-indigo-300 text-indigo-700 hover:bg-indigo-50',
                 ],
@@ -542,7 +542,7 @@ $renderActions = static function (
 
     <div class="rounded-lg border border-slate-200 bg-white overflow-hidden">
         <div class="border-b border-slate-100 px-4 py-3">
-            <h2 class="font-semibold text-slate-900">Danh sÄ‚Â¡ch bÄ‚Â¡o cÄ‚Â¡o (<?= count($rows); ?>)</h2>
+            <h2 class="font-semibold text-slate-900">Danh sách bÄ‚Â¡o cÄ‚Â¡o (<?= count($rows); ?>)</h2>
         </div>
         <div class="overflow-x-auto">
             <table class="w-full text-left text-sm">

@@ -58,3 +58,35 @@
 2026-04-08 14:38:57,482 - INFO - Found 85 files to check
 2026-04-08 14:38:57,505 - INFO - Fixed app\views\admin\notifications\index.php: 'TA�º¡o vĂ  gA�»­i thĂ´ng bĂ¡o hA�»‡ thA�»‘ng tA�»›i ngA�°A�»i dĂ¹ng.' -> 'Tạo và gửi thông báo hệ thống tới người dùng.', 'KhA�ng thA�»ƒ gA�»­i thĂ´ng bĂ¡o. Vui lĂ²ng thA�»­ lA�º¡i.' -> 'Không thể gửi thông báo. Vui lòng thử lại.', 'KhA�ng tĂ¬m thA�º¥y ngA�°A�»i nhA�º­n hA�»£p lA�»‡.' -> 'Không tìm thấy người nhận hợp lệ.', 'Link mA�»Ÿ khi bA�º¥m thĂ´ng bĂ¡o (vd: /meal-plans)' -> 'Link mở khi bấm thông báo (vd: /meal-plans)', 'Vui lĂ²ng nhA�º­p tiĂªu A�‘A�» vĂ  nA�»™i dung.' -> 'Vui lòng nhập tiêu đề và nội dung.', 'Theo danh sÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡ch email' -> 'Theo danh sách email', 'Email cĂ¡ch nhau bA�»Ÿi dA�º¥u phA�º©y' -> 'Email cách nhau bởi dấu phẩy', 'A�¿½A? g?i thA?ng bA?o thA?nh cA?ng.' -> 'Đã gửi thông báo thành công.', 'TA�º¡o thĂ´ng bĂ¡o hA�»‡ thA�»‘ng' -> 'Tạo thông báo hệ thống', 'Theo vai trÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â²' -> 'Theo vai trò', '(DĂ¹ng khi chA�»n scope=role)' -> '(Dùng khi chọn scope=role)', 'TiĂªu A�‘A�» thĂ´ng bĂ¡o' -> 'Tiêu đề thông báo', 'QuA�º£n lĂ½ thĂ´ng bĂ¡o' -> 'Quản lý thông báo', 'NA�»™i dung thĂ´ng bĂ¡o' -> 'Nội dung thông báo', 'ToĂ n bA�»™ user active' -> 'Toàn bộ user active', 'GA�»­i thĂ´ng bĂ¡o' -> 'Gửi thông báo'
 2026-04-08 14:38:57,515 - INFO - Fixed 1 files.
+2026-04-08 14:41:16,510 - INFO - Loaded 86 mojibake fixes
+2026-04-08 14:41:16,513 - INFO - Found 85 files to check
+2026-04-08 14:41:16,539 - INFO - Would fix app\views\partials\shared\content_report_modal.php: 'LÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â½ do' -> 'Lý do'
+2026-04-08 14:41:16,542 - INFO - Would fix app\views\admin\ingredients\index.php: 'HÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â nh Ă„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‹Å“Ă„â€Ă‚Â¡Ä‚â€Ă‚Â»Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¢ng' -> 'Hành động', 'LÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â½ do' -> 'Lý do', 'TÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Âªn' -> 'Tên', 'XÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³a' -> 'Xóa'
+2026-04-08 14:41:16,555 - INFO - Would fix app\views\admin\recipes\index.php: 'HÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â nh Ă„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‹Å“Ă„â€Ă‚Â¡Ä‚â€Ă‚Â»Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¢ng' -> 'Hành động', 'XÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³a' -> 'Xóa'
+2026-04-08 14:41:16,561 - INFO - Would fix app\views\admin\moderation\bans\index.php: 'Đã gờ ban thành công.' -> 'Đã gỡ ban thành công.'
+2026-04-08 14:41:16,562 - INFO - Would fix app\views\admin\moderation\ban_appeals\index.php: 'HÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â nh Ă„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‹Å“Ă„â€Ă‚Â¡Ä‚â€Ă‚Â»Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¢ng' -> 'Hành động', 'Danh sÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡ch' -> 'Danh sách'
+2026-04-08 14:41:16,564 - INFO - Would fix app\views\admin\moderation\relationships\index.php: 'Danh sÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡ch' -> 'Danh sách'
+2026-04-08 14:41:16,568 - INFO - Dry run complete. Would fix 6 files.
+2026-04-08 14:41:28,931 - INFO - Loaded 86 mojibake fixes
+2026-04-08 14:41:28,935 - INFO - Found 85 files to check
+2026-04-08 14:41:28,956 - INFO - Fixed app\views\partials\shared\content_report_modal.php: 'LÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â½ do' -> 'Lý do'
+2026-04-08 14:41:28,959 - INFO - Fixed app\views\admin\ingredients\index.php: 'HÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â nh Ă„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‹Å“Ă„â€Ă‚Â¡Ä‚â€Ă‚Â»Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¢ng' -> 'Hành động', 'LÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â½ do' -> 'Lý do', 'TÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Âªn' -> 'Tên', 'XÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³a' -> 'Xóa'
+2026-04-08 14:41:28,966 - INFO - Fixed app\views\admin\recipes\index.php: 'HÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â nh Ă„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‹Å“Ă„â€Ă‚Â¡Ä‚â€Ă‚Â»Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¢ng' -> 'Hành động', 'XÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³a' -> 'Xóa'
+2026-04-08 14:41:28,970 - INFO - Fixed app\views\admin\moderation\bans\index.php: 'Đã gờ ban thành công.' -> 'Đã gỡ ban thành công.'
+2026-04-08 14:41:28,971 - INFO - Fixed app\views\admin\moderation\ban_appeals\index.php: 'HÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â nh Ă„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‹Å“Ă„â€Ă‚Â¡Ä‚â€Ă‚Â»Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¢ng' -> 'Hành động', 'Danh sÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡ch' -> 'Danh sách'
+2026-04-08 14:41:28,972 - INFO - Fixed app\views\admin\moderation\relationships\index.php: 'Danh sÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡ch' -> 'Danh sách'
+2026-04-08 14:41:28,974 - INFO - Fixed 6 files.
+2026-04-08 14:41:54,328 - INFO - Loaded 96 mojibake fixes
+2026-04-08 14:41:54,333 - INFO - Found 85 files to check
+2026-04-08 14:41:54,368 - INFO - Would fix app\views\admin\quizzes\index.php: 'HÄ‚Â nh Ă„â€˜Ă¡Â»â„¢ng' -> 'Hành động'
+2026-04-08 14:41:54,374 - INFO - Would fix app\views\admin\moderation\bans\index.php: 'HÄ‚Â nh Ă„â€˜Ă¡Â»â„¢ng' -> 'Hành động', 'Đã gỡ ban thành công.' -> 'Đã gỡ ban thành công.', 'KhÄ‚Â´ng cÄ‚Â³' -> 'Không có', 'Danh sÄ‚Â¡ch' -> 'Danh sách'
+2026-04-08 14:41:54,376 - INFO - Would fix app\views\admin\moderation\relationships\index.php: 'KhÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³a 7 ngĂ„â€Ă‚Â y' -> 'Khóa 7 ngày', 'Thao tÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡c' -> 'Thao tác'
+2026-04-08 14:41:54,378 - INFO - Would fix app\views\admin\moderation\reports\index.php: 'ThĂ¡Â»Âi gian khÄ‚Â³a Ă„â€˜Ă„Æ’ng' -> 'Thời gian khóa đăng', 'GĂ¡Â»Â¡ khÄ‚Â³a Ă„â€˜Ă„Æ’ng m?o' -> 'Gỡ khóa đăng mới', 'GĂ¡Â»Â¡ khÄ‚Â³a Ă„â€˜Ă„Æ’ng' -> 'Gỡ khóa đăng', 'KhÄ‚Â³a Ă„â€˜Ă„Æ’ng' -> 'Khóa đăng', 'XÄ‚Â³a bÄ‚Â i' -> 'Xóa bài', 'Danh sÄ‚Â¡ch' -> 'Danh sách'
+2026-04-08 14:41:54,379 - INFO - Dry run complete. Would fix 4 files.
+2026-04-08 14:42:03,641 - INFO - Loaded 96 mojibake fixes
+2026-04-08 14:42:03,645 - INFO - Found 85 files to check
+2026-04-08 14:42:03,674 - INFO - Fixed app\views\admin\quizzes\index.php: 'HÄ‚Â nh Ă„â€˜Ă¡Â»â„¢ng' -> 'Hành động'
+2026-04-08 14:42:03,679 - INFO - Fixed app\views\admin\moderation\bans\index.php: 'HÄ‚Â nh Ă„â€˜Ă¡Â»â„¢ng' -> 'Hành động', 'Đã gỡ ban thành công.' -> 'Đã gỡ ban thành công.', 'KhÄ‚Â´ng cÄ‚Â³' -> 'Không có', 'Danh sÄ‚Â¡ch' -> 'Danh sách'
+2026-04-08 14:42:03,681 - INFO - Fixed app\views\admin\moderation\relationships\index.php: 'KhÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³a 7 ngĂ„â€Ă‚Â y' -> 'Khóa 7 ngày', 'Thao tÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡c' -> 'Thao tác'
+2026-04-08 14:42:03,684 - INFO - Fixed app\views\admin\moderation\reports\index.php: 'ThĂ¡Â»Âi gian khÄ‚Â³a Ă„â€˜Ă„Æ’ng' -> 'Thời gian khóa đăng', 'GĂ¡Â»Â¡ khÄ‚Â³a Ă„â€˜Ă„Æ’ng m?o' -> 'Gỡ khóa đăng mới', 'GĂ¡Â»Â¡ khÄ‚Â³a Ă„â€˜Ă„Æ’ng' -> 'Gỡ khóa đăng', 'KhÄ‚Â³a Ă„â€˜Ă„Æ’ng' -> 'Khóa đăng', 'XÄ‚Â³a bÄ‚Â i' -> 'Xóa bài', 'Danh sÄ‚Â¡ch' -> 'Danh sách'
+2026-04-08 14:42:03,684 - INFO - Fixed 4 files.

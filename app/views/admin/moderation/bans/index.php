@@ -6,7 +6,7 @@ $status = (string) ($status ?? '');
 $notice = (string) ($notice ?? '');
 
 $noticeText = match ($notice) {
-    'released' => 'Đã gờ ban thành công.',
+    'released' => 'Đã gỡ ban thành công.',
     'release_failed' => 'Không thể gờ ban. Vui lòng thử lại.',
     default => '',
 };
@@ -49,7 +49,7 @@ $noticeText = match ($notice) {
 
     <div class="rounded-lg border border-slate-200 bg-white overflow-hidden">
         <div class="border-b border-slate-100 px-4 py-3">
-            <h2 class="font-semibold text-slate-900">Danh sÄ‚Â¡ch (<?= count($rows); ?>)</h2>
+            <h2 class="font-semibold text-slate-900">Danh sách (<?= count($rows); ?>)</h2>
         </div>
         <div class="overflow-x-auto">
             <table class="w-full text-left text-sm">
@@ -61,7 +61,7 @@ $noticeText = match ($notice) {
                         <th class="px-4 py-3 font-semibold">ThA�»i gian</th>
                         <th class="px-4 py-3 font-semibold">HA�º¿t hA�º¡n</th>
                         <th class="px-4 py-3 font-semibold">TrA�º¡ng thĂ¡i</th>
-                        <th class="px-4 py-3 font-semibold">HÄ‚Â nh Ă„â€˜Ă¡Â»â„¢ng</th>
+                        <th class="px-4 py-3 font-semibold">Hành động</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
@@ -86,7 +86,7 @@ $noticeText = match ($notice) {
                                 <div class="text-xs text-slate-500"><?= htmlspecialchars($userEmail, ENT_QUOTES, 'UTF-8'); ?></div>
                             </td>
                             <td class="px-4 py-3 max-w-[320px]">
-                                <div class="line-clamp-2 text-slate-700"><?= htmlspecialchars($reason !== '' ? $reason : 'KhÄ‚Â´ng cÄ‚Â³', ENT_QUOTES, 'UTF-8'); ?></div>
+                                <div class="line-clamp-2 text-slate-700"><?= htmlspecialchars($reason !== '' ? $reason : 'Không có', ENT_QUOTES, 'UTF-8'); ?></div>
                             </td>
                             <td class="px-4 py-3">
                                 <span class="rounded-full bg-indigo-100 px-2 py-0.5 text-xs font-semibold text-indigo-700">

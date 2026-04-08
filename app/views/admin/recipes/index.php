@@ -118,7 +118,7 @@ $approvedCount = count($approvedRecipes);
                             <th class="px-6 py-4 font-semibold uppercase text-[11px] tracking-wider">TiĂªu A�‘A�»</th>
                             <th class="px-6 py-4 font-semibold uppercase text-[11px] tracking-wider">TĂ¡c giA�º£</th>
                             <th class="px-6 py-4 font-semibold uppercase text-[11px] tracking-wider">TrA�º¡ng thĂ¡i</th>
-                            <th class="px-6 py-4 font-semibold uppercase text-[11px] tracking-wider">HÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â nh Ă„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‹Å“Ă„â€Ă‚Â¡Ä‚â€Ă‚Â»Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¢ng</th>
+                            <th class="px-6 py-4 font-semibold uppercase text-[11px] tracking-wider">Hành động</th>
                         </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100">
@@ -172,7 +172,7 @@ $approvedCount = count($approvedRecipes);
                             <th class="px-6 py-4 font-semibold uppercase text-[11px] tracking-wider">TiĂªu A�‘A�»</th>
                             <th class="px-6 py-4 font-semibold uppercase text-[11px] tracking-wider">TĂ¡c giA�º£</th>
                             <th class="px-6 py-4 font-semibold uppercase text-[11px] tracking-wider">TrA�º¡ng thĂ¡i</th>
-                            <th class="px-6 py-4 font-semibold uppercase text-[11px] tracking-wider">HÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â nh Ă„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‹Å“Ă„â€Ă‚Â¡Ä‚â€Ă‚Â»Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¢ng</th>
+                            <th class="px-6 py-4 font-semibold uppercase text-[11px] tracking-wider">Hành động</th>
                         </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100">
@@ -187,7 +187,7 @@ $approvedCount = count($approvedRecipes);
                                         <a class="rounded-md border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-600" href="<?= URLROOT; ?>/admin/recipes/<?= (int) $recipe['id']; ?>">Xem</a>
                                         <form method="post" action="<?= URLROOT; ?>/admin/recipes/<?= (int) $recipe['id']; ?>/delete" onsubmit="return confirm('XĂ³a cĂ´ng thA�»©c A�‘Ă£ duyA�»‡t nĂ y?');">
                                             <?= csrf_field(); ?>
-                                            <button class="rounded-md border border-rose-200 bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-700" type="submit">XÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³a</button>
+                                            <button class="rounded-md border border-rose-200 bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-700" type="submit">Xóa</button>
                                         </form>
                                     </div>
                                 </td>

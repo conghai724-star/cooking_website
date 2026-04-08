@@ -102,7 +102,7 @@ $passerPreviews = is_array($passerPreviews ?? null) ? $passerPreviews : [];
                         <th class="px-4 py-3">CĂ¢u hA�»i</th>
                         <th class="px-4 py-3">LA�°A�»£t lĂ m</th>
                         <th class="px-4 py-3">ChA�»©ng nhA�º­n</th>
-                        <th class="px-4 py-3">HÄ‚Â nh Ă„â€˜Ă¡Â»â„¢ng</th>
+                        <th class="px-4 py-3">Hành động</th>
                     </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
