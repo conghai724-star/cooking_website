@@ -27,33 +27,33 @@ $weekStartDate = (string) ($weekStartDate ?? '');
 $weekLocked = (bool) ($weekLocked ?? false);
 $dayLocks = is_array($dayLocks ?? null) ? $dayLocks : [];
 
-$ownerName = trim((string) ($planOwner['name'] ?? $planOwner['username'] ?? 'NgA�°A�»i dĂ¹ng'));
+$ownerName = trim((string) ($planOwner['name'] ?? $planOwner['username'] ?? 'Người dùng'));
 if ($ownerName === '') {
-    $ownerName = 'NgA�°A�»i dĂ¹ng';
+    $ownerName = 'Người dùng';
 }
 
 
 $mealRows = [
-    'breakfast' => 'BA�»¯a sĂ¡ng',
-    'lunch' => 'BA�»¯a trA�°a',
-    'dinner' => 'BA�»¯a tA�»‘i',
+    'breakfast' => 'Bữa sáng',
+    'lunch' => 'Bữa trưa',
+    'dinner' => 'Bữa tối',
 ];
 
 $dishRoleLabels = [
-    'main' => 'MÄ‚Â³n chÄ‚Â­nh',
-    'side' => 'Món phA�»¥',
+    'main' => 'Món chính',
+    'side' => 'Món phụ',
     'soup' => 'Canh',
-    'dessert' => 'TrĂ¡ng miA�»‡ng',
+    'dessert' => 'Tráng miệng',
     'drink' => 'Đồ uống',
-    'other' => 'KhÄ‚Â¡c',
+    'other' => 'Khác',
 ];
 $visibility = (string) ($settings['visibility'] ?? 'private');
 $visibilityOptions = [
-    'private' => 'RiÄ‚Âªng tĂ†Â°',
-    'public' => 'CÄ‚Â´ng khai',
+    'private' => 'Riêng tư',
+    'public' => 'Công khai',
     'link' => 'Qua link',
-    'followers' => 'NgA�°A�»i theo dĂµi',
-    'friends' => 'BA�º¡n bĂ¨',
+    'followers' => 'Người theo dõi',
+    'friends' => 'Bạn bè',
 ];
 
 $planMap = [];
@@ -73,15 +73,15 @@ $dayColumnsClass = $mode === 'day' ? 'grid-cols-1' : 'grid-cols-7';
 $minWidth = $mode === 'day' ? 'min-w-[320px]' : 'min-w-[860px]';
 $slotReady = $selectedSlotDate !== '' && in_array($selectedSlotMeal, ['breakfast', 'lunch', 'dinner'], true);
 $noticeText = match ($notice) {
-    'updated' => 'A�Ă£ cA�º­p nhA�º­t quyA�»n chia sA�º» kA�º¿ hoA�º¡ch.',
-    'link_reset' => 'A�Ă£ tA�º¡o link chia sA�º» mA�»›i.',
-    'assigned' => 'A�Ă£ thĂªm mĂ³n vĂ o kA�º¿ hoA�º¡ch.',
-    'removed' => 'A�Ă£ xĂ³a mĂ³n khA�»i kA�º¿ hoA�º¡ch.',
-    'slot_locked' => 'NgĂ y nĂ y A�‘Ă£ bA�»‹ khóa, khĂ´ng thA�»ƒ chA�»‰nh sA�»­a.',
-    'week_locked' => 'A�Ă£ khóa tuA�º§n kA�º¿ hoA�º¡ch nĂ y.',
-    'week_unlocked' => 'A�Ă£ mA�»Ÿ khóa tuA�º§n kA�º¿ hoA�º¡ch nĂ y.',
-    'day_locked' => 'A�Ă£ khóa ngày A�‘A�°A�»£c chA�»n.',
-    'day_unlocked' => 'A�Ă£ mA�»Ÿ khóa ngày A�‘A�°A�»£c chA�»n.',
+    'updated' => 'Đã cập nhật quyền chia sẻ kế hoạch.',
+    'link_reset' => 'Đã tạo link chia sẻ mới.',
+    'assigned' => 'Đã thêm món vào kế hoạch.',
+    'removed' => 'Đã xóa món khỏi kế hoạch.',
+    'slot_locked' => 'Ngày này đã bị khóa, không thể chỉnh sửa.',
+    'week_locked' => 'Đã khóa tuần kế hoạch này.',
+    'week_unlocked' => 'Đã mở khóa tuần kế hoạch này.',
+    'day_locked' => 'Đã khóa ngày được chọn.',
+    'day_unlocked' => 'Đã mở khóa ngày được chọn.',
     default => '',
 };
 ?>
@@ -89,18 +89,18 @@ $noticeText = match ($notice) {
   <div class="mx-auto max-w-[1400px]">
     <div class="mb-5 flex items-end justify-between gap-3">
       <div>
-        <h1 class="text-4xl font-black tracking-tight text-slate-900">LA�º­p kA�º¿ hoA�º¡ch bA�»¯a A�ƒn</h1>
-        <p class="mt-2 text-sm text-slate-500"><?= $isOwner ? 'MA�»—i bA�»¯a cĂ³ thA�»ƒ thĂªm nhiA�»u mĂ³n.' : ('KA�º¿ hoA�º¡ch bA�»¯a A�ƒn cA�»§a ' . htmlspecialchars($ownerName, ENT_QUOTES, 'UTF-8')); ?></p>
+        <h1 class="text-4xl font-black tracking-tight text-slate-900">Lập kế hoạch bữa ăn</h1>
+        <p class="mt-2 text-sm text-slate-500"><?= $isOwner ? 'Mỗi bữa có thể thêm nhiều món.' : ('Kế hoạch bữa ăn của ' . htmlspecialchars($ownerName, ENT_QUOTES, 'UTF-8')); ?></p>
       </div>
     </div>
 
     <div class="mb-4 flex items-center justify-between gap-2">
       <div class="inline-flex rounded-xl border border-slate-200 bg-white p-1">
-        <a href="<?= $buildModeUrl('day', $pivotDate); ?>" class="rounded-lg px-3 py-1.5 text-sm font-semibold <?= $mode === 'day' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100'; ?>">Theo ngÄ‚Â y</a>
-        <a href="<?= $buildModeUrl('week', $pivotDate); ?>" class="rounded-lg px-3 py-1.5 text-sm font-semibold <?= $mode === 'week' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100'; ?>">Theo tuA�º§n</a>
+        <a href="<?= $buildModeUrl('day', $pivotDate); ?>" class="rounded-lg px-3 py-1.5 text-sm font-semibold <?= $mode === 'day' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100'; ?>">Theo ngày</a>
+        <a href="<?= $buildModeUrl('week', $pivotDate); ?>" class="rounded-lg px-3 py-1.5 text-sm font-semibold <?= $mode === 'week' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100'; ?>">Theo tuần</a>
       </div>
       <div class="flex items-center gap-2">
-        <a class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-600" href="<?= $buildModeUrl($mode, $prevDate); ?>">TrA�°A�»›c</a>
+        <a class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-600" href="<?= $buildModeUrl($mode, $prevDate); ?>">Trước</a>
         <span class="text-sm font-semibold text-slate-700"><?= htmlspecialchars($periodLabel, ENT_QUOTES, 'UTF-8'); ?></span>
         <a class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-600" href="<?= $buildModeUrl($mode, $nextDate); ?>">Sau</a>
       </div>
@@ -115,9 +115,9 @@ $noticeText = match ($notice) {
     <?php if ($isOwner): ?>
       <div class="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-primary/10 bg-white p-3">
         <p class="text-xs font-semibold text-slate-600">
-          TuA�º§n hiA�»‡n tA�º¡i:
+          Tuần hiện tại:
           <span data-week-lock-status class="font-bold <?= $weekLocked ? 'text-rose-600' : 'text-emerald-600'; ?>">
-            <?= $weekLocked ? 'Đang khA�a' : 'Đang mở'; ?>
+            <?= $weekLocked ? 'Đang khóa' : 'Đang mở'; ?>
           </span>
         </p>
         <form method="post" action="<?= URLROOT; ?>/meal-plans/week-lock" class="inline js-week-lock-form">
@@ -127,17 +127,17 @@ $noticeText = match ($notice) {
           <input type="hidden" name="return_mode" value="<?= htmlspecialchars($mode, ENT_QUOTES, 'UTF-8'); ?>">
           <input type="hidden" name="return_date" value="<?= htmlspecialchars($pivotDate, ENT_QUOTES, 'UTF-8'); ?>">
           <button class="js-week-lock-btn rounded-lg px-3 py-2 text-xs font-bold <?= $weekLocked ? 'border border-emerald-200 bg-emerald-50 text-emerald-700' : 'border border-rose-200 bg-rose-50 text-rose-700'; ?>" type="submit">
-            <?= $weekLocked ? 'MA�»Ÿ khóa tuA�º§n' : 'KhĂ³a tuA�º§n'; ?>
+            <?= $weekLocked ? 'Mở khóa tuần' : 'Khóa tuần'; ?>
           </button>
         </form>
       </div>
 
       <div id="selected-slot-indicator" class="mb-4 rounded-xl border border-primary/10 bg-amber-50/40 px-4 py-3 text-sm text-slate-700">
-        <?= $slotReady ? ('A�ang chA�»n Ă´: <strong>' . htmlspecialchars($selectedSlotDate, ENT_QUOTES, 'UTF-8') . '</strong> - <strong>' . htmlspecialchars($mealRows[$selectedSlotMeal] ?? $selectedSlotMeal, ENT_QUOTES, 'UTF-8') . '</strong>') : 'BA�º¡n chA�°a chA�»n Ă´. HĂ£y bA�º¥m vĂ o mA�»™t Ă´ trong lA�»‹ch trA�°A�»›c khi thĂªm mĂ³n.'; ?>
+        <?= $slotReady ? ('Đang chọn ô: <strong>' . htmlspecialchars($selectedSlotDate, ENT_QUOTES, 'UTF-8') . '</strong> - <strong>' . htmlspecialchars($mealRows[$selectedSlotMeal] ?? $selectedSlotMeal, ENT_QUOTES, 'UTF-8') . '</strong>') : 'Bạn chưa chọn ô. Hãy bấm vào một ô trong lịch trước khi thêm món.'; ?>
       </div>
 
       <div class="mb-5 rounded-2xl border border-primary/10 bg-white p-4">
-        <div class="mb-3 text-xs font-black uppercase tracking-wider text-slate-700">Chia sA�º» kA�º¿ hoA�º¡ch</div>
+        <div class="mb-3 text-xs font-black uppercase tracking-wider text-slate-700">Chia sẻ kế hoạch</div>
         <div class="flex flex-wrap items-center gap-3">
           <form method="post" action="<?= URLROOT; ?>/meal-plans/visibility" class="flex items-center gap-2">
               <?= csrf_field(); ?>
@@ -146,7 +146,7 @@ $noticeText = match ($notice) {
                 <option value="<?= $key; ?>" <?= $visibility === $key ? 'selected' : ''; ?>><?= htmlspecialchars($label, ENT_QUOTES, 'UTF-8'); ?></option>
               <?php endforeach; ?>
             </select>
-            <button class="rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white" type="submit">LA�°u quyA�»n</button>
+            <button class="rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white" type="submit">Lưu quyền</button>
           </form>
           <?php if ($shareUrl !== ''): ?>
             <input readonly class="min-w-[260px] flex-1 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs" value="<?= htmlspecialchars($shareUrl, ENT_QUOTES, 'UTF-8'); ?>">
@@ -158,12 +158,12 @@ $noticeText = match ($notice) {
     <div class="grid grid-cols-1 gap-6 <?= $isOwner ? 'xl:grid-cols-4' : 'xl:grid-cols-1'; ?>">
       <?php if ($isOwner): ?>
         <aside class="rounded-2xl border border-primary/10 bg-white p-4 xl:col-span-1">
-          <h2 class="text-lg font-black text-slate-900">NgĂ¢n hĂ ng cĂ´ng thA�»©c</h2>
-          <p class="mb-3 text-xs uppercase tracking-wider text-slate-400">ThĂªm vĂ o Ă´ A�‘Ă£ chA�»n</p>
+          <h2 class="text-lg font-black text-slate-900">Ngân hàng công thức</h2>
+          <p class="mb-3 text-xs uppercase tracking-wider text-slate-400">Thêm vào ô đã chọn</p>
           <?php foreach ($recipeBank as $recipe): ?>
             <?php
               $recipeId = (int) ($recipe['id'] ?? 0);
-              $title = trim((string) ($recipe['title'] ?? 'CĂ´ng thA�»©c'));
+              $title = trim((string) ($recipe['title'] ?? 'Công thức'));
               $image = trim((string) ($recipe['image'] ?? ''));
               if ($image !== '' && !preg_match('/^https?:\/\//i', $image)) {
                 $image = URLROOT . '/uploads/' . rawurlencode($image);
@@ -173,7 +173,7 @@ $noticeText = match ($notice) {
               }
             ?>
             <article class="mb-3 rounded-xl border border-primary/10 bg-white p-3">
-              <img src="<?= htmlspecialchars($image, ENT_QUOTES, 'UTF-8'); ?>" alt="A�º¢nh cĂ´ng thA�»©c" class="mb-2 h-24 w-full rounded-lg object-cover">
+              <img src="<?= htmlspecialchars($image, ENT_QUOTES, 'UTF-8'); ?>" alt="Ảnh công thức" class="mb-2 h-24 w-full rounded-lg object-cover">
               <p class="mb-2 truncate text-sm font-bold text-slate-900"><?= htmlspecialchars($title, ENT_QUOTES, 'UTF-8'); ?></p>
               <form method="post" action="<?= URLROOT; ?>/meal-plans/assign" class="js-assign-form">
                   <?= csrf_field(); ?>
@@ -185,12 +185,12 @@ $noticeText = match ($notice) {
                     <option value="<?= htmlspecialchars($roleKey, ENT_QUOTES, 'UTF-8'); ?>"><?= htmlspecialchars($roleLabel, ENT_QUOTES, 'UTF-8'); ?></option>
                   <?php endforeach; ?>
                 </select>
-                <button class="js-assign-btn w-full rounded-lg px-3 py-2 text-xs font-bold <?= $slotReady ? 'bg-slate-900 text-white' : 'cursor-not-allowed bg-slate-100 text-slate-400'; ?>" type="submit" <?= $slotReady ? '' : 'disabled'; ?>><?= $slotReady ? 'ThĂªm vĂ o Ă´ A�‘Ă£ chA�»n' : 'ChA�»n Ă´ trA�°A�»›c'; ?></button>
+                <button class="js-assign-btn w-full rounded-lg px-3 py-2 text-xs font-bold <?= $slotReady ? 'bg-slate-900 text-white' : 'cursor-not-allowed bg-slate-100 text-slate-400'; ?>" type="submit" <?= $slotReady ? '' : 'disabled'; ?>><?= $slotReady ? 'Thêm vào ô đã chọn' : 'Chọn ô trước'; ?></button>
               </form>
             </article>
           <?php endforeach; ?>
           <?php if ($bankHasMore): ?>
-            <a href="<?= URLROOT; ?>/meal-plans?mode=<?= rawurlencode($mode); ?>&date=<?= rawurlencode($pivotDate); ?>&bank_page=<?= $bankPage + 1; ?>" class="inline-flex rounded-lg border border-primary/20 bg-primary/10 px-3 py-2 text-xs font-bold text-primary">TA�º£i thĂªm</a>
+            <a href="<?= URLROOT; ?>/meal-plans?mode=<?= rawurlencode($mode); ?>&date=<?= rawurlencode($pivotDate); ?>&bank_page=<?= $bankPage + 1; ?>" class="inline-flex rounded-lg border border-primary/20 bg-primary/10 px-3 py-2 text-xs font-bold text-primary">Tải thêm</a>
           <?php endif; ?>
         </aside>
       <?php endif; ?>
@@ -214,11 +214,11 @@ $noticeText = match ($notice) {
                     <input type="hidden" name="return_mode" value="<?= htmlspecialchars($mode, ENT_QUOTES, 'UTF-8'); ?>">
                     <input type="hidden" name="return_date" value="<?= htmlspecialchars($pivotDate, ENT_QUOTES, 'UTF-8'); ?>">
                     <button class="js-day-lock-btn rounded-md px-2 py-1 text-[11px] font-bold <?= $dayIsLocked ? 'border border-emerald-200 bg-emerald-50 text-emerald-700' : 'border border-rose-200 bg-rose-50 text-rose-700'; ?>" type="submit">
-                      <?= $dayIsLocked ? 'MA�»Ÿ ngày' : 'KhĂ³a ngày'; ?>
+                      <?= $dayIsLocked ? 'Mở ngày' : 'Khóa ngày'; ?>
                     </button>
                   </form>
                 <?php else: ?>
-                  <?php if ($dayIsLocked): ?><p class="mt-2 text-[11px] font-bold text-rose-600">Ă„Âang khÄ‚Â³a</p><?php endif; ?>
+                  <?php if ($dayIsLocked): ?><p class="mt-2 text-[11px] font-bold text-rose-600">Đang khóa</p><?php endif; ?>
                 <?php endif; ?>
               </div>
             <?php endforeach; ?>
@@ -241,7 +241,7 @@ $noticeText = match ($notice) {
                   <?php if ($weekLocked || $dayIsLocked): ?>
                     <div class="flex h-full min-h-[110px] flex-col items-center justify-center rounded-lg border border-slate-200 bg-slate-100 text-slate-400">
                       <span class="material-symbols-outlined mb-1 text-lg">lock</span>
-                      <p class="text-[11px] font-semibold"><?= $weekLocked ? 'TuĂ¡ÂºÂ§n nÄ‚Â y Ă„â€˜ang khÄ‚Â³a' : 'NgÄ‚Â y nÄ‚Â y Ă„â€˜ang khÄ‚Â³a'; ?></p>
+                      <p class="text-[11px] font-semibold"><?= $weekLocked ? 'Tuần này đang khóa' : 'Ngày này đang khóa'; ?></p>
                     </div>
                   <?php elseif (!empty($entries)): ?>
                     <div class="js-slot-list space-y-2">

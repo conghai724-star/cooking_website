@@ -14,20 +14,20 @@ if (!empty($banner['image_url'])) {
 }
 
 $noticeText = match ($notice) {
-    'banner_saved' => 'ĐA� lưu banner trang chủ.',
-    'featured_saved' => 'A�¿½A? c?p nh?t cA?ng th?c n?i b?t.',
-    'today_saved' => 'A�¿½A? c?p nh?t cA?ng th?c hA?m nay.',
-    'banner_save_failed' => 'LA�°u banner thA�º¥t bA�º¡i.',
-    'featured_save_failed' => 'LA�°u cĂ´ng thA�»©c nA�»•i bA�º­t thA�º¥t bA�º¡i.',
-    'today_save_failed' => 'LA�°u cĂ´ng thA�»©c hĂ´m nay thA�º¥t bA�º¡i.',
+    'banner_saved' => 'Đã lưu banner trang chủ.',
+    'featured_saved' => 'Đã cập nhật công thức nổi bật.',
+    'today_saved' => 'Đã cập nhật công thức hôm nay.',
+    'banner_save_failed' => 'Lưu banner thất bại.',
+    'featured_save_failed' => 'Lưu công thức nổi bật thất bại.',
+    'today_save_failed' => 'Lưu công thức hôm nay thất bại.',
     default => '',
 };
 ?>
 
 <div class="flex flex-col gap-6">
     <div class="flex flex-col gap-2">
-        <h1 class="text-2xl font-bold text-slate-900">QuA�º£n lĂ½ banner vĂ  nA�»™i dung nA�»•i bA�º­t</h1>
-        <p class="text-sm text-slate-500">CA�º­p nhA�º­t banner, ghim cĂ´ng thA�»©c vĂ  chA�»n A�€œCA�ng thức hĂ´m nayA�€.</p>
+        <h1 class="text-2xl font-bold text-slate-900">Quản lý banner và nội dung nổi bật</h1>
+        <p class="text-sm text-slate-500">Cập nhật banner, ghim công thức và chọn "Công thức hôm nay".</p>
     </div>
 
     <?php if ($noticeText !== ''): ?>
