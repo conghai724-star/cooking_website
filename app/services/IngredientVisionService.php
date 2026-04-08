@@ -138,15 +138,27 @@ final class IngredientVisionService
                     'name' => (string) ($row['name'] ?? ''),
                 ];
             }, $ingredients),
-            'recipes' => array_map(static function (array $row): array {
+            'recipes' => array_map(function (array $row) use ($ids): array {
+                $mc = isset($row['matched_count']) ? (int) $row['matched_count'] : null;
+                $ti = isset($row['total_ingredients']) ? (int) $row['total_ingredients'] : null;
+                $selCount = count($ids);
+                $pctInRecipe = ($mc !== null && $ti !== null && $ti > 0)
+                    ? (int) max(0, min(100, (int) round(100 * $mc / $ti)))
+                    : null;
+                $pctOfSelection = ($mc !== null && $selCount > 0)
+                    ? (int) max(0, min(100, (int) round(100 * $mc / $selCount)))
+                    : null;
+
                 return [
                     'id' => (int) ($row['id'] ?? 0),
                     'title' => (string) ($row['title'] ?? ''),
                     'description' => (string) ($row['description'] ?? ''),
                     'image' => (string) ($row['image'] ?? ''),
                     'estimated_kcal' => isset($row['estimated_kcal']) ? (float) $row['estimated_kcal'] : null,
-                    'matched_count' => isset($row['matched_count']) ? (int) $row['matched_count'] : null,
-                    'total_ingredients' => isset($row['total_ingredients']) ? (int) $row['total_ingredients'] : null,
+                    'matched_count' => $mc,
+                    'total_ingredients' => $ti,
+                    'ingredient_match_percent' => $pctInRecipe,
+                    'selection_match_percent' => $pctOfSelection,
                     'url' => URLROOT . '/recipes/' . (int) ($row['id'] ?? 0),
                 ];
             }, $recipes),

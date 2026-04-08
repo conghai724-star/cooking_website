@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 $recipes = is_array($recipes ?? null) ? $recipes : [];
 $featured = is_array($featured ?? null) ? $featured : array_slice($recipes, 0, 6);
 $banner = is_array($banner ?? null) ? $banner : null;
@@ -6,17 +6,17 @@ $recipeOfDay = is_array($recipeOfDay ?? null) ? $recipeOfDay : null;
 $todayMealPlans = is_array($todayMealPlans ?? null) ? $todayMealPlans : [];
 
 $mealRows = [
-    'breakfast' => ['label' => 'Sáng', 'icon' => 'breakfast_dining', 'icon_class' => 'text-orange-600'],
-    'lunch' => ['label' => 'Trưa', 'icon' => 'lunch_dining', 'icon_class' => 'text-green-600'],
-    'dinner' => ['label' => 'Tối', 'icon' => 'dinner_dining', 'icon_class' => 'text-blue-600'],
+    'breakfast' => ['label' => 'SÄ‚Â¡ng', 'icon' => 'breakfast_dining', 'icon_class' => 'text-orange-600'],
+    'lunch' => ['label' => 'TrĂ†Â°a', 'icon' => 'lunch_dining', 'icon_class' => 'text-green-600'],
+    'dinner' => ['label' => 'TA�»‘i', 'icon' => 'dinner_dining', 'icon_class' => 'text-blue-600'],
 ];
 $dishRoleLabels = [
-    'main' => 'Món chính',
-    'side' => 'Món phụ',
+    'main' => 'MÄ‚Â³n chÄ‚Â­nh',
+    'side' => 'Món phA�»¥',
     'soup' => 'Canh',
-    'dessert' => 'Tráng miệng',
+    'dessert' => 'TrĂ¡ng miA�»‡ng',
     'drink' => 'Đồ uống',
-    'other' => 'Khác',
+    'other' => 'KhÄ‚Â¡c',
 ];
 $todayPlanMap = [];
 foreach ($todayMealPlans as $planItem) {
@@ -26,9 +26,9 @@ foreach ($todayMealPlans as $planItem) {
     }
     $todayPlanMap[$mealType][] = $planItem;
 }
-$heroTitle = trim((string) ($banner['title'] ?? '')) !== '' ? (string) $banner['title'] : 'Khám phá món ngon mỗi ngày';
-$heroSubtitle = trim((string) ($banner['subtitle'] ?? '')) !== '' ? (string) $banner['subtitle'] : 'Tìm công thức, lưu món yêu thích, lập kế hoạch bữa ăn và chia sẻ cảm hứng nấu ăn.';
-$heroCtaText = trim((string) ($banner['cta_text'] ?? '')) !== '' ? (string) $banner['cta_text'] : 'Xem công thức';
+$heroTitle = trim((string) ($banner['title'] ?? '')) !== '' ? (string) $banner['title'] : 'KhĂ¡m phĂ¡ mĂ³n ngon mA�»—i ngày';
+$heroSubtitle = trim((string) ($banner['subtitle'] ?? '')) !== '' ? (string) $banner['subtitle'] : 'TĂ¬m cĂ´ng thA�»©c, lA�°u mĂ³n yĂªu thĂ­ch, lA�º­p kA�º¿ hoA�º¡ch bA�»¯a A�ƒn vĂ  chia sA�º» cA�º£m hA�»©ng nA�º¥u A�ƒn.';
+$heroCtaText = trim((string) ($banner['cta_text'] ?? '')) !== '' ? (string) $banner['cta_text'] : 'Xem cĂ´ng thA�»©c';
 $heroCtaUrl = trim((string) ($banner['cta_url'] ?? '')) !== '' ? (string) $banner['cta_url'] : '/recipes';
 $heroBg = trim((string) ($banner['image_url'] ?? ''));
 $heroHref = (str_starts_with($heroCtaUrl, 'http://') || str_starts_with($heroCtaUrl, 'https://'))
@@ -55,7 +55,7 @@ $heroBgSrc = (str_starts_with($heroBg, 'http://') || str_starts_with($heroBg, 'h
             <div class="mt-6 flex flex-wrap items-center gap-3">
                 <a href="<?= htmlspecialchars($heroHref, ENT_QUOTES, 'UTF-8'); ?>" class="rounded-xl bg-white px-5 py-2.5 text-sm font-bold text-[#9b4500] transition hover:bg-amber-50"><?= htmlspecialchars($heroCtaText, ENT_QUOTES, 'UTF-8'); ?></a>
                 <?php if (is_logged_in()): ?>
-                    <a href="<?= URLROOT; ?>/meal-plans" class="rounded-xl border border-white/40 bg-white/10 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-white/20">Mở Meal Plan</a>
+                    <a href="<?= URLROOT; ?>/meal-plans" class="rounded-xl border border-white/40 bg-white/10 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-white/20">MA�»Ÿ Meal Plan</a>
                 <?php endif; ?>
             </div>
         </div>
@@ -64,27 +64,23 @@ $heroBgSrc = (str_starts_with($heroBg, 'http://') || str_starts_with($heroBg, 'h
     <div class="grid grid-cols-1 gap-8 xl:grid-cols-12">
         <div class="space-y-6 xl:col-span-8">
             <div class="rounded-2xl border border-primary/10 bg-white p-5 shadow-sm">
-                <div class="grid grid-cols-1 gap-3 md:grid-cols-[1fr_auto]">
+                <form method="get" action="<?= URLROOT; ?>/recipes" class="grid grid-cols-1 gap-3 md:grid-cols-[1fr_auto]">
                     <div class="relative">
                         <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary">search</span>
-                        <input type="text" placeholder="Tìm món ăn phù hợp..." class="h-12 w-full rounded-xl border-none bg-slate-50 px-12 text-sm ring-1 ring-primary/10 focus:ring-2 focus:ring-primary">
+                        <input name="q" type="search" placeholder="TĂ¬m mĂ³n A�ƒn phĂ¹ hA�»£p..." class="h-12 w-full rounded-xl border-none bg-slate-50 px-12 text-sm ring-1 ring-primary/10 focus:ring-2 focus:ring-primary">
                     </div>
-                    <select class="h-12 rounded-xl border-none bg-slate-50 px-4 text-sm font-semibold ring-1 ring-primary/10 focus:ring-2 focus:ring-primary">
-                        <option>Phổ biến nhất</option>
-                        <option>Mới nhất</option>
-                        <option>Đánh giá cao</option>
-                    </select>
-                </div>
+                    <button type="submit" class="h-12 rounded-xl bg-primary px-5 text-sm font-bold text-white hover:opacity-90">TÄ‚Â¬m mÄ‚Â³n</button>
+                </form>
                 <div class="mt-4 flex flex-wrap gap-2">
-                    <span class="rounded-full bg-primary px-4 py-1.5 text-[11px] font-bold tracking-wide text-white">Tất cả</span>
-                    <span class="rounded-full bg-amber-50 px-4 py-1.5 text-[11px] font-bold tracking-wide text-primary">Dễ</span>
-                    <span class="rounded-full bg-amber-50 px-4 py-1.5 text-[11px] font-bold tracking-wide text-primary">Dưới 30 phút</span>
-                    <span class="rounded-full bg-amber-50 px-4 py-1.5 text-[11px] font-bold tracking-wide text-primary">Lành mạnh</span>
+                    <span class="rounded-full bg-primary px-4 py-1.5 text-[11px] font-bold tracking-wide text-white">TA�º¥t cA�º£</span>
+                    <span class="rounded-full bg-amber-50 px-4 py-1.5 text-[11px] font-bold tracking-wide text-primary">DA�»…</span>
+                    <span class="rounded-full bg-amber-50 px-4 py-1.5 text-[11px] font-bold tracking-wide text-primary">DA�°A�»›i 30 phĂºt</span>
+                    <span class="rounded-full bg-amber-50 px-4 py-1.5 text-[11px] font-bold tracking-wide text-primary">LĂ nh mA�º¡nh</span>
                 </div>
             </div>
 
             <?php if ($featured === []): ?>
-                <div class="rounded-xl border border-primary/10 bg-white p-6 text-slate-600">Không tìm thấy công thức nào.</div>
+                <div class="rounded-xl border border-primary/10 bg-white p-6 text-slate-600">Không tĂ¬m thA�º¥y cĂ´ng thA�»©c nĂ o.</div>
             <?php else: ?>
                 <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
                     <?php foreach ($featured as $recipe): ?>
@@ -96,7 +92,7 @@ $heroBgSrc = (str_starts_with($heroBg, 'http://') || str_starts_with($heroBg, 'h
                                     <div class="h-full w-full bg-gradient-to-br from-amber-200 to-orange-300"></div>
                                 <?php endif; ?>
                                 <span class="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-[10px] font-black uppercase tracking-wider text-primary">
-                                    <?= htmlspecialchars((string) ($recipe['difficulty'] ?? 'Dễ'), ENT_QUOTES, 'UTF-8'); ?>
+                                    <?= htmlspecialchars((string) ($recipe['difficulty'] ?? 'DA�»…'), ENT_QUOTES, 'UTF-8'); ?>
                                 </span>
                             </div>
                             <div class="space-y-3 p-4">
@@ -109,8 +105,8 @@ $heroBgSrc = (str_starts_with($heroBg, 'http://') || str_starts_with($heroBg, 'h
                                     <?= htmlspecialchars(mb_substr((string) ($recipe['description'] ?? ''), 0, 100), ENT_QUOTES, 'UTF-8'); ?>...
                                 </p>
                                 <div class="flex items-center justify-between border-t border-slate-100 pt-3">
-                                    <span class="text-xs font-semibold text-slate-700"><?= htmlspecialchars((string) ($recipe['author_name'] ?? 'Ẩn danh'), ENT_QUOTES, 'UTF-8'); ?></span>
-                                    <a href="<?= URLROOT; ?>/recipes/<?= (int) $recipe['id']; ?>" class="text-xs font-bold text-primary">Xem chi tiết</a>
+                                    <span class="text-xs font-semibold text-slate-700"><?= htmlspecialchars((string) ($recipe['author_name'] ?? 'A�º¨n danh'), ENT_QUOTES, 'UTF-8'); ?></span>
+                                    <a href="<?= URLROOT; ?>/recipes/<?= (int) $recipe['id']; ?>" class="text-xs font-bold text-primary">Xem chi tiA�º¿t</a>
                                 </div>
                             </div>
                         </article>
@@ -122,18 +118,18 @@ $heroBgSrc = (str_starts_with($heroBg, 'http://') || str_starts_with($heroBg, 'h
         <aside class="space-y-6 xl:col-span-4">
             <?php if ($recipeOfDay !== null): ?>
                 <div class="rounded-2xl border border-primary/20 bg-amber-50 p-5 shadow-sm">
-                    <h2 class="mb-3 text-base font-black tracking-tight text-primary">Công thức hôm nay</h2>
+                    <h2 class="mb-3 text-base font-black tracking-tight text-primary">CĂ´ng thA�»©c hĂ´m nay</h2>
                     <a href="<?= URLROOT; ?>/recipes/<?= (int) $recipeOfDay['id']; ?>" class="block">
                         <p class="text-sm font-bold text-slate-900"><?= htmlspecialchars((string) ($recipeOfDay['title'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></p>
-                        <p class="mt-1 text-[11px] text-slate-600">Bởi <?= htmlspecialchars((string) ($recipeOfDay['author_name'] ?? 'Ẩn danh'), ENT_QUOTES, 'UTF-8'); ?></p>
+                        <p class="mt-1 text-[11px] text-slate-600">BA�»Ÿi <?= htmlspecialchars((string) ($recipeOfDay['author_name'] ?? 'A�º¨n danh'), ENT_QUOTES, 'UTF-8'); ?></p>
                     </a>
                 </div>
             <?php endif; ?>
 
             <div class="rounded-2xl border border-primary/10 bg-white p-5 shadow-sm">
                 <div class="mb-4 flex items-center justify-between">
-                    <h2 class="text-base font-bold">Hôm nay bạn ăn gì?</h2>
-                    <a href="<?= URLROOT; ?>/meal-plans" class="text-[11px] font-bold uppercase tracking-wider text-primary">Tùy chỉnh</a>
+                    <h2 class="text-base font-bold">Hôm nay bA�º¡n A�ƒn gĂ¬?</h2>
+                    <a href="<?= URLROOT; ?>/meal-plans" class="text-[11px] font-bold uppercase tracking-wider text-primary">TĂ¹y chA�»‰nh</a>
                 </div>
                 <div class="space-y-3">
                     <?php foreach ($mealRows as $mealType => $meta): ?>
@@ -144,16 +140,16 @@ $heroBgSrc = (str_starts_with($heroBg, 'http://') || str_starts_with($heroBg, 'h
                                 <p class="text-[10px] font-black uppercase tracking-widest text-slate-500"><?= htmlspecialchars($meta['label'], ENT_QUOTES, 'UTF-8'); ?></p>
                             </div>
                             <?php if ($items === []): ?>
-                                <p class="text-sm font-semibold text-slate-400">Chưa có món</p>
+                                <p class="text-sm font-semibold text-slate-400">ChĂ†Â°a cÄ‚Â³ mÄ‚Â³n</p>
                             <?php else: ?>
                                 <div class="space-y-1">
                                     <?php foreach ($items as $item): ?>
                                         <?php
                                         $dishRole = (string) ($item['dish_role'] ?? 'main');
-                                        $dishRoleLabel = $dishRoleLabels[$dishRole] ?? 'Khác';
+                                        $dishRoleLabel = $dishRoleLabels[$dishRole] ?? 'KhÄ‚Â¡c';
                                         ?>
                                         <a href="<?= URLROOT; ?>/recipes/<?= (int) ($item['recipe_id'] ?? 0); ?>" class="flex items-center justify-between gap-2 text-sm font-semibold text-slate-800 hover:text-primary">
-                                            <span class="line-clamp-1"><?= htmlspecialchars((string) ($item['title'] ?? 'Công thức'), ENT_QUOTES, 'UTF-8'); ?></span>
+                                            <span class="line-clamp-1"><?= htmlspecialchars((string) ($item['title'] ?? 'CĂ´ng thA�»©c'), ENT_QUOTES, 'UTF-8'); ?></span>
                                             <span class="shrink-0 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-700"><?= htmlspecialchars($dishRoleLabel, ENT_QUOTES, 'UTF-8'); ?></span>
                                         </a>
                                     <?php endforeach; ?>
@@ -165,18 +161,18 @@ $heroBgSrc = (str_starts_with($heroBg, 'http://') || str_starts_with($heroBg, 'h
             </div>
 
             <div class="rounded-2xl border border-primary/10 bg-white p-5 shadow-sm">
-                <h2 class="mb-4 text-base font-bold">Gợi ý theo dõi</h2>
+                <h2 class="mb-4 text-base font-bold">GA�»£i Ă½ theo dĂµi</h2>
                 <div class="space-y-4">
                     <div class="flex items-center justify-between gap-3">
                         <div>
-                            <p class="text-sm font-semibold">Thảo Nguyên</p>
-                            <p class="text-[11px] text-slate-500">Blogger ẩm thực</p>
+                            <p class="text-sm font-semibold">ThA�º£o NguyĂªn</p>
+                            <p class="text-[11px] text-slate-500">Blogger A�º©m thA�»±c</p>
                         </div>
                         <button class="rounded-full border border-primary px-3 py-1 text-xs font-bold text-primary">Follow</button>
                     </div>
                     <div class="flex items-center justify-between gap-3">
                         <div>
-                            <p class="text-sm font-semibold">Hoàng Bách</p>
+                            <p class="text-sm font-semibold">HoÄ‚Â ng BÄ‚Â¡ch</p>
                             <p class="text-[11px] text-slate-500">Đầu bếp tại gia</p>
                         </div>
                         <button class="rounded-full border border-primary px-3 py-1 text-xs font-bold text-primary">Follow</button>
@@ -185,7 +181,7 @@ $heroBgSrc = (str_starts_with($heroBg, 'http://') || str_starts_with($heroBg, 'h
             </div>
 
             <div class="rounded-2xl border border-primary/10 bg-white p-5 shadow-sm">
-                <h2 class="mb-4 text-base font-bold">Công thức nổi bật</h2>
+                <h2 class="mb-4 text-base font-bold">CĂ´ng thA�»©c nA�»•i bA�º­t</h2>
                 <div class="space-y-4">
                     <?php foreach (array_slice($recipes, 0, 3) as $recipe): ?>
                         <a href="<?= URLROOT; ?>/recipes/<?= (int) $recipe['id']; ?>" class="group flex gap-3">
@@ -196,7 +192,7 @@ $heroBgSrc = (str_starts_with($heroBg, 'http://') || str_starts_with($heroBg, 'h
                             <?php endif; ?>
                             <div class="min-w-0">
                                 <p class="line-clamp-1 text-sm font-bold transition group-hover:text-primary"><?= htmlspecialchars((string) $recipe['title'], ENT_QUOTES, 'UTF-8'); ?></p>
-                                <p class="mt-1 text-[11px] text-slate-500"><?= htmlspecialchars((string) ($recipe['author_name'] ?? 'Ẩn danh'), ENT_QUOTES, 'UTF-8'); ?></p>
+                                <p class="mt-1 text-[11px] text-slate-500"><?= htmlspecialchars((string) ($recipe['author_name'] ?? 'A�º¨n danh'), ENT_QUOTES, 'UTF-8'); ?></p>
                             </div>
                         </a>
                     <?php endforeach; ?>

@@ -1,30 +1,30 @@
 <div id="report-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm">
     <div class="mx-4 w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
-        <h3 class="mb-4 text-xl font-black text-slate-800">Báo cáo công thức</h3>
-        <form id="report-form" method="post" action="<?= URLROOT; ?>/recipes/report" data-ajax-form data-close-target="#report-modal" data-success-toast="Đã gửi báo cáo công thức." data-error-toast="Không thể gửi báo cáo công thức lúc này.">
+        <h3 class="mb-4 text-xl font-black text-slate-800">BĂ¡o cĂ¡o cĂ´ng thA�»©c</h3>
+        <form id="report-form" method="post" action="<?= URLROOT; ?>/recipes/report" data-ajax-form data-close-target="#report-modal" data-success-toast="ĐA� gửi bA�o cA�o cA�ng thức." data-error-toast="KhA�ng thể gửi bA�o cA�o cA�ng thức lA�c nA�y.">
             <?= csrf_field(); ?>
             <input type="hidden" name="recipe_id" value="<?= (int) ($recipe['id'] ?? 0); ?>">
             <div class="mb-4">
-                <label class="mb-2 block text-sm font-semibold text-slate-600">Lý do báo cáo:</label>
+                <label class="mb-2 block text-sm font-semibold text-slate-600">LÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â½ do bÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡o cÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡o:</label>
                 <select id="report-reason" name="reason" data-report-reason-select data-report-other-target="#other-reason-container" class="w-full rounded-xl border border-slate-200 p-3 focus:border-primary focus:ring-primary" required>
-                    <option value="">-- Chọn lý do --</option>
+                    <option value="">-- ChA�»n lĂ½ do --</option>
                     <option value="Spam">Spam</option>
-                    <option value="Nội dung không phù hợp">Nội dung không phù hợp</option>
-                    <option value="Vi phạm bản quyền">Vi phạm bản quyền</option>
-                    <option value="Thông tin sai lệch">Thông tin sai lệch</option>
-                    <option value="Khác">Khác</option>
+                    <option value="NA�»™i dung khĂ´ng phĂ¹ hA�»£p">NA�»™i dung khĂ´ng phĂ¹ hA�»£p</option>
+                    <option value="Vi phA�º¡m bA�º£n quyA�»n">Vi phA�º¡m bA�º£n quyA�»n</option>
+                    <option value="ThĂ´ng tin sai lA�»‡ch">ThĂ´ng tin sai lA�»‡ch</option>
+                    <option value="KhÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡c">KhÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡c</option>
                 </select>
             </div>
             <div class="mb-4 hidden" id="other-reason-container">
-                <label class="mb-2 block text-sm font-semibold text-slate-600">Mô tả chi tiết:</label>
-                <textarea id="report-reason-other" name="reason_other" class="w-full rounded-xl border border-slate-200 p-3 focus:border-primary focus:ring-primary" rows="3" placeholder="Mô tả chi tiết..."></textarea>
+                <label class="mb-2 block text-sm font-semibold text-slate-600">MĂ´ tA�º£ chi tiA�º¿t:</label>
+                <textarea id="report-reason-other" name="reason_other" class="w-full rounded-xl border border-slate-200 p-3 focus:border-primary focus:ring-primary" rows="3" placeholder="MĂ´ tA�º£ chi tiA�º¿t..."></textarea>
             </div>
             <div class="flex gap-3">
                 <button type="button" id="btn-cancel-report" class="flex-1 rounded-xl border border-slate-300 px-4 py-2 font-semibold text-slate-600 hover:bg-slate-50">
-                    Hủy
+                    HA�»§y
                 </button>
                 <button type="submit" class="flex-1 rounded-xl bg-red-500 px-4 py-2 font-semibold text-white hover:bg-red-600">
-                    Gửi báo cáo
+                    GA�»­i bĂ¡o cĂ¡o
                 </button>
             </div>
         </form>

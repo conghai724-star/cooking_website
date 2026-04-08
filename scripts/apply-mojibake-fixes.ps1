@@ -15,7 +15,11 @@ if (-not (Test-Path $FixJson)) {
 
 $extensions = @('.php', '.html', '.js', '.css', '.md', '.sql', '.json')
 $raw = Get-Content -Path $FixJson -Raw -Encoding UTF8
-$map = ConvertFrom-Json -InputObject $raw -AsHashtable
+$mapObj = ConvertFrom-Json -InputObject $raw
+$map = @{}
+foreach ($prop in $mapObj.PSObject.Properties) {
+    $map[$prop.Name] = $prop.Value
+}
 
 $files = Get-ChildItem -Path $Root -Recurse -File |
     Where-Object { $extensions -contains $_.Extension.ToLowerInvariant() }

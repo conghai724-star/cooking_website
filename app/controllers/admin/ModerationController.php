@@ -12,7 +12,7 @@ final class ModerationController extends Controller
         $service = $this->service('admin/ModerationAdminService');
         $data = $service->buildManageReportsData($_GET);
 
-        $this->adminView('admin/manage_reports', [
+        $this->adminView('admin/moderation/reports/index', [
             'status' => $data['status'],
             'type' => $data['type'],
             'keyword' => $data['keyword'],

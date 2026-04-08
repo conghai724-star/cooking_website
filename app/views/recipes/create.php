@@ -10,8 +10,8 @@ $tagTypeLabels = [
 ?><div class="w-full">
     <div class="mx-auto max-w-5xl py-4">
         <div class="mb-6">
-            <h1 class="text-3xl font-black text-slate-900">Đăng công thức mới</h1>
-            <p class="mt-1 text-slate-500">Thêm món ăn, nguyên liệu, hình ảnh và các bước thực hiện.</p>
+            <h1 class="text-3xl font-black text-slate-900">A�A�ƒng cĂ´ng thA�»©c mA�»›i</h1>
+            <p class="mt-1 text-slate-500">ThĂªm mĂ³n A�ƒn, nguyĂªn liA�»‡u, hĂ¬nh A�º£nh vĂ  cĂ¡c bA�°A�»›c thA�»±c hiA�»‡n.</p>
         </div>
 
         <?php if (!empty($error)): ?>
@@ -23,17 +23,17 @@ $tagTypeLabels = [
         <form method="post" action="<?= URLROOT; ?>/recipes/create" enctype="multipart/form-data" class="space-y-8">
             <?= csrf_field(); ?>
             <section class="rounded-2xl border border-slate-200 bg-white p-6">
-                <h2 class="mb-5 text-xl font-bold">Thông tin cơ bản</h2>
+                <h2 class="mb-5 text-xl font-bold">ThĂ´ng tin cA�¡ bA�º£n</h2>
                 <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
                     <div class="md:col-span-2">
-                        <label class="mb-2 block text-sm font-semibold text-slate-700">Tiêu đề</label>
+                        <label class="mb-2 block text-sm font-semibold text-slate-700">TiĂªu A�‘A�»</label>
                         <input class="w-full rounded-xl border border-slate-200 px-4 py-3 focus:border-primary focus:ring-primary" type="text" name="title" required>
                     </div>
 
                     <div>
-                        <label class="mb-2 block text-sm font-semibold text-slate-700">Danh mục</label>
+                        <label class="mb-2 block text-sm font-semibold text-slate-700">Danh mA�»¥c</label>
                         <select class="w-full rounded-xl border border-slate-200 px-4 py-3 focus:border-primary focus:ring-primary" name="category_id">
-                            <option value="">-- Chọn danh mục --</option>
+                            <option value="">-- ChA�»n danh mA�»¥c --</option>
                             <?php foreach (($categories ?? []) as $category): ?>
                                 <option value="<?= (int) $category['id']; ?>"><?= htmlspecialchars((string) $category['name'], ENT_QUOTES, 'UTF-8'); ?></option>
                             <?php endforeach; ?>
@@ -41,18 +41,18 @@ $tagTypeLabels = [
                     </div>
 
                     <div>
-                        <label class="mb-2 block text-sm font-semibold text-slate-700">Độ khó</label>
+                        <label class="mb-2 block text-sm font-semibold text-slate-700">A�A�»™ khĂ³</label>
                         <select class="w-full rounded-xl border border-slate-200 px-4 py-3 focus:border-primary focus:ring-primary" name="difficulty">
-                            <option value="easy">Dễ</option>
-                            <option value="medium">Trung bình</option>
-                            <option value="hard">Khó</option>
+                            <option value="easy">DA�»…</option>
+                            <option value="medium">Trung bĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¬nh</option>
+                            <option value="hard">KhĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³</option>
                         </select>
                     </div>
                     <div class="md:col-span-2">
-                        <label class="mb-2 block text-sm font-semibold text-slate-700">Tags món ăn</label>
+                        <label class="mb-2 block text-sm font-semibold text-slate-700">Tags mĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³n Ä‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬Â Ä‚Â¢Ă¢â€Â¬Ă¢â€Â¢n</label>
                         <?php if ($tagsByType === []): ?>
                             <p class="rounded-xl border border-dashed border-slate-300 px-4 py-3 text-sm text-slate-500">
-                                Chưa có dữ liệu tags. Hãy chạy migration tags trước.
+                                ChA�°a cĂ³ dA�»¯ liA�»‡u tags. HĂ£y chA�º¡y migration tags trA�°A�»›c.
                             </p>
                         <?php else: ?>
                             <div class="space-y-3 rounded-xl border border-slate-200 p-4">
@@ -78,17 +78,17 @@ $tagTypeLabels = [
                     </div>
 
                     <div>
-                        <label class="mb-2 block text-sm font-semibold text-slate-700">Thời gian nấu (phút)</label>
-                        <input class="w-full rounded-xl border border-slate-200 px-4 py-3 focus:border-primary focus:ring-primary" type="number" min="1" name="cooking_time" placeholder="Ví dụ: 45">
+                        <label class="mb-2 block text-sm font-semibold text-slate-700">ThA�»i gian nA�º¥u (phĂºt)</label>
+                        <input class="w-full rounded-xl border border-slate-200 px-4 py-3 focus:border-primary focus:ring-primary" type="number" min="1" name="cooking_time" placeholder="VĂ­ dA�»¥: 45">
                     </div>
 
                     <div>
-                        <label class="mb-2 block text-sm font-semibold text-slate-700">Ảnh món ăn</label>
+                        <label class="mb-2 block text-sm font-semibold text-slate-700">A�º¢nh mĂ³n A�ƒn</label>
                         <input class="w-full rounded-xl border border-slate-200 px-4 py-3 file:mr-3 file:rounded-lg file:border-0 file:bg-primary file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white" type="file" name="image" accept="image/*">
                     </div>
 
                     <div class="md:col-span-2">
-                        <label class="mb-2 block text-sm font-semibold text-slate-700">Mô tả</label>
+                        <label class="mb-2 block text-sm font-semibold text-slate-700">MĂ´ tA�º£</label>
                         <textarea class="min-h-[140px] w-full rounded-xl border border-slate-200 px-4 py-3 focus:border-primary focus:ring-primary" name="description" required></textarea>
                     </div>
                 </div>
@@ -96,18 +96,18 @@ $tagTypeLabels = [
 
             <section class="rounded-2xl border border-slate-200 bg-white p-6">
                 <div class="mb-4 flex items-center justify-between gap-3">
-                    <h2 class="text-xl font-bold">Nguyên liệu</h2>
-                    <button id="add-ingredient" class="rounded-lg border border-primary px-3 py-2 text-sm font-semibold text-primary hover:bg-primary hover:text-white" type="button">+ Thêm nguyên liệu</button>
+                    <h2 class="text-xl font-bold">NguyĂªn liA�»‡u</h2>
+                    <button id="add-ingredient" class="rounded-lg border border-primary px-3 py-2 text-sm font-semibold text-primary hover:bg-primary hover:text-white" type="button">+ ThĂªm nguyĂªn liA�»‡u</button>
                 </div>
 
                 <div id="ingredient-list" class="space-y-3">
                     <div class="grid grid-cols-1 gap-3 rounded-xl border border-slate-200 p-4 md:grid-cols-12">
                         <div class="md:col-span-6">
-                            <label class="mb-1 block text-xs font-semibold text-slate-500">Tên nguyên liệu</label>
-                            <input class="w-full rounded-lg border border-slate-200 px-3 py-2" type="text" name="ingredient_name[]" placeholder="Ví dụ: Thịt gà">
+                            <label class="mb-1 block text-xs font-semibold text-slate-500">TĂªn nguyĂªn liA�»‡u</label>
+                            <input class="w-full rounded-lg border border-slate-200 px-3 py-2" type="text" name="ingredient_name[]" placeholder="VĂ­ dA�»¥: ThA�»‹t gĂ ">
                         </div>
                         <div class="md:col-span-3">
-                            <label class="mb-1 block text-xs font-semibold text-slate-500">Số lượng</label>
+                            <label class="mb-1 block text-xs font-semibold text-slate-500">SA�»‘ lA�°A�»£ng</label>
                             <input class="w-full rounded-lg border border-slate-200 px-3 py-2" type="text" name="ingredient_quantity[]" placeholder="1">
                         </div>
                         <div class="md:col-span-2">
@@ -115,7 +115,7 @@ $tagTypeLabels = [
                             <input class="w-full rounded-lg border border-slate-200 px-3 py-2" type="text" name="ingredient_unit[]" placeholder="kg">
                         </div>
                         <div class="md:col-span-1 flex items-end">
-                            <button class="remove-ingredient w-full rounded-lg border border-rose-300 px-2 py-2 text-sm text-rose-600 hover:bg-rose-50" type="button">Xóa</button>
+                            <button class="remove-ingredient w-full rounded-lg border border-rose-300 px-2 py-2 text-sm text-rose-600 hover:bg-rose-50" type="button">XĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³a</button>
                         </div>
                     </div>
                 </div>
@@ -123,18 +123,18 @@ $tagTypeLabels = [
 
             <section class="rounded-2xl border border-slate-200 bg-white p-6">
                 <div class="mb-4 flex items-center justify-between gap-3">
-                    <h2 class="text-xl font-bold">Các bước thực hiện</h2>
-                    <button id="add-step" class="rounded-lg border border-primary px-3 py-2 text-sm font-semibold text-primary hover:bg-primary hover:text-white" type="button">+ Thêm bước</button>
+                    <h2 class="text-xl font-bold">CĂ¡c bA�°A�»›c thA�»±c hiA�»‡n</h2>
+                    <button id="add-step" class="rounded-lg border border-primary px-3 py-2 text-sm font-semibold text-primary hover:bg-primary hover:text-white" type="button">+ ThĂªm bA�°A�»›c</button>
                 </div>
 
                 <div id="step-list" class="space-y-4">
                     <div class="step-item rounded-xl border border-slate-200 p-4">
                         <div class="mb-2 flex items-center justify-between">
-                            <p class="step-label text-sm font-bold text-slate-700">Bước 1</p>
-                            <button class="remove-step rounded-lg border border-rose-300 px-2 py-1 text-xs text-rose-600 hover:bg-rose-50" type="button">Xóa</button>
+                            <p class="step-label text-sm font-bold text-slate-700">BA�°A�»›c 1</p>
+                            <button class="remove-step rounded-lg border border-rose-300 px-2 py-1 text-xs text-rose-600 hover:bg-rose-50" type="button">XĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³a</button>
                         </div>
                         <div class="space-y-3">
-                            <textarea class="min-h-[100px] w-full rounded-lg border border-slate-200 px-3 py-2" name="step_content[]" placeholder="Mô tả bước thực hiện..."></textarea>
+                            <textarea class="min-h-[100px] w-full rounded-lg border border-slate-200 px-3 py-2" name="step_content[]" placeholder="MĂ´ tA�º£ bA�°A�»›c thA�»±c hiA�»‡n..."></textarea>
                             <input class="w-full rounded-lg border border-slate-200 px-3 py-2 file:mr-3 file:rounded-lg file:border-0 file:bg-slate-800 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-white" type="file" name="step_images[]" accept="image/*">
                         </div>
                     </div>
@@ -142,9 +142,9 @@ $tagTypeLabels = [
             </section>
 
             <div class="flex flex-wrap justify-end gap-3">
-                <button class="rounded-xl border border-slate-300 px-5 py-3 font-semibold text-slate-700 hover:bg-slate-100" type="submit" name="action" value="cancel">Hủy</button>
-                <button class="rounded-xl border border-primary px-5 py-3 font-semibold text-primary hover:bg-primary hover:text-white" type="submit" name="action" value="save">Lưu</button>
-                <button class="rounded-xl bg-primary px-6 py-3 font-bold text-white hover:bg-primary/90" type="submit" name="action" value="submit">Đăng công thức</button>
+                <button class="rounded-xl border border-slate-300 px-5 py-3 font-semibold text-slate-700 hover:bg-slate-100" type="submit" name="action" value="cancel">HA�»§y</button>
+                <button class="rounded-xl border border-primary px-5 py-3 font-semibold text-primary hover:bg-primary hover:text-white" type="submit" name="action" value="save">LÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚Â Ă„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â°u</button>
+                <button class="rounded-xl bg-primary px-6 py-3 font-bold text-white hover:bg-primary/90" type="submit" name="action" value="submit">A�A�ƒng cĂ´ng thA�»©c</button>
             </div>
         </form>
     </div>
@@ -160,19 +160,19 @@ $tagTypeLabels = [
     const ingredientTemplate = () => `
         <div class="grid grid-cols-1 gap-3 rounded-xl border border-slate-200 p-4 md:grid-cols-12">
             <div class="md:col-span-6">
-                <label class="mb-1 block text-xs font-semibold text-slate-500">Tên nguyên liệu</label>
-                <input class="w-full rounded-lg border border-slate-200 px-3 py-2" type="text" name="ingredient_name[]" placeholder="Ví dụ: Muối">
+                <label class="mb-1 block text-xs font-semibold text-slate-500">TĂªn nguyĂªn liA�»‡u</label>
+                <input class="w-full rounded-lg border border-slate-200 px-3 py-2" type="text" name="ingredient_name[]" placeholder="VĂ­ dA�»¥: MuA�»‘i">
             </div>
             <div class="md:col-span-3">
-                <label class="mb-1 block text-xs font-semibold text-slate-500">Số lượng</label>
+                <label class="mb-1 block text-xs font-semibold text-slate-500">SA�»‘ lA�°A�»£ng</label>
                 <input class="w-full rounded-lg border border-slate-200 px-3 py-2" type="text" name="ingredient_quantity[]" placeholder="1">
             </div>
             <div class="md:col-span-2">
                 <label class="mb-1 block text-xs font-semibold text-slate-500">Đơn vị</label>
-                <input class="w-full rounded-lg border border-slate-200 px-3 py-2" type="text" name="ingredient_unit[]" placeholder="muỗng">
+                <input class="w-full rounded-lg border border-slate-200 px-3 py-2" type="text" name="ingredient_unit[]" placeholder="muA�»—ng">
             </div>
             <div class="md:col-span-1 flex items-end">
-                <button class="remove-ingredient w-full rounded-lg border border-rose-300 px-2 py-2 text-sm text-rose-600 hover:bg-rose-50" type="button">Xóa</button>
+                <button class="remove-ingredient w-full rounded-lg border border-rose-300 px-2 py-2 text-sm text-rose-600 hover:bg-rose-50" type="button">XĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³a</button>
             </div>
         </div>
     `;
@@ -180,7 +180,7 @@ $tagTypeLabels = [
     const updateStepLabels = () => {
         const labels = stepList.querySelectorAll('.step-label');
         labels.forEach((label, index) => {
-            label.textContent = `Bước ${index + 1}`;
+            label.textContent = `BA�°A�»›c ${index + 1}`;
         });
     };
 
@@ -208,11 +208,11 @@ $tagTypeLabels = [
         step.className = 'step-item rounded-xl border border-slate-200 p-4';
         step.innerHTML = `
             <div class="mb-2 flex items-center justify-between">
-                <p class="step-label text-sm font-bold text-slate-700">Bước</p>
-                <button class="remove-step rounded-lg border border-rose-300 px-2 py-1 text-xs text-rose-600 hover:bg-rose-50" type="button">Xóa</button>
+                <p class="step-label text-sm font-bold text-slate-700">BA�°A�»›c</p>
+                <button class="remove-step rounded-lg border border-rose-300 px-2 py-1 text-xs text-rose-600 hover:bg-rose-50" type="button">XĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³a</button>
             </div>
             <div class="space-y-3">
-                <textarea class="min-h-[100px] w-full rounded-lg border border-slate-200 px-3 py-2" name="step_content[]" placeholder="Mô tả bước thực hiện..."></textarea>
+                <textarea class="min-h-[100px] w-full rounded-lg border border-slate-200 px-3 py-2" name="step_content[]" placeholder="MĂ´ tA�º£ bA�°A�»›c thA�»±c hiA�»‡n..."></textarea>
                 <input class="w-full rounded-lg border border-slate-200 px-3 py-2 file:mr-3 file:rounded-lg file:border-0 file:bg-slate-800 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-white" type="file" name="step_images[]" accept="image/*">
             </div>
         `;

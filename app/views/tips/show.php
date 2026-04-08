@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 $tip = is_array($tip ?? null) ? $tip : [];
 $comments = is_array($comments ?? null) ? $comments : [];
 $authorUser = is_array($authorUser ?? null) ? $authorUser : null;
@@ -7,11 +7,11 @@ $isSavedTip = (bool) ($isSavedTip ?? false);
 
 $tipId = (int) ($tip['id'] ?? 0);
 $slug = (string) ($tip['slug'] ?? '');
-$title = (string) ($tip['title'] ?? 'Máº¹o váº·t náº¥u Äƒn');
+$title = (string) ($tip['title'] ?? 'MA�º¹o vA�º·t nA�º¥u A�ƒn');
 $excerpt = (string) ($tip['excerpt'] ?? '');
 $content = (string) ($tip['content'] ?? '');
 $image = (string) ($tip['image'] ?? '');
-$author = (string) (($tip['author_name'] ?? '') ?: 'TĂ¡c giáº£');
+$author = (string) (($tip['author_name'] ?? '') ?: 'TĂ¡c giA�º£');
 $authorId = (int) ($tip['user_id'] ?? 0);
 $viewCount = (int) ($tip['view_count'] ?? 0);
 $categoryLabel = (string) ($tip['category_name'] ?? '');
@@ -21,10 +21,10 @@ $tipRedirectPath = $tipPath . '#tip-comments-section';
 
 $tipNotice = (string) ($_GET['notice'] ?? '');
 $tipNoticeText = match ($tipNotice) {
-    'tip_reported' => 'ÄĂ£ gá»­i bĂ¡o cĂ¡o máº¹o váº·t. Cáº£m Æ¡n báº¡n Ä‘Ă£ pháº£n há»“i.',
-    'tip_reported_exists' => 'Báº¡n Ä‘Ă£ bĂ¡o cĂ¡o máº¹o váº·t nĂ y trÆ°á»›c Ä‘Ă³.',
-    'tip_saved' => 'ÄĂ£ lÆ°u máº¹o váº·t.',
-    'tip_unsaved' => 'ÄĂ£ bá» lÆ°u máº¹o váº·t.',
+    'tip_reported' => 'A�¿½A? g?i bA?o cA?o m?o v?t. C?m on b?n dA? ph?n h?i.',
+    'tip_reported_exists' => 'BA�º¡n A�‘Ă£ bĂ¡o cĂ¡o mA�º¹o vA�º·t nĂ y trA�°A�»›c A�‘Ă³.',
+    'tip_saved' => 'ĐA� lưu mẹo vặt.',
+    'tip_unsaved' => 'ĐA� bỏ lưu mẹo vặt.',
     default => '',
 };
 ?>
@@ -59,7 +59,7 @@ $tipNoticeText = match ($tipNotice) {
                 <?php endif; ?>
 
                 <article class="mb-10 rounded-2xl border border-slate-200 bg-white p-6 leading-7 text-slate-700">
-                    <?= nl2br(htmlspecialchars($content !== '' ? $content : 'Ná»™i dung máº¹o váº·t Ä‘ang Ä‘Æ°á»£c cáº­p nháº­t.', ENT_QUOTES, 'UTF-8')); ?>
+                    <?= nl2br(htmlspecialchars($content !== '' ? $content : 'NA�»™i dung mA�º¹o vA�º·t A�‘ang A�‘A�°A�»£c cA�º­p nhA�º­t.', ENT_QUOTES, 'UTF-8')); ?>
                 </article>
             </div>
 
@@ -79,30 +79,31 @@ $tipNoticeText = match ($tipNotice) {
 
         <?php
         $commentsRootId = 'tip-comments-section';
-        $commentsTitle = 'BĂ¬nh luáº­n cá»™ng Ä‘á»“ng';
+        $commentsTitle = 'BĂ¬nh luA�º­n cA�»™ng A�‘A�»“ng';
         $contentType = 'tip';
         $contentId = $tipId;
         $redirectTo = $tipRedirectPath;
         $showCount = false;
         $allowReply = true;
         $maxReplyDepth = 1;
-        $emptyText = 'ChÆ°a cĂ³ bĂ¬nh luáº­n nĂ o cho máº¹o váº·t nĂ y.';
-        $formPlaceholder = 'Viáº¿t bĂ¬nh luáº­n cá»§a báº¡n...';
+        $emptyText = 'ChA�°a cĂ³ bĂ¬nh luA�º­n nĂ o cho mA�º¹o vA�º·t nĂ y.';
+        $formPlaceholder = 'ViA�º¿t bĂ¬nh luA�º­n cA�»§a bA�º¡n...';
         require APPROOT . '/app/views/partials/shared/content_comments.php';
         ?>
     </div>
 </div>
 <?php
 $reportModalId = 'tip-report-modal';
-$reportModalTitle = 'BĂ¡o cĂ¡o máº¹o váº·t';
+$reportModalTitle = 'BĂ¡o cĂ¡o mA�º¹o vA�º·t';
 $reportModalAction = URLROOT . '/tips/' . $tipId . '/report';
 $reportModalReasonField = 'reason';
 $reportModalDetailsField = 'details';
-$reportModalSuccessToast = 'ÄĂ£ gá»­i bĂ¡o cĂ¡o máº¹o váº·t.';
-$reportModalErrorToast = 'KhĂ´ng thá»ƒ gá»­i bĂ¡o cĂ¡o máº¹o váº·t.';
+$reportModalSuccessToast = 'A�¿½A? g?i bA?o cA?o m?o v?t.';
+$reportModalErrorToast = 'KhA�ng thA�»ƒ gA�»­i bĂ¡o cĂ¡o mA�º¹o vA�º·t.';
 $reportModalHiddenFields = ['redirect_to' => $tipPath];
 require APPROOT . '/app/views/partials/shared/content_report_modal.php';
 ?>
+
 
 
 

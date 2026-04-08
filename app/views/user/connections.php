@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 $profileUser = is_array($profile_user ?? null) ? $profile_user : [];
 $items = is_array($items ?? null) ? $items : [];
 $followers = is_array($followers ?? null) ? $followers : [];
@@ -9,9 +9,9 @@ $isLoggedIn = (bool) ($is_logged_in ?? false);
 $isOwner = (bool) ($is_owner ?? false);
 $profileUserId = (int) ($profileUser['id'] ?? 0);
 
-$name = trim((string) ($profileUser['name'] ?? 'Người dùng'));
+$name = trim((string) ($profileUser['name'] ?? 'NgA�°A�»i dĂ¹ng'));
 if ($name === '') {
-    $name = 'Người dùng';
+    $name = 'NgA�°A�»i dĂ¹ng';
 }
 
 $defaultGroup = $type === 'followers' ? 'followers' : 'following';
@@ -21,8 +21,17 @@ if (!in_array($activeGroup, ['following', 'followers', 'friends'], true)) {
 }
 
 $scopeText = $type === 'followers'
-    ? ($isOwner ? 'Danh sách người theo dõi bạn' : 'Danh sách người theo dõi tài khoản này')
-    : ($isOwner ? 'Danh sách bạn đang theo dõi' : 'Danh sách tài khoản này đang theo dõi');
+    ? ($isOwner ? 'Danh sĂ¡ch ngA�°A�»i theo dĂµi bA�º¡n' : 'Danh sĂ¡ch ngA�°A�»i theo dĂµi tĂ i khoA�º£n nĂ y')
+    : ($isOwner ? 'Danh sĂ¡ch bA�º¡n A�‘ang theo dĂµi' : 'Danh sĂ¡ch tĂ i khoA�º£n nĂ y A�‘ang theo dĂµi');
+
+$blockRestricted = (bool) ($block_restricted ?? false);
+$connBlockedByViewer = (bool) ($is_blocked_by_viewer ?? false);
+if ($blockRestricted) {
+    $name = $connBlockedByViewer ? 'TĂ i khoA�º£n A�‘Ă£ chA�º·n' : 'Không khA�º£ dA�»¥ng';
+    $scopeText = $connBlockedByViewer
+        ? 'BA�º¡n A�‘Ă£ chA�º·n tĂ i khoA�º£n nĂ y A�€” khĂ´ng hiA�»ƒn thA�»‹ danh sĂ¡ch theo dĂµi.'
+        : 'BA�º¡n khĂ´ng thA�»ƒ xem danh sĂ¡ch theo dĂµi cA�»§a ngA�°A�»i dĂ¹ng nĂ y.';
+}
 
 $filteredItems = [];
 $followersList = [];
@@ -66,9 +75,9 @@ $currentListPath = '/users/' . $profileUserId . '/' . $type;
 $renderItem = static function (array $item) use ($viewerId, $isLoggedIn, $currentListPath, $isOwner, $activeGroup): void {
     $itemId = (int) ($item['id'] ?? 0);
 
-    $itemName = trim((string) ($item['name'] ?? 'Người dùng'));
+    $itemName = trim((string) ($item['name'] ?? 'NgA�°A�»i dĂ¹ng'));
     if ($itemName === '') {
-        $itemName = 'Người dùng';
+        $itemName = 'NgA�°A�»i dĂ¹ng';
     }
 
     $itemUsername = trim((string) ($item['username'] ?? ''));
@@ -116,7 +125,7 @@ src="<?= htmlspecialchars($avatarUrl, ENT_QUOTES, 'UTF-8'); ?>">
 </p>
 
 <?php if ($followsViewer && !$isFriend): ?>
-<p class="text-[11px] font-semibold text-amber-600">Theo dõi lại</p>
+<p class="text-[11px] font-semibold text-amber-600">Theo dĂµi lA�º¡i</p>
 <?php endif; ?>
 
 </div>
@@ -127,7 +136,7 @@ src="<?= htmlspecialchars($avatarUrl, ENT_QUOTES, 'UTF-8'); ?>">
 <?php if ($isSelf): ?>
 
 <span class="rounded-md border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-500">
-Bạn
+BA�º¡n
 </span>
 
 <?php elseif (!$isLoggedIn): ?>
@@ -144,53 +153,51 @@ href="<?= URLROOT; ?>/login">
     <input type="hidden" name="redirect_to"
     value="<?= htmlspecialchars($currentListPath, ENT_QUOTES, 'UTF-8'); ?>">
     <button class="rounded-md border border-emerald-300 bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700 hover:bg-emerald-100" type="submit">
-        Bạn be
+        BA�º¡n be
     </button>
 </form>
 
 <?php elseif ($isFollowingByViewer): ?>
 
-<form method="post"
+<form method="post" action="<?= URLROOT; ?>/users/<?= $itemId; ?>/unfollow"
+    class="js-follow-form"
+    data-follow-action="<?= URLROOT; ?>/users/<?= $itemId; ?>/follow"
+    data-unfollow-action="<?= URLROOT; ?>/users/<?= $itemId; ?>/unfollow">
     <?= csrf_field(); ?>
-action="<?= URLROOT; ?>/users/<?= $itemId; ?>/unfollow"
-class="js-follow-form"
-data-follow-action="<?= URLROOT; ?>/users/<?= $itemId; ?>/follow"
-data-unfollow-action="<?= URLROOT; ?>/users/<?= $itemId; ?>/unfollow">
 
 <input type="hidden" name="redirect_to"
 value="<?= htmlspecialchars($currentListPath, ENT_QUOTES, 'UTF-8'); ?>">
 
 <button class="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 js-follow-btn"
 data-state="following"
-data-text-following="Đang theo dõi"
-data-text-follow="Theo dõi lại"
+data-text-following="Ă„Âang theo dÄ‚Âµi"
+data-text-follow="Theo dĂµi lA�º¡i"
 data-class-following="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50"
 data-class-follow="rounded-md bg-black px-3 py-1.5 text-xs font-semibold text-white hover:bg-slate-800">
-Đang theo dõi
+Ă„Âang theo dÄ‚Âµi
 </button>
 
 </form>
 
 <?php else: ?>
 
-<form method="post"
+<form method="post" action="<?= URLROOT; ?>/users/<?= $itemId; ?>/follow"
+    class="js-follow-form"
+    data-follow-action="<?= URLROOT; ?>/users/<?= $itemId; ?>/follow"
+    data-unfollow-action="<?= URLROOT; ?>/users/<?= $itemId; ?>/unfollow">
     <?= csrf_field(); ?>
-action="<?= URLROOT; ?>/users/<?= $itemId; ?>/follow"
-class="js-follow-form"
-data-follow-action="<?= URLROOT; ?>/users/<?= $itemId; ?>/follow"
-data-unfollow-action="<?= URLROOT; ?>/users/<?= $itemId; ?>/unfollow">
 
 <input type="hidden" name="redirect_to"
 value="<?= htmlspecialchars($currentListPath, ENT_QUOTES, 'UTF-8'); ?>">
 
 <button class="rounded-md bg-black px-3 py-1.5 text-xs font-semibold text-white hover:bg-slate-800 js-follow-btn"
 data-state="follow"
-data-text-following="Đang theo dõi"
-data-text-follow="Theo dõi lại"
+data-text-following="Ă„Âang theo dÄ‚Âµi"
+data-text-follow="Theo dĂµi lA�º¡i"
 data-class-following="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50"
 data-class-follow="rounded-md bg-black px-3 py-1.5 text-xs font-semibold text-white hover:bg-slate-800">
 
-<?= $followsViewer ? 'Theo dõi lại' : 'Theo dõi'; ?>
+<?= $followsViewer ? 'Theo dĂµi lA�º¡i' : 'Theo dĂµi'; ?>
 
 </button>
 
@@ -199,15 +206,14 @@ data-class-follow="rounded-md bg-black px-3 py-1.5 text-xs font-semibold text-wh
 <?php endif; ?>
 
 <?php if ($isOwner && $activeGroup === 'followers' && !$isSelf && $followsViewer): ?>
-<form method="post"
+<form method="post" action="<?= URLROOT; ?>/users/<?= $itemId; ?>/remove-follower"
+    class="js-remove-follower"
+    onsubmit="return confirm('BA�º¡n cĂ³ muA�»‘n loA�º¡i bA�» theo dĂµi cA�»§a ngA�°A�»i nĂ y khĂ´ng?');">
     <?= csrf_field(); ?>
-action="<?= URLROOT; ?>/users/<?= $itemId; ?>/remove-follower"
-class="js-remove-follower"
-onsubmit="return confirm('Bạn có muốn loại bỏ theo dõi của người này không?');">
     <input type="hidden" name="redirect_to"
     value="<?= htmlspecialchars($currentListPath, ENT_QUOTES, 'UTF-8'); ?>">
     <button class="rounded-md border border-rose-300 px-2 py-1.5 text-[11px] font-semibold text-rose-600 hover:bg-rose-50" type="submit">
-        Xóa
+        XÄ‚Â³a
     </button>
 </form>
 <?php endif; ?>
@@ -220,6 +226,21 @@ onsubmit="return confirm('Bạn có muốn loại bỏ theo dõi của người 
 ?>
 
 <section class="w-full">
+    <?php if ($blockRestricted): ?>
+    <div class="mx-auto w-full max-w-2xl rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
+        <h1 class="text-xl font-bold text-slate-900"><?= htmlspecialchars($name, ENT_QUOTES, 'UTF-8'); ?></h1>
+        <p class="mt-3 text-sm text-slate-600"><?= htmlspecialchars($scopeText, ENT_QUOTES, 'UTF-8'); ?></p>
+        <div class="mt-6 flex flex-wrap gap-3">
+            <?php if ($connBlockedByViewer): ?>
+                <form method="post" action="<?= URLROOT; ?>/users/<?= $profileUserId; ?>/unblock">
+                    <?= csrf_field(); ?>
+                    <button class="inline-flex rounded-xl border-2 border-slate-300 bg-white px-4 py-2 text-sm font-bold text-slate-800 hover:bg-slate-50" type="submit">BA�» chA�º·n</button>
+                </form>
+            <?php endif; ?>
+            <a class="inline-flex rounded-xl bg-primary px-4 py-2 text-sm font-bold text-white hover:brightness-105" href="<?= URLROOT; ?>/users/<?= $profileUserId; ?>">Quay lA�º¡i hA�»“ sA�¡</a>
+        </div>
+    </div>
+    <?php else: ?>
     <div class="mx-auto w-full max-w-2xl rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 js-connections"
     data-is-owner="<?= $isOwner ? '1' : '0'; ?>">
         <div class="mb-4 flex items-center justify-between">
@@ -227,13 +248,13 @@ onsubmit="return confirm('Bạn có muốn loại bỏ theo dõi của người 
                 <h1 class="text-xl font-bold text-slate-900"><?= htmlspecialchars($name, ENT_QUOTES, 'UTF-8'); ?></h1>
                 <p class="text-xs font-semibold text-primary"><?= htmlspecialchars($scopeText, ENT_QUOTES, 'UTF-8'); ?></p>
             </div>
-            <a class="text-xs font-semibold text-slate-500 hover:text-slate-900" href="<?= URLROOT; ?>/users/<?= $profileUserId; ?>">Đóng</a>
+            <a class="text-xs font-semibold text-slate-500 hover:text-slate-900" href="<?= URLROOT; ?>/users/<?= $profileUserId; ?>">Ă„ÂÄ‚Â³ng</a>
         </div>
 
         <div class="mb-4 flex flex-wrap gap-2 text-xs font-semibold">
-            <a class="rounded-full px-3 py-1.5 js-tab-count <?= $activeGroup === 'following' ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'; ?>" data-key="following" data-count="<?= count($followingList); ?>" href="<?= URLROOT; ?>/users/<?= $profileUserId; ?>/<?= $type; ?>?group=following">Bạn theo dõi (<span class="js-count"><?= count($followingList); ?></span>)</a>
-            <a class="rounded-full px-3 py-1.5 js-tab-count <?= $activeGroup === 'followers' ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'; ?>" data-key="followers" data-count="<?= count($followersList); ?>" href="<?= URLROOT; ?>/users/<?= $profileUserId; ?>/<?= $type; ?>?group=followers">Theo dõi bạn (<span class="js-count"><?= count($followersList); ?></span>)</a>
-            <a class="rounded-full px-3 py-1.5 js-tab-count <?= $activeGroup === 'friends' ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'; ?>" data-key="friends" data-count="<?= count($friendsList); ?>" href="<?= URLROOT; ?>/users/<?= $profileUserId; ?>/<?= $type; ?>?group=friends">Bạn be (<span class="js-count"><?= count($friendsList); ?></span>)</a>
+            <a class="rounded-full px-3 py-1.5 js-tab-count <?= $activeGroup === 'following' ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'; ?>" data-key="following" data-count="<?= count($followingList); ?>" href="<?= URLROOT; ?>/users/<?= $profileUserId; ?>/<?= $type; ?>?group=following">BA�º¡n theo dĂµi (<span class="js-count"><?= count($followingList); ?></span>)</a>
+            <a class="rounded-full px-3 py-1.5 js-tab-count <?= $activeGroup === 'followers' ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'; ?>" data-key="followers" data-count="<?= count($followersList); ?>" href="<?= URLROOT; ?>/users/<?= $profileUserId; ?>/<?= $type; ?>?group=followers">Theo dĂµi bA�º¡n (<span class="js-count"><?= count($followersList); ?></span>)</a>
+            <a class="rounded-full px-3 py-1.5 js-tab-count <?= $activeGroup === 'friends' ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'; ?>" data-key="friends" data-count="<?= count($friendsList); ?>" href="<?= URLROOT; ?>/users/<?= $profileUserId; ?>/<?= $type; ?>?group=friends">BA�º¡n be (<span class="js-count"><?= count($friendsList); ?></span>)</a>
         </div>
 
         <?php
@@ -244,9 +265,9 @@ onsubmit="return confirm('Bạn có muốn loại bỏ theo dõi của người 
         };
 
         $emptyText = match ($activeGroup) {
-            'followers' => 'Chưa có người theo dõi trong danh sách này.',
-            'friends' => 'Chưa có bạn bè.',
-            default => 'Bạn chưa theo dõi ai trong danh sách này.',
+            'followers' => 'ChA�°a cĂ³ ngA�°A�»i theo dĂµi trong danh sĂ¡ch nĂ y.',
+            'friends' => 'ChA�°a cĂ³ bA�º¡n bĂ¨.',
+            default => 'BA�º¡n chA�°a theo dĂµi ai trong danh sĂ¡ch nĂ y.',
         };
         ?>
 
@@ -260,6 +281,7 @@ foreach ($activeList as $item) { $renderItem($item); }
             </div>
 <?php endif; ?>
     </div>
+    <?php endif; ?>
 </section>
 
 <script>
@@ -305,8 +327,8 @@ document.addEventListener('click', function (event) {
   }).then(function () {
     const nextState = state === 'following' ? 'follow' : 'following';
     const nextText = nextState === 'following'
-      ? (button.dataset.textFollowing || 'Đang theo dõi')
-      : (button.dataset.textFollow || 'Theo dõi lại');
+      ? (button.dataset.textFollowing || 'Ă„Âang theo dÄ‚Âµi')
+      : (button.dataset.textFollow || 'Theo dĂµi lA�º¡i');
 
     const nextClass = nextState === 'following'
       ? (button.dataset.classFollowing || '')
@@ -378,3 +400,4 @@ document.addEventListener('submit', function (event) {
   });
 });
 </script>
+

@@ -12,7 +12,7 @@ final class ChatHistoryController extends Controller
         $service = $this->service('admin/ChatHistoryAdminService');
         $data = $service->buildManageChatHistoriesData($_GET);
 
-        $this->adminView('admin/manage_chat_histories', [
+        $this->adminView('admin/chat_histories/index', [
             'rows' => $data['rows'],
             'filters' => $data['filters'],
             'page' => $data['page'],

@@ -12,7 +12,7 @@ class NotificationController extends Controller
         $service = $this->service('admin/NotificationAdminService');
         $data = $service->buildManageNotificationsData($_GET);
 
-        $this->adminView('admin/manage_notifications', $data);
+        $this->adminView('admin/notifications/index', $data);
     }
 
     public function sendSystemNotification(): void

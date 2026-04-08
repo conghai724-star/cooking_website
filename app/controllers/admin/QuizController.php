@@ -50,7 +50,7 @@ final class QuizController extends Controller
             $passerPreviews[$setId] = array_slice($passerLabels, 0, 3);
         }
 
-        $this->adminView('admin/manage_quizzes', [
+        $this->adminView('admin/quizzes/index', [
             'sets' => $sets,
             'noticeText' => $noticeText,
             'participantPreviews' => $participantPreviews,
@@ -74,7 +74,7 @@ final class QuizController extends Controller
             $this->redirect('/admin/quizzes');
         }
 
-        $this->adminView('admin/quiz_detail', [
+        $this->adminView('admin/quizzes/show', [
             'set' => $set,
             'questions' => $quizModel->questionsWithChoices($setId),
         ]);
@@ -103,7 +103,7 @@ final class QuizController extends Controller
             default => '',
         };
 
-        $this->adminView('admin/quiz_users', [
+        $this->adminView('admin/quizzes/users', [
             'set' => $set,
             'participants' => $quizModel->participantsBySetForAdmin($setId),
             'passers' => $quizModel->passersBySetForAdmin($setId),

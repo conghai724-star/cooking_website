@@ -1,13 +1,45 @@
 <?php
 $ingredients = is_array($ingredients ?? null) ? $ingredients : [];
+$ingredientCategories = is_array($ingredient_categories ?? null) ? $ingredient_categories : [];
 $page = max(1, (int) ($page ?? 1));
 $totalPages = max(1, (int) ($totalPages ?? 1));
 $keyword = trim((string) ($keyword ?? ''));
+$filterCategoryId = (int) ($filter_category_id ?? 0);
 $noticeText = trim((string) ($_GET['notice'] ?? ''));
-$buildPageUrl = static function (int $targetPage) use ($keyword): string {
+
+$categoryByName = [];
+foreach ($ingredientCategories as $c) {
+    $n = trim((string) ($c['name'] ?? ''));
+    if ($n !== '') {
+        $categoryByName[$n] = $c;
+    }
+}
+
+$groupChips = [
+    ['name' => 'Rau củ', 'emoji' => '🥬'],
+    ['name' => 'Thịt', 'emoji' => '🥩'],
+    ['name' => 'Hải sản', 'emoji' => '🐟'],
+    ['name' => 'Gia vị', 'emoji' => '🧂'],
+];
+
+$buildPageUrl = static function (int $targetPage) use ($keyword, $filterCategoryId): string {
     $url = URLROOT . '/ingredients?page=' . $targetPage;
     if ($keyword !== '') {
         $url .= '&q=' . rawurlencode($keyword);
+    }
+    if ($filterCategoryId > 0) {
+        $url .= '&category=' . $filterCategoryId;
+    }
+    return $url;
+};
+
+$buildCategoryListUrl = static function (?int $catId) use ($keyword): string {
+    $url = URLROOT . '/ingredients?page=1';
+    if ($keyword !== '') {
+        $url .= '&q=' . rawurlencode($keyword);
+    }
+    if ($catId !== null && $catId > 0) {
+        $url .= '&category=' . $catId;
     }
     return $url;
 };
@@ -23,6 +55,9 @@ $buildPageUrl = static function (int $targetPage) use ($keyword): string {
         </div>
         <div class="flex items-center gap-3">
             <form method="get" action="<?= URLROOT; ?>/ingredients" class="hidden w-full max-w-sm flex-col sm:flex">
+                <?php if ($filterCategoryId > 0): ?>
+                    <input type="hidden" name="category" value="<?= $filterCategoryId; ?>">
+                <?php endif; ?>
                 <div class="flex w-full items-stretch overflow-hidden rounded-lg border border-primary/20 bg-primary/5 transition-colors hover:bg-primary/10">
                     <div class="flex items-center justify-center pl-4 text-primary">
                         <span class="material-symbols-outlined text-xl">search</span>
@@ -45,34 +80,35 @@ $buildPageUrl = static function (int $targetPage) use ($keyword): string {
 
     </div>
 
-    <div class="flex gap-3 overflow-x-auto pb-2">
-        <button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full bg-primary px-6 text-white shadow-md shadow-primary/20">
-            <span class="text-sm font-bold">Tất cả</span>
-        </button>
-        <button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full border border-primary/20 bg-white px-6 text-slate-700 transition-colors hover:bg-primary/10">
-            <span class="material-symbols-outlined text-sm">flatware</span>
-            <span class="text-sm font-semibold">Meat</span>
-        </button>
-        <button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full border border-primary/20 bg-white px-6 text-slate-700 transition-colors hover:bg-primary/10">
-            <span class="material-symbols-outlined text-sm">eco</span>
-            <span class="text-sm font-semibold">Vegetables</span>
-        </button>
-        <button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full border border-primary/20 bg-white px-6 text-slate-700 transition-colors hover:bg-primary/10">
-            <span class="material-symbols-outlined text-sm">set_meal</span>
-            <span class="text-sm font-semibold">Seafood</span>
-        </button>
-        <button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full border border-primary/20 bg-white px-6 text-slate-700 transition-colors hover:bg-primary/10">
-            <span class="material-symbols-outlined text-sm">psychology</span>
-            <span class="text-sm font-semibold">Spices</span>
-        </button>
-        <button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full border border-primary/20 bg-white px-6 text-slate-700 transition-colors hover:bg-primary/10">
-            <span class="material-symbols-outlined text-sm">nutrition</span>
-            <span class="text-sm font-semibold">Fruits</span>
-        </button>
-        <button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full border border-primary/20 bg-white px-6 text-slate-700 transition-colors hover:bg-primary/10">
-            <span class="material-symbols-outlined text-sm">egg</span>
-            <span class="text-sm font-semibold">Dairy</span>
-        </button>
+    <div class="flex gap-3 overflow-x-auto pb-2" role="tablist" aria-label="Nhóm nguyên liệu">
+        <?php
+        $allActive = $filterCategoryId <= 0;
+        $allChipClass = $allActive
+            ? 'border-primary bg-primary px-6 text-white shadow-md shadow-primary/20'
+            : 'border-primary/20 bg-white px-6 text-slate-700 hover:bg-primary/10';
+        ?>
+        <a class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full border text-sm font-bold transition-colors <?= htmlspecialchars($allChipClass, ENT_QUOTES, 'UTF-8'); ?>" href="<?= htmlspecialchars($buildCategoryListUrl(null), ENT_QUOTES, 'UTF-8'); ?>">Tất cả</a>
+        <?php foreach ($groupChips as $chip): ?>
+            <?php
+            $row = $categoryByName[$chip['name']] ?? null;
+            if ($row === null) {
+                continue;
+            }
+            $cid = (int) ($row['id'] ?? 0);
+            if ($cid <= 0) {
+                continue;
+            }
+            $isActive = $filterCategoryId === $cid;
+            $chipClass = $isActive
+                ? 'border-primary bg-primary px-6 text-white shadow-md shadow-primary/20'
+                : 'border-primary/20 bg-white px-6 text-slate-700 hover:bg-primary/10';
+            ?>
+            <a class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full border text-sm font-semibold transition-colors <?= htmlspecialchars($chipClass, ENT_QUOTES, 'UTF-8'); ?>"
+               href="<?= htmlspecialchars($buildCategoryListUrl($cid), ENT_QUOTES, 'UTF-8'); ?>">
+                <span class="text-base leading-none" aria-hidden="true"><?= htmlspecialchars($chip['emoji'], ENT_QUOTES, 'UTF-8'); ?></span>
+                <span><?= htmlspecialchars($chip['name'], ENT_QUOTES, 'UTF-8'); ?></span>
+            </a>
+        <?php endforeach; ?>
     </div>
 
     <?php if (empty($ingredients)): ?>

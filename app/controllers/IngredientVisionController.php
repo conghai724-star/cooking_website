@@ -84,6 +84,54 @@ class IngredientVisionController extends Controller
         ]);
     }
 
+    public function dragSearchUi(): void
+    {
+        /** @var IngredientModel $ingredientModel */
+        $ingredientModel = $this->model('IngredientModel');
+        $rows = $ingredientModel->all('approved', 'library');
+
+        $grouped = [];
+        foreach ($rows as $row) {
+            $name = trim((string) ($row['name'] ?? ''));
+            if ($name === '') {
+                continue;
+            }
+            $category = trim((string) ($row['category_name'] ?? ''));
+            if ($category === '') {
+                $category = 'Khác';
+            }
+            $grouped[$category][] = [
+                'id' => (int) ($row['id'] ?? 0),
+                'name' => $name,
+                'image' => trim((string) ($row['image'] ?? '')),
+            ];
+        }
+
+        $preferredOrder = ['Rau củ', 'Thịt', 'Hải sản', 'Gia vị'];
+        $sorted = [];
+        foreach ($preferredOrder as $cat) {
+            if (!empty($grouped[$cat])) {
+                $sorted[$cat] = $grouped[$cat];
+                unset($grouped[$cat]);
+            }
+        }
+        $khac = $grouped['Khác'] ?? null;
+        unset($grouped['Khác']);
+        ksort($grouped, SORT_NATURAL | SORT_FLAG_CASE);
+        foreach ($grouped as $cat => $items) {
+            $sorted[$cat] = $items;
+        }
+        if ($khac !== null) {
+            $sorted['Khác'] = $khac;
+        }
+
+        $this->view('ai/ingredient_drag_search', [
+            'title' => 'Chọn nguyên liệu bằng hình ảnh',
+            'useRecipeHubLayout' => true,
+            'ingredientGroups' => $sorted,
+        ]);
+    }
+
     public function suggestRecipes(): void
     {
         $method = strtoupper((string) ($_SERVER['REQUEST_METHOD'] ?? 'GET'));

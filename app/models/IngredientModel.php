@@ -64,7 +64,7 @@ class IngredientModel extends Model
         return $this->db->resultSet();
     }
 
-    public function countByStatus(?string $status = null, string $source = 'library', ?string $keyword = null): int
+    public function countByStatus(?string $status = null, string $source = 'library', ?string $keyword = null, ?int $categoryId = null): int
     {
         $sql = 'SELECT COUNT(*) AS total FROM ingredients i';
         $conditions = [];
@@ -76,6 +76,9 @@ class IngredientModel extends Model
         }
         if ($keyword !== null && trim($keyword) !== '') {
             $conditions[] = '(i.name LIKE :kw_name OR i.description LIKE :kw_desc)';
+        }
+        if ($categoryId !== null && $categoryId > 0) {
+            $conditions[] = 'i.category_id = :category_id';
         }
         if (!empty($conditions)) {
             $sql .= ' WHERE ' . implode(' AND ', $conditions);
@@ -93,12 +96,15 @@ class IngredientModel extends Model
             $this->db->bind(':kw_name', $like);
             $this->db->bind(':kw_desc', $like);
         }
+        if ($categoryId !== null && $categoryId > 0) {
+            $this->db->bind(':category_id', $categoryId);
+        }
         $this->db->execute();
         $row = $this->db->single();
         return (int) ($row['total'] ?? 0);
     }
 
-    public function allPaged(?string $status, string $source, int $limit, int $offset, ?string $keyword = null): array
+    public function allPaged(?string $status, string $source, int $limit, int $offset, ?string $keyword = null, ?int $categoryId = null): array
     {
         $sql = 'SELECT i.*, c.name AS category_name
                 FROM ingredients i
@@ -113,6 +119,9 @@ class IngredientModel extends Model
         }
         if ($keyword !== null && trim($keyword) !== '') {
             $conditions[] = '(i.name LIKE :kw_name OR i.description LIKE :kw_desc)';
+        }
+        if ($categoryId !== null && $categoryId > 0) {
+            $conditions[] = 'i.category_id = :category_id';
         }
         if (!empty($conditions)) {
             $sql .= ' WHERE ' . implode(' AND ', $conditions);
@@ -131,6 +140,9 @@ class IngredientModel extends Model
             $like = '%' . trim($keyword) . '%';
             $this->db->bind(':kw_name', $like);
             $this->db->bind(':kw_desc', $like);
+        }
+        if ($categoryId !== null && $categoryId > 0) {
+            $this->db->bind(':category_id', $categoryId);
         }
         $this->db->bind(':limit', $limit, PDO::PARAM_INT);
         $this->db->bind(':offset', $offset, PDO::PARAM_INT);

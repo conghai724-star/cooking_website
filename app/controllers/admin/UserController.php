@@ -12,7 +12,7 @@ final class UserController extends Controller
         $userAdminService = $this->service('admin/UserAdminService');
         $data = $userAdminService->buildManageUsersData($_GET);
 
-        $this->adminView('admin/manage_users', [
+        $this->adminView('admin/users/index', [
             'users' => $data['users'],
             'keyword' => $data['keyword'],
             'state' => $data['state'],
@@ -218,7 +218,7 @@ final class UserController extends Controller
             return $bt <=> $at;
         });
 
-        $this->adminView('admin/manage_bans', [
+        $this->adminView('admin/moderation/bans/index', [
             'rows' => $rows,
             'keyword' => $keyword,
             'type' => $type,
@@ -267,6 +267,72 @@ final class UserController extends Controller
         $qs['notice'] = $ok ? 'released' : 'release_failed';
 
         $this->redirect('/admin/bans?' . http_build_query($qs));
+    }
+
+    public function manageBanAppeals(): void
+    {
+        require_admin_permission('admin.users.ban');
+        $status = (string) ($_GET['status'] ?? '');
+        if (!in_array($status, ['', 'pending', 'reviewing', 'approved', 'rejected'], true)) {
+            $status = '';
+        }
+        $keyword = trim((string) ($_GET['q'] ?? ''));
+
+        /** @var BanAppealModel $appealModel */
+        $appealModel = $this->model('BanAppealModel');
+
+        $this->adminView('admin/moderation/ban_appeals/index', [
+            'rows' => $appealModel->listForAdmin($status !== '' ? $status : null, $keyword !== '' ? $keyword : null),
+            'status' => $status,
+            'keyword' => $keyword,
+            'notice' => (string) ($_GET['notice'] ?? ''),
+        ]);
+    }
+
+    public function reviewBanAppeal(): void
+    {
+        require_admin_permission('admin.users.ban');
+
+        $appealId = (int) ($_POST['appeal_id'] ?? 0);
+        $decision = (string) ($_POST['decision'] ?? '');
+        $adminNoteRaw = trim((string) ($_POST['admin_note'] ?? ''));
+        $adminNote = $adminNoteRaw !== '' ? $adminNoteRaw : null;
+
+        if ($appealId <= 0 || !in_array($decision, ['approved', 'rejected', 'reviewing'], true)) {
+            $this->redirect('/admin/ban-appeals?notice=review_failed');
+        }
+
+        /** @var BanAppealModel $appealModel */
+        $appealModel = $this->model('BanAppealModel');
+        /** @var UserModel $userModel */
+        $userModel = $this->model('UserModel');
+        /** @var UserPenaltyModel $penaltyModel */
+        $penaltyModel = $this->model('UserPenaltyModel');
+
+        $row = $appealModel->findById($appealId);
+        if (!$row) {
+            $this->redirect('/admin/ban-appeals?notice=review_failed');
+        }
+
+        $admin = current_admin();
+        $adminId = (int) ($admin['id'] ?? 0);
+        $ok = $appealModel->setStatus($appealId, $decision, $adminId, $adminNote);
+
+        if ($ok && $decision === 'approved') {
+            $targetType = (string) ($row['target_type'] ?? '');
+            $targetId = (int) ($row['target_id'] ?? 0);
+            $targetUserId = (int) ($row['user_id'] ?? 0);
+
+            if ($targetType === 'user_ban') {
+                $ok = $targetUserId > 0 ? $userModel->unbanById($targetUserId) : false;
+            } elseif ($targetType === 'user_penalty') {
+                $ok = $targetId > 0 ? $penaltyModel->deactivateById($targetId) : false;
+            } else {
+                $ok = false;
+            }
+        }
+
+        $this->redirect('/admin/ban-appeals?notice=' . ($ok ? 'reviewed' : 'review_failed'));
     }
 
     public function penalizeUser(string $id): void
@@ -392,7 +458,7 @@ final class UserController extends Controller
         $userAdminService = $this->service('admin/UserAdminService');
         $data = $userAdminService->buildManageRelationshipsData($_GET);
 
-        $this->adminView('admin/manage_relationships', [
+        $this->adminView('admin/moderation/relationships/index', [
             'rows' => $data['rows'],
             'keyword' => $data['keyword'],
             'userId' => $data['userId'],

@@ -16,7 +16,7 @@ final class RecipeController extends Controller
         $categoryModel = $this->model('CategoryModel');
         $categories = $categoryModel->all();
 
-        $this->adminView('admin/manage_recipes', [
+        $this->adminView('admin/recipes/index', [
             'recipes' => $recipes,
             'categories' => $categories,
         ]);
@@ -42,7 +42,7 @@ final class RecipeController extends Controller
         $ingredients = $recipeModel->ingredientsByRecipe($recipeId);
         $steps = $recipeModel->stepsByRecipe($recipeId);
 
-        $this->adminView('admin/recipe_detail', [
+        $this->adminView('admin/recipes/show', [
             'recipe' => $recipe,
             'ingredients' => $ingredients,
             'steps' => $steps,
@@ -160,7 +160,7 @@ final class RecipeController extends Controller
         $tipModel = $this->model('TipModel');
         $tips = $tipModel->all();
 
-        $this->adminView('admin/manage_tips', [
+        $this->adminView('admin/moderation/tips/index', [
             'tips' => $tips,
         ]);
     }

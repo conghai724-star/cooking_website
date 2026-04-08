@@ -125,6 +125,22 @@ class UserSafetyModel extends Model
             ->execute();
     }
 
+    public function unblockUser(int $blockerId, int $blockedUserId): bool
+    {
+        $this->ensureTables();
+        if ($blockerId <= 0 || $blockedUserId <= 0 || $blockerId === $blockedUserId) {
+            return false;
+        }
+
+        $ok = $this->db
+            ->query('DELETE FROM user_blocks WHERE blocker_id = :blocker_id AND blocked_user_id = :blocked_user_id')
+            ->bind(':blocker_id', $blockerId)
+            ->bind(':blocked_user_id', $blockedUserId)
+            ->execute();
+
+        return $ok && $this->db->rowCount() > 0;
+    }
+
     public function reportUser(int $reporterId, int $reportedUserId, string $reason, ?string $details = null): bool
     {
         $this->ensureTables();

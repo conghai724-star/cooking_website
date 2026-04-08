@@ -50,12 +50,14 @@ $notificationTypeLabel = static function (string $type): string {
                 }
             };
         </script>
+        <link rel="stylesheet" href="<?= URLROOT; ?>/assets/css/details-summary.css">
         <style>
             body { font-family: 'Work Sans', sans-serif; }
             .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
         </style>
     <?php else: ?>
         <link rel="stylesheet" href="<?= URLROOT; ?>/assets/css/style.css">
+        <link rel="stylesheet" href="<?= URLROOT; ?>/assets/css/details-summary.css">
     <?php endif; ?>
 </head>
 <?php if (!empty($useRecipeHubLayout)): ?>
@@ -70,19 +72,47 @@ $notificationTypeLabel = static function (string $type): string {
                 </div>
                 <h2 class="text-xl font-bold tracking-tight">Công thức Ngon</h2>
             </div>
-            <nav class="hidden items-center gap-8 md:flex">
+            <nav class="hidden items-center gap-8 lg:flex">
                 <a class="text-sm font-semibold hover:text-primary" href="<?= URLROOT; ?>/">Trang chủ</a>
                 <a class="text-sm font-semibold text-primary" href="<?= URLROOT; ?>/recipes">Công thức</a>
                 <a class="text-sm font-semibold hover:text-primary" href="<?= URLROOT; ?>/ingredients">Nguyên liệu</a>
                 <a class="text-sm font-semibold hover:text-primary" href="<?= URLROOT; ?>/tips">Mẹo vặt</a>
                 <a class="text-sm font-semibold hover:text-primary" href="<?= URLROOT; ?>/posts">Cộng đồng</a>
                 <a class="text-sm font-semibold hover:text-primary" href="<?= URLROOT; ?>/ai/ingredient-vision">AI</a>
+                <a class="text-sm font-semibold hover:text-primary" href="<?= URLROOT; ?>/ai/ingredient-drag-search">Kéo thả nguyên liệu</a>
                 <?php if (is_logged_in()): ?>
                     <a class="text-sm font-semibold hover:text-primary" href="<?= URLROOT; ?>/quizzes">Quiz</a>
                     <a class="text-sm font-semibold hover:text-primary" href="<?= URLROOT; ?>/meal-plans">Lập kế hoạch</a>
                     <a class="text-sm font-semibold hover:text-primary" href="<?= URLROOT; ?>/recipes/my">Công thức của tôi</a>
                 <?php endif; ?>
             </nav>
+            <nav class="hidden items-center gap-4 md:flex lg:hidden">
+                <a class="text-sm font-semibold hover:text-primary" href="<?= URLROOT; ?>/recipes">Công thức</a>
+                <a class="text-sm font-semibold hover:text-primary" href="<?= URLROOT; ?>/ingredients">Nguyên liệu</a>
+                <a class="text-sm font-semibold hover:text-primary" href="<?= URLROOT; ?>/tips">Mẹo vặt</a>
+                <a class="text-sm font-semibold hover:text-primary" href="<?= URLROOT; ?>/ai/ingredient-drag-search">Kéo thả</a>
+            </nav>
+            <details class="relative md:hidden">
+                <summary class="cursor-pointer rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700">
+                    Menu
+                </summary>
+                <div class="absolute left-0 top-[calc(100%+8px)] z-50 w-64 rounded-xl border border-slate-200 bg-white p-2 shadow-lg">
+                    <nav class="flex flex-col">
+                        <a class="rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/">Trang chủ</a>
+                        <a class="rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/recipes">Công thức</a>
+                        <a class="rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/ingredients">Nguyên liệu</a>
+                        <a class="rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/tips">Mẹo vặt</a>
+                        <a class="rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/posts">Cộng đồng</a>
+                        <a class="rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/ai/ingredient-vision">AI</a>
+                        <a class="rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/ai/ingredient-drag-search">Kéo thả nguyên liệu</a>
+                        <?php if (is_logged_in()): ?>
+                            <a class="rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/quizzes">Quiz</a>
+                            <a class="rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/meal-plans">Lập kế hoạch</a>
+                            <a class="rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/recipes/my">Công thức của tôi</a>
+                        <?php endif; ?>
+                    </nav>
+                </div>
+            </details>
         </div>
         <div class="flex items-center gap-4">
             <?php if (is_logged_in()): ?>
@@ -151,6 +181,7 @@ $notificationTypeLabel = static function (string $type): string {
             <a href="<?= URLROOT; ?>/posts">Cộng đồng</a>
             <a href="<?= URLROOT; ?>/quizzes">Quiz</a>
             <a href="<?= URLROOT; ?>/ai/ingredient-vision">AI</a>
+            <a href="<?= URLROOT; ?>/ai/ingredient-drag-search">Kéo thả nguyên liệu</a>
             <?php if (is_logged_in()): ?>
                 <details class="notification-dropdown" style="position:relative;display:inline-block;">
                     <summary style="cursor:pointer;">Thông báo<?= $unreadNotificationCount > 0 ? ' (' . $unreadNotificationCount . ')' : ''; ?></summary>

@@ -385,4 +385,22 @@ class UserModel extends Model
             ->execute();
         return (bool) $this->db->single();
     }
+
+    public function getActiveAccountBanByUserId(int $userId): ?array
+    {
+        if ($userId <= 0) {
+            return null;
+        }
+        $this->clearExpiredBans();
+        $this->db->query('SELECT id, user_id, reason, ban_type, ban_until, created_at
+                          FROM user_bans
+                          WHERE user_id = :user_id
+                            AND is_active = 1
+                          ORDER BY id DESC
+                          LIMIT 1')
+            ->bind(':user_id', $userId)
+            ->execute();
+        $row = $this->db->single();
+        return is_array($row) ? $row : null;
+    }
 }

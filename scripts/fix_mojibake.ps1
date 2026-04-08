@@ -11,7 +11,8 @@ $encoding1252 = [System.Text.Encoding]::GetEncoding(1252)
 $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
 
 # Typical mojibake markers from UTF-8 text decoded as Windows-1252 then re-saved.
-$markerRegex = '(Ã[\x80-\xBF]|Â[\x80-\xBF]|Ä[\x80-\xBF]|ï¿½|�)'
+# Includes both "Ã/Â/Ä..." style and "Ă..." style mojibake (common in admin headings like "Quáº£n lĂ½...").
+$markerRegex = '(Ã[\x80-\xBF]|Â[\x80-\xBF]|Ä[\x80-\xBF]|Ă[\x80-\xBF]|ï¿½|�)'
 
 function Get-MojibakeScore {
     param([string]$Text)

@@ -12,10 +12,18 @@ $sets = is_array($sets ?? null) ? $sets : [];
             <?php endif; ?>
         </div>
 
+        <div class="rounded-xl border border-slate-200 bg-white p-4">
+            <label for="quiz-search" class="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">Tìm bộ quiz</label>
+            <input id="quiz-search" name="keyword" type="search" placeholder="Nhập tên quiz, chủ đề, độ khó..." class="h-11 w-full rounded-xl border-slate-300 text-sm focus:border-primary focus:ring-primary">
+        </div>
+
         <?php if ($sets !== []): ?>
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div id="quiz-card-grid" class="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <?php foreach ($sets as $set): ?>
-                    <article class="rounded-xl border border-slate-200 bg-white p-5">
+                    <?php
+                    $searchText = mb_strtolower(trim((string) (($set['title'] ?? '') . ' ' . ($set['topic'] ?? '') . ' ' . ($set['difficulty'] ?? ''))), 'UTF-8');
+                    ?>
+                    <article class="rounded-xl border border-slate-200 bg-white p-5" data-quiz-item data-quiz-search="<?= htmlspecialchars($searchText, ENT_QUOTES, 'UTF-8'); ?>">
                         <h2 class="text-lg font-semibold text-slate-900"><?= htmlspecialchars((string) ($set['title'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></h2>
                         <p class="mt-1 text-sm text-slate-500">Chủ đề: <?= htmlspecialchars((string) ($set['topic'] ?? 'Tổng hợp'), ENT_QUOTES, 'UTF-8'); ?></p>
                         <p class="mt-1 text-sm text-slate-500">Độ khó: <?= htmlspecialchars((string) ($set['difficulty'] ?? 'easy'), ENT_QUOTES, 'UTF-8'); ?></p>
@@ -31,3 +39,18 @@ $sets = is_array($sets ?? null) ? $sets : [];
         <?php endif; ?>
     </div>
 </section>
+
+<script>
+(() => {
+    const input = document.getElementById('quiz-search');
+    if (!input) return;
+    const cards = Array.from(document.querySelectorAll('[data-quiz-item]'));
+    input.addEventListener('input', () => {
+        const keyword = String(input.value || '').trim().toLowerCase();
+        cards.forEach((card) => {
+            const haystack = String(card.getAttribute('data-quiz-search') || '');
+            card.classList.toggle('hidden', keyword !== '' && !haystack.includes(keyword));
+        });
+    });
+})();
+</script>

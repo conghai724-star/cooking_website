@@ -12,6 +12,6 @@ class CategoryController extends Controller
         $service = $this->service('admin/CategoryAdminService');
         $categories = $service->getAllCategories();
 
-        $this->adminView('admin/manage_categories', ['categories' => $categories]);
+        $this->adminView('admin/categories/index', ['categories' => $categories]);
     }
 }

@@ -34,7 +34,7 @@ class UserController extends Controller
         $isAjax = $this->isAjaxRequest();
         $followingNow = false;
         $changed = false;
-        $message = 'ÄĂ£ cáº­p nháº­t theo dĂµi.';
+        $message = 'A�Ă£ cA�º­p nhA�º­t theo dĂµi.';
 
         if ($targetUserId > 0 && $targetUserId !== $currentUserId) {
             /** @var UserModel $userModel */
@@ -46,7 +46,7 @@ class UserController extends Controller
             $penaltyModel = $this->model('UserPenaltyModel');
             $activeFollowLock = $penaltyModel->getActiveFollowLock($currentUserId);
             if ($activeFollowLock !== null) {
-                $message = 'TĂ i khoáº£n Ä‘ang bá»‹ khĂ³a theo dĂµi táº¡m thá»i.';
+                $message = 'TĂ i khoA�º£n A�‘ang bA�»‹ khĂ³a theo dĂµi tA�º¡m thA�»i.';
                 system_log_write('user_action', 'user.follow', 'blocked', 'follow_locked', 'user', $targetUserId, [
                     'target_user_id' => $targetUserId,
                 ], $currentUserId, (string) (current_user()['role'] ?? 'user'));
@@ -56,7 +56,7 @@ class UserController extends Controller
                 $followModel->follow($currentUserId, $targetUserId);
                 $followingNow = $followModel->isFollowing($currentUserId, $targetUserId);
                 $changed = true;
-                $message = $followingNow ? 'ÄĂ£ theo dĂµi.' : 'ÄĂ£ cáº­p nháº­t theo dĂµi.';
+                $message = $followingNow ? 'A�Ă£ theo dĂµi.' : 'A�Ă£ cA�º­p nhA�º­t theo dĂµi.';
                 if ($followingNow) {
                     system_log_write('user_action', 'user.follow', 'success', null, 'user', $targetUserId, [
                         'target_user_id' => $targetUserId,
@@ -67,15 +67,15 @@ class UserController extends Controller
                     $notificationModel->create(
                         $targetUserId,
                         'follow',
-                        $actorName . ' Ä‘Ă£ theo dĂµi báº¡n.',
+                        $actorName . ' A�‘Ă£ theo dĂµi bA�º¡n.',
                         '/users/' . $currentUserId
                     );
                 }
             } else {
-                $message = 'KhĂ´ng thá»ƒ theo dĂµi tĂ i khoáº£n nĂ y.';
+                $message = 'KhĂ´ng thA�»ƒ theo dĂµi tĂ i khoA�º£n nĂ y.';
             }
         } else {
-            $message = 'KhĂ´ng thá»ƒ theo dĂµi tĂ i khoáº£n nĂ y.';
+            $message = 'KhĂ´ng thA�»ƒ theo dĂµi tĂ i khoA�º£n nĂ y.';
         }
 
         if ($isAjax) {
@@ -100,19 +100,19 @@ class UserController extends Controller
         $currentUserId = (int) current_user_id();
         $isAjax = $this->isAjaxRequest();
         $changed = false;
-        $message = 'ÄĂ£ cáº­p nháº­t theo dĂµi.';
+        $message = 'A�Ă£ cA�º­p nhA�º­t theo dĂµi.';
 
         if ($targetUserId > 0 && $targetUserId !== $currentUserId) {
             /** @var FollowModel $followModel */
             $followModel = $this->model('FollowModel');
             $followModel->unfollow($currentUserId, $targetUserId);
             $changed = true;
-            $message = 'ÄĂ£ há»§y theo dĂµi.';
+            $message = 'A�Ă£ hA�»§y theo dĂµi.';
             system_log_write('user_action', 'user.unfollow', 'success', null, 'user', $targetUserId, [
                 'target_user_id' => $targetUserId,
             ], $currentUserId, (string) (current_user()['role'] ?? 'user'));
         } else {
-            $message = 'KhĂ´ng thá»ƒ há»§y theo dĂµi tĂ i khoáº£n nĂ y.';
+            $message = 'KhĂ´ng thA�»ƒ hA�»§y theo dĂµi tĂ i khoA�º£n nĂ y.';
         }
 
         if ($isAjax) {
@@ -210,7 +210,7 @@ class UserController extends Controller
             $notificationModel = $this->model('NotificationModel');
             $notificationModel->createForAdmins(
                 'report_user',
-                'Có báo cáo tài khoản mới (user ID: ' . $targetUserId . ').'
+                'CĂ³ bĂ¡o cĂ¡o tĂ i khoA�º£n mA�»›i (user ID: ' . $targetUserId . ').'
             );
         }
         $this->redirect('/users/' . $targetUserId . '?notice=' . ($ok ? 'report_user_success' : 'user_action_failed'));
@@ -252,6 +252,142 @@ class UserController extends Controller
         $this->redirect('/users/' . $targetUserId . '?notice=' . ($ok ? 'block_user_success' : 'user_action_failed'));
     }
 
+    public function unblockUser(string $id): void
+    {
+        require_login();
+
+        $targetUserId = (int) $id;
+        $currentUserId = (int) current_user_id();
+        if ($targetUserId <= 0) {
+            $this->redirect('/profile?notice=user_action_failed');
+        }
+        if ($targetUserId === $currentUserId) {
+            $this->redirect('/profile?notice=user_action_failed');
+        }
+
+        /** @var UserModel $userModel */
+        $userModel = $this->model('UserModel');
+        if (!$userModel->findById($targetUserId)) {
+            $this->redirect('/profile?notice=user_action_failed');
+        }
+
+        /** @var UserSafetyModel $safetyModel */
+        $safetyModel = $this->model('UserSafetyModel');
+        if (!$safetyModel->hasBlocked($currentUserId, $targetUserId)) {
+            $this->redirect('/users/' . $targetUserId . '?notice=unblock_user_not_blocked');
+        }
+
+        $ok = $safetyModel->unblockUser($currentUserId, $targetUserId);
+        $this->redirect('/users/' . $targetUserId . '?notice=' . ($ok ? 'unblock_user_success' : 'user_action_failed'));
+    }
+
+    public function appeals(): void
+    {
+        require_login();
+        $userId = (int) current_user_id();
+
+        /** @var UserModel $userModel */
+        $userModel = $this->model('UserModel');
+        /** @var UserPenaltyModel $penaltyModel */
+        $penaltyModel = $this->model('UserPenaltyModel');
+        /** @var BanAppealModel $appealModel */
+        $appealModel = $this->model('BanAppealModel');
+
+        $activeTargets = [];
+
+        $accountBan = $userModel->getActiveAccountBanByUserId($userId);
+        if ($accountBan !== null) {
+            $activeTargets[] = [
+                'target_type' => 'user_ban',
+                'target_id' => (int) ($accountBan['id'] ?? 0),
+                'label' => 'Ban tĂ i khoA�º£n',
+                'reason' => (string) ($accountBan['reason'] ?? ''),
+                'expires_at' => (string) ($accountBan['ban_until'] ?? ''),
+                'created_at' => (string) ($accountBan['created_at'] ?? ''),
+            ];
+        }
+
+        foreach ($penaltyModel->listActiveAppealableByUserId($userId) as $row) {
+            $action = (string) ($row['action'] ?? '');
+            $label = match (true) {
+                str_starts_with($action, 'comment_lock_') => 'KhĂ³a bĂ¬nh luA�º­n',
+                str_starts_with($action, 'recipe_post_lock_') => 'KhĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³a Ä‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€¹Ă…â€œÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬Â Ä‚Â¢Ă¢â€Â¬Ă¢â€Â¢ng cĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â´ng thÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡Ă„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â»Ă„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â©c',
+                str_starts_with($action, 'tip_post_lock_') => 'KhĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³a Ä‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€¹Ă…â€œÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬Â Ä‚Â¢Ă¢â€Â¬Ă¢â€Â¢ng mÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡Ă„â€Ă¢â‚¬ÂÄ‚â€Ă‚ÂºĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¹o',
+                str_starts_with($action, 'ingredient_post_lock_') => 'KhĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³a Ä‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€¹Ă…â€œÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬Â Ä‚Â¢Ă¢â€Â¬Ă¢â€Â¢ng nguyĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Âªn liÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡Ă„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â»Ă„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚Â¡u',
+                str_starts_with($action, 'follow_lock_') => 'KhĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³a theo dĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Âµi',
+                str_starts_with($action, 'ban_') => 'Ban tĂ i khoA�º£n',
+                default => $action,
+            };
+            $activeTargets[] = [
+                'target_type' => 'user_penalty',
+                'target_id' => (int) ($row['id'] ?? 0),
+                'label' => $label,
+                'reason' => (string) ($row['reason'] ?? ''),
+                'expires_at' => (string) ($row['banned_until'] ?? ''),
+                'created_at' => (string) ($row['created_at'] ?? ''),
+            ];
+        }
+
+        $this->view('user/appeals', [
+            'title' => 'KhiA�º¿u nA�º¡i xA�»­ lĂ½ tĂ i khoA�º£n',
+            'useRecipeHubLayout' => true,
+            'targets' => $activeTargets,
+            'appeals' => $appealModel->listByUser($userId),
+            'notice' => (string) ($_GET['notice'] ?? ''),
+        ]);
+    }
+
+    public function submitAppeal(): void
+    {
+        require_login();
+        $userId = (int) current_user_id();
+        $targetType = (string) ($_POST['target_type'] ?? '');
+        $targetId = (int) ($_POST['target_id'] ?? 0);
+        $targetMixed = trim((string) ($_POST['target_type_target_id'] ?? ''));
+        if ($targetMixed !== '' && str_contains($targetMixed, ':')) {
+            [$targetTypePart, $targetIdPart] = explode(':', $targetMixed, 2);
+            $targetType = trim($targetTypePart);
+            $targetId = (int) trim($targetIdPart);
+        }
+        $appealReason = trim((string) ($_POST['appeal_reason'] ?? ''));
+        $evidence = trim((string) ($_POST['evidence_text'] ?? ''));
+        $evidenceValue = $evidence !== '' ? $evidence : null;
+
+        if (!in_array($targetType, ['user_ban', 'user_penalty'], true) || $targetId <= 0 || $appealReason === '') {
+            $this->redirect('/appeals?notice=appeal_invalid');
+        }
+
+        /** @var UserModel $userModel */
+        $userModel = $this->model('UserModel');
+        /** @var UserPenaltyModel $penaltyModel */
+        $penaltyModel = $this->model('UserPenaltyModel');
+        /** @var BanAppealModel $appealModel */
+        $appealModel = $this->model('BanAppealModel');
+
+        $isValidTarget = false;
+        if ($targetType === 'user_ban') {
+            $activeBan = $userModel->getActiveAccountBanByUserId($userId);
+            $isValidTarget = $activeBan !== null && (int) ($activeBan['id'] ?? 0) === $targetId;
+        } else {
+            foreach ($penaltyModel->listActiveAppealableByUserId($userId) as $penalty) {
+                if ((int) ($penalty['id'] ?? 0) === $targetId) {
+                    $isValidTarget = true;
+                    break;
+                }
+            }
+        }
+
+        if (!$isValidTarget) {
+            $this->redirect('/appeals?notice=appeal_target_not_found');
+        }
+        if ($appealModel->hasPendingAppeal($userId, $targetType, $targetId)) {
+            $this->redirect('/appeals?notice=appeal_exists');
+        }
+
+        $ok = $appealModel->create($userId, $targetType, $targetId, $appealReason, $evidenceValue);
+        $this->redirect('/appeals?notice=' . ($ok ? 'appeal_submitted' : 'appeal_failed'));
+    }
+
     public function edit(): void
     {
         require_login();
@@ -271,7 +407,7 @@ class UserController extends Controller
 
         $notice = (string) ($_GET['notice'] ?? '');
         if ($notice === 'email_verified') {
-            $message = 'Email dang nh?p dAA�¿½A�¿A�½ du?c c?p nh?t.';
+            $message = 'Email A�‘A�ƒng nhA�º­p A�‘A�°A�»£c cA�º­p nhA�º­t.';
         } elseif ($notice === 'email_token_invalid') {
             $error = 'LiAA�¿½A�¿A�½n k?t xAA�¿½A�¿A�½c nh?n khAA�¿½A�¿A�½ng h?p l? ho?c dAA�¿½A�¿A�½ h?t h?n.';
         } elseif ($notice === 'email_already_used') {
@@ -502,16 +638,37 @@ class UserController extends Controller
             }
         }
 
-        $recipes = $recipeModel->byUser($profileUserId);
-        $ingredients = $ingredientModel->byUser($profileUserId);
-        $tips = $tipModel->byUser($profileUserId);
+        $blockRestricted = $viewerId > 0 && !$isOwner && ($isBlockedByViewer || $isViewerBlocked);
+
+        if ($blockRestricted) {
+            $recipes = [];
+            $ingredients = [];
+            $tips = [];
+            $certificates = [];
+            $certificateCount = 0;
+            $followerCount = 0;
+            $followingCount = 0;
+        } else {
+            $recipes = $recipeModel->byUser($profileUserId);
+            $ingredients = $ingredientModel->byUser($profileUserId);
+            $tips = $tipModel->byUser($profileUserId);
+            $certificates = $quizModel->certificatesByUser($profileUserId);
+            $certificateCount = $quizModel->certificateCountByUser($profileUserId);
+            $followerCount = $followModel->countFollowers($profileUserId);
+            $followingCount = $followModel->countFollowing($profileUserId);
+        }
+
         $savedIngredients = ($isOwner && $viewerId > 0) ? $ingredientModel->savedByUser($viewerId) : [];
         $savedTips = ($isOwner && $viewerId > 0) ? $tipModel->savedByUser($viewerId) : [];
-        $certificates = $quizModel->certificatesByUser($profileUserId);
-        $certificateCount = $quizModel->certificateCountByUser($profileUserId);
+        $appeals = [];
+        if ($isOwner && $viewerId > 0) {
+            /** @var BanAppealModel $appealModel */
+            $appealModel = $this->model('BanAppealModel');
+            $appeals = $appealModel->listByUser($viewerId);
+        }
 
         $this->view('user/profile', [
-            'title' => 'Há»“ sÆ¡',
+            'title' => 'HĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡Ä‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â»Ä‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¢Ă„â€Ă‚Â¢Ä‚Â¢Ă¢â€Â¬Ă‚ÂÄ‚â€Ă‚Â¬Ă„â€Ă¢â‚¬Â¦Ä‚Â¢Ă¢â€Â¬Ă…â€œ sĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚Â Ä‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡',
             'useRecipeHubLayout' => true,
             'user' => $user,
             'recipes' => $recipes,
@@ -520,8 +677,9 @@ class UserController extends Controller
             'saved_ingredients' => $savedIngredients,
             'saved_tips' => $savedTips,
             'certificates' => $certificates,
-            'follower_count' => $followModel->countFollowers($profileUserId),
-            'following_count' => $followModel->countFollowing($profileUserId),
+            'appeals' => $appeals,
+            'follower_count' => $followerCount,
+            'following_count' => $followingCount,
             'certificate_count' => $certificateCount,
             'is_owner' => $isOwner,
             'is_following' => $isFollowing,
@@ -551,6 +709,8 @@ class UserController extends Controller
         $userModel = $this->model('UserModel');
         /** @var FollowModel $followModel */
         $followModel = $this->model('FollowModel');
+        /** @var UserSafetyModel $safetyModel */
+        $safetyModel = $this->model('UserSafetyModel');
 
         $profileUser = $userModel->findById($profileUserId);
         if (!$profileUser) {
@@ -561,12 +721,21 @@ class UserController extends Controller
         $viewerId = (int) (current_user_id() ?? 0);
         $isOwner = $viewerId > 0 && $viewerId === $profileUserId;
 
-        $followers = $followModel->followersOf($profileUserId, $viewerId);
-        $following = $followModel->followingOf($profileUserId, $viewerId);
+        $isBlockedByViewer = $viewerId > 0 && !$isOwner && $safetyModel->hasBlocked($viewerId, $profileUserId);
+        $isViewerBlocked = $viewerId > 0 && !$isOwner && $safetyModel->hasBlocked($profileUserId, $viewerId);
+        $blockRestricted = $isBlockedByViewer || $isViewerBlocked;
+
+        if ($blockRestricted) {
+            $followers = [];
+            $following = [];
+        } else {
+            $followers = $followModel->followersOf($profileUserId, $viewerId);
+            $following = $followModel->followingOf($profileUserId, $viewerId);
+        }
         $items = $type === 'followers' ? $followers : $following;
 
         $this->view('user/connections', [
-            'title' => $type === 'followers' ? 'NgÆ°á»i theo dĂµi' : 'Äang theo dĂµi',
+            'title' => $type === 'followers' ? 'NgA�°A�»i theo dĂµi' : 'A�ang theo dĂµi',
             'useRecipeHubLayout' => true,
             'profile_user' => $profileUser,
             'items' => $items,
@@ -576,6 +745,9 @@ class UserController extends Controller
             'is_owner' => $isOwner,
             'viewer_id' => $viewerId,
             'is_logged_in' => is_logged_in(),
+            'is_blocked_by_viewer' => $isBlockedByViewer,
+            'is_viewer_blocked' => $isViewerBlocked,
+            'block_restricted' => $blockRestricted,
         ]);
     }
 

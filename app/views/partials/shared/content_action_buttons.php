@@ -7,20 +7,20 @@ $actionIsOwner = (bool) ($actionIsOwner ?? false);
 $actionEnableFollow = (bool) ($actionEnableFollow ?? false);
 $actionFollowAction = (string) ($actionFollowAction ?? '');
 $actionIsFollowing = (bool) ($actionIsFollowing ?? false);
-$actionFollowText = (string) ($actionFollowText ?? 'Theo dõi');
-$actionUnfollowText = (string) ($actionUnfollowText ?? 'Đang theo dõi');
+$actionFollowText = (string) ($actionFollowText ?? 'Theo dĂ„â€Ă‚Âµi');
+$actionUnfollowText = (string) ($actionUnfollowText ?? 'Đang theo dA�i');
 
 $actionEnableSave = (bool) ($actionEnableSave ?? false);
 $actionSaveAction = (string) ($actionSaveAction ?? '');
 $actionSaveHiddenFields = is_array($actionSaveHiddenFields ?? null) ? $actionSaveHiddenFields : [];
 $actionIsSaved = (bool) ($actionIsSaved ?? false);
-$actionSaveLabelOn = (string) ($actionSaveLabelOn ?? 'Đã lưu');
+$actionSaveLabelOn = (string) ($actionSaveLabelOn ?? 'ĐA� lưu');
 $actionSaveLabelOff = (string) ($actionSaveLabelOff ?? 'Luu');
-$actionSaveSuccessToast = (string) ($actionSaveSuccessToast ?? 'Đã cập nhật lưu nội dung.');
-$actionSaveErrorToast = (string) ($actionSaveErrorToast ?? 'Không thể lưu nội dung lúc này.');
+$actionSaveSuccessToast = (string) ($actionSaveSuccessToast ?? 'ĐA� cập nhật lưu nội dung.');
+$actionSaveErrorToast = (string) ($actionSaveErrorToast ?? 'KhA�ng thA�»ƒ lA�°u nA�»™i dung lĂºc nĂ y.');
 
 $actionEnableShare = (bool) ($actionEnableShare ?? true);
-$actionShareText = (string) ($actionShareText ?? 'Xem nội dung này');
+$actionShareText = (string) ($actionShareText ?? 'Xem nA�»™i dung nĂ y');
 $actionShareTitle = (string) ($actionShareTitle ?? '');
 
 $actionEnableReport = (bool) ($actionEnableReport ?? false);
@@ -29,8 +29,8 @@ $actionReportTriggerId = (string) ($actionReportTriggerId ?? 'btn-report-trigger
 $actionReportModalTarget = (string) ($actionReportModalTarget ?? '#report-modal');
 $actionReportAction = (string) ($actionReportAction ?? '');
 $actionReportOtherTargetId = (string) ($actionReportOtherTargetId ?? 'content-report-other');
-$actionReportSuccessToast = (string) ($actionReportSuccessToast ?? 'Đã gửi báo cáo.');
-$actionReportErrorToast = (string) ($actionReportErrorToast ?? 'Không thể gửi báo cáo lúc này.');
+$actionReportSuccessToast = (string) ($actionReportSuccessToast ?? 'A�¿½A? g?i bA?o cA?o.');
+$actionReportErrorToast = (string) ($actionReportErrorToast ?? 'KhA�ng thA�»ƒ gA�»­i bĂ¡o cĂ¡o lĂºc nĂ y.');
 $actionReportReasonField = (string) ($actionReportReasonField ?? 'reason');
 $actionReportDetailsField = (string) ($actionReportDetailsField ?? 'details');
 $actionReportHiddenFields = is_array($actionReportHiddenFields ?? null) ? $actionReportHiddenFields : [];
@@ -52,12 +52,12 @@ if ($requestQuery !== '') {
 <div class="mt-4 flex flex-col gap-2">
     <?php if ($actionAuthorId > 0): ?>
         <a class="inline-flex w-full items-center justify-center rounded-xl bg-primary px-4 py-2 text-sm font-bold text-white hover:bg-primary/90" href="<?= htmlspecialchars($actionAuthorProfileUrl, ENT_QUOTES, 'UTF-8'); ?>">
-            Xem hồ sơ tác giả
+            Xem hA�»“ sA�¡ tĂ¡c giA�º£
         </a>
     <?php endif; ?>
 
     <?php if ($actionEnableFollow && $actionIsLoggedIn && !$actionIsOwner && $actionFollowAction !== ''): ?>
-        <form method="post" action="<?= htmlspecialchars($actionFollowAction, ENT_QUOTES, 'UTF-8'); ?>" data-ajax-form data-on-success="toggle-follow" data-follow-text="<?= htmlspecialchars($actionFollowText, ENT_QUOTES, 'UTF-8'); ?>" data-unfollow-text="<?= htmlspecialchars($actionUnfollowText, ENT_QUOTES, 'UTF-8'); ?>" data-success-toast="Đã cập nhật theo dõi." data-error-toast="Không thể cập nhật theo dõi.">
+        <form method="post" action="<?= htmlspecialchars($actionFollowAction, ENT_QUOTES, 'UTF-8'); ?>" data-ajax-form data-on-success="toggle-follow" data-follow-text="<?= htmlspecialchars($actionFollowText, ENT_QUOTES, 'UTF-8'); ?>" data-unfollow-text="<?= htmlspecialchars($actionUnfollowText, ENT_QUOTES, 'UTF-8'); ?>" data-success-toast="A�¿½A? c?p nh?t theo dA?i." data-error-toast="KhA?ng th? c?p nh?t theo dA?i.">
             <?= csrf_field(); ?>
             <input type="hidden" name="redirect_to" value="<?= htmlspecialchars($requestPath, ENT_QUOTES, 'UTF-8'); ?>">
             <button data-follow-btn class="inline-flex w-full items-center justify-center rounded-xl border border-primary px-4 py-2 text-sm font-bold text-primary hover:bg-primary/10" type="submit">
@@ -79,15 +79,15 @@ if ($requestQuery !== '') {
     <?php endif; ?>
 
     <?php if ($actionEnableShare): ?>
-        <button type="button" data-share-btn data-share-text="<?= htmlspecialchars($actionShareText, ENT_QUOTES, 'UTF-8'); ?>" data-share-title="<?= htmlspecialchars($actionShareTitle, ENT_QUOTES, 'UTF-8'); ?>" class="inline-flex w-full items-center justify-center rounded-xl border border-blue-500 px-4 py-2 text-sm font-bold text-blue-500 hover:bg-blue-50">Chia sẽ</button>
+        <button type="button" data-share-btn data-share-text="<?= htmlspecialchars($actionShareText, ENT_QUOTES, 'UTF-8'); ?>" data-share-title="<?= htmlspecialchars($actionShareTitle, ENT_QUOTES, 'UTF-8'); ?>" class="inline-flex w-full items-center justify-center rounded-xl border border-blue-500 px-4 py-2 text-sm font-bold text-blue-500 hover:bg-blue-50">Chia sA�º½</button>
     <?php endif; ?>
 
     <?php if ($actionEnableReport && $actionIsLoggedIn && !$actionIsOwner): ?>
         <?php if ($actionReportMode === 'modal'): ?>
-            <button id="<?= htmlspecialchars($actionReportTriggerId, ENT_QUOTES, 'UTF-8'); ?>" data-modal-open="<?= htmlspecialchars($actionReportModalTarget, ENT_QUOTES, 'UTF-8'); ?>" class="inline-flex w-full items-center justify-center rounded-xl border border-red-500 px-4 py-2 text-sm font-bold text-red-500 hover:bg-red-50" type="button">Báo cáo</button>
+            <button id="<?= htmlspecialchars($actionReportTriggerId, ENT_QUOTES, 'UTF-8'); ?>" data-modal-open="<?= htmlspecialchars($actionReportModalTarget, ENT_QUOTES, 'UTF-8'); ?>" class="inline-flex w-full items-center justify-center rounded-xl border border-red-500 px-4 py-2 text-sm font-bold text-red-500 hover:bg-red-50" type="button">BĂ„â€Ă‚Â¡o cĂ„â€Ă‚Â¡o</button>
         <?php else: ?>
             <details>
-                <summary class="inline-flex w-full cursor-pointer list-none items-center justify-center rounded-xl border border-red-500 px-4 py-2 text-sm font-bold text-red-500 hover:bg-red-50">Báo cáo</summary>
+                <summary class="inline-flex w-full cursor-pointer list-none items-center justify-center rounded-xl border border-red-500 px-4 py-2 text-sm font-bold text-red-500 hover:bg-red-50">BĂ„â€Ă‚Â¡o cĂ„â€Ă‚Â¡o</summary>
                 <?php
                 $reportAction = $actionReportAction;
                 $reportOtherTargetId = $actionReportOtherTargetId;
@@ -102,3 +102,4 @@ if ($requestQuery !== '') {
         <?php endif; ?>
     <?php endif; ?>
 </div>
+

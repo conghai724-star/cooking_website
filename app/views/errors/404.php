@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>404 - Không tìm thấy trang</title>
     <link rel="stylesheet" href="<?= URLROOT; ?>/assets/css/style.css">
+    <link rel="stylesheet" href="<?= URLROOT; ?>/assets/css/details-summary.css">
 </head>
 <body>
 <div class="container">

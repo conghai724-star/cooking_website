@@ -15,7 +15,7 @@ class IngredientController extends Controller
         $ingredients = $ingredientModel->all();
         $categories = $categoryModel->byType('ingredient');
 
-        $this->adminView('admin/manage_ingredients', [
+        $this->adminView('admin/ingredients/index', [
             'ingredients' => $ingredients,
             'categories' => $categories,
         ]);
@@ -40,7 +40,7 @@ class IngredientController extends Controller
 
         $nutrition = $ingredientModel->getNutrition($ingredientId) ?: [];
 
-        $this->adminView('admin/ingredient_detail', [
+        $this->adminView('admin/ingredients/show', [
             'ingredient' => $ingredient,
             'nutrition' => $nutrition,
         ]);
@@ -207,7 +207,7 @@ class IngredientController extends Controller
             }
         }
 
-        $this->adminView('admin/edit_ingredient', [
+        $this->adminView('admin/ingredients/edit', [
             'ingredient' => $ingredient,
             'nutrition' => $nutrition,
             'categories' => $categories,

@@ -84,9 +84,9 @@ abstract class Controller
         }
 
         extract($data, EXTR_SKIP);
-        require APPROOT . '/app/views/layouts/admin_header.php';
+        require APPROOT . '/app/views/admin/layouts/admin_header.php';
         require $viewPath;
-        require APPROOT . '/app/views/layouts/admin_footer.php';
+        require APPROOT . '/app/views/admin/layouts/admin_footer.php';
     }
 
     protected function model(string $model): object

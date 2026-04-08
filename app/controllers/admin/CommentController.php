@@ -12,7 +12,7 @@ class CommentController extends Controller
         $service = $this->service('admin/CommentAdminService');
         $data = $service->buildManageCommentsData($_GET);
 
-        $this->adminView('admin/manage_comments', $data);
+        $this->adminView('admin/comments/index', $data);
     }
 
     public function hideComment(string $id): void

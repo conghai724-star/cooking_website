@@ -12,7 +12,7 @@ final class LogController extends Controller
         $service = $this->service('admin/LogAdminService');
         $data = $service->buildManageLogsData($_GET);
 
-        $this->adminView('admin/manage_logs', [
+        $this->adminView('admin/logs/index', [
             'rows' => $data['rows'],
             'filters' => $data['filters'],
             'page' => $data['page'],

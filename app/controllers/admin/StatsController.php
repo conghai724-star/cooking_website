@@ -12,7 +12,7 @@ class StatsController extends Controller
         $service = $this->service('admin/StatsAdminService');
         $data = $service->buildManageStatsData($_GET);
 
-        $this->adminView('admin/manage_stats', $data);
+        $this->adminView('admin/stats/index', $data);
     }
 
     public function exportStatsCsv(): void

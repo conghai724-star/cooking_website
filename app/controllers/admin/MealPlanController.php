@@ -12,7 +12,7 @@ class MealPlanController extends Controller
         $service = $this->service('admin/MealPlanAdminService');
         $data = $service->buildManageMealPlansData($_GET);
 
-        $this->adminView('admin/manage_mealplans', [
+        $this->adminView('admin/mealplans/index', [
             'rows' => $data['rows'],
             'keyword' => $data['keyword'],
             'userId' => $data['userId'],

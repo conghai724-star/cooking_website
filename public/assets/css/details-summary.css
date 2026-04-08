@@ -1,0 +1,15 @@
+/**
+ * <details>/<summary>: ẩn marker mặc định trên toàn site (Desktop / Tablet / Mobile).
+ * WebKit: ::-webkit-details-marker — Firefox / chuẩn: list-style + ::marker.
+ */
+summary {
+    list-style: none;
+}
+
+summary::-webkit-details-marker {
+    display: none;
+}
+
+summary::marker {
+    content: none;
+}

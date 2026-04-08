@@ -349,7 +349,7 @@ class RecipeController extends Controller
         $savedItems = [];
         foreach ($saved as $item) {
             $item['item_type'] = 'saved';
-            $item['label'] = 'A�¿½A�¿½ luu';
+            $item['label'] = 'Ä‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â£ lÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚Â Ă„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â°u';
             $savedItems[] = $item;
 
             $itemId = (int) ($item['id'] ?? 0);
@@ -466,7 +466,7 @@ class RecipeController extends Controller
         require_login();
 
         if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
-            $this->jsonError('BAD_REQUEST', 'Phương thức không hợp lệ.', 400);
+            $this->jsonError('BAD_REQUEST', 'PhA�°A�¡ng thA�»©c khĂ´ng hA�»£p lA�»‡.', 400);
         }
 
         $recipeId = (int) ($_POST['recipe_id'] ?? 0);
@@ -478,14 +478,14 @@ class RecipeController extends Controller
         $recipeModel = $this->model('RecipeModel');
         $ok = $recipeModel->toggleSave((int) current_user_id(), $recipeId);
         if (!$ok) {
-            $this->jsonError('SERVER_ERROR', 'KhA�¿½ng th? c?p nh?t.', 500);
+            $this->jsonError('SERVER_ERROR', 'KhĂ´ng thA�»ƒ cA�º­p nhA�º­t.', 500);
         }
 
         $saved = $recipeModel->isSaved((int) current_user_id(), $recipeId);
         $this->jsonResponse([
             'success' => true,
             'saved' => $saved,
-            'message' => $saved ? 'A�¿½A�¿½ luu cA�¿½ng th?c.' : 'A�¿½A�¿½ b? luu cA�¿½ng th?c.',
+            'message' => $saved ? 'A�Ă£ lA�°u cĂ´ng thA�»©c.' : 'A�Ă£ bA�» lA�°u cĂ´ng thA�»©c.',
         ], 200);
     }
 
@@ -499,7 +499,7 @@ class RecipeController extends Controller
 
         if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
             if ($isAjax) {
-                $this->jsonError('BAD_REQUEST', 'Phương thức không hợp lệ.', 400);
+                $this->jsonError('BAD_REQUEST', 'PhA�°A�¡ng thA�»©c khĂ´ng hA�»£p lA�»‡.', 400);
             }
             $this->redirect('/recipes');
         }
@@ -508,13 +508,13 @@ class RecipeController extends Controller
         $reason = trim((string) ($_POST['reason'] ?? ''));
         $reasonOther = trim((string) ($_POST['reason_other'] ?? ''));
 
-        if ($reason === 'Khác' && $reasonOther !== '') {
-            $reason = 'Khác: ' . $reasonOther;
+        if ($reason === 'KhĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡c' && $reasonOther !== '') {
+            $reason = 'KhĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡c: ' . $reasonOther;
         }
 
         if ($recipeId <= 0 || $reason === '') {
             if ($isAjax) {
-                $this->jsonError('VALIDATION_ERROR', 'Vui lòng nhập lý do.', 422);
+                $this->jsonError('VALIDATION_ERROR', 'Vui lĂ²ng nhA�º­p lĂ½ do.', 422);
             }
             $this->redirect('/recipes/' . max(1, $recipeId));
         }
@@ -549,7 +549,7 @@ class RecipeController extends Controller
         require_login();
 
         if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
-            $this->jsonError('BAD_REQUEST', 'Phương thức không hợp lệ.', 400);
+            $this->jsonError('BAD_REQUEST', 'PhA�°A�¡ng thA�»©c khĂ´ng hA�»£p lA�»‡.', 400);
         }
 
         $targetUserId = (int) ($_POST['user_id'] ?? 0);

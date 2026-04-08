@@ -314,6 +314,32 @@ class UserPenaltyModel extends Model
         return $query->resultSet();
     }
 
+    public function listActiveAppealableByUserId(int $userId): array
+    {
+        $this->ensureTable();
+        $this->expireTemporaryPenalties();
+        if ($userId <= 0) {
+            return [];
+        }
+
+        $this->db->query("SELECT id, action, reason, banned_until, created_at
+                          FROM user_penalties
+                          WHERE user_id = :user_id
+                            AND is_active = 1
+                            AND action IN (
+                                'comment_lock_temp', 'comment_lock_permanent',
+                                'recipe_post_lock_temp', 'recipe_post_lock_permanent',
+                                'tip_post_lock_temp', 'tip_post_lock_permanent',
+                                'ingredient_post_lock_temp', 'ingredient_post_lock_permanent',
+                                'follow_lock_temp', 'follow_lock_permanent',
+                                'ban_temp', 'ban_permanent'
+                            )
+                          ORDER BY created_at DESC, id DESC")
+            ->bind(':user_id', $userId)
+            ->execute();
+        return $this->db->resultSet();
+    }
+
     private function expireTemporaryPenalties(): void
     {
         $this->db->query("UPDATE user_penalties

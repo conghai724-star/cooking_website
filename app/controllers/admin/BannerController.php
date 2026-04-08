@@ -12,7 +12,7 @@ final class BannerController extends Controller
         $service = $this->service('admin/BannerAdminService');
         $data = $service->buildManageData($_GET);
 
-        $this->adminView('admin/manage_banners', $data);
+        $this->adminView('admin/banners/index', $data);
     }
 
     public function saveBanner(): void

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 $user = is_array($user ?? null) ? $user : [];
 $recipes = is_array($recipes ?? null) ? $recipes : [];
 $ingredients = is_array($ingredients ?? null) ? $ingredients : [];
@@ -6,6 +6,7 @@ $tips = is_array($tips ?? null) ? $tips : [];
 $savedIngredients = is_array($saved_ingredients ?? null) ? $saved_ingredients : [];
 $savedTips = is_array($saved_tips ?? null) ? $saved_tips : [];
 $certificates = is_array($certificates ?? null) ? $certificates : [];
+$appeals = is_array($appeals ?? null) ? $appeals : [];
 
 $isOwner = (bool) ($is_owner ?? false);
 $isFollowing = (bool) ($is_following ?? false);
@@ -29,21 +30,37 @@ $handle = $username !== '' ? '@' . $username : '@thanhvien';
 
 $bio = trim((string) ($user['bio'] ?? ''));
 if ($bio === '') {
-    $bio = 'Yêu nấu ăn và chia sẻ nội dung mới mỗi ngày.';
+    $bio = 'YĂªu nA�º¥u A�ƒn vĂ  chia sA�º» nA�»™i dung mA�»›i mA�»—i ngày.';
 }
 
 $avatar = trim((string) ($user['avatar'] ?? ''));
 $avatarUrl = $avatar !== '' ? URLROOT . '/uploads/' . rawurlencode($avatar) : '';
 
+$profileShareUrl = URLROOT . '/users/' . $profileUserId;
+$profileShareTitle = $displayName . ' A�€” HA�»“ sA�¡';
+$profileShareText = 'Xem hA�»“ sA�¡ cA�»§a ' . $displayName;
+
+$profileContentHidden = $isLoggedIn && !$isOwner && ($isBlockedByViewer || $isViewerBlocked);
+if ($profileContentHidden) {
+    $displayName = $isBlockedByViewer ? 'TĂ i khoA�º£n A�‘Ă£ chA�º·n' : 'HA�»“ sA�¡ khĂ´ng khA�º£ dA�»¥ng';
+    $handle = 'Ă¢â‚¬â€';
+    $bio = $isBlockedByViewer
+        ? 'BA�º¡n A�‘Ă£ chA�º·n ngA�°A�»i dĂ¹ng nĂ y. CĂ´ng thA�»©c, nguyĂªn liA�»‡u, mA�º¹o vĂ  thA�»‘ng kĂª khĂ´ng A�‘A�°A�»£c hiA�»ƒn thA�»‹.'
+        : 'NgA�°A�»i dĂ¹ng nĂ y A�‘Ă£ chA�º·n bA�º¡n. BA�º¡n khĂ´ng thA�»ƒ xem nA�»™i dung hA�»“ sA�¡ cA�»§a hA�».';
+    $avatarUrl = '';
+}
+
 $noticeText = match ($notice) {
-    'report_user_success' => 'Đã gửi báo cáo tài khoản.',
-    'report_user_exists' => 'Bạn đã báo cáo tài khoản này trước đó.',
-    'report_reason_required' => 'Vui lòng chọn lý do báo cáo.',
-    'cannot_report_self' => 'Bạn không thể báo cáo chính mình.',
-    'block_user_success' => 'Đã chặn tài khoản này.',
-    'block_user_exists' => 'Tài khoản này đã nằm trong danh sách chặn.',
-    'cannot_block_self' => 'Bạn không thể tự chặn chính mình.',
-    'user_action_failed' => 'Không thể thực hiện thao tác này lúc này.',
+    'report_user_success' => 'A�Ă£ gA�»­i bĂ¡o cĂ¡o tĂ i khoA�º£n.',
+    'report_user_exists' => 'BA�º¡n A�‘Ă£ bĂ¡o cĂ¡o tĂ i khoA�º£n nĂ y trA�°A�»›c A�‘Ă³.',
+    'report_reason_required' => 'Vui lĂ²ng chA�»n lĂ½ do bĂ¡o cĂ¡o.',
+    'cannot_report_self' => 'BA�º¡n khĂ´ng thA�»ƒ bĂ¡o cĂ¡o chĂ­nh mĂ¬nh.',
+    'block_user_success' => 'A�Ă£ chA�º·n tĂ i khoA�º£n nĂ y.',
+    'block_user_exists' => 'TĂ i khoA�º£n nĂ y A�‘Ă£ nA�º±m trong danh sĂ¡ch chA�º·n.',
+    'cannot_block_self' => 'BA�º¡n khĂ´ng thA�»ƒ tA�»± chA�º·n chĂ­nh mĂ¬nh.',
+    'unblock_user_success' => 'A�Ă£ bA�» chA�º·n tĂ i khoA�º£n nĂ y.',
+    'unblock_user_not_blocked' => 'BA�º¡n chA�°a chA�º·n tĂ i khoA�º£n nĂ y.',
+    'user_action_failed' => 'Không thA�»ƒ thA�»±c hiA�»‡n thao tĂ¡c nĂ y lĂºc nĂ y.',
     default => '',
 };
 ?>
@@ -62,8 +79,12 @@ $noticeText = match ($notice) {
             </div>
 
             <div class="absolute -bottom-16 left-4 flex w-[calc(100%-32px)] flex-col items-start gap-4 md:left-8 md:w-[calc(100%-64px)] md:flex-row md:items-end">
-                <?php if ($avatarUrl !== ''): ?>
-                    <img class="h-32 w-32 rounded-full border-4 border-white object-cover shadow-lg shadow-black/5 md:h-40 md:w-40" src="<?= htmlspecialchars($avatarUrl, ENT_QUOTES, 'UTF-8'); ?>" alt="Ảnh đại diện">
+                <?php if ($profileContentHidden): ?>
+                    <div class="flex h-32 w-32 items-center justify-center rounded-full border-4 border-white bg-slate-200 shadow-lg shadow-black/5 md:h-40 md:w-40" aria-hidden="true">
+                        <span class="material-symbols-outlined text-5xl text-slate-500"><?= $isBlockedByViewer ? 'block' : 'visibility_off'; ?></span>
+                    </div>
+                <?php elseif ($avatarUrl !== ''): ?>
+                    <img class="h-32 w-32 rounded-full border-4 border-white object-cover shadow-lg shadow-black/5 md:h-40 md:w-40" src="<?= htmlspecialchars($avatarUrl, ENT_QUOTES, 'UTF-8'); ?>" alt="A�º¢nh A�‘A�º¡i diA�»‡n">
                 <?php else: ?>
                     <div class="flex h-32 w-32 items-center justify-center rounded-full border-4 border-white bg-primary/20 text-4xl font-bold text-primary shadow-lg shadow-black/5 md:h-40 md:w-40">
                         <?= htmlspecialchars(strtoupper(substr($displayName, 0, 1)), ENT_QUOTES, 'UTF-8'); ?>
@@ -72,102 +93,133 @@ $noticeText = match ($notice) {
 
                 <div class="flex-1 pb-2">
                     <h1 class="text-2xl font-bold text-slate-900 md:text-3xl"><?= htmlspecialchars($displayName, ENT_QUOTES, 'UTF-8'); ?></h1>
-                    <p class="font-medium text-slate-500"><?= htmlspecialchars($handle, ENT_QUOTES, 'UTF-8'); ?> • Thành viên</p>
+                    <p class="font-medium text-slate-500"><?= htmlspecialchars($handle, ENT_QUOTES, 'UTF-8'); ?> A�€¢ ThĂ nh viĂªn</p>
                 </div>
 
-                <div class="relative flex gap-2 pb-2">
+                <div class="relative flex flex-wrap items-center gap-2 pb-2">
                     <?php if ($isOwner): ?>
-                        <a class="flex h-10 items-center justify-center rounded-lg border-2 border-slate-200 bg-white px-6 text-sm font-bold text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/profile/edit">Sửa hồ sơ</a>
-                        <a class="flex h-10 items-center justify-center rounded-lg bg-primary px-6 text-sm font-bold text-white hover:brightness-105" href="<?= URLROOT; ?>/recipes/create">Đăng công thức</a>
+                        <a class="flex h-10 items-center justify-center rounded-lg border-2 border-slate-200 bg-white px-6 text-sm font-bold text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/profile/edit">SA�»­a hA�»“ sA�¡</a>
+                        <a class="flex h-10 items-center justify-center rounded-lg bg-primary px-6 text-sm font-bold text-white hover:brightness-105" href="<?= URLROOT; ?>/recipes/create">A�A�ƒng cĂ´ng thA�»©c</a>
+                        <details class="relative shrink-0">
+                            <summary class="flex h-10 w-10 cursor-pointer list-none items-center justify-center rounded-lg border-2 border-slate-200 bg-white text-slate-700 hover:bg-slate-50">
+                                <span class="material-symbols-outlined text-[22px]" aria-hidden="true">more_vert</span>
+                                <span class="sr-only">TĂ¹y chA�»n hA�»“ sA�¡</span>
+                            </summary>
+                            <div class="absolute left-0 z-30 mt-2 w-60 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 shadow-lg sm:left-auto sm:right-0" role="menu">
+                                <button type="button" class="flex w-full items-center gap-3 px-4 py-3 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50" data-share-btn data-share-url="<?= htmlspecialchars($profileShareUrl, ENT_QUOTES, 'UTF-8'); ?>" data-share-title="<?= htmlspecialchars($profileShareTitle, ENT_QUOTES, 'UTF-8'); ?>" data-share-text="<?= htmlspecialchars($profileShareText, ENT_QUOTES, 'UTF-8'); ?>" role="menuitem">
+                                    <span class="material-symbols-outlined text-[22px] text-slate-500" aria-hidden="true">share</span>
+                                    Chia sA�º» hA�»“ sA�¡
+                                </button>
+                            </div>
+                        </details>
                     <?php elseif ($isLoggedIn): ?>
-                        <?php if ($isBlockedByViewer): ?>
-                            <span class="flex h-10 items-center justify-center rounded-lg border-2 border-rose-200 bg-rose-50 px-6 text-sm font-bold text-rose-700">Đã chặn</span>
-                        <?php elseif ($isViewerBlocked): ?>
-                            <span class="flex h-10 items-center justify-center rounded-lg border-2 border-slate-200 bg-slate-100 px-6 text-sm font-bold text-slate-500">Bạn bị chặn</span>
+                        <?php if ($profileContentHidden): ?>
+                            <?php if ($isBlockedByViewer): ?>
+                                <span class="flex h-10 items-center justify-center rounded-lg border-2 border-rose-200 bg-rose-50 px-6 text-sm font-bold text-rose-700">A�Ă£ chA�º·n</span>
+                                <form method="post" action="<?= URLROOT; ?>/users/<?= $profileUserId; ?>/unblock">
+                                    <?= csrf_field(); ?>
+                                    <button class="flex h-10 items-center justify-center rounded-lg border-2 border-slate-200 bg-white px-6 text-sm font-bold text-slate-700 hover:bg-slate-50" type="submit">BA�» chA�º·n</button>
+                                </form>
+                            <?php else: ?>
+                                <span class="flex h-10 items-center justify-center rounded-lg border-2 border-slate-200 bg-slate-100 px-6 text-sm font-bold text-slate-500">BA�º¡n bA�»‹ chA�º·n</span>
+                            <?php endif; ?>
                         <?php else: ?>
                             <?php if ($isFollowing): ?>
                                 <form method="post" action="<?= URLROOT; ?>/users/<?= $profileUserId; ?>/unfollow">
                                     <?= csrf_field(); ?>
-                                    <button class="flex h-10 items-center justify-center rounded-lg border-2 border-slate-200 bg-white px-6 text-sm font-bold text-slate-700 hover:bg-slate-50" type="submit">Hủy theo dõi</button>
+                                    <button class="flex h-10 items-center justify-center rounded-lg border-2 border-slate-200 bg-white px-6 text-sm font-bold text-slate-700 hover:bg-slate-50" type="submit">HA�»§y theo dĂµi</button>
                                 </form>
                             <?php else: ?>
                                 <form method="post" action="<?= URLROOT; ?>/users/<?= $profileUserId; ?>/follow">
                                     <?= csrf_field(); ?>
-                                    <button class="flex h-10 items-center justify-center rounded-lg bg-primary px-6 text-sm font-bold text-white hover:brightness-105" type="submit">Theo dõi</button>
+                                    <button class="flex h-10 items-center justify-center rounded-lg bg-primary px-6 text-sm font-bold text-white hover:brightness-105" type="submit">Theo dÄ‚Âµi</button>
                                 </form>
                             <?php endif; ?>
+
+                            <details class="relative shrink-0">
+                                <summary class="flex h-10 w-10 cursor-pointer list-none items-center justify-center rounded-lg border-2 border-slate-200 bg-white text-slate-700 hover:bg-slate-50">
+                                    <span class="material-symbols-outlined text-[22px]" aria-hidden="true">more_vert</span>
+                                    <span class="sr-only">TĂ¹y chA�»n hA�»“ sA�¡</span>
+                                </summary>
+                                <div class="absolute left-0 z-30 mt-2 w-60 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 shadow-lg sm:left-auto sm:right-0" role="menu">
+                                    <form method="post" action="<?= URLROOT; ?>/users/<?= $profileUserId; ?>/block" class="border-b border-slate-100" data-confirm="BA�º¡n chA�º¯c chA�º¯n muA�»‘n chA�º·n tĂ i khoA�º£n nĂ y?" role="none">
+                                        <?= csrf_field(); ?>
+                                        <button class="flex w-full items-center gap-3 px-4 py-3 text-left text-sm font-semibold text-rose-700 hover:bg-rose-50" type="submit" role="menuitem">
+                                            <span class="material-symbols-outlined text-[22px] text-rose-600" aria-hidden="true">block</span>
+                                            ChA�º·n
+                                        </button>
+                                    </form>
+                                    <div class="border-b border-slate-100">
+                                        <button type="button" class="flex w-full items-center gap-3 px-4 py-3 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50" data-share-btn data-share-url="<?= htmlspecialchars($profileShareUrl, ENT_QUOTES, 'UTF-8'); ?>" data-share-title="<?= htmlspecialchars($profileShareTitle, ENT_QUOTES, 'UTF-8'); ?>" data-share-text="<?= htmlspecialchars($profileShareText, ENT_QUOTES, 'UTF-8'); ?>" role="menuitem">
+                                            <span class="material-symbols-outlined text-[22px] text-slate-500" aria-hidden="true">share</span>
+                                            Chia sA�º»
+                                        </button>
+                                    </div>
+                                    <button type="button" class="flex w-full items-center gap-3 px-4 py-3 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50" data-modal-open="#profile-user-report-modal" role="menuitem">
+                                        <span class="material-symbols-outlined text-[22px] text-amber-600" aria-hidden="true">flag</span>
+                                        BĂ¡o cĂ¡o tĂ i khoA�º£n
+                                    </button>
+                                </div>
+                            </details>
                         <?php endif; ?>
-
-                        <details class="relative">
+                    <?php else: ?>
+                        <a class="flex h-10 items-center justify-center rounded-lg bg-primary px-6 text-sm font-bold text-white" href="<?= URLROOT; ?>/login">A�A�ƒng nhA�º­p A�‘A�»ƒ theo dĂµi</a>
+                        <details class="relative shrink-0">
                             <summary class="flex h-10 w-10 cursor-pointer list-none items-center justify-center rounded-lg border-2 border-slate-200 bg-white text-slate-700 hover:bg-slate-50">
-                                <span class="material-symbols-outlined text-[20px]">more_horiz</span>
+                                <span class="material-symbols-outlined text-[22px]" aria-hidden="true">more_vert</span>
+                                <span class="sr-only">TĂ¹y chA�»n hA�»“ sA�¡</span>
                             </summary>
-                            <div class="absolute right-0 z-30 mt-2 w-64 rounded-xl border border-slate-200 bg-white p-3 shadow-lg">
-                                <?php if (!$isBlockedByViewer && !$isViewerBlocked): ?>
-                                    <form method="post" action="<?= URLROOT; ?>/users/<?= $profileUserId; ?>/report" class="mb-2 space-y-2 border-b border-slate-100 pb-3">
-                                        <?= csrf_field(); ?>
-                                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500">Báo cáo tài khoản</label>
-                                        <select name="reason" required class="w-full rounded-lg border border-slate-300 px-2 py-1.5 text-sm">
-                                            <option value="">Chọn lý do</option>
-                                            <option value="Mạo danh">Mạo danh</option>
-                                            <option value="Spam">Spam</option>
-                                            <option value="Nội dung vi phạm">Nội dung vi phạm</option>
-                                        </select>
-                                        <textarea name="details" rows="2" maxlength="1000" placeholder="Chi tiết (không bắt buộc)" class="w-full rounded-lg border border-slate-300 px-2 py-1.5 text-sm"></textarea>
-                                        <button class="w-full rounded-lg border border-amber-300 px-3 py-1.5 text-xs font-semibold text-amber-700 hover:bg-amber-50" type="submit">Gửi báo cáo</button>
-                                    </form>
-
-                                    <form method="post" action="<?= URLROOT; ?>/users/<?= $profileUserId; ?>/block" class="mb-2 border-b border-slate-100 pb-3" data-confirm="Bạn chắc chắn muốn chặn tài khoản này?">
-                                        <?= csrf_field(); ?>
-                                        <button class="w-full rounded-lg border border-rose-300 px-3 py-1.5 text-left text-xs font-semibold text-rose-700 hover:bg-rose-50" type="submit">Chặn tài khoản</button>
-                                    </form>
-                                <?php endif; ?>
-
-                                <button type="button" class="w-full rounded-lg border border-slate-300 px-3 py-1.5 text-left text-xs font-semibold text-slate-700 hover:bg-slate-50" data-copy-link-btn data-link="<?= htmlspecialchars(URLROOT . '/users/' . $profileUserId, ENT_QUOTES, 'UTF-8'); ?>">Sao chép liên kết hồ sơ</button>
+                            <div class="absolute left-0 z-30 mt-2 w-60 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 shadow-lg sm:left-auto sm:right-0" role="menu">
+                                <button type="button" class="flex w-full items-center gap-3 px-4 py-3 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50" data-share-btn data-share-url="<?= htmlspecialchars($profileShareUrl, ENT_QUOTES, 'UTF-8'); ?>" data-share-title="<?= htmlspecialchars($profileShareTitle, ENT_QUOTES, 'UTF-8'); ?>" data-share-text="<?= htmlspecialchars($profileShareText, ENT_QUOTES, 'UTF-8'); ?>" role="menuitem">
+                                    <span class="material-symbols-outlined text-[22px] text-slate-500" aria-hidden="true">share</span>
+                                    Chia sA�º» hA�»“ sA�¡
+                                </button>
                             </div>
                         </details>
-                    <?php else: ?>
-                        <a class="flex h-10 items-center justify-center rounded-lg bg-primary px-6 text-sm font-bold text-white" href="<?= URLROOT; ?>/login">Đăng nhập để theo dõi</a>
                     <?php endif; ?>
                 </div>
             </div>
         </div>
 
+        <?php if (!$profileContentHidden): ?>
         <div class="mb-8 grid grid-cols-1 gap-8 md:grid-cols-12">
             <div class="md:col-span-8">
-                <h3 class="mb-2 text-lg font-bold">Giới thiệu</h3>
+                <h3 class="mb-2 text-lg font-bold">GiA�»›i thiA�»‡u</h3>
                 <p class="text-base leading-relaxed text-slate-600"><?= htmlspecialchars($bio, ENT_QUOTES, 'UTF-8'); ?></p>
             </div>
             <div class="flex justify-between gap-6 border-t pt-4 md:col-span-4 md:justify-end md:border-t-0 md:pt-0">
                 <div class="flex flex-col items-center">
                     <span class="text-2xl font-bold text-slate-900"><?= count($recipes); ?></span>
-                    <span class="text-xs font-medium uppercase tracking-wider text-slate-400">Công thức</span>
+                    <span class="text-xs font-medium uppercase tracking-wider text-slate-400">CĂ´ng thA�»©c</span>
                 </div>
                 <div class="flex flex-col items-center">
                     <span class="text-2xl font-bold text-slate-900"><?= $followerCount; ?></span>
-                    <a class="text-xs font-medium uppercase tracking-wider text-slate-400 hover:text-primary" href="<?= URLROOT; ?>/users/<?= $profileUserId; ?>/followers">Theo dõi bạn</a>
+                    <a class="text-xs font-medium uppercase tracking-wider text-slate-400 hover:text-primary" href="<?= URLROOT; ?>/users/<?= $profileUserId; ?>/followers">Theo dĂµi bA�º¡n</a>
                 </div>
                 <div class="flex flex-col items-center">
                     <span class="text-2xl font-bold text-slate-900"><?= $followingCount; ?></span>
-                    <a class="text-xs font-medium uppercase tracking-wider text-slate-400 hover:text-primary" href="<?= URLROOT; ?>/users/<?= $profileUserId; ?>/following">Bạn theo dõi</a>
+                    <a class="text-xs font-medium uppercase tracking-wider text-slate-400 hover:text-primary" href="<?= URLROOT; ?>/users/<?= $profileUserId; ?>/following">BA�º¡n theo dĂµi</a>
                 </div>
                 <div class="flex flex-col items-center">
                     <span class="text-sm font-bold text-slate-900">Xem</span>
-                    <a class="text-xs font-medium uppercase tracking-wider text-slate-400 hover:text-primary" href="<?= URLROOT; ?>/users/<?= $profileUserId; ?>/meal-plans">Kế hoạch</a>
+                    <a class="text-xs font-medium uppercase tracking-wider text-slate-400 hover:text-primary" href="<?= URLROOT; ?>/users/<?= $profileUserId; ?>/meal-plans">KA�º¿ hoA�º¡ch</a>
                 </div>
                 <div class="flex flex-col items-center">
                     <span class="text-2xl font-bold text-slate-900"><?= $certificateCount; ?></span>
-                    <span class="text-xs font-medium uppercase tracking-wider text-slate-400">Chứng nhận</span>
+                    <span class="text-xs font-medium uppercase tracking-wider text-slate-400">ChA�»©ng nhA�º­n</span>
                 </div>
             </div>
         </div>
 
         <div class="mb-6 flex flex-wrap gap-2 border-b border-slate-200">
-            <button class="profile-tab border-b-2 border-primary px-6 py-4 text-sm font-bold text-primary" type="button" data-tab="recipes">Công thức của tôi</button>
-            <button class="profile-tab border-b-2 border-transparent px-6 py-4 text-sm font-bold text-slate-500" type="button" data-tab="ingredients">Nguyên liệu</button>
-            <button class="profile-tab border-b-2 border-transparent px-6 py-4 text-sm font-bold text-slate-500" type="button" data-tab="tips">Mẹo vặt</button>
-            <button class="profile-tab border-b-2 border-transparent px-6 py-4 text-sm font-bold text-slate-500" type="button" data-tab="plans">Kế hoạch</button>
-            <button class="profile-tab border-b-2 border-transparent px-6 py-4 text-sm font-bold text-slate-500" type="button" data-tab="certificates">Chứng nhận</button>
+            <button class="profile-tab border-b-2 border-primary px-6 py-4 text-sm font-bold text-primary" type="button" data-tab="recipes">CĂ´ng thA�»©c cA�»§a tĂ´i</button>
+            <button class="profile-tab border-b-2 border-transparent px-6 py-4 text-sm font-bold text-slate-500" type="button" data-tab="ingredients">NguyĂªn liA�»‡u</button>
+            <button class="profile-tab border-b-2 border-transparent px-6 py-4 text-sm font-bold text-slate-500" type="button" data-tab="tips">MA�º¹o vA�º·t</button>
+            <button class="profile-tab border-b-2 border-transparent px-6 py-4 text-sm font-bold text-slate-500" type="button" data-tab="plans">KA�º¿ hoA�º¡ch</button>
+            <button class="profile-tab border-b-2 border-transparent px-6 py-4 text-sm font-bold text-slate-500" type="button" data-tab="certificates">ChA�»©ng nhA�º­n</button>
+            <?php if ($isOwner): ?>
+                <button class="profile-tab border-b-2 border-transparent px-6 py-4 text-sm font-bold text-slate-500" type="button" data-tab="appeals">KhiA�º¿u nA�º¡i</button>
+            <?php endif; ?>
         </div>
 
         <div class="profile-pane" data-pane="recipes">
@@ -182,7 +234,7 @@ $noticeText = match ($notice) {
                         ?>
                         <a href="<?= URLROOT; ?>/recipes/<?= (int) ($recipe['id'] ?? 0); ?>" class="overflow-hidden rounded-xl border border-slate-200 bg-white hover:border-primary">
                             <?php if ($thumb !== ''): ?>
-                                <img class="h-40 w-full object-cover" src="<?= htmlspecialchars($thumb, ENT_QUOTES, 'UTF-8'); ?>" alt="Ảnh công thức">
+                                <img class="h-40 w-full object-cover" src="<?= htmlspecialchars($thumb, ENT_QUOTES, 'UTF-8'); ?>" alt="A�º¢nh cĂ´ng thA�»©c">
                             <?php endif; ?>
                             <div class="p-4">
                                 <h4 class="mb-2 font-bold text-slate-900"><?= htmlspecialchars((string) ($recipe['title'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></h4>
@@ -192,15 +244,15 @@ $noticeText = match ($notice) {
                     <?php endforeach; ?>
                 </div>
             <?php else: ?>
-                <div class="rounded-xl border border-slate-200 bg-white p-6 text-slate-500">Chưa có công thức nào.</div>
+                <div class="rounded-xl border border-slate-200 bg-white p-6 text-slate-500">ChA�°a cĂ³ cĂ´ng thA�»©c nĂ o.</div>
             <?php endif; ?>
         </div>
 
         <div class="profile-pane hidden" data-pane="ingredients">
             <div class="mb-4 flex gap-2 border-b border-slate-200">
-                <button class="profile-subtab border-b-2 border-primary px-4 py-2 text-sm font-bold text-primary" type="button" data-subtab-group="ingredients" data-subtab="mine">Của tôi</button>
+                <button class="profile-subtab border-b-2 border-primary px-4 py-2 text-sm font-bold text-primary" type="button" data-subtab-group="ingredients" data-subtab="mine">CA�»§a tĂ´i</button>
                 <?php if ($isOwner): ?>
-                    <button class="profile-subtab border-b-2 border-transparent px-4 py-2 text-sm font-bold text-slate-500" type="button" data-subtab-group="ingredients" data-subtab="saved">Đã lưu</button>
+                    <button class="profile-subtab border-b-2 border-transparent px-4 py-2 text-sm font-bold text-slate-500" type="button" data-subtab-group="ingredients" data-subtab="saved">Ă„ÂÄ‚Â£ lĂ†Â°u</button>
                 <?php endif; ?>
             </div>
 
@@ -216,7 +268,7 @@ $noticeText = match ($notice) {
                             ?>
                             <a href="<?= URLROOT; ?>/ingredients/<?= (int) ($ingredient['id'] ?? 0); ?>" class="overflow-hidden rounded-xl border border-slate-200 bg-white hover:border-primary">
                                 <?php if ($thumb !== ''): ?>
-                                    <img class="h-40 w-full object-cover" src="<?= htmlspecialchars($thumb, ENT_QUOTES, 'UTF-8'); ?>" alt="Ảnh nguyên liệu">
+                                    <img class="h-40 w-full object-cover" src="<?= htmlspecialchars($thumb, ENT_QUOTES, 'UTF-8'); ?>" alt="A�º¢nh nguyĂªn liA�»‡u">
                                 <?php endif; ?>
                                 <div class="p-4">
                                     <h4 class="mb-2 font-bold text-slate-900"><?= htmlspecialchars((string) ($ingredient['name'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></h4>
@@ -226,7 +278,7 @@ $noticeText = match ($notice) {
                         <?php endforeach; ?>
                     </div>
                 <?php else: ?>
-                    <div class="rounded-xl border border-slate-200 bg-white p-6 text-slate-500">Chưa có nguyên liệu nào.</div>
+                    <div class="rounded-xl border border-slate-200 bg-white p-6 text-slate-500">ChA�°a cĂ³ nguyĂªn liA�»‡u nĂ o.</div>
                 <?php endif; ?>
             </div>
 
@@ -243,7 +295,7 @@ $noticeText = match ($notice) {
                                 ?>
                                 <a href="<?= URLROOT; ?>/ingredients/<?= (int) ($ingredient['id'] ?? 0); ?>" class="overflow-hidden rounded-xl border border-slate-200 bg-white hover:border-primary">
                                     <?php if ($thumb !== ''): ?>
-                                        <img class="h-40 w-full object-cover" src="<?= htmlspecialchars($thumb, ENT_QUOTES, 'UTF-8'); ?>" alt="Ảnh nguyên liệu">
+                                        <img class="h-40 w-full object-cover" src="<?= htmlspecialchars($thumb, ENT_QUOTES, 'UTF-8'); ?>" alt="A�º¢nh nguyĂªn liA�»‡u">
                                     <?php endif; ?>
                                     <div class="p-4">
                                         <h4 class="mb-2 font-bold text-slate-900"><?= htmlspecialchars((string) ($ingredient['name'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></h4>
@@ -253,7 +305,7 @@ $noticeText = match ($notice) {
                             <?php endforeach; ?>
                         </div>
                     <?php else: ?>
-                        <div class="rounded-xl border border-slate-200 bg-white p-6 text-slate-500">Bạn chưa lưu nguyên liệu nào.</div>
+                        <div class="rounded-xl border border-slate-200 bg-white p-6 text-slate-500">BA�º¡n chA�°a lA�°u nguyĂªn liA�»‡u nĂ o.</div>
                     <?php endif; ?>
                 </div>
             <?php endif; ?>
@@ -261,9 +313,9 @@ $noticeText = match ($notice) {
 
         <div class="profile-pane hidden" data-pane="tips">
             <div class="mb-4 flex gap-2 border-b border-slate-200">
-                <button class="profile-subtab border-b-2 border-primary px-4 py-2 text-sm font-bold text-primary" type="button" data-subtab-group="tips" data-subtab="mine">Của tôi</button>
+                <button class="profile-subtab border-b-2 border-primary px-4 py-2 text-sm font-bold text-primary" type="button" data-subtab-group="tips" data-subtab="mine">CA�»§a tĂ´i</button>
                 <?php if ($isOwner): ?>
-                    <button class="profile-subtab border-b-2 border-transparent px-4 py-2 text-sm font-bold text-slate-500" type="button" data-subtab-group="tips" data-subtab="saved">Đã lưu</button>
+                    <button class="profile-subtab border-b-2 border-transparent px-4 py-2 text-sm font-bold text-slate-500" type="button" data-subtab-group="tips" data-subtab="saved">Ă„ÂÄ‚Â£ lĂ†Â°u</button>
                 <?php endif; ?>
             </div>
 
@@ -279,7 +331,7 @@ $noticeText = match ($notice) {
                             ?>
                             <a href="<?= URLROOT; ?>/tips/<?= htmlspecialchars((string) ($tip['slug'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>" class="overflow-hidden rounded-xl border border-slate-200 bg-white hover:border-primary">
                                 <?php if ($thumb !== ''): ?>
-                                    <img class="h-40 w-full object-cover" src="<?= htmlspecialchars($thumb, ENT_QUOTES, 'UTF-8'); ?>" alt="Ảnh mẹo vặt">
+                                    <img class="h-40 w-full object-cover" src="<?= htmlspecialchars($thumb, ENT_QUOTES, 'UTF-8'); ?>" alt="A�º¢nh mA�º¹o vA�º·t">
                                 <?php endif; ?>
                                 <div class="p-4">
                                     <h4 class="mb-2 font-bold text-slate-900"><?= htmlspecialchars((string) ($tip['title'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></h4>
@@ -289,7 +341,7 @@ $noticeText = match ($notice) {
                         <?php endforeach; ?>
                     </div>
                 <?php else: ?>
-                    <div class="rounded-xl border border-slate-200 bg-white p-6 text-slate-500">Chưa có mẹo vặt nào.</div>
+                    <div class="rounded-xl border border-slate-200 bg-white p-6 text-slate-500">ChA�°a cĂ³ mA�º¹o vA�º·t nĂ o.</div>
                 <?php endif; ?>
             </div>
 
@@ -306,7 +358,7 @@ $noticeText = match ($notice) {
                                 ?>
                                 <a href="<?= URLROOT; ?>/tips/<?= htmlspecialchars((string) ($tip['slug'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>" class="overflow-hidden rounded-xl border border-slate-200 bg-white hover:border-primary">
                                     <?php if ($thumb !== ''): ?>
-                                        <img class="h-40 w-full object-cover" src="<?= htmlspecialchars($thumb, ENT_QUOTES, 'UTF-8'); ?>" alt="Ảnh mẹo vặt">
+                                        <img class="h-40 w-full object-cover" src="<?= htmlspecialchars($thumb, ENT_QUOTES, 'UTF-8'); ?>" alt="A�º¢nh mA�º¹o vA�º·t">
                                     <?php endif; ?>
                                     <div class="p-4">
                                         <h4 class="mb-2 font-bold text-slate-900"><?= htmlspecialchars((string) ($tip['title'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></h4>
@@ -316,7 +368,7 @@ $noticeText = match ($notice) {
                             <?php endforeach; ?>
                         </div>
                     <?php else: ?>
-                        <div class="rounded-xl border border-slate-200 bg-white p-6 text-slate-500">Bạn chưa lưu mẹo vặt nào.</div>
+                        <div class="rounded-xl border border-slate-200 bg-white p-6 text-slate-500">BA�º¡n chA�°a lA�°u mA�º¹o vA�º·t nĂ o.</div>
                     <?php endif; ?>
                 </div>
             <?php endif; ?>
@@ -324,12 +376,12 @@ $noticeText = match ($notice) {
 
         <div class="profile-pane hidden" data-pane="plans">
             <div class="rounded-xl border border-slate-200 bg-white p-6">
-                <h4 class="mb-2 text-lg font-bold text-slate-900">Kế hoạch bữa ăn</h4>
+                <h4 class="mb-2 text-lg font-bold text-slate-900">KA�º¿ hoA�º¡ch bA�»¯a A�ƒn</h4>
                 <p class="mb-4 text-sm text-slate-600">
-                    <?= $isOwner ? 'Quản lý kế hoạch ăn theo ngày/tuần của bạn.' : 'Xem kế hoạch ăn được chia sẻ của người dùng này.'; ?>
+                    <?= $isOwner ? 'QuA�º£n lĂ½ kA�º¿ hoA�º¡ch A�ƒn theo ngày/tuA�º§n cA�»§a bA�º¡n.' : 'Xem kA�º¿ hoA�º¡ch A�ƒn A�‘A�°A�»£c chia sA�º» cA�»§a ngA�°A�»i dĂ¹ng nĂ y.'; ?>
                 </p>
                 <a class="inline-flex items-center justify-center rounded-lg bg-primary px-5 py-2 text-sm font-bold text-white hover:brightness-105" href="<?= $isOwner ? (URLROOT . '/meal-plans') : (URLROOT . '/users/' . $profileUserId . '/meal-plans'); ?>">
-                    <?= $isOwner ? 'Mở kế hoạch của tôi' : 'Xem kế hoạch của người dùng'; ?>
+                    <?= $isOwner ? 'MA�»Ÿ kA�º¿ hoA�º¡ch cA�»§a tĂ´i' : 'Xem kA�º¿ hoA�º¡ch cA�»§a ngA�°A�»i dĂ¹ng'; ?>
                 </a>
             </div>
         </div>
@@ -340,19 +392,100 @@ $noticeText = match ($notice) {
                     <?php foreach ($certificates as $certificate): ?>
                         <article class="rounded-xl border border-slate-200 bg-white p-5">
                             <h4 class="text-lg font-bold text-slate-900"><?= htmlspecialchars((string) ($certificate['quiz_title'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></h4>
-                            <p class="mt-1 text-sm text-slate-500">Chủ đề: <?= htmlspecialchars((string) ($certificate['quiz_topic'] ?? 'Tổng hợp'), ENT_QUOTES, 'UTF-8'); ?></p>
-                            <p class="mt-1 text-sm text-slate-600">Mã chứng nhận: <strong><?= htmlspecialchars((string) ($certificate['certificate_code'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></strong></p>
-                            <p class="mt-1 text-sm text-slate-600">Điểm đạt: <?= (float) ($certificate['score_percent'] ?? 0); ?>% | Uy tín nhận: +<?= (int) ($certificate['awarded_reputation_points'] ?? 0); ?></p>
-                            <p class="mt-1 text-xs text-slate-400">Thời gian cấp: <?= htmlspecialchars((string) ($certificate['awarded_at'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></p>
+                            <p class="mt-1 text-sm text-slate-500">ChA�»§ A�‘A�»: <?= htmlspecialchars((string) ($certificate['quiz_topic'] ?? 'TA�»•ng hA�»£p'), ENT_QUOTES, 'UTF-8'); ?></p>
+                            <p class="mt-1 text-sm text-slate-600">MĂ£ chA�»©ng nhA�º­n: <strong><?= htmlspecialchars((string) ($certificate['certificate_code'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></strong></p>
+                            <p class="mt-1 text-sm text-slate-600">A�iA�»ƒm A�‘A�º¡t: <?= (float) ($certificate['score_percent'] ?? 0); ?>% | Uy tĂ­n nhA�º­n: +<?= (int) ($certificate['awarded_reputation_points'] ?? 0); ?></p>
+                            <p class="mt-1 text-xs text-slate-400">ThA�»i gian cA�º¥p: <?= htmlspecialchars((string) ($certificate['awarded_at'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></p>
                         </article>
                     <?php endforeach; ?>
                 </div>
             <?php else: ?>
-                <div class="rounded-xl border border-slate-200 bg-white p-6 text-slate-500">Chưa có chứng nhận nào.</div>
+                <div class="rounded-xl border border-slate-200 bg-white p-6 text-slate-500">ChA�°a cĂ³ chA�»©ng nhA�º­n nĂ o.</div>
             <?php endif; ?>
         </div>
+
+        <?php if ($isOwner): ?>
+            <div class="profile-pane hidden" data-pane="appeals">
+                <div class="rounded-xl border border-slate-200 bg-white p-6">
+                    <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+                        <h4 class="text-lg font-bold text-slate-900">KhiA�º¿u nA�º¡i cA�»§a tĂ´i</h4>
+                        <a class="inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-bold text-white hover:brightness-105" href="<?= URLROOT; ?>/appeals">GA�»­i khiA�º¿u nA�º¡i mA�»›i</a>
+                    </div>
+                    <?php if (!empty($appeals)): ?>
+                        <div class="space-y-3">
+                            <?php foreach ($appeals as $appeal): ?>
+                                <article class="rounded-lg border border-slate-200 p-3">
+                                    <div class="flex flex-wrap items-center justify-between gap-2">
+                                        <div class="text-sm font-semibold text-slate-900">
+                                            <?= htmlspecialchars((string) ($appeal['target_type'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>
+                                            #<?= (int) ($appeal['target_id'] ?? 0); ?>
+                                        </div>
+                                        <span class="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-700">
+                                            <?= htmlspecialchars((string) ($appeal['status'] ?? 'pending'), ENT_QUOTES, 'UTF-8'); ?>
+                                        </span>
+                                    </div>
+                                    <p class="mt-2 text-sm text-slate-700"><?= htmlspecialchars((string) ($appeal['appeal_reason'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></p>
+                                    <?php if (trim((string) ($appeal['admin_note'] ?? '')) !== ''): ?>
+                                        <p class="mt-1 text-xs text-slate-500">
+                                            PhA�º£n hA�»“i admin:
+                                            <?= htmlspecialchars((string) ($appeal['admin_note'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>
+                                        </p>
+                                    <?php endif; ?>
+                                    <p class="mt-1 text-xs text-slate-400">GA�»­i lĂºc: <?= htmlspecialchars((string) ($appeal['created_at'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></p>
+                                </article>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php else: ?>
+                        <p class="text-sm text-slate-500">BA�º¡n chA�°a cĂ³ khiA�º¿u nA�º¡i nĂ o.</p>
+                    <?php endif; ?>
+                </div>
+            </div>
+        <?php endif; ?>
+        <?php else: ?>
+        <div class="mb-8 rounded-2xl border border-slate-200 bg-slate-50 p-8 text-center">
+            <h3 class="mb-3 text-lg font-bold text-slate-900">Không hiA�»ƒn thA�»‹ nA�»™i dung</h3>
+            <p class="mx-auto max-w-md text-sm leading-relaxed text-slate-600"><?= htmlspecialchars($bio, ENT_QUOTES, 'UTF-8'); ?></p>
+            <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+                <?php if ($isBlockedByViewer): ?>
+                    <form method="post" action="<?= URLROOT; ?>/users/<?= $profileUserId; ?>/unblock">
+                        <?= csrf_field(); ?>
+                        <button class="inline-flex items-center justify-center rounded-xl border-2 border-slate-300 bg-white px-5 py-2.5 text-sm font-bold text-slate-800 hover:bg-slate-50" type="submit">BA�» chA�º·n</button>
+                    </form>
+                <?php endif; ?>
+                <a class="inline-flex items-center justify-center rounded-xl bg-primary px-5 py-2.5 text-sm font-bold text-white hover:brightness-105" href="<?= URLROOT; ?>/">VA�» trang chA�»§</a>
+            </div>
+        </div>
+        <?php endif; ?>
     </div>
 </section>
+
+<?php if ($isLoggedIn && !$isOwner && !$profileContentHidden): ?>
+    <div id="profile-user-report-modal" data-modal-overlay class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm">
+        <div class="mx-4 w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="profile-user-report-title">
+            <h3 id="profile-user-report-title" class="mb-4 text-xl font-black text-slate-800">BĂ¡o cĂ¡o tĂ i khoA�º£n</h3>
+            <form method="post" action="<?= URLROOT; ?>/users/<?= $profileUserId; ?>/report">
+                <?= csrf_field(); ?>
+                <div class="mb-4">
+                    <label class="mb-2 block text-sm font-semibold text-slate-600" for="profile-report-reason">LÄ‚Â½ do</label>
+                    <select id="profile-report-reason" name="reason" required class="w-full rounded-xl border border-slate-200 p-3 focus:border-primary focus:ring-primary">
+                        <option value="">ChA�»n lĂ½ do</option>
+                        <option value="MA�º¡o danh">MA�º¡o danh</option>
+                        <option value="Spam">Spam</option>
+                        <option value="NA�»™i dung vi phA�º¡m">NA�»™i dung vi phA�º¡m</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="mb-2 block text-sm font-semibold text-slate-600" for="profile-report-details">Chi tiA�º¿t (khĂ´ng bA�º¯t buA�»™c)</label>
+                    <textarea id="profile-report-details" name="details" rows="3" maxlength="1000" placeholder="MĂ´ tA�º£ thĂªm nA�º¿u cA�º§n..." class="w-full rounded-xl border border-slate-200 p-3 focus:border-primary focus:ring-primary"></textarea>
+                </div>
+                <div class="flex gap-3">
+                    <button type="button" data-modal-close="#profile-user-report-modal" class="flex-1 rounded-xl border border-slate-300 px-4 py-2 font-semibold text-slate-600 hover:bg-slate-50">HA�»§y</button>
+                    <button type="submit" class="flex-1 rounded-xl bg-amber-600 px-4 py-2 font-semibold text-white hover:bg-amber-700">GA�»­i bĂ¡o cĂ¡o</button>
+                </div>
+            </form>
+        </div>
+    </div>
+<?php endif; ?>
 
 <script>
 document.querySelectorAll('.profile-tab').forEach(function (tabBtn) {
@@ -391,17 +524,6 @@ document.querySelectorAll('.profile-subtab').forEach(function (subBtn) {
         if (activePane) activePane.classList.remove('hidden');
     });
 });
-
-document.querySelectorAll('[data-copy-link-btn]').forEach(function (btn) {
-    btn.addEventListener('click', async function () {
-        var link = this.getAttribute('data-link') || '';
-        if (!link) return;
-        try {
-            await navigator.clipboard.writeText(link);
-            this.textContent = 'Đã sao chép liên kết';
-            setTimeout(() => { this.textContent = 'Sao chép liên kết hồ sơ'; }, 1200);
-        } catch (_) {}
-    });
-});
 </script>
+
 

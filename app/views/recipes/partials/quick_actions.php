@@ -1,10 +1,10 @@
 <aside class="detail-side space-y-6" >
     <?php
-    $quickInfoTitle = 'Thông tin nhanh';
+    $quickInfoTitle = 'ThĂ„â€Ă‚Â´ng tin nhanh';
     $quickInfoItems = [
-        ['label' => 'Danh mục', 'value' => (string) ($recipe['category_name'] ?? 'Chưa phân loại')],
-        ['label' => 'Lượt xem', 'value' => (string) (int) ($recipe['view_count'] ?? 0)],
-        ['label' => 'Tác giả', 'value' => (string) ($recipe['author_name'] ?? 'Không rõ')],
+        ['label' => 'Danh mục', 'value' => (string) ($recipe['category_name'] ?? 'ChA�°a phĂ¢n loA�º¡i')],
+        ['label' => 'LA�°A�»£t xem', 'value' => (string) (int) ($recipe['view_count'] ?? 0)],
+        ['label' => 'TĂ¡c giA�º£', 'value' => (string) ($recipe['author_name'] ?? 'KhA�ng rĂµ')],
     ];
 
     $quickInfoShowActions = !empty($recipe['user_id']);
@@ -24,14 +24,14 @@
             'recipe_id' => (string) ((int) ($recipe['id'] ?? 0)),
         ];
         $actionIsSaved = $is_saved;
-        $actionSaveLabelOn = 'Đã lưu công thức';
-        $actionSaveLabelOff = 'Lưu công thức';
-        $actionSaveSuccessToast = 'Đã cập nhật lưu công thức.';
-        $actionSaveErrorToast = 'Không thể lưu công thức lúc này.';
+        $actionSaveLabelOn = 'A�¿½A? luu cA?ng th?c';
+        $actionSaveLabelOff = 'LA�°u cĂ´ng thA�»©c';
+        $actionSaveSuccessToast = 'A�¿½A? c?p nh?t luu cA?ng th?c.';
+        $actionSaveErrorToast = 'KhA�ng thA�»ƒ lA�°u cĂ´ng thA�»©c lĂºc nĂ y.';
 
         $actionEnableShare = true;
-        $actionShareText = 'Xem công thức nấu ăn này!';
-        $actionShareTitle = (string) ($recipe['title'] ?? 'Công thức nấu ăn');
+        $actionShareText = 'Xem cĂ´ng thA�»©c nA�º¥u A�ƒn nĂ y!';
+        $actionShareTitle = (string) ($recipe['title'] ?? 'CA�ng thức nA�º¥u A�ƒn');
 
         $actionEnableReport = function_exists('user_has_permission') && user_has_permission('user.recipes.report');
         $actionReportMode = 'modal';

@@ -38,6 +38,8 @@ $router->post('/admin/login', ['AuthController', 'adminLogin']);
 $router->post('/admin/logout', ['AuthController', 'adminLogout']);
 
 $router->get('/profile', ['UserController', 'profile'], $userPermission('user.profile.manage'));
+$router->get('/appeals', ['UserController', 'appeals'], $userLogin());
+$router->post('/appeals', ['UserController', 'submitAppeal'], $userLogin());
 $router->get('/users/{id}', ['UserController', 'show']);
 $router->get('/users/{id}/followers', ['UserController', 'followers']);
 $router->get('/users/{id}/following', ['UserController', 'following']);
@@ -47,6 +49,7 @@ $router->post('/users/{id}/remove-follower', ['UserController', 'removeFollower'
 $router->get('/notifications/{id}/open', ['UserController', 'openNotification'], $userLogin());
 $router->post('/users/{id}/report', ['UserController', 'reportUser'], $userLogin());
 $router->post('/users/{id}/block', ['UserController', 'blockUser'], $userLogin());
+$router->post('/users/{id}/unblock', ['UserController', 'unblockUser'], $userLogin());
 $router->get('/profile/edit', ['UserController', 'edit'], $userPermission('user.profile.manage'));
 $router->post('/profile/edit', ['UserController', 'edit'], $userPermission('user.profile.manage'));
 $router->get('/profile/verify-email-change', ['UserController', 'verifyEmailChange'], $userPermission('user.profile.manage'));
@@ -83,6 +86,7 @@ $router->get('/quizzes/my-certificates', ['QuizController', 'myCertificates'], $
 $router->get('/quizzes/{id}', ['QuizController', 'show']);
 $router->post('/quizzes/{id}/submit', ['QuizController', 'submitAttempt'], $userLogin());
 $router->get('/ai/ingredient-vision', ['IngredientVisionController', 'ui']);
+$router->get('/ai/ingredient-drag-search', ['IngredientVisionController', 'dragSearchUi']);
 $router->get('/meal-plans', ['MealPlanController', 'index'], $userPermission('user.mealplans.manage'));
 $router->post('/meal-plans/assign', ['MealPlanController', 'assign'], $userPermission('user.mealplans.manage'));
 $router->post('/meal-plans/assign-week-auto', ['MealPlanController', 'assignWeekAuto'], $userPermission('user.mealplans.manage'));
@@ -132,6 +136,8 @@ $router->post('/admin/users/{id}/restore', ['admin/UserController', 'restoreUser
 $router->post('/admin/users/{id}/penalize', ['admin/UserController', 'penalizeUser'], $adminPermission('admin.users.ban'));
 $router->get('/admin/bans', ['admin/UserController', 'manageBans'], $adminPermission('admin.users.ban'));
 $router->post('/admin/bans/release', ['admin/UserController', 'releaseBan'], $adminPermission('admin.users.ban'));
+$router->get('/admin/ban-appeals', ['admin/UserController', 'manageBanAppeals'], $adminPermission('admin.users.ban'));
+$router->post('/admin/ban-appeals/review', ['admin/UserController', 'reviewBanAppeal'], $adminPermission('admin.users.ban'));
 $router->get('/admin/recipes', ['admin/RecipeController', 'manageRecipes'], $adminPermission('admin.recipes.review'));
 $router->get('/admin/recipes/{id}', ['admin/RecipeController', 'showRecipe'], $adminPermission('admin.recipes.review'));
 $router->post('/admin/recipes/create', ['admin/RecipeController', 'createRecipe'], $adminPermission('admin.recipes.manage'));

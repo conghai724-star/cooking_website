@@ -1,18 +1,18 @@
 <?php
-$sidebarCategory = (string) ($sidebarCategory ?? 'Chưa phân loại');
+$sidebarCategory = (string) ($sidebarCategory ?? 'ChA�°a phĂ¢n loA�º¡i');
 $sidebarViews = (int) ($sidebarViews ?? 0);
-$sidebarAuthor = (string) ($sidebarAuthor ?? 'Không rõ');
+$sidebarAuthor = (string) ($sidebarAuthor ?? 'KhÄ‚Â´ng rĂ„â€Ă‚Âµ');
 $sidebarAuthorId = (int) ($sidebarAuthorId ?? 0);
 $sidebarIsFollowing = (bool) ($sidebarIsFollowing ?? false);
 $sidebarIsSaved = (bool) ($sidebarIsSaved ?? false);
 $sidebarIngredientId = (int) ($sidebarIngredientId ?? 0);
-$sidebarIngredientName = (string) ($sidebarIngredientName ?? 'Nguyên liệu');
+$sidebarIngredientName = (string) ($sidebarIngredientName ?? 'NguyĂªn liA�»‡u');
 
-$quickInfoTitle = 'Thông tin nhanh';
+$quickInfoTitle = 'ThĂ„â€Ă‚Â´ng tin nhanh';
 $quickInfoItems = [
-    ['label' => 'Danh mục', 'value' => $sidebarCategory],
-    ['label' => 'Lượt xem', 'value' => (string) $sidebarViews],
-    ['label' => 'Tác giả', 'value' => $sidebarAuthor],
+    ['label' => 'Danh mA�»¥c', 'value' => $sidebarCategory],
+    ['label' => 'LA�°A�»£t xem', 'value' => (string) $sidebarViews],
+    ['label' => 'TĂ¡c giA�º£', 'value' => $sidebarAuthor],
 ];
 
 $quickInfoShowActions = true;
@@ -32,13 +32,13 @@ $actionSaveHiddenFields = [
     'redirect_to' => '/ingredients/' . $sidebarIngredientId,
 ];
 $actionIsSaved = $sidebarIsSaved;
-$actionSaveLabelOn = 'Đã lưu nguyên liệu';
-$actionSaveLabelOff = 'Lưu nguyên liệu';
-$actionSaveSuccessToast = 'Đã cập nhật lưu nguyên liệu.';
-$actionSaveErrorToast = 'Không thể lưu nguyên liệu lúc này.';
+$actionSaveLabelOn = 'A�¿½A? luu nguyA?n li?u';
+$actionSaveLabelOff = 'LA�°u nguyĂªn liA�»‡u';
+$actionSaveSuccessToast = 'A�¿½A? c?p nh?t luu nguyA?n li?u.';
+$actionSaveErrorToast = 'KhA�ng thA�»ƒ lA�°u nguyĂªn liA�»‡u lĂºc nĂ y.';
 
 $actionEnableShare = true;
-$actionShareText = 'Xem nguyên liệu này';
+$actionShareText = 'Xem nguyĂªn liA�»‡u nĂ y';
 $actionShareTitle = $sidebarIngredientName;
 
 $actionEnableReport = function_exists('user_has_permission') && user_has_permission('user.ingredients.report');
@@ -47,8 +47,8 @@ $actionReportModalTarget = '#ingredient-report-modal';
 $actionReportTriggerId = 'btn-ingredient-report-trigger';
 $actionReportAction = URLROOT . '/ingredients/' . $sidebarIngredientId . '/report';
 $actionReportOtherTargetId = 'ingredient-report-other';
-$actionReportSuccessToast = 'Đã gửi báo cáo nguyên liệu.';
-$actionReportErrorToast = 'Không thể gửi báo cáo nguyên liệu.';
+$actionReportSuccessToast = 'A�¿½A? g?i bA?o cA?o nguyA?n li?u.';
+$actionReportErrorToast = 'KhA�ng thA�»ƒ gA�»­i bĂ¡o cĂ¡o nguyĂªn liA�»‡u.';
 $actionReportHiddenFields = ['redirect_to' => '/ingredients/' . $sidebarIngredientId];
 
 require APPROOT . '/app/views/partials/shared/quick_info_actions_card.php';

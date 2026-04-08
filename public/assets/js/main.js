@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const sync = () => {
                 const v = (select.value || '').trim().toLowerCase();
-                target.classList.toggle('hidden', v !== 'khac' && v !== 'khĂ¡c');
+                target.classList.toggle('hidden', v !== 'khac' && v !== 'khĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡c');
             };
 
             sync();
@@ -199,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         throw new Error(data.message || 'Request failed');
                     }
 
-                    showToast(data.message || 'Da xu ly thanh cong');
+                    showToast(data.message || 'ĐA� xử lA� thA�nh cA�ng');
 
                     const closeTarget = form.getAttribute('data-close-target');
                     if (closeTarget) closeModalBySelector(closeTarget);
@@ -233,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                     const data = await parseResponseData(response);
                     if (!response.ok || data.success === false) {
-                        throw new Error((data && data.message) ? data.message : 'Khong the gui binh luan');
+                        throw new Error((data && data.message) ? data.message : 'KhĂ´ng thA�»ƒ gA�»­i bĂ¬nh luA�º­n');
                     }
 
                     const selector = form.getAttribute('data-comments-root') || '';
@@ -301,10 +301,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const map = {
                 'Toi chua hieu ro cau hoi. Ban thu hoi theo mau ben duoi.': 'TĂ´i chA�°a hiA�»ƒu rĂµ cĂ¢u hA�»i. BA�º¡n thA�»­ hA�»i theo mA�º«u bĂªn dA�°A�»›i.',
                 'Toi muon vao tai khoan': 'TĂ´i muA�»‘n vĂ o tĂ i khoA�º£n',
-                'Co mon an it calo khong?': 'CĂ³ mĂ³n A�ƒn Ă­t calo khĂ´ng?',
+                'Co mon an it calo khong?': 'CÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³ mÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³n Ă„â€Ă¢â‚¬ÂÄ‚â€ Ă¢â‚¬â„¢n Ä‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â­t calo khÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â´ng?',
                 'Xem ke hoach bua an o dau?': 'Xem kA�º¿ hoA�º¡ch bA�»¯a A�ƒn A�»Ÿ A�‘Ă¢u?',
-                'Ban vao trang Dang nhap de truy cap tai khoan.': 'BA�º¡n vĂ o trang A�A�ƒng nhA�º­p A�‘A�»ƒ truy cA�º­p tĂ i khoA�º£n.',
-                'Ban vao trang Dang ky de tao tai khoan moi.': 'BA�º¡n vĂ o trang A�A�ƒng kĂ½ A�‘A�»ƒ tA�º¡o tĂ i khoA�º£n mA�»›i.',
+                'Ban vao trang Dang nhap de truy cap tai khoan.': 'Bạn vA�o trang Đăng nhập để truy cập tA�i khoản.',
+                'Ban vao trang Dang ky de tao tai khoan moi.': 'Bạn vA�o trang Đăng kA� để tạo tA�i khoản mới.',
                 'Ban vao trang Quen mat khau de dat lai mat khau.': 'BA�º¡n vĂ o trang QuĂªn mA�º­t khA�º©u A�‘A�»ƒ A�‘A�º·t lA�º¡i mA�º­t khA�º©u.',
                 'Ban co the xem danh sach cong thuc tai trang Cong thuc.': 'BA�º¡n cĂ³ thA�»ƒ xem danh sĂ¡ch cĂ´ng thA�»©c tA�º¡i trang CĂ´ng thA�»©c.',
                 'Toi co the goi y mon an phu hop.': 'TĂ´i cĂ³ thA�»ƒ gA�»£i Ă½ mĂ³n A�ƒn phĂ¹ hA�»£p.',
@@ -390,7 +390,7 @@ document.addEventListener('DOMContentLoaded', () => {
             sendBtn.disabled = loading;
             input.disabled = loading;
             sendBtn.textContent = loading ? 'Đang gửi...' : defaultSendLabel;
-            input.placeholder = loading ? 'A�ang xA�»­ lĂ½...' : defaultInputPlaceholder;
+            input.placeholder = loading ? 'Đang xử lA�...' : defaultInputPlaceholder;
         };
 
         const showTyping = () => {
@@ -439,7 +439,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 hideTyping();
-                appendMessage(data.message || 'A�Ă£ nhA�º­n cĂ¢u hA�»i cA�»§a bA�º¡n.');
+                appendMessage(data.message || 'ĐA� nhận cA�u hỏi của bạn.');
                 const suggestions = Array.isArray(data.suggestions) ? data.suggestions : [];
                 if (suggestions.length > 0) {
                     appendMessage('GA�»£i Ă½ tiA�º¿p: ' + suggestions.slice(0, 2).map(localizeChatText).join(' | '));
@@ -459,8 +459,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } catch (err) {
                 hideTyping();
-                const errMsg = (err && err.message) ? String(err.message) : 'KhĂ´ng xĂ¡c A�‘A�»‹nh';
-                appendMessage('LÄ‚Â¡Ă‚Â»Ă¢â‚¬â€i: ' + errMsg);
+                const errMsg = (err && err.message) ? String(err.message) : 'KhÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â´ng xÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡c Ă„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‹Å“Ă„â€Ă‚Â¡Ä‚â€Ă‚Â»Ä‚Â¢Ă¢â€Â¬Ă‚Â¹nh';
+                appendMessage('LA�»—i: ' + errMsg);
                 if (window.console && console.error) {
                     console.error('chat_error', err);
                 }
@@ -541,6 +541,120 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     };
+
+    const setupVoiceSearchInputs = () => {
+        const path = String(window.location.pathname || '');
+        if (path.includes('/admin')) return;
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+
+        const candidates = Array.from(document.querySelectorAll('input[type="search"], input[name="q"], input[name="keyword"]'))
+            .filter((input) => {
+                if (!(input instanceof HTMLInputElement)) return false;
+                if (input.disabled || input.readOnly) return false;
+                if (input.dataset.voiceSearchBound === '1') return false;
+                const type = String(input.type || '').toLowerCase();
+                return type === 'search' || type === 'text';
+            });
+
+        candidates.forEach((input) => {
+            input.dataset.voiceSearchBound = '1';
+
+            const wrapper = document.createElement('span');
+            wrapper.className = 'inline-flex w-full items-center gap-1';
+
+            const parent = input.parentNode;
+            if (!parent) return;
+            parent.insertBefore(wrapper, input);
+            wrapper.appendChild(input);
+
+            input.classList.add('flex-1');
+
+            const triggerSearch = () => {
+                input.dispatchEvent(new Event('input', { bubbles: true }));
+                input.dispatchEvent(new Event('change', { bubbles: true }));
+                const form = input.form || input.closest('form');
+                if (form) {
+                    if (typeof form.requestSubmit === 'function') {
+                        form.requestSubmit();
+                    } else {
+                        form.submit();
+                    }
+                }
+            };
+
+            const searchBtn = document.createElement('button');
+            searchBtn.type = 'button';
+            searchBtn.setAttribute('aria-label', 'TĂ¬m kiA�º¿m');
+            searchBtn.title = 'TĂ¬m kiA�º¿m';
+            searchBtn.className = 'inline-flex h-9 min-w-9 items-center justify-center rounded-lg border border-slate-300 bg-white px-2 text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-primary';
+            searchBtn.innerHTML = '<span aria-hidden="true">đŸ”</span>';
+            searchBtn.addEventListener('click', triggerSearch);
+            wrapper.appendChild(searchBtn);
+
+            const micBtn = document.createElement('button');
+            micBtn.type = 'button';
+            micBtn.setAttribute('aria-label', 'NhA�º­p tĂ¬m kiA�º¿m bA�º±ng giA�»ng nĂ³i');
+            micBtn.title = 'TĂ¬m kiA�º¿m bA�º±ng giA�»ng nĂ³i';
+            micBtn.className = 'inline-flex h-9 min-w-9 items-center justify-center rounded-lg border border-slate-300 bg-white px-2 text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-primary';
+            micBtn.innerHTML = '<span aria-hidden="true">đŸ�?¤</span>';
+            wrapper.appendChild(micBtn);
+
+            let recognition = null;
+            let listening = false;
+            let autoSearchTimer = null;
+
+            const stopListeningUi = () => {
+                listening = false;
+                micBtn.classList.remove('border-primary', 'text-primary', 'bg-amber-50');
+            };
+
+            if (!SpeechRecognition) {
+                micBtn.disabled = true;
+                micBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                micBtn.title = 'TrĂ¬nh duyA�»‡t chA�°a hA�»— trA�»£ giA�»ng nĂ³i';
+                return;
+            }
+
+            micBtn.addEventListener('click', () => {
+                try {
+                    if (!recognition) {
+                        recognition = new SpeechRecognition();
+                        recognition.lang = 'vi-VN';
+                        recognition.interimResults = false;
+                        recognition.maxAlternatives = 1;
+
+                        recognition.onresult = (event) => {
+                            const transcript = String(event.results?.[0]?.[0]?.transcript || '').trim();
+                            if (!transcript) return;
+                            input.value = transcript;
+                            input.dispatchEvent(new Event('input', { bubbles: true }));
+                            input.dispatchEvent(new Event('change', { bubbles: true }));
+                            if (autoSearchTimer) {
+                                clearTimeout(autoSearchTimer);
+                            }
+                            autoSearchTimer = setTimeout(() => {
+                                triggerSearch();
+                            }, 800);
+                        };
+                        recognition.onend = stopListeningUi;
+                        recognition.onerror = stopListeningUi;
+                    }
+
+                    if (listening) {
+                        recognition.stop();
+                        stopListeningUi();
+                        return;
+                    }
+
+                    listening = true;
+                    micBtn.classList.add('border-primary', 'text-primary', 'bg-amber-50');
+                    recognition.start();
+                } catch (_err) {
+                    stopListeningUi();
+                }
+            });
+        });
+    };
     window.AppUI = {
         showToast,
         setupShareButtons,
@@ -552,6 +666,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setupCommentAjax,
         setupCommentVotes,
         setupChatWidget,
+        setupVoiceSearchInputs,
     };
 
     const safeRun = (fn, name) => {
@@ -574,6 +689,7 @@ document.addEventListener('DOMContentLoaded', () => {
     safeRun(setupAjaxForms, 'ajax-form');
     safeRun(setupCommentAjax, 'comment-ajax');
     safeRun(setupCommentVotes, 'comment-vote');
+    safeRun(setupVoiceSearchInputs, 'voice-search');
 });
 
 

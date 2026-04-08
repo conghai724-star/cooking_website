@@ -8,21 +8,39 @@ class IngredientController extends Controller
     {
         /** @var IngredientModel $ingredientModel */
         $ingredientModel = $this->model('IngredientModel');
+        /** @var CategoryModel $categoryModel */
+        $categoryModel = $this->model('CategoryModel');
+        $ingredientCategories = $categoryModel->byType('ingredient');
+
         $keyword = trim((string) ($_GET['q'] ?? ''));
+        $requestedCategoryId = (int) ($_GET['category'] ?? 0);
+        $filterCategoryId = null;
+        if ($requestedCategoryId > 0) {
+            foreach ($ingredientCategories as $row) {
+                if ($requestedCategoryId === (int) ($row['id'] ?? 0)) {
+                    $filterCategoryId = $requestedCategoryId;
+                    break;
+                }
+            }
+        }
+
         $perPage = 6;
         $page = max(1, (int) ($_GET['page'] ?? 1));
-        $total = $ingredientModel->countByStatus('approved', 'library', $keyword !== '' ? $keyword : null);
+        $kw = $keyword !== '' ? $keyword : null;
+        $total = $ingredientModel->countByStatus('approved', 'library', $kw, $filterCategoryId);
         $totalPages = max(1, (int) ceil($total / $perPage));
         if ($page > $totalPages) {
             $page = $totalPages;
         }
         $offset = ($page - 1) * $perPage;
-        $ingredients = $ingredientModel->allPaged('approved', 'library', $perPage, $offset, $keyword !== '' ? $keyword : null);
+        $ingredients = $ingredientModel->allPaged('approved', 'library', $perPage, $offset, $kw, $filterCategoryId);
 
         $this->view('ingredients/index', [
             'title' => 'Nguy�n li?u',
             'useRecipeHubLayout' => true,
             'ingredients' => $ingredients,
+            'ingredient_categories' => $ingredientCategories,
+            'filter_category_id' => $filterCategoryId ?? 0,
             'page' => $page,
             'totalPages' => $totalPages,
             'keyword' => $keyword,
