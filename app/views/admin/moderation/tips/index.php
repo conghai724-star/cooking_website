@@ -48,7 +48,7 @@ $badgeClass = static function (string $status): array {
                             <?php if ($status === 'pending'): ?>
                                 <form method="post" action="<?= URLROOT; ?>/admin/tips/<?= (int) $tip['id']; ?>/reject" class="flex items-center gap-2">
                                     <?= csrf_field(); ?>
-                                    <input class="w-40 rounded-md border border-slate-200 px-2 py-1 text-xs" name="reason" placeholder="Lý do tá»« chá»‘i">
+                                    <input class="w-40 rounded-md border border-slate-200 px-2 py-1 text-xs" name="reason" placeholder="Lý do từ chối">
                                     <button class="rounded-md bg-rose-500 px-3 py-1 text-xs font-semibold text-white" type="submit">Từ chối</button>
                                 </form>
                             <?php endif; ?>

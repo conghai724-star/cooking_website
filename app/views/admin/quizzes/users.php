@@ -26,7 +26,7 @@ $noticeText = (string) ($noticeText ?? '');
     <div class="grid gap-4 lg:grid-cols-2">
         <section class="rounded-xl border border-slate-200 bg-white p-5">
             <div class="mb-3 flex items-center justify-between">
-                <h2 class="text-base font-semibold text-slate-900">Danh sÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡ch Ă„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¢Ă„â€Ă‚Â¢Ä‚Â¢Ă¢â€Â¬Ă‚ÂÄ‚â€Ă‚Â¬Ă„â€Ă¢â‚¬Â¹Ä‚â€¦Ă¢â‚¬Å“Ä‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â£ tham gia</h2>
+                <h2 class="text-base font-semibold text-slate-900">Danh sách tham gia</h2>
                 <span class="rounded bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-700"><?= count($participants); ?> ngA�°A�»i</span>
             </div>
             <div class="overflow-x-auto">
@@ -68,7 +68,7 @@ $noticeText = (string) ($noticeText ?? '');
                                     <?php if ($hasCertificate): ?>
                                         <span class="rounded bg-emerald-100 px-2 py-1 text-xs font-semibold text-emerald-700">A�Ă£ A�‘A�º¡t</span>
                                     <?php elseif ($hasPassed): ?>
-                                        <span class="rounded bg-amber-100 px-2 py-1 text-xs font-semibold text-amber-700">Ă„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â£ qua bÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â i</span>
+                                        <span class="rounded bg-amber-100 px-2 py-1 text-xs font-semibold text-amber-700">Đã qua bài</span>
                                     <?php else: ?>
                                         <span class="rounded bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-600">ChA�°a A�‘A�º¡t</span>
                                     <?php endif; ?>

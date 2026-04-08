@@ -140,7 +140,7 @@ $heroBgSrc = (str_starts_with($heroBg, 'http://') || str_starts_with($heroBg, 'h
                                 <p class="text-[10px] font-black uppercase tracking-widest text-slate-500"><?= htmlspecialchars($meta['label'], ENT_QUOTES, 'UTF-8'); ?></p>
                             </div>
                             <?php if ($items === []): ?>
-                                <p class="text-sm font-semibold text-slate-400">ChĂ†Â°a cÄ‚Â³ mÄ‚Â³n</p>
+                                <p class="text-sm font-semibold text-slate-400">Chưa có mÄ‚Â³n</p>
                             <?php else: ?>
                                 <div class="space-y-1">
                                     <?php foreach ($items as $item): ?>

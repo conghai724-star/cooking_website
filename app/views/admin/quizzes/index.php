@@ -34,8 +34,8 @@ $passerPreviews = is_array($passerPreviews ?? null) ? $passerPreviews : [];
                     A�A�»™ khĂ³
                     <select name="difficulty" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
                         <option value="easy">DA�»…</option>
-                        <option value="medium">Trung bÄ‚Â¬nh</option>
-                        <option value="hard">KhÄ‚Â³</option>
+                        <option value="medium">Trung bình</option>
+                        <option value="hard">Khó</option>
                     </select>
                 </label>
             </div>
@@ -85,7 +85,7 @@ $passerPreviews = is_array($passerPreviews ?? null) ? $passerPreviews : [];
                 <button type="button" id="quiz-next-btn" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">Trang tiA�º¿p theo</button>
                 <p id="quiz-page-indicator" class="text-sm text-slate-600"></p>
                 <button type="button" id="add-question-btn" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">+ ThĂªm cĂ¢u hA�»i</button>
-                <button type="submit" id="save-quiz-btn" class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white">LĂ†Â°u vÄ‚Â  phÄ‚Â¡t hÄ‚Â nh</button>
+                <button type="submit" id="save-quiz-btn" class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white">Lưu và phát hành</button>
             </div>
         </form>
     </div>
@@ -152,15 +152,15 @@ $passerPreviews = is_array($passerPreviews ?? null) ? $passerPreviews : [];
                     </div>
                     <div class="mt-2 grid gap-2 text-sm md:grid-cols-2">
                         <div>
-                            <p class="font-medium text-slate-700">Ă„ÂÄ‚Â£ tham gia (<?= (int) ($set['attempt_count'] ?? 0); ?>)</p>
+                            <p class="font-medium text-slate-700">Đã tham gia (<?= (int) ($set['attempt_count'] ?? 0); ?>)</p>
                             <p class="text-slate-600">
-                                <?= $participantNames === [] ? 'ChĂ†Â°a cÄ‚Â³' : htmlspecialchars(implode(', ', $participantNames), ENT_QUOTES, 'UTF-8'); ?>
+                                <?= $participantNames === [] ? 'Chưa có' : htmlspecialchars(implode(', ', $participantNames), ENT_QUOTES, 'UTF-8'); ?>
                             </p>
                         </div>
                         <div>
                             <p class="font-medium text-slate-700">A�Ă£ A�‘A�º¡t chA�»©ng chA�»‰ (<?= (int) ($set['certificate_count'] ?? 0); ?>)</p>
                             <p class="text-slate-600">
-                                <?= $passerNames === [] ? 'ChĂ†Â°a cÄ‚Â³' : htmlspecialchars(implode(', ', $passerNames), ENT_QUOTES, 'UTF-8'); ?>
+                                <?= $passerNames === [] ? 'Chưa có' : htmlspecialchars(implode(', ', $passerNames), ENT_QUOTES, 'UTF-8'); ?>
                             </p>
                         </div>
                     </div>
@@ -204,18 +204,18 @@ $passerPreviews = is_array($passerPreviews ?? null) ? $passerPreviews : [];
                 <div class="grid gap-3 md:grid-cols-2">
                     ${[1, 2, 3, 4].map((n) => `
                         <label class="text-sm font-medium text-slate-700">
-                            Ă„ÂÄ‚Â¡p Ä‚Â¡n ${n}
+                            Đáp án ${n}
                             <input type="text" name="questions[${index}][options][]" required value="${optionValues[n - 1]}" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
                         </label>
                     `).join('')}
                 </div>
                 <div class="space-y-2">
-                    <p class="text-sm font-medium text-slate-700">Ă„ÂÄ‚Â¡p Ä‚Â¡n Ă„â€˜Ä‚Âºng</p>
+                    <p class="text-sm font-medium text-slate-700">Đáp án đúng</p>
                     <div class="flex flex-wrap gap-3">
                         ${[1, 2, 3, 4].map((n) => `
                             <label class="inline-flex items-center gap-2 text-sm text-slate-700">
                                 <input type="radio" name="questions[${index}][correct_single]" value="${n}" ${selected === n ? 'checked' : ''}>
-                                <span>Ă„ÂÄ‚Â¡p Ä‚Â¡n ${n}</span>
+                                <span>Đáp án ${n}</span>
                             </label>
                         `).join('')}
                     </div>
@@ -239,13 +239,13 @@ $passerPreviews = is_array($passerPreviews ?? null) ? $passerPreviews : [];
                 <input type="hidden" name="questions[${index}][answer_key]" value="">
                 <div class="grid gap-3 md:grid-cols-2">
                     <label class="text-sm font-medium text-slate-700">
-                        SĂ¡Â»â€˜ Ă„â€˜Ä‚Â¡p Ä‚Â¡n
+                        Số đáp án
                         <select name="questions[${index}][option_count]" class="mc-option-count mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
                             ${[2,3,4,5,6,7,8].map((n) => `<option value="${n}" ${n === optionCount ? 'selected' : ''}>${n}</option>`).join('')}
                         </select>
                     </label>
                     <label class="text-sm font-medium text-slate-700">
-                        SĂ¡Â»â€˜ Ă„â€˜Ä‚Â¡p Ä‚Â¡n Ă„â€˜Ä‚Âºng
+                        Số đáp án đúng
                         <select name="questions[${index}][correct_count]" class="mc-correct-count mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" data-selected="${correctCount}"></select>
                     </label>
                 </div>
@@ -253,12 +253,12 @@ $passerPreviews = is_array($passerPreviews ?? null) ? $passerPreviews : [];
                     ${[1,2,3,4,5,6,7,8].map((n) => `
                         <div class="mc-row grid grid-cols-[1fr_auto] items-center gap-3" data-option-no="${n}">
                             <label class="text-sm font-medium text-slate-700">
-                                Ă„ÂÄ‚Â¡p Ä‚Â¡n ${n}
+                                Đáp án ${n}
                                 <input type="text" name="questions[${index}][options][]" value="${optionValues[n - 1]}" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
                             </label>
                             <label class="inline-flex items-center gap-2 text-sm text-slate-700 mt-5">
                                 <input type="checkbox" class="mc-correct" name="questions[${index}][correct_multi][]" value="${n}" ${selectedCorrect.includes(n) ? 'checked' : ''}>
-                                <span>Ă„ÂÄ‚Âºng</span>
+                                <span>Đúng</span>
                             </label>
                         </div>
                     `).join('')}
@@ -317,7 +317,7 @@ $passerPreviews = is_array($passerPreviews ?? null) ? $passerPreviews : [];
                             <input type="text" name="questions[${index}][ordering_items][]" value="${itemValues[n - 1]}" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
                         </label>
                         <label class="text-sm font-medium text-slate-700">
-                            VĂ¡Â»â€¹ trÄ‚Â­ Ă„â€˜Ä‚Âºng
+                            Vượt qua đúng
                             <select name="questions[${index}][ordering_positions][]" class="ordering-position mt-1 rounded-lg border border-slate-300 px-3 py-2 text-sm" data-selected="${n}">
                             </select>
                         </label>

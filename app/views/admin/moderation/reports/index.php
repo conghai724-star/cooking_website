@@ -533,7 +533,7 @@ $renderActions = static function (
             <select name="status" class="rounded-lg border border-slate-300 px-3 py-2 text-sm">
                 <option value="" <?= $status === '' ? 'selected' : ''; ?>>TA�º¥t cA�º£ trA�º¡ng thĂ¡i</option>
                 <option value="pending" <?= $status === 'pending' ? 'selected' : ''; ?>>ChA�» xA�»­ lĂ½</option>
-                <option value="reviewed" <?= $status === 'reviewed' ? 'selected' : ''; ?>>Ă„ÂÄ‚Â£ xem</option>
+                <option value="reviewed" <?= $status === 'reviewed' ? 'selected' : ''; ?>>Đã xem</option>
                 <option value="resolved" <?= $status === 'resolved' ? 'selected' : ''; ?>>A�Ă£ xA�»­ lĂ½</option>
             </select>
             <button type="submit" class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white">LA�»c</button>
@@ -580,7 +580,7 @@ $renderActions = static function (
                             </td>
                             <td class="px-4 py-3">
                                 <a href="<?= $e($row['target_link'] ?? '#'); ?>" class="hover:text-primary hover:underline">
-                                    <?= $e($row['target_title'] ?? 'NĂ¡Â»â„¢i dung Ă„â€˜Ä‚Â£ xÄ‚Â³a'); ?>
+                                    <?= $e($row['target_title'] ?? 'Nội dung đã xóa'); ?>
                                 </a>
                             </td>
                             <td class="px-4 py-3 max-w-[360px]">
