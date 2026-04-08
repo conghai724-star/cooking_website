@@ -6,16 +6,16 @@ $status = (string) ($status ?? '');
 $notice = (string) ($notice ?? '');
 
 $noticeText = match ($notice) {
-    'released' => 'A�Ă£ gA�»¡ ban thĂ nh cĂ´ng.',
-    'release_failed' => 'Không thA�»ƒ gA�»¡ ban. Vui lĂ²ng thA�»­ lA�º¡i.',
+    'released' => 'Đã gờ ban thành công.',
+    'release_failed' => 'Không thể gờ ban. Vui lòng thử lại.',
     default => '',
 };
 ?>
 
 <div class="flex flex-col gap-6">
     <div class="flex flex-col gap-2">
-        <h1 class="text-2xl font-bold text-slate-900">Danh sÄ‚Â¡ch ban</h1>
-        <p class="text-sm text-slate-500">Theo dĂµi vĂ  gA�»¡ cĂ¡c hĂ¬nh thA�»©c ban/khóa hiA�»‡n hĂ nh.</p>
+        <h1 class="text-2xl font-bold text-slate-900">Danh sách ban</h1>
+        <p class="text-sm text-slate-500">Theo dõi và gờ các hình thức ban/khóa hiện hành.</p>
     </div>
 
     <?php if ($noticeText !== ''): ?>
@@ -34,16 +34,16 @@ $noticeText = match ($notice) {
                 class="w-80 max-w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
             >
             <select name="type" class="rounded-lg border border-slate-300 px-3 py-2 text-sm">
-                <option value="" <?= $type === '' ? 'selected' : ''; ?>>TA�º¥t cA�º£ loA�º¡i</option>
-                <option value="account" <?= $type === 'account' ? 'selected' : ''; ?>>Ban tĂ i khoA�º£n</option>
-                <option value="comment" <?= $type === 'comment' ? 'selected' : ''; ?>>KhĂ³a bĂ¬nh luA�º­n</option>
-                <option value="recipe" <?= $type === 'recipe' ? 'selected' : ''; ?>>KhÄ‚Â³a Ă„â€˜Ă„Æ’ng bÄ‚Â i</option>
+                <option value="" <?= $type === '' ? 'selected' : ''; ?>>Tất cả loại</option>
+                <option value="account" <?= $type === 'account' ? 'selected' : ''; ?>>Ban tài khoản</option>
+                <option value="comment" <?= $type === 'comment' ? 'selected' : ''; ?>>Khóa bình luận</option>
+                <option value="recipe" <?= $type === 'recipe' ? 'selected' : ''; ?>>Khóa đăng bài</option>
             </select>
             <select name="status" class="rounded-lg border border-slate-300 px-3 py-2 text-sm">
-                <option value="" <?= $status === '' ? 'selected' : ''; ?>>TA�º¥t cA�º£ trA�º¡ng thĂ¡i</option>
+                <option value="" <?= $status === '' ? 'selected' : ''; ?>>Tất cả trạng thái</option>
                 <option value="active" <?= $status === 'active' ? 'selected' : ''; ?>>Đang hiệu lực</option>
             </select>
-            <button type="submit" class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white">LA�»c</button>
+            <button type="submit" class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white">Lọc</button>
         </form>
     </div>
 
