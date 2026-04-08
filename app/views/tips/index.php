@@ -16,10 +16,10 @@ $buildPageUrl = static function (int $targetPage) use ($keyword): string {
 <div class="w-full">
     <div class="mx-auto flex max-w-[1000px] flex-1 flex-col">
         <div class="mb-8 flex flex-wrap items-center justify-between gap-3">
-            <h1 class="text-4xl font-black leading-tight tracking-tight text-slate-900 md:text-5xl">MA�º¹o vA�º·t nA�º¥u A�ƒn</h1>
+            <h1 class="text-4xl font-black leading-tight tracking-tight text-slate-900 md:text-5xl">Mẹo vặt nA�º¥u A�ƒn</h1>
             <?php if (is_logged_in()): ?>
                 <div class="flex items-center gap-2">
-                    <a class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600" href="<?= URLROOT; ?>/tips/my">MA�º¹o vA�º·t cA�»§a tĂ´i</a>
+                    <a class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600" href="<?= URLROOT; ?>/tips/my">Mẹo vặt cA�»§a tĂ´i</a>
                     <a class="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white shadow-sm" href="<?= URLROOT; ?>/tips/create">ThĂªm mA�º¹o vA�º·t</a>
                 </div>
             <?php endif; ?>

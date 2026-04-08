@@ -51,7 +51,7 @@ $noticeText = match ($notice) {
                         </select>
                     </div>
                     <div>
-                        <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">LĂ½ do khiA�º¿u nA�º¡i</label>
+                        <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">Lý do khiA�º¿u nA�º¡i</label>
                         <textarea name="appeal_reason" rows="4" maxlength="2000" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" placeholder="NĂªu lĂ½ do bA�º¡n cho rA�º±ng quyA�º¿t A�‘A�»‹nh chA�°a phĂ¹ hA�»£p..."></textarea>
                     </div>
                     <div>

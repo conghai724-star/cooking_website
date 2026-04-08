@@ -101,7 +101,7 @@ $approvedCount = count($approvedRecipes);
                     ChA�» duyA�»‡t (<?= (int) $pendingCount; ?>)
                 </button>
                 <button class="admin-tab border-b-2 pb-3 border-transparent text-slate-500 hover:text-primary" type="button" data-target="approved-section">
-                    ĐA� duyệt (<?= (int) $approvedCount; ?>)
+                    Đã duyệt (<?= (int) $approvedCount; ?>)
                 </button>
             </div>
         </div>
@@ -129,7 +129,7 @@ $approvedCount = count($approvedRecipes);
                                 ? 'bg-emerald-100 text-emerald-700'
                                 : ($status === 'rejected' ? 'bg-rose-100 text-rose-700' : 'bg-yellow-100 text-yellow-700');
                             $statusLabel = $status === 'approved'
-                                ? 'ĐA� duyệt'
+                                ? 'Đã duyệt'
                                 : ($status === 'rejected' ? 'TA�»« chA�»‘i' : 'ChA�» duyA�»‡t');
                             ?>
                             <tr>
@@ -181,7 +181,7 @@ $approvedCount = count($approvedRecipes);
                                 <td class="px-6 py-4 text-slate-500"><?= (int) $recipe['id']; ?></td>
                                 <td class="px-6 py-4 font-medium text-slate-900"><?= htmlspecialchars($recipe['title'], ENT_QUOTES, 'UTF-8'); ?></td>
                                 <td class="px-6 py-4 text-slate-600"><?= htmlspecialchars($recipe['author_name'] ?? 'KhĂ„â€Ă‚Â´ng rÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Âµ', ENT_QUOTES, 'UTF-8'); ?></td>
-                                <td class="px-6 py-4"><span class="rounded-full px-3 py-1 text-xs font-semibold bg-emerald-100 text-emerald-700">ĐA� duyệt</span></td>
+                                <td class="px-6 py-4"><span class="rounded-full px-3 py-1 text-xs font-semibold bg-emerald-100 text-emerald-700">Đã duyệt</span></td>
                                 <td class="px-6 py-4">
                                     <div class="flex flex-wrap gap-2">
                                         <a class="rounded-md border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-600" href="<?= URLROOT; ?>/admin/recipes/<?= (int) $recipe['id']; ?>">Xem</a>

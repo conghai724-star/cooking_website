@@ -96,7 +96,7 @@ $tagTypeLabels = [
 
             <section class="rounded-2xl border border-slate-200 bg-white p-6">
                 <div class="mb-4 flex items-center justify-between gap-3">
-                    <h2 class="text-xl font-bold">NguyĂªn liA�»‡u</h2>
+                    <h2 class="text-xl font-bold">Nguyên liệu</h2>
                     <button id="add-ingredient" class="rounded-lg border border-primary px-3 py-2 text-sm font-semibold text-primary hover:bg-primary hover:text-white" type="button">+ ThĂªm nguyĂªn liA�»‡u</button>
                 </div>
 

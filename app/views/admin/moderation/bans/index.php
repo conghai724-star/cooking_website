@@ -56,7 +56,7 @@ $noticeText = match ($notice) {
                 <thead class="bg-slate-50 text-slate-600">
                     <tr>
                         <th class="px-4 py-3 font-semibold">NgA�°A�»i dĂ¹ng</th>
-                        <th class="px-4 py-3 font-semibold">LÄ‚Â½ do</th>
+                        <th class="px-4 py-3 font-semibold">Lý do</th>
                         <th class="px-4 py-3 font-semibold">LoA�º¡i</th>
                         <th class="px-4 py-3 font-semibold">ThA�»i gian</th>
                         <th class="px-4 py-3 font-semibold">HA�º¿t hA�º¡n</th>

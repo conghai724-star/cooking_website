@@ -226,7 +226,7 @@ $csrf = csrf_token();
             return;
         }
         detectionsListEl.innerHTML = `
-            <p class="mb-2 font-semibold text-slate-800">NguyĂªn liA�»‡u phĂ¡t hiA�»‡n:</p>
+            <p class="mb-2 font-semibold text-slate-800">Nguyên liệu phĂ¡t hiA�»‡n:</p>
             <ul class="space-y-2">
                 ${detections.map((d) => `<li class="flex items-center justify-between rounded-lg border border-slate-200 px-3 py-2"><span>${d.vi_label || d.label}</span><span class="text-xs font-semibold text-primary">${Math.round(Number(d.confidence || 0) * 100)}%</span></li>`).join('')}
             </ul>

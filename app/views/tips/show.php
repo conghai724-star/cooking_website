@@ -7,7 +7,7 @@ $isSavedTip = (bool) ($isSavedTip ?? false);
 
 $tipId = (int) ($tip['id'] ?? 0);
 $slug = (string) ($tip['slug'] ?? '');
-$title = (string) ($tip['title'] ?? 'MA�º¹o vA�º·t nA�º¥u A�ƒn');
+$title = (string) ($tip['title'] ?? 'Mẹo vặt nA�º¥u A�ƒn');
 $excerpt = (string) ($tip['excerpt'] ?? '');
 $content = (string) ($tip['content'] ?? '');
 $image = (string) ($tip['image'] ?? '');
@@ -79,7 +79,7 @@ $tipNoticeText = match ($tipNotice) {
 
         <?php
         $commentsRootId = 'tip-comments-section';
-        $commentsTitle = 'BĂ¬nh luA�º­n cA�»™ng A�‘A�»“ng';
+        $commentsTitle = 'Bình luận cA�»™ng A�‘A�»“ng';
         $contentType = 'tip';
         $contentId = $tipId;
         $redirectTo = $tipRedirectPath;

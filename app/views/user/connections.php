@@ -27,7 +27,7 @@ $scopeText = $type === 'followers'
 $blockRestricted = (bool) ($block_restricted ?? false);
 $connBlockedByViewer = (bool) ($is_blocked_by_viewer ?? false);
 if ($blockRestricted) {
-    $name = $connBlockedByViewer ? 'TĂ i khoA�º£n A�‘Ă£ chA�º·n' : 'Không khA�º£ dA�»¥ng';
+    $name = $connBlockedByViewer ? 'Tài khoản A�‘Ă£ chA�º·n' : 'Không khA�º£ dA�»¥ng';
     $scopeText = $connBlockedByViewer
         ? 'BA�º¡n A�‘Ă£ chA�º·n tĂ i khoA�º£n nĂ y A�€” khĂ´ng hiA�»ƒn thA�»‹ danh sĂ¡ch theo dĂµi.'
         : 'BA�º¡n khĂ´ng thA�»ƒ xem danh sĂ¡ch theo dĂµi cA�»§a ngA�°A�»i dĂ¹ng nĂ y.';

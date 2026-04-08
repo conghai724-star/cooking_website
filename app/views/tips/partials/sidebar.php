@@ -7,7 +7,7 @@ $sidebarIsFollowing = (bool) ($sidebarIsFollowing ?? false);
 $sidebarIsSaved = (bool) ($sidebarIsSaved ?? false);
 $sidebarTipId = (int) ($sidebarTipId ?? 0);
 $sidebarTipPath = (string) ($sidebarTipPath ?? '/tips');
-$sidebarTitle = (string) ($sidebarTitle ?? 'MA�º¹o vA�º·t');
+$sidebarTitle = (string) ($sidebarTitle ?? 'Mẹo vặt');
 
 $quickInfoTitle = 'ThÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â´ng tin nhanh';
 $quickInfoItems = [

@@ -119,7 +119,7 @@ if ($error === 'missing_name') {
                             ? 'bg-emerald-100 text-emerald-700'
                             : ($status === 'rejected' ? 'bg-rose-100 text-rose-700' : 'bg-yellow-100 text-yellow-700');
                         $statusLabel = $status === 'approved'
-                            ? 'ĐA� duyệt'
+                            ? 'Đã duyệt'
                             : ($status === 'rejected' ? 'TA�»« chA�»‘i' : 'ChA�» duyA�»‡t');
                         ?>
                         <tr>
@@ -143,7 +143,7 @@ if ($error === 'missing_name') {
                                         </form>
                                         <form method="post" action="<?= URLROOT; ?>/admin/ingredients/<?= (int) $ingredient['id']; ?>/reject" class="flex items-center gap-2" onsubmit="return confirm('TA�»« chA�»‘i nguyĂªn liA�»‡u nĂ y?');">
                                             <?= csrf_field(); ?>
-                                            <input class="w-40 rounded-md border border-slate-200 px-2 py-1 text-xs" name="reason" placeholder="LĂ½ do tA�»« chA�»‘i">
+                                            <input class="w-40 rounded-md border border-slate-200 px-2 py-1 text-xs" name="reason" placeholder="Lý do tA�»« chA�»‘i">
                                             <button class="rounded-md border border-rose-200 bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-700" type="submit">TA�»« chA�»‘i</button>
                                         </form>
                                     <?php endif; ?>

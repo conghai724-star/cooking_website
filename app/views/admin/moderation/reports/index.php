@@ -5,8 +5,8 @@ $keyword = (string) ($keyword ?? '');
 $rows = is_array($rows ?? null) ? $rows : [];
 $notice = (string) ($notice ?? '');
 $noticeText = match ($notice) {
-    'updated' => 'A�Ă£ cA�º­p nhA�º­t trA�º¡ng thĂ¡i bĂ¡o cĂ¡o.',
-    'update_failed' => 'Không thA�»ƒ cA�º­p nhA�º­t trA�º¡ng thĂ¡i bĂ¡o cĂ¡o.',
+    'updated' => 'Đã cập nhật trạng thái báo cáo.',
+    'update_failed' => 'Không thể cập nhật trạng thái báo cáo.',
     default => '',
 };
 
@@ -27,12 +27,12 @@ $isContentDeleted = static function (array $row) use ($isDeleted): bool {
 };
 
 $badgeByKind = [
-    'recipe' => ['BÄ‚Â i Ă„â€˜Ă„Æ’ng', 'bg-indigo-100 text-indigo-700'],
-    'comment' => ['BĂ¬nh luA�º­n', 'bg-amber-100 text-amber-700'],
-    'tip' => ['MA�º¹o vA�º·t', 'bg-cyan-100 text-cyan-700'],
-    'ingredient' => ['NguyĂªn liA�»‡u', 'bg-teal-100 text-teal-700'],
-    'post' => ['CA�»™ng A�‘A�»“ng', 'bg-violet-100 text-violet-700'],
-    'account' => ['TĂ i khoA�º£n', 'bg-rose-100 text-rose-700'],
+    'recipe' => ['Bài đăng', 'bg-indigo-100 text-indigo-700'],
+    'comment' => ['Bình luận', 'bg-amber-100 text-amber-700'],
+    'tip' => ['Mẹo vặt', 'bg-cyan-100 text-cyan-700'],
+    'ingredient' => ['Nguyên liệu', 'bg-teal-100 text-teal-700'],
+    'post' => ['Cộng đồng', 'bg-violet-100 text-violet-700'],
+    'account' => ['Tài khoản', 'bg-rose-100 text-rose-700'],
 ];
 
 $commonHidden = static function (array $row) use ($status, $type, $keyword): array {
@@ -89,14 +89,14 @@ $renderActionDropdown = static function (
     $renderHiddenInputs($fields);
     echo '<label class="block text-xs font-semibold text-slate-600">' . $e($durationLabel) . '</label>';
     echo '<select name="' . $e($durationField) . '" class="w-full rounded border border-slate-300 px-2 py-1 text-xs">';
-    echo '<option value="3">3 ngÄ‚Â y</option>';
-    echo '<option value="7" selected>7 ngÄ‚Â y</option>';
-    echo '<option value="30">30 ngÄ‚Â y</option>';
+    echo '<option value="3">3 ngày</option>';
+    echo '<option value="7" selected>7 ngày</option>';
+    echo '<option value="30">30 ngày</option>';
     echo '<option value="0">Vĩnh viễn</option>';
     echo '</select>';
-    echo '<label class="block text-xs font-semibold text-slate-600">LÄ‚Â½ do</label>';
-    echo '<textarea name="action_reason" rows="2" class="w-full rounded border border-slate-300 px-2 py-1 text-xs" placeholder="NhA�º­p lĂ½ do...">' . $e($reasonDefault) . '</textarea>';
-    echo '<button type="submit" class="rounded border px-2 py-1 text-xs font-semibold ' . $summaryClass . '">Ăp dA�»¥ng</button>';
+    echo '<label class="block text-xs font-semibold text-slate-600">Lý do</label>';
+    echo '<textarea name="action_reason" rows="2" class="w-full rounded border border-slate-300 px-2 py-1 text-xs" placeholder="Nhập lý do...">' . $e($reasonDefault) . '</textarea>';
+    echo '<button type="submit" class="rounded border px-2 py-1 text-xs font-semibold ' . $summaryClass . '">Áp dụng</button>';
     echo '</form></div></details>';
 };
 
@@ -107,19 +107,19 @@ $COMMON_ACTIONS = [
         'actions' => [
             true => [
                 'action' => 'user_unban_account',
-                'label' => 'MA�»Ÿ khóa tĂ i khoA�º£n',
-                'confirm' => 'MA�»Ÿ khóa tĂ i khoA�º£n nĂ y?',
+                'label' => 'Mở khóa tài khoản',
+                'confirm' => 'Mở khóa tài khoản này?',
                 'class' => 'border-emerald-300 text-emerald-700 hover:bg-emerald-50',
             ],
             false => [
                 'action' => 'user_ban_account',
-                'label' => 'KhĂ³a tĂ i khoA�º£n',
-                'confirm' => 'XĂ¡c nhA�º­n khóa tĂ i khoA�º£n nĂ y?',
+                'label' => 'Khóa tài khoản',
+                'confirm' => 'Xác nhận khóa tài khoản này?',
                 'with_duration' => 'ban_days',
-                'duration_label' => 'ThA�»i gian khóa tĂ i khoA�º£n',
+                'duration_label' => 'Thời gian khóa tài khoản',
                 'reason_default' => static fn(array $r): string => (($r['kind'] ?? '') === 'comment')
-                    ? 'Vi phA�º¡m bĂ¬nh luA�º­n bA�»‹ bĂ¡o cĂ¡o'
-                    : ((($r['kind'] ?? '') === 'account') ? 'BĂ¡o cĂ¡o tĂ i khoA�º£n vi phA�º¡m' : 'Vi phA�º¡m nA�»™i dung bA�»‹ bĂ¡o cĂ¡o'),
+                    ? 'Vi phạm bình luận bị báo cáo'
+                    : ((($r['kind'] ?? '') === 'account') ? 'Báo cáo tài khoản vi phạm' : 'Vi phạm nội dung bị báo cáo'),
                 'class' => 'border-rose-300 text-rose-700 hover:bg-rose-50',
             ],
         ],
@@ -135,14 +135,14 @@ $ACTION_MAP = [
             'actions' => [
                 true => [
                     'action' => 'recipe_unhide',
-                    'label' => 'GA�»¡ A�º©n bĂ i',
-                    'confirm' => 'GA�»¡ A�º©n cĂ´ng thA�»©c nĂ y?',
+                    'label' => 'Gỡ Ẩn bài',
+                    'confirm' => 'Gỡ Ẩn công thức này?',
                     'class' => 'border-emerald-300 text-emerald-700 hover:bg-emerald-50',
                 ],
                 false => [
                     'action' => 'recipe_hide',
-                    'label' => 'A�º¨n bĂ i',
-                    'confirm' => 'A�º¨n cĂ´ng thA�»©c nĂ y?',
+                    'label' => 'Ẩn bài',
+                    'confirm' => 'Ẩn công thức này?',
                     'class' => 'border-amber-300 text-amber-700 hover:bg-amber-50',
                 ],
             ],
@@ -242,7 +242,7 @@ $ACTION_MAP = [
                     'confirm' => 'XĂ¡c nhA�º­n khóa quyA�»n bĂ¬nh luA�º­n?',
                     'with_duration' => 'lock_days',
                     'duration_label' => 'ThA�»i gian khóa bĂ¬nh luA�º­n',
-                    'reason_default' => 'Vi phA�º¡m bĂ¬nh luA�º­n bA�»‹ bĂ¡o cĂ¡o',
+                    'reason_default' => 'Vi phạm bình luận bị báo cáo',
                     'class' => 'border-indigo-300 text-indigo-700 hover:bg-indigo-50',
                 ],
             ],
@@ -444,7 +444,7 @@ $renderActions = static function (
                 $durationLabel = (string) $durationLabel($row);
             }
 
-            $reasonDefault = $actionData['reason_default'] ?? 'Vi phA�º¡m nA�»™i dung bA�»‹ bĂ¡o cĂ¡o';
+            $reasonDefault = $actionData['reason_default'] ?? 'Vi phạm nội dung bị báo cáo';
             if (is_callable($reasonDefault)) {
                 $reasonDefault = (string) $reasonDefault($row);
             }
@@ -523,12 +523,12 @@ $renderActions = static function (
             >
             <select name="type" class="rounded-lg border border-slate-300 px-3 py-2 text-sm">
                 <option value="" <?= $type === '' ? 'selected' : ''; ?>>TA�º¥t cA�º£ loA�º¡i</option>
-                <option value="recipe" <?= $type === 'recipe' ? 'selected' : ''; ?>>BÄ‚Â i Ă„â€˜Ă„Æ’ng</option>
-                <option value="tip" <?= $type === 'tip' ? 'selected' : ''; ?>>MA�º¹o vA�º·t</option>
-                <option value="ingredient" <?= $type === 'ingredient' ? 'selected' : ''; ?>>NguyĂªn liA�»‡u</option>
-                <option value="post" <?= $type === 'post' ? 'selected' : ''; ?>>CA�»™ng A�‘A�»“ng</option>
-                <option value="comment" <?= $type === 'comment' ? 'selected' : ''; ?>>BĂ¬nh luA�º­n</option>
-                <option value="account" <?= $type === 'account' ? 'selected' : ''; ?>>TĂ i khoA�º£n</option>
+                <option value="recipe" <?= $type === 'recipe' ? 'selected' : ''; ?>>Bài đăng</option>
+                <option value="tip" <?= $type === 'tip' ? 'selected' : ''; ?>>Mẹo vặt</option>
+                <option value="ingredient" <?= $type === 'ingredient' ? 'selected' : ''; ?>>Nguyên liệu</option>
+                <option value="post" <?= $type === 'post' ? 'selected' : ''; ?>>Cộng đồng</option>
+                <option value="comment" <?= $type === 'comment' ? 'selected' : ''; ?>>Bình luận</option>
+                <option value="account" <?= $type === 'account' ? 'selected' : ''; ?>>Tài khoản</option>
             </select>
             <select name="status" class="rounded-lg border border-slate-300 px-3 py-2 text-sm">
                 <option value="" <?= $status === '' ? 'selected' : ''; ?>>TA�º¥t cA�º£ trA�º¡ng thĂ¡i</option>
@@ -552,7 +552,7 @@ $renderActions = static function (
                         <th class="px-4 py-3 font-semibold">LoA�º¡i</th>
                         <th class="px-4 py-3 font-semibold">NA�»™i dung bA�»‹ bĂ¡o cĂ¡o</th>
                         <th class="px-4 py-3 font-semibold">NA�»™i dung bĂ¬nh luA�º­n</th>
-                        <th class="px-4 py-3 font-semibold">LÄ‚Â½ do</th>
+                        <th class="px-4 py-3 font-semibold">Lý do</th>
                         <th class="px-4 py-3 font-semibold">NgA�°A�»i bĂ¡o cĂ¡o</th>
                         <th class="px-4 py-3 font-semibold">TrA�º¡ng thĂ¡i</th>
                         <th class="px-4 py-3 font-semibold">ThA�»i gian</th>

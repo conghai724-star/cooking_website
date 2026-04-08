@@ -152,7 +152,7 @@ $noticeMap = [
                                     </div>
                                     <?php if (!empty($user['ban_reason'])): ?>
                                         <div class="mt-1 text-xs text-slate-500">
-                                            LÄ‚Â½ do: <?= htmlspecialchars((string) $user['ban_reason'], ENT_QUOTES, 'UTF-8'); ?>
+                                            Lý do: <?= htmlspecialchars((string) $user['ban_reason'], ENT_QUOTES, 'UTF-8'); ?>
                                         </div>
                                     <?php endif; ?>
                                 <?php endif; ?>
@@ -166,14 +166,14 @@ $noticeMap = [
                                                 <div class="absolute right-0 z-20 mt-2 w-72 rounded-lg border border-slate-200 bg-white p-3 shadow-lg">
                                                     <form method="post" action="<?= URLROOT; ?>/admin/users/<?= $uid; ?>/ban" class="space-y-2" onsubmit="return confirm('XĂ¡c nhA�º­n ban tĂ i khoA�º£n nĂ y?');">
                                                         <?= csrf_field(); ?>
-                                                        <label class="block text-xs font-semibold text-slate-600">LÄ‚Â½ do ban</label>
-                                                        <textarea name="ban_reason" rows="2" class="w-full rounded border border-slate-300 px-2 py-1 text-xs" placeholder="NhA�º­p lĂ½ do..."></textarea>
+                                                        <label class="block text-xs font-semibold text-slate-600">Lý do ban</label>
+                                                        <textarea name="ban_reason" rows="2" class="w-full rounded border border-slate-300 px-2 py-1 text-xs" placeholder="Nhập lý do..."></textarea>
                                                         <label class="block text-xs font-semibold text-slate-600">ThA�»i gian ban</label>
                                                         <select name="ban_days" class="w-full rounded border border-slate-300 px-2 py-1 text-xs">
                                                             <option value="1">1 ngÄ‚Â y</option>
-                                                            <option value="3">3 ngÄ‚Â y</option>
-                                                            <option value="7" selected>7 ngÄ‚Â y</option>
-                                                            <option value="30">30 ngÄ‚Â y</option>
+                                                            <option value="3">3 ngày</option>
+                                                            <option value="7" selected>7 ngày</option>
+                                                            <option value="30">30 ngày</option>
                                                             <option value="0">Vĩnh viễn</option>
                                                         </select>
                                                         <button class="rounded bg-amber-500 px-3 py-1.5 text-xs font-semibold text-white hover:bg-amber-600" type="submit">XĂ¡c nhA�º­n ban</button>
@@ -200,7 +200,7 @@ $noticeMap = [
                                             </form>
                                         <?php endif; ?>
                                     <?php else: ?>
-                                        <span class="text-xs text-slate-400">TĂ i khoA�º£n A�‘A�º·c quyA�»n</span>
+                                        <span class="text-xs text-slate-400">Tài khoản A�‘A�º·c quyA�»n</span>
                                     <?php endif; ?>
                                 </div>
                             </td>

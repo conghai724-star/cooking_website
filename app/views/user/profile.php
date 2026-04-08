@@ -42,7 +42,7 @@ $profileShareText = 'Xem hA�»“ sA�¡ cA�»§a ' . $displayName;
 
 $profileContentHidden = $isLoggedIn && !$isOwner && ($isBlockedByViewer || $isViewerBlocked);
 if ($profileContentHidden) {
-    $displayName = $isBlockedByViewer ? 'TĂ i khoA�º£n A�‘Ă£ chA�º·n' : 'HA�»“ sA�¡ khĂ´ng khA�º£ dA�»¥ng';
+    $displayName = $isBlockedByViewer ? 'Tài khoản A�‘Ă£ chA�º·n' : 'HA�»“ sA�¡ khĂ´ng khA�º£ dA�»¥ng';
     $handle = 'Ă¢â‚¬â€';
     $bio = $isBlockedByViewer
         ? 'BA�º¡n A�‘Ă£ chA�º·n ngA�°A�»i dĂ¹ng nĂ y. CĂ´ng thA�»©c, nguyĂªn liA�»‡u, mA�º¹o vĂ  thA�»‘ng kĂª khĂ´ng A�‘A�°A�»£c hiA�»ƒn thA�»‹.'
@@ -56,7 +56,7 @@ $noticeText = match ($notice) {
     'report_reason_required' => 'Vui lĂ²ng chA�»n lĂ½ do bĂ¡o cĂ¡o.',
     'cannot_report_self' => 'BA�º¡n khĂ´ng thA�»ƒ bĂ¡o cĂ¡o chĂ­nh mĂ¬nh.',
     'block_user_success' => 'A�Ă£ chA�º·n tĂ i khoA�º£n nĂ y.',
-    'block_user_exists' => 'TĂ i khoA�º£n nĂ y A�‘Ă£ nA�º±m trong danh sĂ¡ch chA�º·n.',
+    'block_user_exists' => 'Tài khoản nĂ y A�‘Ă£ nA�º±m trong danh sĂ¡ch chA�º·n.',
     'cannot_block_self' => 'BA�º¡n khĂ´ng thA�»ƒ tA�»± chA�º·n chĂ­nh mĂ¬nh.',
     'unblock_user_success' => 'A�Ă£ bA�» chA�º·n tĂ i khoA�º£n nĂ y.',
     'unblock_user_not_blocked' => 'BA�º¡n chA�°a chA�º·n tĂ i khoA�º£n nĂ y.',
@@ -213,8 +213,8 @@ $noticeText = match ($notice) {
 
         <div class="mb-6 flex flex-wrap gap-2 border-b border-slate-200">
             <button class="profile-tab border-b-2 border-primary px-6 py-4 text-sm font-bold text-primary" type="button" data-tab="recipes">CĂ´ng thA�»©c cA�»§a tĂ´i</button>
-            <button class="profile-tab border-b-2 border-transparent px-6 py-4 text-sm font-bold text-slate-500" type="button" data-tab="ingredients">NguyĂªn liA�»‡u</button>
-            <button class="profile-tab border-b-2 border-transparent px-6 py-4 text-sm font-bold text-slate-500" type="button" data-tab="tips">MA�º¹o vA�º·t</button>
+            <button class="profile-tab border-b-2 border-transparent px-6 py-4 text-sm font-bold text-slate-500" type="button" data-tab="ingredients">Nguyên liệu</button>
+            <button class="profile-tab border-b-2 border-transparent px-6 py-4 text-sm font-bold text-slate-500" type="button" data-tab="tips">Mẹo vặt</button>
             <button class="profile-tab border-b-2 border-transparent px-6 py-4 text-sm font-bold text-slate-500" type="button" data-tab="plans">KA�º¿ hoA�º¡ch</button>
             <button class="profile-tab border-b-2 border-transparent px-6 py-4 text-sm font-bold text-slate-500" type="button" data-tab="certificates">ChA�»©ng nhA�º­n</button>
             <?php if ($isOwner): ?>
@@ -466,7 +466,7 @@ $noticeText = match ($notice) {
             <form method="post" action="<?= URLROOT; ?>/users/<?= $profileUserId; ?>/report">
                 <?= csrf_field(); ?>
                 <div class="mb-4">
-                    <label class="mb-2 block text-sm font-semibold text-slate-600" for="profile-report-reason">LÄ‚Â½ do</label>
+                    <label class="mb-2 block text-sm font-semibold text-slate-600" for="profile-report-reason">Lý do</label>
                     <select id="profile-report-reason" name="reason" required class="w-full rounded-xl border border-slate-200 p-3 focus:border-primary focus:ring-primary">
                         <option value="">ChA�»n lĂ½ do</option>
                         <option value="MA�º¡o danh">MA�º¡o danh</option>

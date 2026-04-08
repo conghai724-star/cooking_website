@@ -6,7 +6,7 @@ $sidebarAuthorId = (int) ($sidebarAuthorId ?? 0);
 $sidebarIsFollowing = (bool) ($sidebarIsFollowing ?? false);
 $sidebarIsSaved = (bool) ($sidebarIsSaved ?? false);
 $sidebarIngredientId = (int) ($sidebarIngredientId ?? 0);
-$sidebarIngredientName = (string) ($sidebarIngredientName ?? 'NguyĂªn liA�»‡u');
+$sidebarIngredientName = (string) ($sidebarIngredientName ?? 'Nguyên liệu');
 
 $quickInfoTitle = 'ThÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â´ng tin nhanh';
 $quickInfoItems = [

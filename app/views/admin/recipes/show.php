@@ -7,15 +7,15 @@ $statusClass = $status === 'approved'
     ? 'bg-emerald-100 text-emerald-700'
     : ($status === 'rejected' ? 'bg-rose-100 text-rose-700' : 'bg-yellow-100 text-yellow-700');
 $statusLabel = $status === 'approved'
-    ? 'ĐA� duyệt'
-    : ($status === 'rejected' ? 'Tá»« chá»‘i' : 'Chá» duyá»‡t');
+    ? 'Đã duyệt'
+    : ($status === 'rejected' ? 'Từ chối' : 'Chờ duyệt');
 ?>
 
 <div class="flex flex-col gap-6">
     <div class="flex items-center justify-between">
         <div>
             <h1 class="text-2xl font-bold text-slate-900"><?= htmlspecialchars((string) ($recipe['title'] ?? 'Chi tiáº¿t cĂ´ng thá»©c'), ENT_QUOTES, 'UTF-8'); ?></h1>
-            <p class="text-sm text-slate-500">TĂ¡c giáº£: <?= htmlspecialchars((string) ($recipe['author_name'] ?? 'Không rĂµ'), ENT_QUOTES, 'UTF-8'); ?></p>
+            <p class="text-sm text-slate-500">Tác giả: <?= htmlspecialchars((string) ($recipe['author_name'] ?? 'Không rĂµ'), ENT_QUOTES, 'UTF-8'); ?></p>
         </div>
         <a class="text-sm font-semibold text-slate-500 hover:text-slate-900" href="<?= URLROOT; ?>/admin/recipes">Quay láº¡i</a>
     </div>
@@ -26,11 +26,11 @@ $statusLabel = $status === 'approved'
             <?php if ($status !== 'approved'): ?>
                 <form method="post" action="<?= URLROOT; ?>/admin/recipes/<?= (int) ($recipe['id'] ?? 0); ?>/approve">
                     <?= csrf_field(); ?>
-                    <button class="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700" type="submit">Duyá»‡t</button>
+                    <button class="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700" type="submit">Duyệt</button>
                 </form>
-                <form method="post" action="<?= URLROOT; ?>/admin/recipes/<?= (int) ($recipe['id'] ?? 0); ?>/reject" onsubmit="return confirm('Tá»« chá»‘i cĂ´ng thá»©c nĂ y?');">
+                <form method="post" action="<?= URLROOT; ?>/admin/recipes/<?= (int) ($recipe['id'] ?? 0); ?>/reject" onsubmit="return confirm('Từ chối cĂ´ng thá»©c nĂ y?');">
                     <?= csrf_field(); ?>
-                    <button class="rounded-md border border-rose-200 bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-700" type="submit">Tá»« chá»‘i</button>
+                    <button class="rounded-md border border-rose-200 bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-700" type="submit">Từ chối</button>
                 </form>
             <?php endif; ?>
         </div>
