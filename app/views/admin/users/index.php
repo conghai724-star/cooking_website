@@ -182,7 +182,7 @@ $noticeMap = [
                                             </details>
                                             <form method="post" action="<?= URLROOT; ?>/admin/users/<?= $uid; ?>/delete" onsubmit="return confirm('XĂ³a mA�»m tĂ i khoA�º£n nĂ y?');">
                                                 <?= csrf_field(); ?>
-                                                <button class="rounded border border-rose-300 px-3 py-1.5 text-xs font-semibold text-rose-700 hover:bg-rose-50" type="submit">XÄ‚Â³a</button>
+                                                <button class="rounded border border-rose-300 px-3 py-1.5 text-xs font-semibold text-rose-700 hover:bg-rose-50" type="submit">Xóa</button>
                                             </form>
                                         <?php elseif ($accountState === 'banned'): ?>
                                             <form method="post" action="<?= URLROOT; ?>/admin/users/<?= $uid; ?>/unban">
@@ -191,7 +191,7 @@ $noticeMap = [
                                             </form>
                                             <form method="post" action="<?= URLROOT; ?>/admin/users/<?= $uid; ?>/delete" onsubmit="return confirm('XĂ³a mA�»m tĂ i khoA�º£n nĂ y?');">
                                                 <?= csrf_field(); ?>
-                                                <button class="rounded border border-rose-300 px-3 py-1.5 text-xs font-semibold text-rose-700 hover:bg-rose-50" type="submit">XÄ‚Â³a</button>
+                                                <button class="rounded border border-rose-300 px-3 py-1.5 text-xs font-semibold text-rose-700 hover:bg-rose-50" type="submit">Xóa</button>
                                             </form>
                                         <?php elseif ($accountState === 'deleted'): ?>
                                             <form method="post" action="<?= URLROOT; ?>/admin/users/<?= $uid; ?>/restore">

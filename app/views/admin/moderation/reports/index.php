@@ -280,7 +280,7 @@ $ACTION_MAP = [
                 ],
                 false => [
                     'action' => 'content_delete',
-                    'label' => 'XÄ‚Â³a',
+                    'label' => 'Xóa',
                     'confirm' => 'XĂ³a nA�»™i dung nĂ y?',
                     'class' => 'border-rose-300 text-rose-700 hover:bg-rose-50',
                 ],
@@ -340,7 +340,7 @@ $ACTION_MAP = [
                 ],
                 false => [
                     'action' => 'content_delete',
-                    'label' => 'XÄ‚Â³a',
+                    'label' => 'Xóa',
                     'confirm' => 'XĂ³a nguyĂªn liA�»‡u nĂ y?',
                     'class' => 'border-rose-300 text-rose-700 hover:bg-rose-50',
                 ],
@@ -358,7 +358,7 @@ $ACTION_MAP = [
                 ],
                 false => [
                     'action' => 'user_ingredient_lock',
-                    'label' => 'Khóa đăng nguyÄ‚Âªn liĂ¡Â»â€¡u',
+                    'label' => 'Khóa đăng nguyên liệu',
                     'confirm' => 'XĂ¡c nhA�º­n khóa A�‘A�ƒng nguyĂªn liA�»‡u?',
                     'with_duration' => 'lock_days',
                     'duration_label' => 'Thời gian khóa đăng',

@@ -1,7 +1,7 @@
 <?php
 $sidebarCategory = (string) ($sidebarCategory ?? 'ChA�°a phĂ¢n loA�º¡i');
 $sidebarViews = (int) ($sidebarViews ?? 0);
-$sidebarAuthor = (string) ($sidebarAuthor ?? 'KhĂ„â€Ă‚Â´ng rÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Âµ');
+$sidebarAuthor = (string) ($sidebarAuthor ?? 'Không rõ');
 $sidebarAuthorId = (int) ($sidebarAuthorId ?? 0);
 $sidebarIsFollowing = (bool) ($sidebarIsFollowing ?? false);
 $sidebarIsSaved = (bool) ($sidebarIsSaved ?? false);

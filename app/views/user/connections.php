@@ -213,7 +213,7 @@ data-class-follow="rounded-md bg-black px-3 py-1.5 text-xs font-semibold text-wh
     <input type="hidden" name="redirect_to"
     value="<?= htmlspecialchars($currentListPath, ENT_QUOTES, 'UTF-8'); ?>">
     <button class="rounded-md border border-rose-300 px-2 py-1.5 text-[11px] font-semibold text-rose-600 hover:bg-rose-50" type="submit">
-        XÄ‚Â³a
+        Xóa
     </button>
 </form>
 <?php endif; ?>

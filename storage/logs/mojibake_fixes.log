@@ -108,3 +108,31 @@
 2026-04-08 14:43:55,383 - INFO - Fixed app\views\admin\moderation\reports\index.php: 'NĂ¡Â»â„¢i dung Ă„â€˜Ä‚Â£ xÄ‚Â³a' -> 'Nội dung đã xóa', 'Ă„ÂÄ‚Â£ xem' -> 'Đã xem'
 2026-04-08 14:43:55,386 - INFO - Fixed app\views\admin\moderation\tips\index.php: 'Lý do tá»« chá»‘i' -> 'Lý do từ chối'
 2026-04-08 14:43:55,386 - INFO - Fixed 6 files.
+2026-04-08 14:45:49,188 - INFO - Loaded 128 mojibake fixes
+2026-04-08 14:45:49,191 - INFO - Found 85 files to check
+2026-04-08 14:45:49,203 - INFO - Would fix app\views\mealplans\index.php: 'XÄ‚Â³a' -> 'Xóa'
+2026-04-08 14:45:49,214 - INFO - Would fix app\views\user\connections.php: 'XÄ‚Â³a' -> 'Xóa'
+2026-04-08 14:45:49,218 - INFO - Would fix app\views\tips\partials\sidebar.php: 'KhĂ„â€Ă‚Â´ng rÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Âµ' -> 'Không rõ'
+2026-04-08 14:45:49,219 - INFO - Would fix app\views\partials\ingredient\quick_info_actions_card.php: 'KhĂ„â€Ă‚Â´ng rÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Âµ' -> 'Không rõ'
+2026-04-08 14:45:49,229 - INFO - Would fix app\views\admin\quizzes\index.php: 'XÄ‚Â³a' -> 'Xóa'
+2026-04-08 14:45:49,231 - INFO - Would fix app\views\admin\quizzes\show.php: 'Thao tÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡c' -> 'Thao tác'
+2026-04-08 14:45:49,233 - INFO - Would fix app\views\admin\quizzes\users.php: 'Thao tÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡c' -> 'Thao tác'
+2026-04-08 14:45:49,234 - INFO - Would fix app\views\admin\recipes\index.php: 'KhĂ„â€Ă‚Â´ng rÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Âµ' -> 'Không rõ', 'Trung bÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¬nh' -> 'Trung bình', 'KhÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³' -> 'Khó'
+2026-04-08 14:45:49,235 - INFO - Would fix app\views\admin\recipes\show.php: 'ChÆ°a cĂ³ bÆ°á»›c thá»±c hiá»‡n.' -> 'Chưa có bước thực hiện.', 'Từ chối cĂ´ng thá»©c nĂ y?' -> 'Từ chối công thức này?', 'ChÆ°a cĂ³ nguyĂªn liá»‡u.' -> 'Chưa có nguyên liệu.', 'Chi tiáº¿t cĂ´ng thá»©c' -> 'Chi tiết công thức', 'ChÆ°a phĂ¢n loáº¡i' -> 'Chưa phân loại', 'Thá»i gian náº¥u' -> 'Thời gian nấu', 'CĂ¡c bÆ°á»›c' -> 'Các bước'
+2026-04-08 14:45:49,237 - INFO - Would fix app\views\admin\users\index.php: 'XÄ‚Â³a' -> 'Xóa'
+2026-04-08 14:45:49,241 - INFO - Would fix app\views\admin\moderation\reports\index.php: 'Khóa đăng nguyÄ‚Âªn liĂ¡Â»â€¡u' -> 'Khóa đăng nguyên liệu', 'XÄ‚Â³a' -> 'Xóa'
+2026-04-08 14:45:49,242 - INFO - Dry run complete. Would fix 11 files.
+2026-04-08 14:47:26,535 - INFO - Loaded 128 mojibake fixes
+2026-04-08 14:47:26,538 - INFO - Found 85 files to check
+2026-04-08 14:47:26,549 - INFO - Fixed app\views\mealplans\index.php: 'XÄ‚Â³a' -> 'Xóa'
+2026-04-08 14:47:26,559 - INFO - Fixed app\views\user\connections.php: 'XÄ‚Â³a' -> 'Xóa'
+2026-04-08 14:47:26,563 - INFO - Fixed app\views\tips\partials\sidebar.php: 'KhĂ„â€Ă‚Â´ng rÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Âµ' -> 'Không rõ'
+2026-04-08 14:47:26,565 - INFO - Fixed app\views\partials\ingredient\quick_info_actions_card.php: 'KhĂ„â€Ă‚Â´ng rÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Âµ' -> 'Không rõ'
+2026-04-08 14:47:26,575 - INFO - Fixed app\views\admin\quizzes\index.php: 'XÄ‚Â³a' -> 'Xóa'
+2026-04-08 14:47:26,577 - INFO - Fixed app\views\admin\quizzes\show.php: 'Thao tÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡c' -> 'Thao tác'
+2026-04-08 14:47:26,579 - INFO - Fixed app\views\admin\quizzes\users.php: 'Thao tÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡c' -> 'Thao tác'
+2026-04-08 14:47:26,580 - INFO - Fixed app\views\admin\recipes\index.php: 'KhĂ„â€Ă‚Â´ng rÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Âµ' -> 'Không rõ', 'Trung bÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¬nh' -> 'Trung bình', 'KhÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³' -> 'Khó'
+2026-04-08 14:47:26,581 - INFO - Fixed app\views\admin\recipes\show.php: 'ChÆ°a cĂ³ bÆ°á»›c thá»±c hiá»‡n.' -> 'Chưa có bước thực hiện.', 'Từ chối cĂ´ng thá»©c nĂ y?' -> 'Từ chối công thức này?', 'ChÆ°a cĂ³ nguyĂªn liá»‡u.' -> 'Chưa có nguyên liệu.', 'Chi tiáº¿t cĂ´ng thá»©c' -> 'Chi tiết công thức', 'ChÆ°a phĂ¢n loáº¡i' -> 'Chưa phân loại', 'Thá»i gian náº¥u' -> 'Thời gian nấu', 'CĂ¡c bÆ°á»›c' -> 'Các bước'
+2026-04-08 14:47:26,583 - INFO - Fixed app\views\admin\users\index.php: 'XÄ‚Â³a' -> 'Xóa'
+2026-04-08 14:47:26,587 - INFO - Fixed app\views\admin\moderation\reports\index.php: 'Khóa đăng nguyÄ‚Âªn liĂ¡Â»â€¡u' -> 'Khóa đăng nguyên liệu', 'XÄ‚Â³a' -> 'Xóa'
+2026-04-08 14:47:26,588 - INFO - Fixed 11 files.

@@ -14,7 +14,7 @@ $statusLabel = $status === 'approved'
 <div class="flex flex-col gap-6">
     <div class="flex items-center justify-between">
         <div>
-            <h1 class="text-2xl font-bold text-slate-900"><?= htmlspecialchars((string) ($recipe['title'] ?? 'Chi tiáº¿t cĂ´ng thá»©c'), ENT_QUOTES, 'UTF-8'); ?></h1>
+            <h1 class="text-2xl font-bold text-slate-900"><?= htmlspecialchars((string) ($recipe['title'] ?? 'Chi tiết công thức'), ENT_QUOTES, 'UTF-8'); ?></h1>
             <p class="text-sm text-slate-500">Tác giả: <?= htmlspecialchars((string) ($recipe['author_name'] ?? 'Không rĂµ'), ENT_QUOTES, 'UTF-8'); ?></p>
         </div>
         <a class="text-sm font-semibold text-slate-500 hover:text-slate-900" href="<?= URLROOT; ?>/admin/recipes">Quay láº¡i</a>
@@ -28,7 +28,7 @@ $statusLabel = $status === 'approved'
                     <?= csrf_field(); ?>
                     <button class="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700" type="submit">Duyệt</button>
                 </form>
-                <form method="post" action="<?= URLROOT; ?>/admin/recipes/<?= (int) ($recipe['id'] ?? 0); ?>/reject" onsubmit="return confirm('Từ chối cĂ´ng thá»©c nĂ y?');">
+                <form method="post" action="<?= URLROOT; ?>/admin/recipes/<?= (int) ($recipe['id'] ?? 0); ?>/reject" onsubmit="return confirm('Từ chối công thức này?');">
                     <?= csrf_field(); ?>
                     <button class="rounded-md border border-rose-200 bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-700" type="submit">Từ chối</button>
                 </form>
@@ -38,14 +38,14 @@ $statusLabel = $status === 'approved'
         <div class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
                 <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">Danh mục</p>
-                <p class="text-sm text-slate-700"><?= htmlspecialchars((string) ($recipe['category_name'] ?? 'ChÆ°a phĂ¢n loáº¡i'), ENT_QUOTES, 'UTF-8'); ?></p>
+                <p class="text-sm text-slate-700"><?= htmlspecialchars((string) ($recipe['category_name'] ?? 'Chưa phân loại'), ENT_QUOTES, 'UTF-8'); ?></p>
             </div>
             <div>
                 <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">Độ khA�</p>
                 <p class="text-sm text-slate-700"><?= htmlspecialchars((string) ($recipe['difficulty'] ?? 'N/A'), ENT_QUOTES, 'UTF-8'); ?></p>
             </div>
             <div>
-                <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">Thá»i gian náº¥u</p>
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">Thời gian nấu</p>
                 <p class="text-sm text-slate-700"><?= htmlspecialchars((string) ($recipe['cooking_time'] ?? 'N/A'), ENT_QUOTES, 'UTF-8'); ?> phĂºt</p>
             </div>
             <div>
@@ -68,7 +68,7 @@ $statusLabel = $status === 'approved'
         <div class="rounded-xl border border-slate-100 bg-white p-6 shadow-sm">
             <h3 class="text-lg font-semibold text-slate-900">NguyĂªn liá»‡u</h3>
             <?php if (empty($ingredients)): ?>
-                <p class="mt-3 text-sm text-slate-500">ChÆ°a cĂ³ nguyĂªn liá»‡u.</p>
+                <p class="mt-3 text-sm text-slate-500">Chưa có nguyên liệu.</p>
             <?php else: ?>
                 <ul class="mt-3 space-y-2 text-sm text-slate-700">
                     <?php foreach ($ingredients as $item): ?>
@@ -82,9 +82,9 @@ $statusLabel = $status === 'approved'
         </div>
 
         <div class="rounded-xl border border-slate-100 bg-white p-6 shadow-sm">
-            <h3 class="text-lg font-semibold text-slate-900">CĂ¡c bÆ°á»›c</h3>
+            <h3 class="text-lg font-semibold text-slate-900">Các bước</h3>
             <?php if (empty($steps)): ?>
-                <p class="mt-3 text-sm text-slate-500">ChÆ°a cĂ³ bÆ°á»›c thá»±c hiá»‡n.</p>
+                <p class="mt-3 text-sm text-slate-500">Chưa có bước thực hiện.</p>
             <?php else: ?>
                 <ol class="mt-3 space-y-3 text-sm text-slate-700">
                     <?php foreach ($steps as $step): ?>

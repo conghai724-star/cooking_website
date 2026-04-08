@@ -162,7 +162,7 @@ foreach ($questions as $question) {
                             <th class="py-2 pr-3">Uy tĂ­n cA�»™ng</th>
                             <th class="py-2 pr-3">MĂ£ chA�»©ng chA�»‰</th>
                             <th class="py-2">NgĂ y cA�º¥p</th>
-                            <th class="py-2 text-right">Thao tÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡c</th>
+                            <th class="py-2 text-right">Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>

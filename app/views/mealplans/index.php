@@ -275,7 +275,7 @@ $noticeText = match ($notice) {
                                 <input type="hidden" name="plan_item_id" value="<?= $entryPlanId; ?>">
                                 <input type="hidden" name="plan_date" value="<?= htmlspecialchars($date, ENT_QUOTES, 'UTF-8'); ?>">
                                 <input type="hidden" name="meal_type" value="<?= htmlspecialchars($mealKey, ENT_QUOTES, 'UTF-8'); ?>">
-                                <button class="text-[11px] font-semibold text-rose-600 hover:underline" type="submit">XÄ‚Â³a</button>
+                                <button class="text-[11px] font-semibold text-rose-600 hover:underline" type="submit">Xóa</button>
                               </form>
                             <?php endif; ?>
                           </div>

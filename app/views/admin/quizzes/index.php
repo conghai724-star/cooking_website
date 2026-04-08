@@ -118,7 +118,7 @@ $passerPreviews = is_array($passerPreviews ?? null) ? $passerPreviews : [];
                                     <a class="rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/admin/quizzes/<?= (int) ($set['id'] ?? 0); ?>">SA�»­a</a>
                                     <form method="post" action="<?= URLROOT; ?>/admin/quizzes/<?= (int) ($set['id'] ?? 0); ?>/delete" onsubmit="return confirm('BA�º¡n cĂ³ chA�º¯c muA�»‘n xĂ³a bA�»™ cĂ¢u hA�»i nĂ y?');">
                                         <?= csrf_field(); ?>
-                                        <button type="submit" class="rounded-lg border border-rose-300 px-3 py-1.5 text-xs font-semibold text-rose-700 hover:bg-rose-50">XÄ‚Â³a</button>
+                                        <button type="submit" class="rounded-lg border border-rose-300 px-3 py-1.5 text-xs font-semibold text-rose-700 hover:bg-rose-50">Xóa</button>
                                     </form>
                                 </div>
                             </td>
@@ -335,7 +335,7 @@ $passerPreviews = is_array($passerPreviews ?? null) ? $passerPreviews : [];
                 <h3 class="text-sm font-semibold text-slate-800">CĂ¢u hA�»i #${index + 1}</h3>
                 <div class="flex items-center gap-2">
                     <span class="rounded bg-slate-200 px-2 py-1 text-xs font-semibold text-slate-700">${typeLabel(type)}</span>
-                    <button type="button" class="remove-question rounded border border-rose-300 px-2 py-1 text-xs font-semibold text-rose-600 hover:bg-rose-50">XÄ‚Â³a</button>
+                    <button type="button" class="remove-question rounded border border-rose-300 px-2 py-1 text-xs font-semibold text-rose-600 hover:bg-rose-50">Xóa</button>
                 </div>
             </div>
 
