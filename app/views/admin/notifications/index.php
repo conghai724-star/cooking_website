@@ -33,8 +33,8 @@ $noticeText = $noticeMap[$notice] ?? '';
             <div class="grid grid-cols-1 gap-3 md:grid-cols-3">
                 <select name="target_scope" class="rounded-lg border border-slate-300 px-3 py-2 text-sm">
                     <option value="all">ToĂ n bA�»™ user active</option>
-                    <option value="role">Theo vai trĂ„â€Ă‚Â²</option>
-                    <option value="users">Theo danh sĂ„â€Ă‚Â¡ch email</option>
+                    <option value="role">Theo vai trÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â²</option>
+                    <option value="users">Theo danh sÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡ch email</option>
                 </select>
                 <select name="target_value" class="rounded-lg border border-slate-300 px-3 py-2 text-sm">
                     <option value="">(DĂ¹ng khi chA�»n scope=role)</option>

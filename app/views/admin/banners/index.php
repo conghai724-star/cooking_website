@@ -14,20 +14,20 @@ if (!empty($banner['image_url'])) {
 }
 
 $noticeText = match ($notice) {
-    'banner_saved' => 'Đã lưu banner trang chủ.',
-    'featured_saved' => 'Đã cập nhật công thức nổi bật.',
-    'today_saved' => 'Đã cập nhật công thức hôm nay.',
-    'banner_save_failed' => 'Lưu banner thất bại.',
-    'featured_save_failed' => 'Lưu công thức nổi bật thất bại.',
-    'today_save_failed' => 'Lưu công thức hôm nay thất bại.',
+    'banner_saved' => 'ĐA� lưu banner trang chủ.',
+    'featured_saved' => 'ĐA� cập nhật cA�ng thức nổi bật.',
+    'today_saved' => 'ĐA� cập nhật cA�ng thức hA�m nay.',
+    'banner_save_failed' => 'LÆ°u banner tháº¥t báº¡i.',
+    'featured_save_failed' => 'LÆ°u cĂ´ng thá»©c ná»•i báº­t tháº¥t báº¡i.',
+    'today_save_failed' => 'LÆ°u cĂ´ng thá»©c hĂ´m nay tháº¥t báº¡i.',
     default => '',
 };
 ?>
 
 <div class="flex flex-col gap-6">
     <div class="flex flex-col gap-2">
-        <h1 class="text-2xl font-bold text-slate-900">Quản lý banner và nội dung nổi bật</h1>
-        <p class="text-sm text-slate-500">Cập nhật banner, ghim công thức và chọn "Công thức hôm nay".</p>
+        <h1 class="text-2xl font-bold text-slate-900">Quáº£n lĂ½ banner vĂ  ná»™i dung ná»•i báº­t</h1>
+        <p class="text-sm text-slate-500">Cáº­p nháº­t banner, ghim cĂ´ng thá»©c vĂ  chá»n "CĂ´ng thá»©c hĂ´m nay".</p>
     </div>
 
     <?php if ($noticeText !== ''): ?>
@@ -55,7 +55,7 @@ $noticeText = match ($notice) {
                     </div>
                 <?php endif; ?>
                 <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
-                    <input type="text" name="cta_text" maxlength="80" value="<?= htmlspecialchars((string) ($banner['cta_text'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>" placeholder="NĂ„â€Ă‚Âºt CTA" class="rounded-lg border border-slate-300 px-3 py-2 text-sm">
+                    <input type="text" name="cta_text" maxlength="80" value="<?= htmlspecialchars((string) ($banner['cta_text'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>" placeholder="NÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Âºt CTA" class="rounded-lg border border-slate-300 px-3 py-2 text-sm">
                     <input type="text" name="cta_url" maxlength="255" value="<?= htmlspecialchars((string) ($banner['cta_url'] ?? '/recipes'), ENT_QUOTES, 'UTF-8'); ?>" placeholder="Link CTA (vd: /recipes)" class="rounded-lg border border-slate-300 px-3 py-2 text-sm">
                 </div>
                 <label class="inline-flex items-center gap-2 text-sm">
@@ -63,7 +63,7 @@ $noticeText = match ($notice) {
                     KĂ­ch hoA�º¡t ngay
                 </label>
                 <div>
-                    <button class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white" type="submit">LÄ‚â€ Ă‚Â°u banner</button>
+                    <button class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white" type="submit">LĂ„â€Ă¢â‚¬Â Ä‚â€Ă‚Â°u banner</button>
                 </div>
             </form>
         </div>
@@ -84,7 +84,7 @@ $noticeText = match ($notice) {
     </div>
 
     <div class="rounded-xl border border-slate-200 bg-white p-6">
-        <h3 class="mb-4 font-semibold text-slate-800">CÄ‚Â´ng thĂ¡Â»Â©c hĂ„â€Ă‚Â´m nay</h3>
+        <h3 class="mb-4 font-semibold text-slate-800">CĂ„â€Ă‚Â´ng thÄ‚Â¡Ă‚Â»Ă‚Â©c hÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â´m nay</h3>
         <form method="post" action="<?= URLROOT; ?>/admin/banners/today" class="grid grid-cols-1 gap-3 md:grid-cols-[180px_1fr_auto]">
             <?= csrf_field(); ?>
             <input type="date" name="for_date" value="<?= htmlspecialchars($forDate, ENT_QUOTES, 'UTF-8'); ?>" class="rounded-lg border border-slate-300 px-3 py-2 text-sm">
@@ -97,7 +97,7 @@ $noticeText = match ($notice) {
                     </option>
                 <?php endforeach; ?>
             </select>
-            <button class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white" type="submit">LÄ‚â€ Ă‚Â°u</button>
+            <button class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white" type="submit">LĂ„â€Ă¢â‚¬Â Ä‚â€Ă‚Â°u</button>
         </form>
         <?php if ($recipeOfDay !== null): ?>
             <p class="mt-3 text-sm text-slate-600">

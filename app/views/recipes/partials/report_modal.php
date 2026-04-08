@@ -5,14 +5,14 @@
             <?= csrf_field(); ?>
             <input type="hidden" name="recipe_id" value="<?= (int) ($recipe['id'] ?? 0); ?>">
             <div class="mb-4">
-                <label class="mb-2 block text-sm font-semibold text-slate-600">LÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â½ do bÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡o cÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡o:</label>
+                <label class="mb-2 block text-sm font-semibold text-slate-600">LĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â½ do bĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡o cĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡o:</label>
                 <select id="report-reason" name="reason" data-report-reason-select data-report-other-target="#other-reason-container" class="w-full rounded-xl border border-slate-200 p-3 focus:border-primary focus:ring-primary" required>
                     <option value="">-- ChA�»n lĂ½ do --</option>
                     <option value="Spam">Spam</option>
                     <option value="NA�»™i dung khĂ´ng phĂ¹ hA�»£p">NA�»™i dung khĂ´ng phĂ¹ hA�»£p</option>
                     <option value="Vi phA�º¡m bA�º£n quyA�»n">Vi phA�º¡m bA�º£n quyA�»n</option>
                     <option value="ThĂ´ng tin sai lA�»‡ch">ThĂ´ng tin sai lA�»‡ch</option>
-                    <option value="KhÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡c">KhÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡c</option>
+                    <option value="KhĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡c">KhĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡c</option>
                 </select>
             </div>
             <div class="mb-4 hidden" id="other-reason-container">

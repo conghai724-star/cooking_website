@@ -85,7 +85,7 @@ $buildQuery = static function (int $targetPage) use ($keyword, $userId, $side, $
 
     <div class="rounded-lg border border-slate-200 bg-white overflow-hidden">
         <div class="border-b border-slate-100 px-4 py-3">
-            <h2 class="font-semibold text-slate-900">Danh sĂ„â€Ă‚Â¡ch follow (<?= $total; ?>)</h2>
+            <h2 class="font-semibold text-slate-900">Danh sÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡ch follow (<?= $total; ?>)</h2>
         </div>
         <div class="overflow-x-auto">
             <table class="w-full text-left text-sm">
@@ -97,7 +97,7 @@ $buildQuery = static function (int $targetPage) use ($keyword, $userId, $side, $
                         <th class="px-4 py-3 font-semibold">NhA�»‹p follow</th>
                         <th class="px-4 py-3 font-semibold">RA�»§i ro</th>
                         <th class="px-4 py-3 font-semibold">NgĂ y tA�º¡o</th>
-                        <th class="px-4 py-3 font-semibold">Thao tĂ„â€Ă‚Â¡c</th>
+                        <th class="px-4 py-3 font-semibold">Thao tÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡c</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
@@ -180,7 +180,7 @@ $buildQuery = static function (int $targetPage) use ($keyword, $userId, $side, $
                                                 <input type="hidden" name="return_user_id" value="<?= $userId; ?>">
                                                 <input type="hidden" name="return_side" value="<?= $e($side); ?>">
                                                 <input type="hidden" name="return_risk" value="<?= $e($risk); ?>">
-                                                <button type="submit" class="rounded border border-amber-300 px-2 py-1 text-xs font-semibold text-amber-700 hover:bg-amber-50">KhĂ„â€Ă‚Â³a 7 ngÄ‚Â y</button>
+                                                <button type="submit" class="rounded border border-amber-300 px-2 py-1 text-xs font-semibold text-amber-700 hover:bg-amber-50">KhÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³a 7 ngĂ„â€Ă‚Â y</button>
                                             </form>
                                             <form method="post" action="<?= URLROOT; ?>/admin/relationships/lock">
                                                 <?= csrf_field(); ?>

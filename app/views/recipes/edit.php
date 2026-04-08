@@ -46,12 +46,12 @@ $tagTypeLabels = [
                         <label class="mb-2 block text-sm font-semibold text-slate-700">A�A�»™ khĂ³</label>
                         <select class="w-full rounded-xl border border-slate-200 px-4 py-3 focus:border-primary focus:ring-primary" name="difficulty">
                             <option value="easy" <?= (($recipe['difficulty'] ?? 'easy') === 'easy') ? 'selected' : ''; ?>>DA�»…</option>
-                            <option value="medium" <?= (($recipe['difficulty'] ?? '') === 'medium') ? 'selected' : ''; ?>>Trung bĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¬nh</option>
-                            <option value="hard" <?= (($recipe['difficulty'] ?? '') === 'hard') ? 'selected' : ''; ?>>KhĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³</option>
+                            <option value="medium" <?= (($recipe['difficulty'] ?? '') === 'medium') ? 'selected' : ''; ?>>Trung bÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¬nh</option>
+                            <option value="hard" <?= (($recipe['difficulty'] ?? '') === 'hard') ? 'selected' : ''; ?>>KhÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³</option>
                         </select>
                     </div>
                     <div class="md:col-span-2">
-                        <label class="mb-2 block text-sm font-semibold text-slate-700">Tags mĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³n Ä‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬Â Ä‚Â¢Ă¢â€Â¬Ă¢â€Â¢n</label>
+                        <label class="mb-2 block text-sm font-semibold text-slate-700">Tags mÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³n Ă„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚Â Ă„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¢n</label>
                         <?php if ($tagsByType === []): ?>
                             <p class="rounded-xl border border-dashed border-slate-300 px-4 py-3 text-sm text-slate-500">
                                 ChA�°a cĂ³ dA�»¯ liA�»‡u tags. HĂ£y chA�º¡y migration tags trA�°A�»›c.
@@ -126,7 +126,7 @@ $tagTypeLabels = [
                                     <input class="w-full rounded-lg border border-slate-200 px-3 py-2" type="text" name="ingredient_unit[]" value="<?= htmlspecialchars((string) ($item['unit'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>">
                                 </div>
                                 <div class="md:col-span-1 flex items-end">
-                                    <button class="remove-ingredient w-full rounded-lg border border-rose-300 px-2 py-2 text-sm text-rose-600 hover:bg-rose-50" type="button">XĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³a</button>
+                                    <button class="remove-ingredient w-full rounded-lg border border-rose-300 px-2 py-2 text-sm text-rose-600 hover:bg-rose-50" type="button">XÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³a</button>
                                 </div>
                             </div>
                         <?php endforeach; ?>
@@ -145,7 +145,7 @@ $tagTypeLabels = [
                                 <input class="w-full rounded-lg border border-slate-200 px-3 py-2" type="text" name="ingredient_unit[]" placeholder="kg">
                             </div>
                             <div class="md:col-span-1 flex items-end">
-                                <button class="remove-ingredient w-full rounded-lg border border-rose-300 px-2 py-2 text-sm text-rose-600 hover:bg-rose-50" type="button">XĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³a</button>
+                                <button class="remove-ingredient w-full rounded-lg border border-rose-300 px-2 py-2 text-sm text-rose-600 hover:bg-rose-50" type="button">XÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³a</button>
                             </div>
                         </div>
                     <?php endif; ?>
@@ -164,7 +164,7 @@ $tagTypeLabels = [
                             <div class="step-item rounded-xl border border-slate-200 p-4">
                                 <div class="mb-2 flex items-center justify-between">
                                     <p class="step-label text-sm font-bold text-slate-700">BA�°A�»›c <?= (int) ($step['step_number'] ?? 1); ?></p>
-                                    <button class="remove-step rounded-lg border border-rose-300 px-2 py-1 text-xs text-rose-600 hover:bg-rose-50" type="button">XĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³a</button>
+                                    <button class="remove-step rounded-lg border border-rose-300 px-2 py-1 text-xs text-rose-600 hover:bg-rose-50" type="button">XÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³a</button>
                                 </div>
                                 <div class="space-y-3">
                                     <textarea class="min-h-[100px] w-full rounded-lg border border-slate-200 px-3 py-2" name="step_content[]"><?= htmlspecialchars((string) ($step['content'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></textarea>
@@ -180,7 +180,7 @@ $tagTypeLabels = [
                         <div class="step-item rounded-xl border border-slate-200 p-4">
                             <div class="mb-2 flex items-center justify-between">
                                 <p class="step-label text-sm font-bold text-slate-700">BA�°A�»›c 1</p>
-                                <button class="remove-step rounded-lg border border-rose-300 px-2 py-1 text-xs text-rose-600 hover:bg-rose-50" type="button">XĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³a</button>
+                                <button class="remove-step rounded-lg border border-rose-300 px-2 py-1 text-xs text-rose-600 hover:bg-rose-50" type="button">XÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³a</button>
                             </div>
                             <div class="space-y-3">
                                 <textarea class="min-h-[100px] w-full rounded-lg border border-slate-200 px-3 py-2" name="step_content[]" placeholder="MĂ´ tA�º£ bA�°A�»›c thA�»±c hiA�»‡n..."></textarea>
@@ -222,7 +222,7 @@ $tagTypeLabels = [
                 <input class="w-full rounded-lg border border-slate-200 px-3 py-2" type="text" name="ingredient_unit[]" placeholder="muA�»—ng">
             </div>
             <div class="md:col-span-1 flex items-end">
-                <button class="remove-ingredient w-full rounded-lg border border-rose-300 px-2 py-2 text-sm text-rose-600 hover:bg-rose-50" type="button">XĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³a</button>
+                <button class="remove-ingredient w-full rounded-lg border border-rose-300 px-2 py-2 text-sm text-rose-600 hover:bg-rose-50" type="button">XÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³a</button>
             </div>
         </div>
     `;
@@ -259,7 +259,7 @@ $tagTypeLabels = [
         step.innerHTML = `
             <div class="mb-2 flex items-center justify-between">
                 <p class="step-label text-sm font-bold text-slate-700">BA�°A�»›c</p>
-                <button class="remove-step rounded-lg border border-rose-300 px-2 py-1 text-xs text-rose-600 hover:bg-rose-50" type="button">XĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³a</button>
+                <button class="remove-step rounded-lg border border-rose-300 px-2 py-1 text-xs text-rose-600 hover:bg-rose-50" type="button">XÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³a</button>
             </div>
             <div class="space-y-3">
                 <textarea class="min-h-[100px] w-full rounded-lg border border-slate-200 px-3 py-2" name="step_content[]" placeholder="MĂ´ tA�º£ bA�°A�»›c thA�»±c hiA�»‡n..."></textarea>

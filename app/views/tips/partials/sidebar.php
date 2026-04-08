@@ -1,7 +1,7 @@
 <?php
 $sidebarCategory = (string) ($sidebarCategory ?? 'ChA�°a phĂ¢n loA�º¡i');
 $sidebarViews = (int) ($sidebarViews ?? 0);
-$sidebarAuthor = (string) ($sidebarAuthor ?? 'KhÄ‚Â´ng rĂ„â€Ă‚Âµ');
+$sidebarAuthor = (string) ($sidebarAuthor ?? 'KhĂ„â€Ă‚Â´ng rÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Âµ');
 $sidebarAuthorId = (int) ($sidebarAuthorId ?? 0);
 $sidebarIsFollowing = (bool) ($sidebarIsFollowing ?? false);
 $sidebarIsSaved = (bool) ($sidebarIsSaved ?? false);
@@ -9,7 +9,7 @@ $sidebarTipId = (int) ($sidebarTipId ?? 0);
 $sidebarTipPath = (string) ($sidebarTipPath ?? '/tips');
 $sidebarTitle = (string) ($sidebarTitle ?? 'MA�º¹o vA�º·t');
 
-$quickInfoTitle = 'ThĂ„â€Ă‚Â´ng tin nhanh';
+$quickInfoTitle = 'ThÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â´ng tin nhanh';
 $quickInfoItems = [
     ['label' => 'Danh mục', 'value' => $sidebarCategory !== '' ? $sidebarCategory : 'ChA�°a phĂ¢n loA�º¡i'],
     ['label' => 'LA�°A�»£t xem', 'value' => (string) $sidebarViews],

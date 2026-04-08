@@ -23,7 +23,7 @@ $reportHiddenFields = is_array($reportHiddenFields ?? null) ? $reportHiddenField
                 <option value="QuA�º¥y rA�»‘i / cĂ´ng kĂ­ch cĂ¡ nhĂ¢n">QuA�º¥y rA�»‘i / cĂ´ng kĂ­ch cĂ¡ nhĂ¢n</option>
                 <option value="Spam">Spam</option>
                 <option value="ThĂ´ng tin sai lA�»‡ch">ThĂ´ng tin sai lA�»‡ch</option>
-                <option value="KhĂ„â€Ă‚Â¡c">KhĂ„â€Ă‚Â¡c</option>
+                <option value="KhÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡c">KhÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡c</option>
             </select>
             <textarea id="<?= htmlspecialchars($reportOtherId, ENT_QUOTES, 'UTF-8'); ?>" class="hidden w-full rounded-lg border border-red-200 bg-white px-2 py-1.5 text-xs" name="reason_other" rows="2" placeholder="MĂ´ tA�º£ thĂªm (nA�º¿u chA�»n KhĂ¡c)"></textarea>
             <div class="flex justify-end">

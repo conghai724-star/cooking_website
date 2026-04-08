@@ -105,10 +105,10 @@ if ($error === 'missing_name') {
                 <table class="w-full text-left text-sm">
                     <thead class="bg-background-light text-slate-500">
                     <tr>
-                        <th class="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider">TĂ„â€Ă‚Âªn</th>
+                        <th class="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider">TÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Âªn</th>
                         <th class="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider">Danh mA�»¥c</th>
                         <th class="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider">TrA�º¡ng thĂ¡i</th>
-                        <th class="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider">HĂ„â€Ă‚Â nh Ä‚â€Ă¢â‚¬ËœÄ‚Â¡Ă‚Â»Ă¢â€Â¢ng</th>
+                        <th class="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider">HÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â nh Ă„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‹Å“Ă„â€Ă‚Â¡Ä‚â€Ă‚Â»Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¢ng</th>
                     </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
@@ -129,7 +129,7 @@ if ($error === 'missing_name') {
                                 <div class="flex flex-col gap-2">
                                     <span class="rounded-full px-3 py-1 text-xs font-semibold <?= $statusClass; ?>"><?= $statusLabel; ?></span>
                                     <?php if ($status === 'rejected' && !empty($ingredient['rejection_reason'])): ?>
-                                        <span class="text-xs text-rose-600">LĂ„â€Ă‚Â½ do: <?= htmlspecialchars((string) $ingredient['rejection_reason'], ENT_QUOTES, 'UTF-8'); ?></span>
+                                        <span class="text-xs text-rose-600">LÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â½ do: <?= htmlspecialchars((string) $ingredient['rejection_reason'], ENT_QUOTES, 'UTF-8'); ?></span>
                                     <?php endif; ?>
                                 </div>
                             </td>
@@ -151,7 +151,7 @@ if ($error === 'missing_name') {
                                         <a class="rounded-md border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-600" href="<?= URLROOT; ?>/admin/ingredients/<?= (int) $ingredient['id']; ?>/edit">SA�»­a</a>
                                         <form method="post" action="<?= URLROOT; ?>/admin/ingredients/<?= (int) $ingredient['id']; ?>/delete" onsubmit="return confirm('XĂ³a nguyĂªn liA�»‡u nĂ y?');">
                                             <?= csrf_field(); ?>
-                                            <button class="rounded-md border border-rose-200 bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-700" type="submit">XĂ„â€Ă‚Â³a</button>
+                                            <button class="rounded-md border border-rose-200 bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-700" type="submit">XÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³a</button>
                                         </form>
                                     <?php endif; ?>
                                 </div>

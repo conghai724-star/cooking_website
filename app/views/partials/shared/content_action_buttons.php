@@ -7,7 +7,7 @@ $actionIsOwner = (bool) ($actionIsOwner ?? false);
 $actionEnableFollow = (bool) ($actionEnableFollow ?? false);
 $actionFollowAction = (string) ($actionFollowAction ?? '');
 $actionIsFollowing = (bool) ($actionIsFollowing ?? false);
-$actionFollowText = (string) ($actionFollowText ?? 'Theo dĂ„â€Ă‚Âµi');
+$actionFollowText = (string) ($actionFollowText ?? 'Theo dÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Âµi');
 $actionUnfollowText = (string) ($actionUnfollowText ?? 'Đang theo dA�i');
 
 $actionEnableSave = (bool) ($actionEnableSave ?? false);
@@ -84,10 +84,10 @@ if ($requestQuery !== '') {
 
     <?php if ($actionEnableReport && $actionIsLoggedIn && !$actionIsOwner): ?>
         <?php if ($actionReportMode === 'modal'): ?>
-            <button id="<?= htmlspecialchars($actionReportTriggerId, ENT_QUOTES, 'UTF-8'); ?>" data-modal-open="<?= htmlspecialchars($actionReportModalTarget, ENT_QUOTES, 'UTF-8'); ?>" class="inline-flex w-full items-center justify-center rounded-xl border border-red-500 px-4 py-2 text-sm font-bold text-red-500 hover:bg-red-50" type="button">BĂ„â€Ă‚Â¡o cĂ„â€Ă‚Â¡o</button>
+            <button id="<?= htmlspecialchars($actionReportTriggerId, ENT_QUOTES, 'UTF-8'); ?>" data-modal-open="<?= htmlspecialchars($actionReportModalTarget, ENT_QUOTES, 'UTF-8'); ?>" class="inline-flex w-full items-center justify-center rounded-xl border border-red-500 px-4 py-2 text-sm font-bold text-red-500 hover:bg-red-50" type="button">BÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡o cÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡o</button>
         <?php else: ?>
             <details>
-                <summary class="inline-flex w-full cursor-pointer list-none items-center justify-center rounded-xl border border-red-500 px-4 py-2 text-sm font-bold text-red-500 hover:bg-red-50">BĂ„â€Ă‚Â¡o cĂ„â€Ă‚Â¡o</summary>
+                <summary class="inline-flex w-full cursor-pointer list-none items-center justify-center rounded-xl border border-red-500 px-4 py-2 text-sm font-bold text-red-500 hover:bg-red-50">BÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡o cÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡o</summary>
                 <?php
                 $reportAction = $actionReportAction;
                 $reportOtherTargetId = $actionReportOtherTargetId;

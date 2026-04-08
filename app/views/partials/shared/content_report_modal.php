@@ -20,13 +20,13 @@ $reportModalSelector = '#' . $reportModalId;
             <?php endforeach; ?>
 
             <div class="mb-4">
-                <label class="mb-2 block text-sm font-semibold text-slate-600">LĂ„â€Ă‚Â½ do bĂ„â€Ă‚Â¡o cĂ„â€Ă‚Â¡o:</label>
+                <label class="mb-2 block text-sm font-semibold text-slate-600">LÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â½ do bÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡o cÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡o:</label>
                 <select name="<?= htmlspecialchars($reportModalReasonField, ENT_QUOTES, 'UTF-8'); ?>" data-report-reason-select data-report-other-target="#<?= htmlspecialchars($reportModalOtherId, ENT_QUOTES, 'UTF-8'); ?>" class="w-full rounded-xl border border-slate-200 p-3 focus:border-primary focus:ring-primary" required>
                     <option value="">-- ChA�»n lĂ½ do --</option>
                     <option value="Spam">Spam</option>
                     <option value="NA�»™i dung khĂ´ng phĂ¹ hA�»£p">NA�»™i dung khĂ´ng phĂ¹ hA�»£p</option>
                     <option value="ThĂ´ng tin sai lA�»‡ch">ThĂ´ng tin sai lA�»‡ch</option>
-                    <option value="KhĂ„â€Ă‚Â¡c">KhĂ„â€Ă‚Â¡c</option>
+                    <option value="KhÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡c">KhÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡c</option>
                 </select>
             </div>
 

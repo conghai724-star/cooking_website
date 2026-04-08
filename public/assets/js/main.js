@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const sync = () => {
                 const v = (select.value || '').trim().toLowerCase();
-                target.classList.toggle('hidden', v !== 'khac' && v !== 'khĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡c');
+                target.classList.toggle('hidden', v !== 'khac' && v !== 'khÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡c');
             };
 
             sync();
@@ -301,7 +301,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const map = {
                 'Toi chua hieu ro cau hoi. Ban thu hoi theo mau ben duoi.': 'TĂ´i chA�°a hiA�»ƒu rĂµ cĂ¢u hA�»i. BA�º¡n thA�»­ hA�»i theo mA�º«u bĂªn dA�°A�»›i.',
                 'Toi muon vao tai khoan': 'TĂ´i muA�»‘n vĂ o tĂ i khoA�º£n',
-                'Co mon an it calo khong?': 'CÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³ mÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³n Ă„â€Ă¢â‚¬ÂÄ‚â€ Ă¢â‚¬â„¢n Ä‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â­t calo khÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â´ng?',
+                'Co mon an it calo khong?': 'CĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³ mĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³n Ä‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬Â Ä‚Â¢Ă¢â€Â¬Ă¢â€Â¢n Ă„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â­t calo khĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â´ng?',
                 'Xem ke hoach bua an o dau?': 'Xem kA�º¿ hoA�º¡ch bA�»¯a A�ƒn A�»Ÿ A�‘Ă¢u?',
                 'Ban vao trang Dang nhap de truy cap tai khoan.': 'Bạn vA�o trang Đăng nhập để truy cập tA�i khoản.',
                 'Ban vao trang Dang ky de tao tai khoan moi.': 'Bạn vA�o trang Đăng kA� để tạo tA�i khoản mới.',
@@ -459,7 +459,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } catch (err) {
                 hideTyping();
-                const errMsg = (err && err.message) ? String(err.message) : 'KhÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â´ng xÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡c Ă„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‹Å“Ă„â€Ă‚Â¡Ä‚â€Ă‚Â»Ä‚Â¢Ă¢â€Â¬Ă‚Â¹nh';
+                const errMsg = (err && err.message) ? String(err.message) : 'KhĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â´ng xĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡c Ä‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€¹Ă…â€œÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡Ă„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â»Ă„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚Â¹nh';
                 appendMessage('LA�»—i: ' + errMsg);
                 if (window.console && console.error) {
                     console.error('chat_error', err);
