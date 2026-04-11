@@ -1,4 +1,4 @@
-﻿<?php
+ď»ż<?php
 $sets = is_array($sets ?? null) ? $sets : [];
 $participantPreviews = is_array($participantPreviews ?? null) ? $participantPreviews : [];
 $passerPreviews = is_array($passerPreviews ?? null) ? $passerPreviews : [];
@@ -6,8 +6,8 @@ $passerPreviews = is_array($passerPreviews ?? null) ? $passerPreviews : [];
 <div class="space-y-6">
     <div class="flex items-center justify-between">
         <div>
-            <h1 class="text-2xl font-bold text-slate-900">QuA�º£n lĂ½ bA�»™ cĂ¢u hA�»i</h1>
-            <p class="text-sm text-slate-500">ThĂªm cĂ¢u hA�»i theo tA�»«ng form riĂªng: single, multiple, fill_blank, ordering.</p>
+            <h1 class="text-2xl font-bold text-slate-900">Quản lý bộ câu hỏi</h1>
+            <p class="text-sm text-slate-500">Thêm câu hỏi theo từng form riêng: single, multiple, fill_blank, ordering.</p>
         </div>
     </div>
 
@@ -18,22 +18,22 @@ $passerPreviews = is_array($passerPreviews ?? null) ? $passerPreviews : [];
     <?php endif; ?>
 
     <div class="rounded-xl border border-slate-200 bg-white p-5">
-        <h2 class="mb-4 text-lg font-semibold text-slate-900">TA�º¡o bA�»™ cĂ¢u hA�»i mA�»›i</h2>
+        <h2 class="mb-4 text-lg font-semibold text-slate-900">Tạo bộ câu hỏi mới</h2>
         <form method="post" action="<?= URLROOT; ?>/admin/quizzes/create" class="space-y-4" id="quiz-create-form" enctype="multipart/form-data">
             <?= csrf_field(); ?>
             <div class="grid gap-4 md:grid-cols-3">
                 <label class="text-sm font-medium text-slate-700">
-                    TiĂªu A�‘A�»
+                    Tiêu đề
                     <input type="text" name="title" required maxlength="255" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
                 </label>
                 <label class="text-sm font-medium text-slate-700">
-                    ChA�»§ A�‘A�»
-                    <input type="text" name="topic" maxlength="120" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" placeholder="VĂ­ dA�»¥: An toĂ n thA�»±c phA�º©m">
+                    Chủ đề
+                    <input type="text" name="topic" maxlength="120" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" placeholder="Ví dụ: An toàn thực phẩm">
                 </label>
                 <label class="text-sm font-medium text-slate-700">
-                    A�A�»™ khĂ³
+                    Độ khó
                     <select name="difficulty" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
-                        <option value="easy">DA�»…</option>
+                        <option value="easy">Dễ</option>
                         <option value="medium">Trung bình</option>
                         <option value="hard">Khó</option>
                     </select>
@@ -41,29 +41,29 @@ $passerPreviews = is_array($passerPreviews ?? null) ? $passerPreviews : [];
             </div>
 
             <label class="block text-sm font-medium text-slate-700">
-                MĂ´ tA�º£
+                Mô tả
                 <textarea name="description" rows="2" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"></textarea>
             </label>
 
             <div class="rounded-lg border border-slate-200 bg-slate-50 p-3">
-                <p class="text-sm font-semibold text-slate-800">ThA�»i gian lĂ m bĂ i</p>
-                <p class="mt-1 text-xs text-slate-500">NhA�º­p sA�»‘ phĂºt. NA�º¿u A�‘A�»ƒ 0 sA�º½ khĂ´ng giA�»›i hA�º¡n</p>
+                <p class="text-sm font-semibold text-slate-800">Thời gian làm bài</p>
+                <p class="mt-1 text-xs text-slate-500">Nhập số phút. Nếu để 0 sẽ không giới hạn</p>
                 <label class="mt-3 block text-sm font-medium text-slate-700">
-                    GiA�»›i hA�º¡n thA�»i gian (phĂºt)
+                    Giới hạn thời gian (phút)
                     <input type="number" min="0" max="600" step="1" name="time_limit_minutes" value="0" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" placeholder="0">
                 </label>
             </div>
 
             <div class="rounded-lg border border-slate-200 bg-slate-50 p-3">
                 <p class="text-sm font-semibold text-slate-800">Điều kiện đạt chứng chỉ</p>
-                <p class="mt-1 text-xs text-slate-500">A�A�»ƒ trA�»‘ng = mA�º·c A�‘A�»‹nh phA�º£i A�‘Ăºng hA�º¿t cĂ¢u vĂ  A�‘A�º¡t tA�»‘i A�‘a A�‘iA�»ƒm.</p>
+                <p class="mt-1 text-xs text-slate-500">Để trống = được đánh phải đúng hết câu và đạt tối đa điểm.</p>
                 <div class="mt-3 grid gap-3 md:grid-cols-2">
                     <label class="text-sm font-medium text-slate-700">
-                        SA�»‘ cĂ¢u A�‘Ăºng tA�»‘i thiA�»ƒu
+                        Số câu đúng tối thiểu
                         <input type="number" min="0" step="1" name="pass_min_correct" value="0" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" placeholder="0">
                     </label>
                     <label class="text-sm font-medium text-slate-700">
-                        SA�»‘ A�‘iA�»ƒm tA�»‘i thiA�»ƒu
+                        Số điểm tối thiểu
                         <input type="number" min="0" step="1" name="pass_min_points" value="0" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" placeholder="0">
                     </label>
                 </div>
@@ -73,35 +73,35 @@ $passerPreviews = is_array($passerPreviews ?? null) ? $passerPreviews : [];
 
             <div class="flex flex-wrap items-end gap-2">
                 <label class="text-sm font-medium text-slate-700">
-                    ChA�»n form cĂ¢u hA�»i
+                    Chọn form câu hỏi
                     <select id="add-question-type" class="mt-1 rounded-lg border border-slate-300 px-3 py-2 text-sm">
-                        <option value="single_choice">TrA�º¯c nghiA�»‡m 1 A�‘Ă¡p Ă¡n</option>
-                        <option value="multiple_choice">ChA�»n nhiA�»u A�‘Ă¡p Ă¡n</option>
-                        <option value="fill_blank">A�iA�»n vĂ o chA�»— trA�»‘ng</option>
-                        <option value="ordering">SA�º¯p xA�º¿p thA�»© tA�»±</option>
+                        <option value="single_choice">Trắc nghiệm 1 đáp án</option>
+                        <option value="multiple_choice">Chọn nhiều đáp án</option>
+                        <option value="fill_blank">Điền vào chỗ trống</option>
+                        <option value="ordering">Sắp xếp thứ tự</option>
                     </select>
                 </label>
-                <button type="button" id="quiz-prev-btn" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">Trang trA�°A�»›c</button>
-                <button type="button" id="quiz-next-btn" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">Trang tiA�º¿p theo</button>
+                <button type="button" id="quiz-prev-btn" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">Trang trước</button>
+                <button type="button" id="quiz-next-btn" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">Trang tiếp theo</button>
                 <p id="quiz-page-indicator" class="text-sm text-slate-600"></p>
-                <button type="button" id="add-question-btn" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">+ ThĂªm cĂ¢u hA�»i</button>
+                <button type="button" id="add-question-btn" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">+ Thêm câu hỏi</button>
                 <button type="submit" id="save-quiz-btn" class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white">Lưu và phát hành</button>
             </div>
         </form>
     </div>
 
     <div class="rounded-xl border border-slate-200 bg-white p-5">
-        <h2 class="mb-4 text-lg font-semibold text-slate-900">Danh sĂ¡ch bA�»™ cĂ¢u hA�»i</h2>
+        <h2 class="mb-4 text-lg font-semibold text-slate-900">Danh sách bộ câu hỏi</h2>
         <?php if (!empty($sets)): ?>
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-sm">
                     <thead class="bg-slate-50 text-slate-500">
                     <tr>
-                        <th class="px-4 py-3">TiĂªu A�‘A�»</th>
-                        <th class="px-4 py-3">ChA�»§ A�‘A�»</th>
-                        <th class="px-4 py-3">CĂ¢u hA�»i</th>
-                        <th class="px-4 py-3">LA�°A�»£t lĂ m</th>
-                        <th class="px-4 py-3">ChA�»©ng nhA�º­n</th>
+                        <th class="px-4 py-3">Tiêu đề</th>
+                        <th class="px-4 py-3">Chủ đề</th>
+                        <th class="px-4 py-3">Câu hỏi</th>
+                        <th class="px-4 py-3">Lượt làm</th>
+                        <th class="px-4 py-3">Chứng nhận</th>
                         <th class="px-4 py-3">Hành động</th>
                     </tr>
                     </thead>
@@ -115,8 +115,8 @@ $passerPreviews = is_array($passerPreviews ?? null) ? $passerPreviews : [];
                             <td class="px-4 py-3 text-slate-600"><?= (int) ($set['certificate_count'] ?? 0); ?></td>
                             <td class="px-4 py-3">
                                 <div class="flex flex-wrap gap-2 whitespace-nowrap">
-                                    <a class="rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/admin/quizzes/<?= (int) ($set['id'] ?? 0); ?>">SA�»­a</a>
-                                    <form method="post" action="<?= URLROOT; ?>/admin/quizzes/<?= (int) ($set['id'] ?? 0); ?>/delete" onsubmit="return confirm('BA�º¡n cĂ³ chA�º¯c muA�»‘n xĂ³a bA�»™ cĂ¢u hA�»i nĂ y?');">
+                                    <a class="rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/admin/quizzes/<?= (int) ($set['id'] ?? 0); ?>">Sửa</a>
+                                    <form method="post" action="<?= URLROOT; ?>/admin/quizzes/<?= (int) ($set['id'] ?? 0); ?>/delete" onsubmit="return confirm('Bạn có chắc muốn xóa bộ câu hỏi này?');">
                                         <?= csrf_field(); ?>
                                         <button type="submit" class="rounded-lg border border-rose-300 px-3 py-1.5 text-xs font-semibold text-rose-700 hover:bg-rose-50">Xóa</button>
                                     </form>
@@ -128,15 +128,15 @@ $passerPreviews = is_array($passerPreviews ?? null) ? $passerPreviews : [];
                 </table>
             </div>
         <?php else: ?>
-            <div class="rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600">ChA�°a cĂ³ bA�»™ cĂ¢u hA�»i nĂ o.</div>
+            <div class="rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600">Chưa có bộ câu hỏi nào.</div>
         <?php endif; ?>
     </div>
 </div>
 
 <div class="rounded-xl border border-slate-200 bg-white p-5">
-    <h2 class="mb-4 text-lg font-semibold text-slate-900">Xem nhanh ngA�°A�»i tham gia vĂ  ngA�°A�»i A�‘Ă£ A�‘A�º¡t</h2>
+    <h2 class="mb-4 text-lg font-semibold text-slate-900">Xem nhanh người tham gia và người đạt</h2>
     <?php if ($sets === []): ?>
-        <p class="text-sm text-slate-600">ChA�°a cĂ³ dA�»¯ liA�»‡u.</p>
+        <p class="text-sm text-slate-600">Chưa có dữ liệu.</p>
     <?php else: ?>
         <div class="space-y-3">
             <?php foreach ($sets as $set): ?>
@@ -148,7 +148,7 @@ $passerPreviews = is_array($passerPreviews ?? null) ? $passerPreviews : [];
                 <div class="rounded-lg border border-slate-200 p-3">
                     <div class="flex flex-wrap items-center justify-between gap-2">
                         <p class="font-semibold text-slate-800"><?= htmlspecialchars((string) ($set['title'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></p>
-                        <a class="rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/admin/quizzes/<?= $setId; ?>/users">Chi tiA�º¿t user</a>
+                        <a class="rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/admin/quizzes/<?= $setId; ?>/users">Chi tiết user</a>
                     </div>
                     <div class="mt-2 grid gap-2 text-sm md:grid-cols-2">
                         <div>
@@ -158,7 +158,7 @@ $passerPreviews = is_array($passerPreviews ?? null) ? $passerPreviews : [];
                             </p>
                         </div>
                         <div>
-                            <p class="font-medium text-slate-700">A�Ă£ A�‘A�º¡t chA�»©ng chA�»‰ (<?= (int) ($set['certificate_count'] ?? 0); ?>)</p>
+                            <p class="font-medium text-slate-700">Đã đạt chứng chỉ (<?= (int) ($set['certificate_count'] ?? 0); ?>)</p>
                             <p class="text-slate-600">
                                 <?= $passerNames === [] ? 'Chưa có' : htmlspecialchars(implode(', ', $passerNames), ENT_QUOTES, 'UTF-8'); ?>
                             </p>
@@ -185,10 +185,10 @@ $passerPreviews = is_array($passerPreviews ?? null) ? $passerPreviews : [];
     let currentPage = 1;
 
     function typeLabel(type) {
-        if (type === 'single_choice') return 'TrA�º¯c nghiA�»‡m 1 A�‘Ă¡p Ă¡n';
-        if (type === 'multiple_choice') return 'ChA�»n nhiA�»u A�‘Ă¡p Ă¡n';
-        if (type === 'fill_blank') return 'A�iA�»n vĂ o chA�»— trA�»‘ng';
-        return 'SA�º¯p xA�º¿p thA�»© tA�»±';
+        if (type === 'single_choice') return 'Trắc nghiệm 1 đáp án';
+        if (type === 'multiple_choice') return 'Chọn nhiều đáp án';
+        if (type === 'fill_blank') return 'Điền vào chỗ trống';
+        return 'Sắp xếp thứ tự';
     }
 
     function fieldsTemplate(index, type, data) {
@@ -274,11 +274,11 @@ $passerPreviews = is_array($passerPreviews ?? null) ? $passerPreviews : [];
                 <input type="hidden" name="questions[${index}][choice_lines]" value="">
                 <input type="hidden" name="questions[${index}][answer_key]" value="">
                 <label class="block text-sm font-medium text-slate-700">
-                    CĂ¢u hA�»i mA�º«u (dĂ¹ng {{1}}, {{2}}... cho vA�»‹ trĂ­ trA�»‘ng)
-                    <textarea name="questions[${index}][fill_template]" rows="3" required class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" placeholder="VĂ­ dA�»¥: Món nĂ y cĂ³ {{1}} vĂ  {{2}}.">${template}</textarea>
+                    Câu hỏi mẫu (dạng {{1}}, {{2}}... cho vị trí trống)
+                    <textarea name="questions[${index}][fill_template]" rows="3" required class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" placeholder="Ví dụ: Món này có {{1}} và {{2}}.">${template}</textarea>
                 </label>
                 <label class="block text-sm font-medium text-slate-700">
-                    SA�»‘ Ă´ trA�»‘ng
+                    Số ô trống
                     <select name="questions[${index}][fill_blank_count]" class="fill-blank-count mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
                         ${[1,2,3,4,5,6].map((n) => `<option value="${n}" ${n === blankCount ? 'selected' : ''}>${n}</option>`).join('')}
                     </select>
@@ -286,8 +286,8 @@ $passerPreviews = is_array($passerPreviews ?? null) ? $passerPreviews : [];
                 <div class="fill-blank-list space-y-2">
                     ${[1,2,3,4,5,6].map((n) => `
                         <label class="fill-blank-item block text-sm font-medium text-slate-700" data-blank-no="${n}">
-                            Ă” trA�»‘ng ${n} (nhiA�»u A�‘Ă¡p Ă¡n ngA�ƒn cĂ¡ch bA�º±ng |)
-                            <input type="text" name="questions[${index}][fill_blank_answers][]" value="${escapeHtml(blankAnswers[n - 1] || '')}" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" placeholder="VĂ­ dA�»¥: nA�°A�»›c mA�º¯m|nuoc mam">
+                            Ô trống ${n} (nhiều đáp án ngăn cách bằng |)
+                            <input type="text" name="questions[${index}][fill_blank_answers][]" value="${escapeHtml(blankAnswers[n - 1] || '')}" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" placeholder="Ví dụ: nước mắm|nuoc mam">
                         </label>
                     `).join('')}
                 </div>
@@ -304,7 +304,7 @@ $passerPreviews = is_array($passerPreviews ?? null) ? $passerPreviews : [];
             <input type="hidden" name="questions[${index}][choice_lines]" value="">
             <input type="hidden" name="questions[${index}][answer_key]" value="">
             <label class="block text-sm font-medium text-slate-700">
-                SA�»‘ mA�»¥c sA�º¯p xA�º¿p
+                Số mục sắp xếp
                 <select name="questions[${index}][ordering_count]" class="ordering-count mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
                     ${[2,3,4,5,6,7,8].map((n) => `<option value="${n}" ${n === itemCount ? 'selected' : ''}>${n}</option>`).join('')}
                 </select>
@@ -313,11 +313,11 @@ $passerPreviews = is_array($passerPreviews ?? null) ? $passerPreviews : [];
                 ${[1,2,3,4,5,6,7,8].map((n) => `
                     <div class="ordering-row grid grid-cols-[1fr_auto] items-end gap-3" data-item-no="${n}">
                         <label class="text-sm font-medium text-slate-700">
-                            MA�»¥c ${n}
+                            Mục ${n}
                             <input type="text" name="questions[${index}][ordering_items][]" value="${itemValues[n - 1]}" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
                         </label>
                         <label class="text-sm font-medium text-slate-700">
-                            Vượt qua đúng
+                            Vị trí đúng
                             <select name="questions[${index}][ordering_positions][]" class="ordering-position mt-1 rounded-lg border border-slate-300 px-3 py-2 text-sm" data-selected="${n}">
                             </select>
                         </label>
@@ -332,7 +332,7 @@ $passerPreviews = is_array($passerPreviews ?? null) ? $passerPreviews : [];
         wrap.className = 'quiz-question rounded-lg border border-slate-200 bg-slate-50 p-4 space-y-3';
         wrap.innerHTML = `
             <div class="flex items-center justify-between gap-2">
-                <h3 class="text-sm font-semibold text-slate-800">CĂ¢u hA�»i #${index + 1}</h3>
+                <h3 class="text-sm font-semibold text-slate-800">Câu hỏi #${index + 1}</h3>
                 <div class="flex items-center gap-2">
                     <span class="rounded bg-slate-200 px-2 py-1 text-xs font-semibold text-slate-700">${typeLabel(type)}</span>
                     <button type="button" class="remove-question rounded border border-rose-300 px-2 py-1 text-xs font-semibold text-rose-600 hover:bg-rose-50">Xóa</button>
@@ -342,17 +342,17 @@ $passerPreviews = is_array($passerPreviews ?? null) ? $passerPreviews : [];
             <input type="hidden" name="questions[${index}][question_type]" value="${type}">
 
             <label class="block text-sm font-medium text-slate-700">
-                NA�»™i dung cĂ¢u hA�»i
+                Nội dung câu hỏi
                 <textarea name="questions[${index}][text]" rows="2" required class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"></textarea>
             </label>
 
             <label class="block text-sm font-medium text-slate-700">
-                A�iA�»ƒm cĂ¢u hA�»i
+                Điểm câu hỏi
                 <input type="number" min="1" step="1" name="questions[${index}][points]" value="1" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
             </label>
 
             <label class="block text-sm font-medium text-slate-700">
-                A�º¢nh cĂ¢u hA�»i (khĂ´ng bA�º¯t buA�»™c)
+                Ảnh câu hỏi (không bắt buộc)
                 <input type="file" name="question_images[${index}]" accept="image/*" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm bg-white">
                 <input type="hidden" name="questions[${index}][existing_image]" value="">
             </label>
@@ -362,7 +362,7 @@ $passerPreviews = is_array($passerPreviews ?? null) ? $passerPreviews : [];
             </div>
 
             <label class="block text-sm font-medium text-slate-700">
-                GiA�º£i thĂ­ch (khĂ´ng bA�º¯t buA�»™c)
+                Giải thích (không bắt buộc)
                 <textarea name="questions[${index}][explanation]" rows="2" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"></textarea>
             </label>
         `;
@@ -517,7 +517,7 @@ $passerPreviews = is_array($passerPreviews ?? null) ? $passerPreviews : [];
         const blocks = questionsContainer.querySelectorAll('.quiz-question');
         blocks.forEach((block, index) => {
             const title = block.querySelector('h3');
-            if (title) title.textContent = `CĂ¢u hA�»i #${index + 1}`;
+            if (title) title.textContent = `Câu hỏi #${index + 1}`;
             block.querySelectorAll('textarea, input, select').forEach((field) => {
                 const name = field.getAttribute('name') || '';
                 field.setAttribute('name', name.replace(/questions\[\d+\]/, `questions[${index}]`).replace(/question_images\[\d+\]/, `question_images[${index}]`));
@@ -602,7 +602,7 @@ $passerPreviews = is_array($passerPreviews ?? null) ? $passerPreviews : [];
             const from = total > 0 ? start + 1 : 0;
             const to = Math.min(end, total);
             pageIndicator.textContent = total > 0
-                ? `Trang ${currentPage}/${totalPages} - CĂ¢u ${from} A�‘A�º¿n ${to}`
+                ? `Trang ${currentPage}/${totalPages} - Câu ${from} đến ${to}`
                 : 'Trang 1/1';
         }
         if (prevBtn) prevBtn.disabled = currentPage === 1;

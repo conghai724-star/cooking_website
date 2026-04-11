@@ -6,15 +6,15 @@
             <div class="absolute inset-0 bg-gradient-to-br from-slate-900/80 to-slate-700/60"></div>
             <div class="h-full w-full bg-cover bg-center" style="background-image:url('https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1200&q=80');"></div>
             <div class="absolute bottom-10 left-10 right-10 text-white">
-                <h2 class="text-4xl font-bold">Khu vA�»±c quA�º£n trA�»‹</h2>
-                <p class="mt-3 text-white/90">DĂ nh riĂªng cho quA�º£n trA�»‹ viĂªn.</p>
+                <h2 class="text-4xl font-bold">Khu vực quản trị</h2>
+                <p class="mt-3 text-white/90">Dành riêng cho quản trị viên.</p>
             </div>
         </div>
 
         <div class="p-8 sm:p-12">
             <div class="mx-auto w-full max-w-md">
                 <h1 class="text-3xl font-bold text-slate-900">Đăng nhập quản trị</h1>
-                <p class="mt-2 text-slate-500">Vui lÄ'â€žĂ¢â'¬ÂšÄ'Â¢Ă¢â€šÂ¬Ă'žĂ"'Ă'¢Ä'Â¢Ă¢â'¬ÂšĂ'¬Ä''Ă'šÄ'â€žĂ¢â'¬ÂšÄ'Â¢Ă¢â€šÂ¬Ă'šĂ"â€šĂ¢â'¬ÂšÄ''Ă'²ng xÄ'â€žĂ¢â'¬ÂšÄ'Â¢Ă¢â€šÂ¬Ă'žĂ"'Ă'¢Ä'Â¢Ă¢â'¬ÂšĂ'¬Ä''Ă'šÄ'â€žĂ¢â'¬ÂšÄ'Â¢Ă¢â€šÂ¬Ă'šĂ"â€šĂ¢â'¬ÂšÄ''Ă'¡c thÄ'â€žĂ¢â'¬ÂšÄ''Ă'¡Ă"â€šĂ¢â'¬ÂšÄ''Ă'»Ă"â€šĂ¢â'¬ÂšÄ''Ă'±c tÄ'â€žĂ¢â'¬ÂšÄ'Â¢Ă¢â€šÂ¬Ă'žĂ"'Ă'¢Ä'Â¢Ă¢â'¬ÂšĂ'¬Ä''Ă'šÄ'â€žĂ¢â'¬ÂšÄ'Â¢Ă¢â€šÂ¬Ă'šĂ"â€šĂ¢â'¬ÂšÄ''Ă' i khoÄ'â€žĂ¢â'¬ÂšÄ''Ă'¡Ă"â€šĂ¢â'¬ÂšÄ''Ă'ºĂ"â€šĂ¢â'¬ÂšÄ''Ă'£n admin.</p>
+                <p class="mt-2 text-slate-500">Vui lòng đăng nhập bằng tài khoản admin.</p>
 
                 <?php if (!empty($error)): ?>
                     <p class="mt-4 rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700"><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></p>
@@ -28,7 +28,7 @@
                     </div>
 
                     <div>
-                        <label class="mb-2 block text-sm font-semibold text-slate-700">MA�º­t khA�º©u</label>
+                        <label class="mb-2 block text-sm font-semibold text-slate-700">Mật khẩu</label>
                         <input class="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus:border-amber-500 focus:ring-2 focus:ring-amber-200" type="password" name="password" autocomplete="current-password" required>
                     </div>
 
@@ -36,8 +36,8 @@
                 </form>
 
                 <p class="mt-6 text-sm text-slate-600">
-                    BA�º¡n lĂ  ngA�°A�»i dĂ¹ng thA�°A�»ng?
-                    <a class="font-semibold text-amber-600 hover:underline" href="<?= $baseUrl; ?>/login">A�A�ƒng nhA�º­p tA�º¡i A�‘Ă¢y</a>
+                    Bạn là người dùng thường?
+                    <a class="font-semibold text-amber-600 hover:underline" href="<?= $baseUrl; ?>/login">Đăng nhập tại đây</a>
                 </p>
             </div>
         </div>

@@ -71,6 +71,36 @@ if (!function_exists('env_value')) {
     }
 }
 
+if (!function_exists('absolute_url')) {
+    function absolute_url(string $uri): string
+    {
+        if (preg_match('/^[a-z][a-z0-9+.-]*:\/\//i', $uri)) {
+            return $uri;
+        }
+
+        if ($uri === '' || $uri[0] !== '/') {
+            $uri = '/' . $uri;
+        }
+
+        if (defined('URLROOT') && URLROOT !== '' && $uri !== '/' && !str_starts_with($uri, URLROOT)) {
+            $uri = rtrim(URLROOT, '/') . $uri;
+        }
+
+        $isSecure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || ($_SERVER['SERVER_PORT'] ?? '') === '443';
+        $scheme = $isSecure ? 'https' : 'http';
+        $host = $_SERVER['HTTP_HOST'] ?? ($_SERVER['SERVER_NAME'] ?? 'localhost');
+
+        if (!str_contains($host, ':') && isset($_SERVER['SERVER_PORT'])) {
+            $port = $_SERVER['SERVER_PORT'];
+            if ($port !== '80' && $port !== '443') {
+                $host .= ':' . $port;
+            }
+        }
+
+        return $scheme . '://' . $host . $uri;
+    }
+}
+
 load_env_file(APPROOT . '/.env');
 
 define('DB_HOST', env_value('DB_HOST', '127.0.0.1'));
@@ -96,3 +126,7 @@ define('MAIL_USERNAME', env_value('MAIL_USERNAME', ''));
 define('MAIL_PASSWORD', env_value('MAIL_PASSWORD', ''));
 define('MAIL_FROM_EMAIL', env_value('MAIL_FROM_EMAIL', 'no-reply@localhost'));
 define('MAIL_FROM_NAME', env_value('MAIL_FROM_NAME', 'Cooking Website'));
+
+define('GOOGLE_CLIENT_ID', env_value('GOOGLE_CLIENT_ID', ''));
+define('GOOGLE_CLIENT_SECRET', env_value('GOOGLE_CLIENT_SECRET', ''));
+define('GOOGLE_REDIRECT_URI', absolute_url(env_value('GOOGLE_REDIRECT_URI', URLROOT . '/auth/google/callback')));

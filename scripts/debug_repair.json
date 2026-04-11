@@ -1,0 +1,887 @@
+[
+  {
+    "original": "Nguy\u00ean",
+    "repaired": "Nguy\u00ean",
+    "diff": false
+  },
+  {
+    "original": "nguy\u00ean",
+    "repaired": "nguy\u00ean",
+    "diff": false
+  },
+  {
+    "original": "Kh\u00f4ng",
+    "repaired": "Kh\u00f4ng",
+    "diff": false
+  },
+  {
+    "original": "ngo\u00e0i",
+    "repaired": "ngo\u00e0i",
+    "diff": false
+  },
+  {
+    "original": "th\u00e0nh",
+    "repaired": "th\u00e0nh",
+    "diff": false
+  },
+  {
+    "original": "kh\u00f4ng",
+    "repaired": "kh\u00f4ng",
+    "diff": false
+  },
+  {
+    "original": "m\u00e1\u00ba\u00b9o",
+    "repaired": "m\u1eb9o",
+    "diff": true
+  },
+  {
+    "original": "v\u00e1\u00ba\u00b7t",
+    "repaired": "v\u1eb7t",
+    "diff": true
+  },
+  {
+    "original": "th\u00f4ng",
+    "repaired": "th\u00f4ng",
+    "diff": false
+  },
+  {
+    "original": "Th\u00f4ng",
+    "repaired": "Th\u00f4ng",
+    "diff": false
+  },
+  {
+    "original": "Kh\u00f3a",
+    "repaired": "Kh\u00f3a",
+    "diff": false
+  },
+  {
+    "original": "To\u00e0n",
+    "repaired": "To\u00e0n",
+    "diff": false
+  },
+  {
+    "original": "ho\u00e0n",
+    "repaired": "ho\u00e0n",
+    "diff": false
+  },
+  {
+    "original": "kh\u00f3a",
+    "repaired": "kh\u00f3a",
+    "diff": false
+  },
+  {
+    "original": "\u00bb\u00a9ng",
+    "repaired": "\u00bb\u00a9ng",
+    "diff": false
+  },
+  {
+    "original": "nh\u00f3m",
+    "repaired": "nh\u00f3m",
+    "diff": false
+  },
+  {
+    "original": "l\u00f2ng",
+    "repaired": "l\u00f2ng",
+    "diff": false
+  },
+  {
+    "original": "\u00bb\u00abng",
+    "repaired": "\u00bb\u00abng",
+    "diff": false
+  },
+  {
+    "original": "\u00bb\u00a5ng",
+    "repaired": "\u00bb\u00a5ng",
+    "diff": false
+  },
+  {
+    "original": "ph\u00e1t",
+    "repaired": "ph\u00e1t",
+    "diff": false
+  },
+  {
+    "original": "th\u00eam",
+    "repaired": "th\u00eam",
+    "diff": false
+  },
+  {
+    "original": "ph\u00e2n",
+    "repaired": "ph\u00e2n",
+    "diff": false
+  },
+  {
+    "original": "H\u00ecnh",
+    "repaired": "H\u00ecnh",
+    "diff": false
+  },
+  {
+    "original": "Th\u00eam",
+    "repaired": "Th\u00eam",
+    "diff": false
+  },
+  {
+    "original": "ng\u00e0y",
+    "repaired": "ng\u00e0y",
+    "diff": false
+  },
+  {
+    "original": "\u00ba\u00a2nh",
+    "repaired": "\u00ba\u00a2nh",
+    "diff": false
+  },
+  {
+    "original": "C\u00f4ng",
+    "repaired": "C\u00f4ng",
+    "diff": false
+  },
+  {
+    "original": "Kh\u00f4i",
+    "repaired": "Kh\u00f4i",
+    "diff": false
+  },
+  {
+    "original": "h\u00e0nh",
+    "repaired": "h\u00e0nh",
+    "diff": false
+  },
+  {
+    "original": "K\u00edch",
+    "repaired": "K\u00edch",
+    "diff": false
+  },
+  {
+    "original": "ph\u00fat",
+    "repaired": "ph\u00fat",
+    "diff": false
+  },
+  {
+    "original": "b\u00ecnh",
+    "repaired": "b\u00ecnh",
+    "diff": false
+  },
+  {
+    "original": "kh\u00f4i",
+    "repaired": "kh\u00f4i",
+    "diff": false
+  },
+  {
+    "original": "ti\u00eau",
+    "repaired": "ti\u00eau",
+    "diff": false
+  },
+  {
+    "original": "Ng\u00e0y",
+    "repaired": "Ng\u00e0y",
+    "diff": false
+  },
+  {
+    "original": "C\u00e1ch",
+    "repaired": "C\u00e1ch",
+    "diff": false
+  },
+  {
+    "original": "\u00ba\u00b1ng",
+    "repaired": "\u00ba\u00b1ng",
+    "diff": false
+  },
+  {
+    "original": "\u00bb\u00a1ng",
+    "repaired": "\u00bb\u00a1ng",
+    "diff": false
+  },
+  {
+    "original": "\u00ba\u00a3nh",
+    "repaired": "\u00ba\u00a3nh",
+    "diff": false
+  },
+  {
+    "original": "th\u00e1i",
+    "repaired": "th\u00e1i",
+    "diff": false
+  },
+  {
+    "original": "s\u00e1ch",
+    "repaired": "s\u00e1ch",
+    "diff": false
+  },
+  {
+    "original": "H\u00e0nh",
+    "repaired": "H\u00e0nh",
+    "diff": false
+  },
+  {
+    "original": "B\u00ecnh",
+    "repaired": "B\u00ecnh",
+    "diff": false
+  },
+  {
+    "original": "\u00ba\u00a1ng",
+    "repaired": "\u00ba\u00a1ng",
+    "diff": false
+  },
+  {
+    "original": "c\u00f4ng",
+    "repaired": "c\u00f4ng",
+    "diff": false
+  },
+  {
+    "original": "D\u00f9ng",
+    "repaired": "D\u00f9ng",
+    "diff": false
+  },
+  {
+    "original": "Ti\u00eau",
+    "repaired": "Ti\u00eau",
+    "diff": false
+  },
+  {
+    "original": "d\u00f9ng",
+    "repaired": "d\u00f9ng",
+    "diff": false
+  },
+  {
+    "original": "h\u00ecnh",
+    "repaired": "h\u00ecnh",
+    "diff": false
+  },
+  {
+    "original": "c\u00e1ch",
+    "repaired": "c\u00e1ch",
+    "diff": false
+  },
+  {
+    "original": "\u00ba\u00a3i",
+    "repaired": "\u00ba\u00a3i",
+    "diff": false
+  },
+  {
+    "original": "b\u00e0i",
+    "repaired": "b\u00e0i",
+    "diff": false
+  },
+  {
+    "original": "\u00ba\u00a1i",
+    "repaired": "\u00ba\u00a1i",
+    "diff": false
+  },
+  {
+    "original": "\u00b2ng",
+    "repaired": "\u00b2ng",
+    "diff": false
+  },
+  {
+    "original": "\u00bb\u00a3c",
+    "repaired": "\u00bb\u00a3c",
+    "diff": false
+  },
+  {
+    "original": "X\u00e1c",
+    "repaired": "X\u00e1c",
+    "diff": false
+  },
+  {
+    "original": "\u00ba\u00a1m",
+    "repaired": "\u00ba\u00a1m",
+    "diff": false
+  },
+  {
+    "original": "\u00ba\u00abu",
+    "repaired": "\u00ba\u00abu",
+    "diff": false
+  },
+  {
+    "original": "Kh\u00f3",
+    "repaired": "Kh\u00f3",
+    "diff": false
+  },
+  {
+    "original": "d\u00f5i",
+    "repaired": "d\u00f5i",
+    "diff": false
+  },
+  {
+    "original": "t\u00ean",
+    "repaired": "t\u00ean",
+    "diff": false
+  },
+  {
+    "original": "\u00ba\u00b7t",
+    "repaired": "\u00ba\u00b7t",
+    "diff": false
+  },
+  {
+    "original": "\u00bb\u00a5c",
+    "repaired": "\u00bb\u00a5c",
+    "diff": false
+  },
+  {
+    "original": "\u00bb\u00afa",
+    "repaired": "\u00bb\u00afa",
+    "diff": false
+  },
+  {
+    "original": "\u00ba\u00a8n",
+    "repaired": "\u00ba\u00a8n",
+    "diff": false
+  },
+  {
+    "original": "T\u00ecm",
+    "repaired": "T\u00ecm",
+    "diff": false
+  },
+  {
+    "original": "\u00b4ng",
+    "repaired": "\u00b4ng",
+    "diff": false
+  },
+  {
+    "original": "\u00ba\u00a1n",
+    "repaired": "\u00ba\u00a1n",
+    "diff": false
+  },
+  {
+    "original": "h\u00f4m",
+    "repaired": "h\u00f4m",
+    "diff": false
+  },
+  {
+    "original": "\u00ba\u00aft",
+    "repaired": "\u00ba\u00aft",
+    "diff": false
+  },
+  {
+    "original": "\u00bang",
+    "repaired": "\u00bang",
+    "diff": false
+  },
+  {
+    "original": "tr\u00f2",
+    "repaired": "tr\u00f2",
+    "diff": false
+  },
+  {
+    "original": "\u00ba\u00afp",
+    "repaired": "\u00ba\u00afp",
+    "diff": false
+  },
+  {
+    "original": "\u00acnh",
+    "repaired": "\u00acnh",
+    "diff": false
+  },
+  {
+    "original": "\u00bb\u00a7i",
+    "repaired": "\u00bb\u00a7i",
+    "diff": false
+  },
+  {
+    "original": "x\u00f3a",
+    "repaired": "x\u00f3a",
+    "diff": false
+  },
+  {
+    "original": "N\u00fat",
+    "repaired": "N\u00fat",
+    "diff": false
+  },
+  {
+    "original": "c\u00e2u",
+    "repaired": "c\u00e2u",
+    "diff": false
+  },
+  {
+    "original": "\u00ba\u00bfu",
+    "repaired": "\u00ba\u00bfu",
+    "diff": false
+  },
+  {
+    "original": "\u00ba\u00bfn",
+    "repaired": "\u00ba\u00bfn",
+    "diff": false
+  },
+  {
+    "original": "\u00ba\u00a1o",
+    "repaired": "\u00ba\u00a1o",
+    "diff": false
+  },
+  {
+    "original": "c\u00e1c",
+    "repaired": "c\u00e1c",
+    "diff": false
+  },
+  {
+    "original": "t\u00e0i",
+    "repaired": "t\u00e0i",
+    "diff": false
+  },
+  {
+    "original": "\u00ba\u00a9n",
+    "repaired": "\u00ba\u00a9n",
+    "diff": false
+  },
+  {
+    "original": "n\u00e0y",
+    "repaired": "n\u00e0y",
+    "diff": false
+  },
+  {
+    "original": "T\u00ean",
+    "repaired": "T\u00ean",
+    "diff": false
+  },
+  {
+    "original": "\u00b9ng",
+    "repaired": "\u00b9ng",
+    "diff": false
+  },
+  {
+    "original": "\u00bb\u00a9c",
+    "repaired": "\u00bb\u00a9c",
+    "diff": false
+  },
+  {
+    "original": "b\u00e1o",
+    "repaired": "b\u00e1o",
+    "diff": false
+  },
+  {
+    "original": "c\u00e1o",
+    "repaired": "c\u00e1o",
+    "diff": false
+  },
+  {
+    "original": "\u00ba\u00a3n",
+    "repaired": "\u00ba\u00a3n",
+    "diff": false
+  },
+  {
+    "original": "\u00ba\u00bft",
+    "repaired": "\u00ba\u00bft",
+    "diff": false
+  },
+  {
+    "original": "\u00fang",
+    "repaired": "\u00fang",
+    "diff": false
+  },
+  {
+    "original": "\u00ba\u00b7c",
+    "repaired": "\u00ba\u00b7c",
+    "diff": false
+  },
+  {
+    "original": "\u00ba\u00a5t",
+    "repaired": "\u00ba\u00a5t",
+    "diff": false
+  },
+  {
+    "original": "T\u00e0i",
+    "repaired": "T\u00e0i",
+    "diff": false
+  },
+  {
+    "original": "\u00ba\u00afc",
+    "repaired": "\u00ba\u00afc",
+    "diff": false
+  },
+  {
+    "original": "X\u00f3a",
+    "repaired": "X\u00f3a",
+    "diff": false
+  },
+  {
+    "original": "\u00ba\u00a5y",
+    "repaired": "\u00ba\u00a5y",
+    "diff": false
+  },
+  {
+    "original": "\u00a1ch",
+    "repaired": "\u00a1ch",
+    "diff": false
+  },
+  {
+    "original": "t\u00ecm",
+    "repaired": "t\u00ecm",
+    "diff": false
+  },
+  {
+    "original": "B\u00e0i",
+    "repaired": "B\u00e0i",
+    "diff": false
+  },
+  {
+    "original": "B\u00e1o",
+    "repaired": "B\u00e1o",
+    "diff": false
+  },
+  {
+    "original": "D\u00e1n",
+    "repaired": "D\u00e1n",
+    "diff": false
+  },
+  {
+    "original": "\u00ba\u00bfp",
+    "repaired": "\u00ba\u00bfp",
+    "diff": false
+  },
+  {
+    "original": "t\u00e1c",
+    "repaired": "t\u00e1c",
+    "diff": false
+  },
+  {
+    "original": "\u00bf\u00bdA",
+    "repaired": "\u00bf\u00bdA",
+    "diff": false
+  },
+  {
+    "original": "\u00ba\u00a9m",
+    "repaired": "\u00ba\u00a9m",
+    "diff": false
+  },
+  {
+    "original": "\u00ba\u00a1t",
+    "repaired": "\u00ba\u00a1t",
+    "diff": false
+  },
+  {
+    "original": "\u00bb\u00b1c",
+    "repaired": "\u00bb\u00b1c",
+    "diff": false
+  },
+  {
+    "original": "k\u00e8m",
+    "repaired": "k\u00e8m",
+    "diff": false
+  },
+  {
+    "original": "\u00ba\u00a7n",
+    "repaired": "\u00ba\u00a7n",
+    "diff": false
+  },
+  {
+    "original": "M\u00f3n",
+    "repaired": "M\u00f3n",
+    "diff": false
+  },
+  {
+    "original": "\u00ba\u00afm",
+    "repaired": "\u00ba\u00afm",
+    "diff": false
+  },
+  {
+    "original": "\u00ba\u00a3o",
+    "repaired": "\u00ba\u00a3o",
+    "diff": false
+  },
+  {
+    "original": "m\u00f3n",
+    "repaired": "m\u00f3n",
+    "diff": false
+  },
+  {
+    "original": "\u00bb\u00a3t",
+    "repaired": "\u00bb\u00a3t",
+    "diff": false
+  },
+  {
+    "original": "C\u00e1c",
+    "repaired": "C\u00e1c",
+    "diff": false
+  },
+  {
+    "original": "\u00bb\u00a3p",
+    "repaired": "\u00bb\u00a3p",
+    "diff": false
+  },
+  {
+    "original": "kh\u00f3",
+    "repaired": "kh\u00f3",
+    "diff": false
+  },
+  {
+    "original": "n\u00e0o",
+    "repaired": "n\u00e0o",
+    "diff": false
+  },
+  {
+    "original": "T\u00e1c",
+    "repaired": "T\u00e1c",
+    "diff": false
+  },
+  {
+    "original": "\u00aang",
+    "repaired": "\u00aang",
+    "diff": false
+  },
+  {
+    "original": "\u00ba\u00b9o",
+    "repaired": "\u00ba\u00b9o",
+    "diff": false
+  },
+  {
+    "original": "\u00ba\u00a5p",
+    "repaired": "\u00ba\u00a5p",
+    "diff": false
+  },
+  {
+    "original": "\u00bb\u00ab",
+    "repaired": "\u00bb\u00ab",
+    "diff": false
+  },
+  {
+    "original": "\u00bat",
+    "repaired": "\u00bat",
+    "diff": false
+  },
+  {
+    "original": "\u00a1n",
+    "repaired": "\u00a1n",
+    "diff": false
+  },
+  {
+    "original": "\u00ba\u00bf",
+    "repaired": "\u00ba\u00bf",
+    "diff": false
+  },
+  {
+    "original": "\u00ba\u00bd",
+    "repaired": "\u00ba\u00bd",
+    "diff": false
+  },
+  {
+    "original": "\u00e1p",
+    "repaired": "\u00e1p",
+    "diff": false
+  },
+  {
+    "original": "\u00a1i",
+    "repaired": "\u00a1i",
+    "diff": false
+  },
+  {
+    "original": "\u00a1c",
+    "repaired": "\u00a1c",
+    "diff": false
+  },
+  {
+    "original": "\u00a1m",
+    "repaired": "\u00a1m",
+    "diff": false
+  },
+  {
+    "original": "\u00bb\u00a5",
+    "repaired": "\u00bb\u00a5",
+    "diff": false
+  },
+  {
+    "original": "\u00b5i",
+    "repaired": "\u00b5i",
+    "diff": false
+  },
+  {
+    "original": "\u00bb\u00af",
+    "repaired": "\u00bb\u00af",
+    "diff": false
+  },
+  {
+    "original": "\u00aam",
+    "repaired": "\u00aam",
+    "diff": false
+  },
+  {
+    "original": "k\u00fd",
+    "repaired": "k\u00fd",
+    "diff": false
+  },
+  {
+    "original": "k\u00ea",
+    "repaired": "k\u00ea",
+    "diff": false
+  },
+  {
+    "original": "\u00e1n",
+    "repaired": "\u00e1n",
+    "diff": false
+  },
+  {
+    "original": "r\u00f5",
+    "repaired": "r\u00f5",
+    "diff": false
+  },
+  {
+    "original": "c\u00f3",
+    "repaired": "c\u00f3",
+    "diff": false
+  },
+  {
+    "original": "M\u00f4",
+    "repaired": "M\u00f4",
+    "diff": false
+  },
+  {
+    "original": "\u00bb\u00a7",
+    "repaired": "\u00bb\u00a7",
+    "diff": false
+  },
+  {
+    "original": "\u00bb\u00a9",
+    "repaired": "\u00bb\u00a9",
+    "diff": false
+  },
+  {
+    "original": "\u00a1t",
+    "repaired": "\u00a1t",
+    "diff": false
+  },
+  {
+    "original": "m\u00f4",
+    "repaired": "m\u00f4",
+    "diff": false
+  },
+  {
+    "original": "\u00a1p",
+    "repaired": "\u00a1p",
+    "diff": false
+  },
+  {
+    "original": "\u00bb\u00a1",
+    "repaired": "\u00bb\u00a1",
+    "diff": false
+  },
+  {
+    "original": "l\u00fd",
+    "repaired": "l\u00fd",
+    "diff": false
+  },
+  {
+    "original": "v\u00ed",
+    "repaired": "v\u00ed",
+    "diff": false
+  },
+  {
+    "original": "\u00a2u",
+    "repaired": "\u00a2u",
+    "diff": false
+  },
+  {
+    "original": "\u00b3a",
+    "repaired": "\u00b3a",
+    "diff": false
+  },
+  {
+    "original": "v\u00e0",
+    "repaired": "v\u00e0",
+    "diff": false
+  },
+  {
+    "original": "\u00ba\u00a3",
+    "repaired": "\u00ba\u00a3",
+    "diff": false
+  },
+  {
+    "original": "\u00a1o",
+    "repaired": "\u00a1o",
+    "diff": false
+  },
+  {
+    "original": "\u00b0A",
+    "repaired": "\u00b0A",
+    "diff": false
+  },
+  {
+    "original": "\u00a2n",
+    "repaired": "\u00a2n",
+    "diff": false
+  },
+  {
+    "original": "\u00acm",
+    "repaired": "\u00acm",
+    "diff": false
+  },
+  {
+    "original": "\u00aan",
+    "repaired": "\u00aan",
+    "diff": false
+  },
+  {
+    "original": "\u00b0a",
+    "repaired": "\u00b0a",
+    "diff": false
+  },
+  {
+    "original": "L\u00fd",
+    "repaired": "L\u00fd",
+    "diff": false
+  },
+  {
+    "original": "\u00aau",
+    "repaired": "\u00aau",
+    "diff": false
+  },
+  {
+    "original": "\u00b4i",
+    "repaired": "\u00b4i",
+    "diff": false
+  },
+  {
+    "original": "\u00bb\u00b1",
+    "repaired": "\u00bb\u00b1",
+    "diff": false
+  },
+  {
+    "original": "\u00b9",
+    "repaired": "\u00b9",
+    "diff": false
+  },
+  {
+    "original": "\u00b2",
+    "repaired": "\u00b2",
+    "diff": false
+  },
+  {
+    "original": "\u00b4",
+    "repaired": "\u00b4",
+    "diff": false
+  },
+  {
+    "original": "\u00a2",
+    "repaired": "\u00a2",
+    "diff": false
+  },
+  {
+    "original": "\u00a3",
+    "repaired": "\u00a3",
+    "diff": false
+  },
+  {
+    "original": "\u00ba",
+    "repaired": "\u00ba",
+    "diff": false
+  },
+  {
+    "original": "\u00a1",
+    "repaired": "\u00a1",
+    "diff": false
+  },
+  {
+    "original": "\u00bd",
+    "repaired": "\u00bd",
+    "diff": false
+  },
+  {
+    "original": "\u00e3",
+    "repaired": "\u00e3",
+    "diff": false
+  },
+  {
+    "original": "\u00bb",
+    "repaired": "\u00bb",
+    "diff": false
+  },
+  {
+    "original": "\u00b3",
+    "repaired": "\u00b3",
+    "diff": false
+  }
+]

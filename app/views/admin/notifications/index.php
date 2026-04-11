@@ -53,25 +53,25 @@ $noticeText = $noticeMap[$notice] ?? '';
 
     <div class="rounded-xl border border-slate-200 bg-white">
         <div class="border-b border-slate-100 px-6 py-4">
-            <h3 class="font-semibold text-slate-800">LA�»‹ch sA�»­ chiA�º¿n dA�»‹ch gA�»­i</h3>
+            <h3 class="font-semibold text-slate-800">Lịch sử chiến dịch gửi</h3>
         </div>
 
         <?php if ($campaigns === []): ?>
-            <div class="p-6 text-sm text-slate-500">ChA�°a cĂ³ A�‘A�»£t gA�»­i nĂ o.</div>
+            <div class="p-6 text-sm text-slate-500">Chưa có đợt gửi nào.</div>
         <?php else: ?>
             <div class="divide-y divide-slate-100">
                 <?php foreach ($campaigns as $c): ?>
                     <div class="p-6">
                         <div class="mb-2 flex items-center justify-between gap-3">
                             <p class="text-sm font-semibold text-slate-900"><?= htmlspecialchars((string) ($c['title'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></p>
-                            <span class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">ĐA� gửi: <?= (int) ($c['sent_count'] ?? 0); ?></span>
+                            <span class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">Đã gửi: <?= (int) ($c['sent_count'] ?? 0); ?></span>
                         </div>
                         <p class="text-sm text-slate-700"><?= htmlspecialchars((string) ($c['message'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></p>
                         <p class="mt-2 text-xs text-slate-500">
-                            Scope: <?= htmlspecialchars((string) ($c['target_scope'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>
-                            <?php if (!empty($c['target_value'])): ?> | Target: <?= htmlspecialchars((string) $c['target_value'], ENT_QUOTES, 'UTF-8'); ?><?php endif; ?>
-                            | By: <?= htmlspecialchars((string) ($c['created_by_name'] ?? $c['created_by_email'] ?? 'N/A'), ENT_QUOTES, 'UTF-8'); ?>
-                            | At: <?= htmlspecialchars((string) ($c['created_at'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>
+                            Phạm vi: <?= htmlspecialchars((string) ($c['target_scope'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>
+                            <?php if (!empty($c['target_value'])): ?> | Đối tượng: <?= htmlspecialchars((string) $c['target_value'], ENT_QUOTES, 'UTF-8'); ?><?php endif; ?>
+                            | Người gửi: <?= htmlspecialchars((string) ($c['created_by_name'] ?? $c['created_by_email'] ?? 'N/A'), ENT_QUOTES, 'UTF-8'); ?>
+                            | Gửi lúc: <?= htmlspecialchars((string) ($c['created_at'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>
                         </p>
                     </div>
                 <?php endforeach; ?>

@@ -128,7 +128,7 @@ class TipsController extends Controller
                 if ($id === false) {
                     $error = 'Kh�ng th? g?i m?o v?t.';
                 } else {
-                    $success = true;
+                    $this->redirect('/tips/' . $slug . '?notice=created_success');
                 }
             }
         }

@@ -1,4 +1,4 @@
-﻿
+
 <?php
 $isOwner = (bool) ($isOwner ?? false);
 $planOwner = is_array($planOwner ?? null) ? $planOwner : [];
@@ -32,7 +32,6 @@ if ($ownerName === '') {
     $ownerName = 'Người dùng';
 }
 
-
 $mealRows = [
     'breakfast' => 'Bữa sáng',
     'lunch' => 'Bữa trưa',
@@ -47,6 +46,7 @@ $dishRoleLabels = [
     'drink' => 'Đồ uống',
     'other' => 'Khác',
 ];
+
 $visibility = (string) ($settings['visibility'] ?? 'private');
 $visibilityOptions = [
     'private' => 'Riêng tư',
@@ -69,9 +69,11 @@ foreach ($plans as $item) {
 $buildModeUrl = static function (string $targetMode, string $targetDate) use ($basePath): string {
     return URLROOT . $basePath . '?mode=' . rawurlencode($targetMode) . '&date=' . rawurlencode($targetDate);
 };
+
 $dayColumnsClass = $mode === 'day' ? 'grid-cols-1' : 'grid-cols-7';
 $minWidth = $mode === 'day' ? 'min-w-[320px]' : 'min-w-[860px]';
 $slotReady = $selectedSlotDate !== '' && in_array($selectedSlotMeal, ['breakfast', 'lunch', 'dinner'], true);
+
 $noticeText = match ($notice) {
     'updated' => 'Đã cập nhật quyền chia sẻ kế hoạch.',
     'link_reset' => 'Đã tạo link chia sẻ mới.',
@@ -85,12 +87,13 @@ $noticeText = match ($notice) {
     default => '',
 };
 ?>
+
 <section id="meal-plan-root" class="w-full" data-is-owner="<?= $isOwner ? '1' : '0'; ?>" data-selected-slot-date="<?= htmlspecialchars($selectedSlotDate, ENT_QUOTES, 'UTF-8'); ?>" data-selected-slot-meal="<?= htmlspecialchars($selectedSlotMeal, ENT_QUOTES, 'UTF-8'); ?>">
   <div class="mx-auto max-w-[1400px]">
     <div class="mb-5 flex items-end justify-between gap-3">
       <div>
         <h1 class="text-4xl font-black tracking-tight text-slate-900">Lập kế hoạch bữa ăn</h1>
-        <p class="mt-2 text-sm text-slate-500"><?= $isOwner ? 'Mỗi bữa có thể thêm nhiều món.' : ('Kế hoạch bữa ăn của ' . htmlspecialchars($ownerName, ENT_QUOTES, 'UTF-8')); ?></p>
+        <p class="mt-2 text-sm text-slate-500"><?= $isOwner ? 'Mỗi bữa ăn có thể thêm nhiều món.' : ('Kế hoạch bữa ăn của ' . htmlspecialchars($ownerName, ENT_QUOTES, 'UTF-8')); ?></p>
       </div>
     </div>
 
@@ -254,14 +257,14 @@ $noticeText = match ($notice) {
                           if ($entryImage === '') {
                             $entryImage = 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=1200&q=80';
                           }
-                          $entryTitle = trim((string) ($entry['title'] ?? 'CĂ´ng thA�»©c'));
+                          $entryTitle = trim((string) ($entry['title'] ?? 'Công thức'));
                           $entryRecipeId = (int) ($entry['recipe_id'] ?? 0);
                           $entryPlanId = (int) ($entry['meal_plan_id'] ?? 0);
                           $entryDishRole = (string) ($entry['dish_role'] ?? 'main');
-                          $entryDishRoleLabel = $dishRoleLabels[$entryDishRole] ?? 'KhĂ¡c';
+                          $entryDishRoleLabel = $dishRoleLabels[$entryDishRole] ?? 'Khác';
                         ?>
                         <article class="js-slot-item rounded-lg border border-slate-200 bg-white p-2" data-plan-item-id="<?= $entryPlanId; ?>">
-                          <img class="mb-2 h-20 w-full rounded-lg object-cover" src="<?= htmlspecialchars($entryImage, ENT_QUOTES, 'UTF-8'); ?>" alt="A�º¢nh cĂ´ng thA�»©c">
+                          <img class="mb-2 h-20 w-full rounded-lg object-cover" src="<?= htmlspecialchars($entryImage, ENT_QUOTES, 'UTF-8'); ?>" alt="Ảnh công thức">
                           <div class="mb-1 flex items-center justify-between gap-2">
                             <p class="truncate text-xs font-bold text-slate-900"><?= htmlspecialchars($entryTitle, ENT_QUOTES, 'UTF-8'); ?></p>
                             <span class="shrink-0 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-700"><?= htmlspecialchars($entryDishRoleLabel, ENT_QUOTES, 'UTF-8'); ?></span>
@@ -269,7 +272,7 @@ $noticeText = match ($notice) {
                           <div class="mt-2 flex items-center gap-2">
                             <?php if ($entryRecipeId > 0): ?><a class="text-[11px] font-semibold text-primary hover:underline" href="<?= URLROOT; ?>/recipes/<?= $entryRecipeId; ?>">Xem</a><?php endif; ?>
                             <?php if ($isOwner): ?>
-                              <a class="js-slot-select text-[11px] font-semibold text-slate-500 hover:underline" href="javascript:void(0)" data-slot-date="<?= htmlspecialchars($date, ENT_QUOTES, 'UTF-8'); ?>" data-slot-meal="<?= htmlspecialchars($mealKey, ENT_QUOTES, 'UTF-8'); ?>">ChA�»n Ă´</a>
+                              <a class="js-slot-select text-[11px] font-semibold text-slate-500 hover:underline" href="javascript:void(0)" data-slot-date="<?= htmlspecialchars($date, ENT_QUOTES, 'UTF-8'); ?>" data-slot-meal="<?= htmlspecialchars($mealKey, ENT_QUOTES, 'UTF-8'); ?>">Chọn ô</a>
                               <form method="post" action="<?= URLROOT; ?>/meal-plans/remove" class="inline js-remove-form">
                                   <?= csrf_field(); ?>
                                 <input type="hidden" name="plan_item_id" value="<?= $entryPlanId; ?>">
@@ -309,14 +312,17 @@ $noticeText = match ($notice) {
     date: root.dataset.selectedSlotDate || '',
     meal: root.dataset.selectedSlotMeal || '',
   };
-  const labels = { breakfast: 'BA�»¯a sĂ¡ng', lunch: 'BA�»¯a trA�°a', dinner: 'BA�»¯a tA�»‘i' };
+
+  const labels = { breakfast: 'Bữa sáng', lunch: 'Bữa trưa', dinner: 'Bữa tối' };
   const notice = document.getElementById('mealplan-notice');
   const indicator = document.getElementById('selected-slot-indicator');
+
   const isSelectedSlotLocked = () => {
     if (!(state.date && state.meal)) return false;
     const slot = document.querySelector(`[data-slot-container][data-slot-date="${state.date}"][data-slot-meal="${state.meal}"]`);
     return slot ? slot.dataset.slotLocked === '1' : false;
   };
+
   const applyLockBtnStyle = (btn, isLocked) => {
     if (!btn) return;
     btn.classList.remove('border-emerald-200', 'bg-emerald-50', 'text-emerald-700', 'border-rose-200', 'bg-rose-50', 'text-rose-700');
@@ -342,6 +348,7 @@ $noticeText = match ($notice) {
       slot.dataset.slotLocked = (weekLocked || isLocked) ? '1' : '0';
     });
   };
+
   const showNotice = (msg, error = false) => {
     if (!notice) return;
     notice.classList.remove('hidden');
@@ -352,8 +359,8 @@ $noticeText = match ($notice) {
   const refreshIndicator = () => {
     if (!indicator) return;
     indicator.innerHTML = (state.date && state.meal)
-      ? `A�ang chA�»n Ă´: <strong>${state.date}</strong> - <strong>${labels[state.meal] || state.meal}</strong>`
-      : 'BA�º¡n chA�°a chA�»n Ă´. HĂ£y bA�º¥m vĂ o mA�»™t Ă´ trong lA�»‹ch trA�°A�»›c khi thĂªm mĂ³n.';
+      ? `Đang chọn ô: <strong>${state.date}</strong> - <strong>${labels[state.meal] || state.meal}</strong>`
+      : 'Bạn chưa chọn ô. Hãy bấm vào một ô trong lịch trước khi thêm món.';
   };
 
   const refreshAssignForms = () => {
@@ -367,7 +374,7 @@ $noticeText = match ($notice) {
       if (m) m.value = state.meal;
       if (!b) return;
       b.disabled = !ready;
-      b.textContent = ready ? 'ThĂªm vĂ o Ă´ A�‘Ă£ chA�»n' : (locked ? 'Ă” A�‘ang khóa' : 'ChA�»n Ă´ trA�°A�»›c');
+      b.textContent = ready ? 'Thêm vào ô đã chọn' : (locked ? 'Ô đang khóa' : 'Chọn ô trước');
       b.classList.toggle('cursor-not-allowed', !ready);
       b.classList.toggle('bg-slate-100', !ready);
       b.classList.toggle('text-slate-400', !ready);
@@ -383,7 +390,7 @@ $noticeText = match ($notice) {
       body: new FormData(form)
     });
     const data = await res.json();
-    if (!res.ok || !data.ok) throw new Error(data.message || 'CĂ³ lA�»—i xA�º£y ra.');
+    if (!res.ok || !data.ok) throw new Error(data.message || 'Có lỗi xảy ra.');
     return data;
   };
 
@@ -394,7 +401,7 @@ $noticeText = match ($notice) {
     state.date = select.dataset.slotDate || '';
     state.meal = select.dataset.slotMeal || '';
     if (isSelectedSlotLocked()) {
-      showNotice('NgĂ y nĂ y A�‘Ă£ bA�»‹ khóa, khĂ´ng thA�»ƒ chA�»‰nh sA�»­a.', true);
+      showNotice('Ngày này đã bị khóa, không thể chỉnh sửa.', true);
     }
     refreshIndicator();
     refreshAssignForms();
@@ -403,6 +410,7 @@ $noticeText = match ($notice) {
   document.addEventListener('submit', async (e) => {
     const form = e.target;
     if (!(form instanceof HTMLFormElement)) return;
+
     if (form.classList.contains('js-week-lock-form')) {
       e.preventDefault();
       try {
@@ -413,19 +421,19 @@ $noticeText = match ($notice) {
         const status = document.querySelector('[data-week-lock-status]');
         if (hidden) hidden.value = isLocked ? '0' : '1';
         if (btn) {
-          btn.textContent = isLocked ? 'MA�»Ÿ khóa tuA�º§n' : 'KhĂ³a tuA�º§n';
+          btn.textContent = isLocked ? 'Mở khóa tuần' : 'Khóa tuần';
           applyLockBtnStyle(btn, isLocked);
         }
         if (status) {
-          status.textContent = isLocked ? 'Đang khA�a' : 'Đang mở';
+          status.textContent = isLocked ? 'Đang khóa' : 'Đang mở';
           status.classList.toggle('text-rose-600', isLocked);
           status.classList.toggle('text-emerald-600', !isLocked);
         }
         setWeekLockState(isLocked);
         refreshAssignForms();
-        showNotice(data.message || 'A�Ă£ cA�º­p nhA�º­t khóa tuA�º§n.');
+        showNotice(data.message || 'Đã cập nhật khóa tuần.');
       } catch (err) {
-        showNotice(err.message || 'Không thA�»ƒ cA�º­p nhA�º­t khóa tuA�º§n.', true);
+        showNotice(err.message || 'Không thể cập nhật khóa tuần.', true);
       }
       return;
     }
@@ -440,16 +448,16 @@ $noticeText = match ($notice) {
         const btn = form.querySelector('.js-day-lock-btn');
         if (hidden) hidden.value = isLocked ? '0' : '1';
         if (btn) {
-          btn.textContent = isLocked ? 'MA�»Ÿ ngày' : 'KhĂ³a ngày';
+          btn.textContent = isLocked ? 'Mở ngày' : 'Khóa ngày';
           applyLockBtnStyle(btn, isLocked);
         }
         if (lockDate !== '') {
           setDayLockState(lockDate, isLocked);
         }
         refreshAssignForms();
-        showNotice(data.message || 'A�Ă£ cA�º­p nhA�º­t khóa ngày.');
+        showNotice(data.message || 'Đã cập nhật khóa ngày.');
       } catch (err) {
-        showNotice(err.message || 'Không thA�»ƒ cA�º­p nhA�º­t khóa ngày.', true);
+        showNotice(err.message || 'Không thể cập nhật khóa ngày.', true);
       }
       return;
     }
@@ -457,33 +465,33 @@ $noticeText = match ($notice) {
     if (form.classList.contains('js-assign-form')) {
       e.preventDefault();
       if (!(state.date && state.meal)) {
-        showNotice('BA�º¡n cA�º§n chA�»n Ă´ trA�°A�»›c khi thĂªm mĂ³n.', true);
+        showNotice('Bạn cần chọn ô trước khi thêm món.', true);
         return;
       }
       if (isSelectedSlotLocked()) {
-        showNotice('NgĂ y nĂ y A�‘Ă£ bA�»‹ khóa, khĂ´ng thA�»ƒ chA�»‰nh sA�»­a.', true);
+        showNotice('Ngày này đã bị khóa, không thể chỉnh sửa.', true);
         return;
       }
       try {
         await postForm(form);
         window.location.reload();
       } catch (err) {
-        showNotice(err.message || 'Không thA�»ƒ thĂªm mĂ³n.', true);
+        showNotice(err.message || 'Không thể thêm món.', true);
       }
     }
 
     if (form.classList.contains('js-remove-form')) {
       e.preventDefault();
       if (isSelectedSlotLocked()) {
-        showNotice('NgĂ y nĂ y A�‘Ă£ bA�»‹ khóa, khĂ´ng thA�»ƒ chA�»‰nh sA�»­a.', true);
+        showNotice('Ngày này đã bị khóa, không thể chỉnh sửa.', true);
         return;
       }
-      if (!confirm('XĂ³a mĂ³n khA�»i Ă´ nĂ y?')) return;
+      if (!confirm('Xóa món khỏi ô này?')) return;
       try {
         await postForm(form);
         window.location.reload();
       } catch (err) {
-        showNotice(err.message || 'Không thA�»ƒ xĂ³a mĂ³n.', true);
+        showNotice(err.message || 'Không thể xóa món.', true);
       }
     }
   });
@@ -493,30 +501,3 @@ $noticeText = match ($notice) {
 })();
 </script>
 <?php endif; ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

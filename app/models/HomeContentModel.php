@@ -126,7 +126,13 @@ class HomeContentModel extends Model
     public function getFeaturedRecipes(int $limit = 6): array
     {
         $this->ensureTables();
-        $this->db->query('SELECT r.*, u.name AS author_name
+        $this->db->query('SELECT r.*, u.name AS author_name,
+                          COALESCE((
+                              SELECT GROUP_CONCAT(DISTINCT LOWER(t.slug) SEPARATOR ",")
+                              FROM recipe_tags rt
+                              INNER JOIN tags t ON t.id = rt.tag_id
+                              WHERE rt.recipe_id = r.id
+                          ), "") AS tag_slugs
                           FROM home_featured_recipes hf
                           INNER JOIN recipes r ON r.id = hf.recipe_id
                           LEFT JOIN users u ON u.id = r.user_id

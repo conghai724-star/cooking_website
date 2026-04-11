@@ -104,13 +104,24 @@ foreach ($comments as $comment) {
                         <strong class="text-sm"><?= htmlspecialchars($authorName, ENT_QUOTES, 'UTF-8'); ?></strong>
                         <span class="text-xs text-slate-400"><?= htmlspecialchars((string) substr((string) ($item['created_at'] ?? ''), 0, 16), ENT_QUOTES, 'UTF-8'); ?></span>
                     </div>
-                    <?php if (is_logged_in() && function_exists('user_has_permission') && user_has_permission('user.comments.report') && (int) current_user_id() !== (int) ($item['user_id'] ?? 0)): ?>
-                        <?php
-                        $reportCommentId = $commentId;
-                        $reportContentType = $contentType;
-                        $reportHiddenFields = $redirectTo !== '' ? ['redirect_to' => $redirectTo] : [];
-                        require APPROOT . '/app/views/partials/shared/comment_report_dropdown.php';
-                        ?>
+                    <?php if (is_logged_in()): ?>
+                        <div class="flex items-center gap-1">
+                            <?php if ((int) current_user_id() === (int) ($item['user_id'] ?? 0)): ?>
+                                <form method="post" action="<?= URLROOT; ?>/comments/<?= $commentId; ?>/delete" data-ajax-form data-on-success="remove-comment" data-confirm="Bạn có chắc muốn xóa bình luận này?">
+                                    <?= csrf_field(); ?>
+                                    <button type="submit" class="flex h-7 w-7 items-center justify-center rounded-full text-slate-400 hover:bg-red-50 hover:text-red-600" title="Xóa bình luận">
+                                        <span class="material-symbols-outlined text-base">delete</span>
+                                    </button>
+                                </form>
+                            <?php elseif (function_exists('user_has_permission') && user_has_permission('user.comments.report')): ?>
+                                <?php
+                                $reportCommentId = $commentId;
+                                $reportContentType = $contentType;
+                                $reportHiddenFields = $redirectTo !== '' ? ['redirect_to' => $redirectTo] : [];
+                                require APPROOT . '/app/views/partials/shared/comment_report_dropdown.php';
+                                ?>
+                            <?php endif; ?>
+                        </div>
                     <?php endif; ?>
                 </div>
 

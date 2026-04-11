@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 $pageTitle = $title ?? SITENAME;
 $userNotifications = [];
 $unreadNotificationCount = 0;
@@ -28,6 +28,24 @@ $notificationTypeLabel = static function (string $type): string {
         default => ucwords(str_replace('_', ' ', $type)),
     };
 };
+
+$urlRootPath = parse_url(URLROOT, PHP_URL_PATH) ?? '';
+$currentUri = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH) ?? '';
+$routePath = $urlRootPath !== '' && str_starts_with($currentUri, $urlRootPath) 
+    ? substr($currentUri, strlen($urlRootPath)) 
+    : $currentUri;
+$routePath = trim($routePath, '/');
+$routeParts = explode('/', $routePath);
+$routeBase = $routeParts[0] ?? '';
+
+$isHome = $routeBase === '';
+$isMyRecipes = $routeBase === 'recipes' && ($routeParts[1] ?? '') === 'my';
+$isRecipes = $routeBase === 'recipes' && !$isMyRecipes;
+$isIngredients = $routeBase === 'ingredients';
+$isTips = $routeBase === 'tips';
+$isPosts = $routeBase === 'posts';
+$isFeaturesGroup = in_array($routeBase, ['ai', 'quiz', 'quizzes']);
+$isPersonalGroup = in_array($routeBase, ['meal-plans']) || $isMyRecipes;
 ?>
 <!doctype html>
 <html lang="vi">
@@ -54,6 +72,9 @@ $notificationTypeLabel = static function (string $type): string {
         <style>
             body { font-family: 'Work Sans', sans-serif; }
             .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+            .nav-hover-underline { position: relative; }
+            .nav-hover-underline::after { content: ''; position: absolute; left: 0; bottom: -4px; width: 100%; height: 2px; background-color: #f59f0a; transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease-out; }
+            .nav-hover-underline:hover::after, .group:hover .nav-hover-underline::after, details[open] .nav-hover-underline::after, .nav-active::after { transform: scaleX(1); }
         </style>
     <?php else: ?>
         <link rel="stylesheet" href="<?= URLROOT; ?>/assets/css/style.css">
@@ -73,42 +94,64 @@ $notificationTypeLabel = static function (string $type): string {
                 <h2 class="text-xl font-bold tracking-tight">Công thức Ngon</h2>
             </div>
             <nav class="hidden items-center gap-8 lg:flex">
-                <a class="text-sm font-semibold hover:text-primary" href="<?= URLROOT; ?>/">Trang chủ</a>
-                <a class="text-sm font-semibold text-primary" href="<?= URLROOT; ?>/recipes">Công thức</a>
-                <a class="text-sm font-semibold hover:text-primary" href="<?= URLROOT; ?>/ingredients">Nguyên liệu</a>
-                <a class="text-sm font-semibold hover:text-primary" href="<?= URLROOT; ?>/tips">Mẹo vặt</a>
-                <a class="text-sm font-semibold hover:text-primary" href="<?= URLROOT; ?>/posts">Cộng đồng</a>
-                <a class="text-sm font-semibold hover:text-primary" href="<?= URLROOT; ?>/ai/ingredient-vision">AI</a>
-                <a class="text-sm font-semibold hover:text-primary" href="<?= URLROOT; ?>/ai/ingredient-drag-search">Kéo thả nguyên liệu</a>
+                <a class="nav-hover-underline <?= $isHome ? 'nav-active text-primary' : 'text-slate-900' ?> text-sm font-semibold hover:text-primary transition-colors duration-300" href="<?= URLROOT; ?>/">Trang chủ</a>
+                <a class="nav-hover-underline <?= $isRecipes ? 'nav-active text-primary' : 'text-slate-900' ?> text-sm font-semibold hover:text-primary transition-colors duration-300" href="<?= URLROOT; ?>/recipes">Công thức</a>
+                <a class="nav-hover-underline <?= $isIngredients ? 'nav-active text-primary' : 'text-slate-900' ?> text-sm font-semibold hover:text-primary transition-colors duration-300" href="<?= URLROOT; ?>/ingredients">Nguyên liệu</a>
+                <a class="nav-hover-underline <?= $isTips ? 'nav-active text-primary' : 'text-slate-900' ?> text-sm font-semibold hover:text-primary transition-colors duration-300" href="<?= URLROOT; ?>/tips">Mẹo vặt</a>
+                <a class="nav-hover-underline <?= $isPosts ? 'nav-active text-primary' : 'text-slate-900' ?> text-sm font-semibold hover:text-primary transition-colors duration-300" href="<?= URLROOT; ?>/posts">Cộng đồng</a>
                 <?php if (is_logged_in()): ?>
-                    <a class="text-sm font-semibold hover:text-primary" href="<?= URLROOT; ?>/quizzes">Quiz</a>
-                    <a class="text-sm font-semibold hover:text-primary" href="<?= URLROOT; ?>/meal-plans">Lập kế hoạch</a>
-                    <a class="text-sm font-semibold hover:text-primary" href="<?= URLROOT; ?>/recipes/my">Công thức của tôi</a>
+                <details class="relative group">
+                    <summary class="list-none cursor-pointer text-sm font-semibold hover:text-primary flex items-center gap-1 pb-4 -mb-4 transition-colors duration-300 group-hover:text-primary <?= $isFeaturesGroup ? 'text-primary' : 'text-slate-900' ?>">
+                        <span class="nav-hover-underline <?= $isFeaturesGroup ? 'nav-active' : '' ?>">Tính năng</span> <span class="material-symbols-outlined text-[16px]">expand_more</span>
+                    </summary>
+                    <div class="absolute left-0 top-full w-56 hidden group-hover:block open:block z-50">
+                        <div class="rounded-xl border border-slate-200 bg-white p-2 shadow-lg">
+                            <a class="block rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors duration-200 hover:text-primary" href="<?= URLROOT; ?>/ai/ingredient-vision">AI</a>
+                            <a class="block rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors duration-200 hover:text-primary" href="<?= URLROOT; ?>/ai/ingredient-drag-search">Kéo thả nguyên liệu</a>
+                            <a class="block rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors duration-200 hover:text-primary" href="<?= URLROOT; ?>/quiz">Quiz</a>
+                        </div>
+                    </div>
+                </details>
+                <?php endif; ?>
+                <?php if (is_logged_in()): ?>
+                <details class="relative group pb-1">
+                    <summary class="list-none cursor-pointer text-sm font-semibold hover:text-primary flex items-center gap-1 pb-4 -mb-4 transition-colors duration-300 group-hover:text-primary <?= $isPersonalGroup ? 'text-primary' : 'text-slate-900' ?>">
+                        <span class="nav-hover-underline <?= $isPersonalGroup ? 'nav-active' : '' ?>">Cá nhân</span> <span class="material-symbols-outlined text-[16px]">expand_more</span>
+                    </summary>
+                    <div class="absolute left-0 top-full w-48 hidden group-hover:block open:block z-50">
+                        <div class="rounded-xl border border-slate-200 bg-white p-2 shadow-lg">
+                            <a class="block rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors duration-200 hover:text-primary" href="<?= URLROOT; ?>/recipes/my">Công thức của tôi</a>
+                            <a class="block rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors duration-200 hover:text-primary" href="<?= URLROOT; ?>/meal-plans">Lập kế hoạch</a>
+                        </div>
+                    </div>
+                </details>
                 <?php endif; ?>
             </nav>
-            <nav class="hidden items-center gap-4 md:flex lg:hidden">
-                <a class="text-sm font-semibold hover:text-primary" href="<?= URLROOT; ?>/recipes">Công thức</a>
-                <a class="text-sm font-semibold hover:text-primary" href="<?= URLROOT; ?>/ingredients">Nguyên liệu</a>
-                <a class="text-sm font-semibold hover:text-primary" href="<?= URLROOT; ?>/tips">Mẹo vặt</a>
-                <a class="text-sm font-semibold hover:text-primary" href="<?= URLROOT; ?>/ai/ingredient-drag-search">Kéo thả</a>
-            </nav>
-            <details class="relative md:hidden">
+            <details class="relative lg:hidden">
                 <summary class="cursor-pointer rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700">
                     Menu
                 </summary>
-                <div class="absolute left-0 top-[calc(100%+8px)] z-50 w-64 rounded-xl border border-slate-200 bg-white p-2 shadow-lg">
-                    <nav class="flex flex-col">
+                <div class="absolute left-0 top-[calc(100%+8px)] z-50 w-64 rounded-xl border border-slate-200 bg-white p-2 shadow-lg max-h-[80vh] overflow-y-auto">
+                    <nav class="flex flex-col gap-1">
+                        <div class="px-3 py-2 text-xs font-bold uppercase tracking-wider text-slate-400">Khám phá</div>
                         <a class="rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/">Trang chủ</a>
                         <a class="rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/recipes">Công thức</a>
                         <a class="rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/ingredients">Nguyên liệu</a>
+
+                        <div class="my-1 border-t border-slate-100"></div>
+                        <div class="px-3 py-2 text-xs font-bold uppercase tracking-wider text-slate-400">Tính năng</div>
                         <a class="rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/tips">Mẹo vặt</a>
-                        <a class="rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/posts">Cộng đồng</a>
                         <a class="rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/ai/ingredient-vision">AI</a>
                         <a class="rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/ai/ingredient-drag-search">Kéo thả nguyên liệu</a>
                         <?php if (is_logged_in()): ?>
-                            <a class="rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/quizzes">Quiz</a>
                             <a class="rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/meal-plans">Lập kế hoạch</a>
-                            <a class="rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/recipes/my">Công thức của tôi</a>
+                        <?php endif; ?>
+
+                        <?php if (is_logged_in()): ?>
+                        <div class="my-1 border-t border-slate-100"></div>
+                        <div class="px-3 py-2 text-xs font-bold uppercase tracking-wider text-slate-400">Cá nhân</div>
+                        <a class="rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/recipes/my">Công thức của tôi</a>
+                        <a class="rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" href="#" onclick="document.querySelector('#notification-summary')?.click(); return false;">Thông báo</a>
                         <?php endif; ?>
                     </nav>
                 </div>
@@ -117,7 +160,7 @@ $notificationTypeLabel = static function (string $type): string {
         <div class="flex items-center gap-4">
             <?php if (is_logged_in()): ?>
                 <details class="relative">
-                    <summary class="list-none cursor-pointer rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700">
+                    <summary id="notification-summary" class="list-none cursor-pointer rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700">
                         <span class="material-symbols-outlined align-middle">notifications</span>
                         Thông báo<?= $unreadNotificationCount > 0 ? ' (' . $unreadNotificationCount . ')' : ''; ?>
                     </summary>
@@ -175,49 +218,64 @@ $notificationTypeLabel = static function (string $type): string {
     <div class="container nav-wrap">
         <a class="brand" href="<?= URLROOT; ?>/">Website Nấu Ăn</a>
         <nav>
-            <a href="<?= URLROOT; ?>/recipes">Công thức</a>
-            <a href="<?= URLROOT; ?>/ingredients">Nguyên liệu</a>
-            <a href="<?= URLROOT; ?>/tips">Mẹo vặt</a>
-            <a href="<?= URLROOT; ?>/posts">Cộng đồng</a>
-            <a href="<?= URLROOT; ?>/quizzes">Quiz</a>
-            <a href="<?= URLROOT; ?>/ai/ingredient-vision">AI</a>
-            <a href="<?= URLROOT; ?>/ai/ingredient-drag-search">Kéo thả nguyên liệu</a>
+            <a href="<?= URLROOT; ?>/" class="<?= $isHome ? 'active' : '' ?>">Trang chủ</a>
+            <a href="<?= URLROOT; ?>/recipes" class="<?= $isRecipes ? 'active' : '' ?>">Công thức</a>
+            <a href="<?= URLROOT; ?>/ingredients" class="<?= $isIngredients ? 'active' : '' ?>">Nguyên liệu</a>
+            <a href="<?= URLROOT; ?>/tips" class="<?= $isTips ? 'active' : '' ?>">Mẹo vặt</a>
+            <a href="<?= URLROOT; ?>/posts" class="<?= $isPosts ? 'active' : '' ?>">Cộng đồng</a>
+            
             <?php if (is_logged_in()): ?>
-                <details class="notification-dropdown" style="position:relative;display:inline-block;">
-                    <summary style="cursor:pointer;">Thông báo<?= $unreadNotificationCount > 0 ? ' (' . $unreadNotificationCount . ')' : ''; ?></summary>
-                    <div style="position:absolute;right:0;top:calc(100% + 6px);width:360px;max-width:90vw;background:#fff;border:1px solid #ddd;border-radius:8px;padding:8px;box-shadow:0 8px 24px rgba(0,0,0,.08);z-index:50;">
-                        <?php if ($userNotifications === []): ?>
-                            <div style="padding:8px;color:#666;">Chưa có thông báo.</div>
-                        <?php else: ?>
-                            <div style="max-height:320px;overflow:auto;">
-                                <?php foreach ($userNotifications as $n): ?>
-                                    <?php
-                                    $messageText = (string) ($n['message'] ?? '');
-                                    $typeText = (string) ($n['type'] ?? 'notification');
-                                    $typeLabel = $notificationTypeLabel($typeText);
-                                    $timeText = (string) ($n['created_at'] ?? '');
-                                    $copyText = '[' . $timeText . '] ' . $typeLabel . ': ' . $messageText;
-                                    ?>
-                                    <div style="display:block;padding:8px;border-radius:6px;margin-bottom:4px;background:<?= ((int) ($n['is_read'] ?? 0) === 1) ? '#fff' : '#fff8e1'; ?>;color:#222;">
-                                        <div style="font-weight:600;"><?= htmlspecialchars($typeLabel, ENT_QUOTES, 'UTF-8'); ?></div>
-                                        <div style="white-space:pre-wrap;word-break:break-word;"><?= htmlspecialchars($messageText, ENT_QUOTES, 'UTF-8'); ?></div>
-                                        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px;">
-                                            <div style="font-size:12px;color:#888;"><?= htmlspecialchars($timeText, ENT_QUOTES, 'UTF-8'); ?></div>
-                                            <div style="display:flex;align-items:center;gap:6px;">
-                                                <button type="button" style="border:1px solid #d1d5db;border-radius:6px;padding:2px 8px;background:#fff;font-size:12px;cursor:pointer;" onclick='navigator.clipboard.writeText(<?= json_encode($copyText, JSON_UNESCAPED_UNICODE); ?>)'>Copy</button>
-                                                <a href="<?= URLROOT; ?>/notifications/<?= (int) ($n['id'] ?? 0); ?>/open" style="border:1px solid #fdba74;border-radius:6px;padding:2px 8px;text-decoration:none;font-size:12px;color:#c2410c;background:#fff;">Mở</a>
-                                            </div>
+            <details style="position:relative;display:inline-block;">
+                <summary style="cursor:pointer;list-style:none;" class="<?= $isFeaturesGroup ? 'active' : '' ?>">Tính năng ▼</summary>
+                <div style="position:absolute;left:0;top:calc(100% + 6px);width:200px;background:#fff;border:1px solid #ddd;border-radius:8px;padding:8px;box-shadow:0 8px 24px rgba(0,0,0,.08);z-index:50;">
+                    <a href="<?= URLROOT; ?>/ai/ingredient-vision" style="display:block;padding:8px;color:#333;text-decoration:none;border-radius:4px;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='transparent'">AI</a>
+                    <a href="<?= URLROOT; ?>/ai/ingredient-drag-search" style="display:block;padding:8px;color:#333;text-decoration:none;border-radius:4px;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='transparent'">Kéo thả nguyên liệu</a>
+                    <a href="<?= URLROOT; ?>/quizzes" style="display:block;padding:8px;color:#333;text-decoration:none;border-radius:4px;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='transparent'">Quiz</a>
+                </div>
+            </details>
+
+            <details style="position:relative;display:inline-block;">
+                <summary style="cursor:pointer;list-style:none;" class="<?= $isPersonalGroup ? 'active' : '' ?>">Cá nhân ▼</summary>
+                <div style="position:absolute;left:0;top:calc(100% + 6px);width:200px;background:#fff;border:1px solid #ddd;border-radius:8px;padding:8px;box-shadow:0 8px 24px rgba(0,0,0,.08);z-index:50;">
+                    <a href="<?= URLROOT; ?>/recipes/my" style="display:block;padding:8px;color:#333;text-decoration:none;border-radius:4px;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='transparent'">Công thức của tôi</a>
+                    <a href="<?= URLROOT; ?>/meal-plans" style="display:block;padding:8px;color:#333;text-decoration:none;border-radius:4px;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='transparent'">Lập kế hoạch</a>
+                    <a href="<?= URLROOT; ?>/quizzes/my-certificates" style="display:block;padding:8px;color:#333;text-decoration:none;border-radius:4px;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='transparent'">Chứng nhận</a>
+                    <a href="#" onclick="document.querySelector('.notification-dropdown summary')?.click(); return false;" style="display:block;padding:8px;color:#333;text-decoration:none;border-radius:4px;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='transparent'">Thông báo</a>
+                </div>
+            </details>
+            
+            <details class="notification-dropdown" style="position:relative;display:inline-block;">
+                <summary style="cursor:pointer;display:none;">Thông báo<?= $unreadNotificationCount > 0 ? ' (' . $unreadNotificationCount . ')' : ''; ?></summary>
+                <div style="position:absolute;right:0;top:calc(100% + 6px);width:360px;max-width:90vw;background:#fff;border:1px solid #ddd;border-radius:8px;padding:8px;box-shadow:0 8px 24px rgba(0,0,0,.08);z-index:50;">
+                    <?php if ($userNotifications === []): ?>
+                        <div style="padding:8px;color:#666;">Chưa có thông báo.</div>
+                    <?php else: ?>
+                        <div style="max-height:320px;overflow:auto;">
+                            <?php foreach ($userNotifications as $n): ?>
+                                <?php
+                                $messageText = (string) ($n['message'] ?? '');
+                                $typeText = (string) ($n['type'] ?? 'notification');
+                                $typeLabel = $notificationTypeLabel($typeText);
+                                $timeText = (string) ($n['created_at'] ?? '');
+                                $copyText = '[' . $timeText . '] ' . $typeLabel . ': ' . $messageText;
+                                ?>
+                                <div style="display:block;padding:8px;border-radius:6px;margin-bottom:4px;background:<?= ((int) ($n['is_read'] ?? 0) === 1) ? '#fff' : '#fff8e1'; ?>;color:#222;">
+                                    <div style="font-weight:600;"><?= htmlspecialchars($typeLabel, ENT_QUOTES, 'UTF-8'); ?></div>
+                                    <div style="white-space:pre-wrap;word-break:break-word;"><?= htmlspecialchars($messageText, ENT_QUOTES, 'UTF-8'); ?></div>
+                                    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px;">
+                                        <div style="font-size:12px;color:#888;"><?= htmlspecialchars($timeText, ENT_QUOTES, 'UTF-8'); ?></div>
+                                        <div style="display:flex;align-items:center;gap:6px;">
+                                            <button type="button" style="border:1px solid #d1d5db;border-radius:6px;padding:2px 8px;background:#fff;font-size:12px;cursor:pointer;" onclick='navigator.clipboard.writeText(<?= json_encode($copyText, JSON_UNESCAPED_UNICODE); ?>)'>Copy</button>
+                                            <a href="<?= URLROOT; ?>/notifications/<?= (int) ($n['id'] ?? 0); ?>/open" style="border:1px solid #fdba74;border-radius:6px;padding:2px 8px;text-decoration:none;font-size:12px;color:#c2410c;background:#fff;">Mở</a>
                                         </div>
                                     </div>
-                                <?php endforeach; ?>
-                            </div>
-                        <?php endif; ?>
-                    </div>
-                </details>
-                <a href="<?= URLROOT; ?>/meal-plans">Lập kế hoạch</a>
-                <a href="<?= URLROOT; ?>/recipes/my">Công thức của tôi</a>
-                <a href="<?= URLROOT; ?>/quizzes/my-certificates">Chứng nhận</a>
-                <a href="<?= URLROOT; ?>/profile">Hồ sơ</a>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </details>
+            <a href="<?= URLROOT; ?>/profile">Hồ sơ</a>
                 <form method="post" action="<?= URLROOT; ?>/logout" class="inline-form">
                     <?= csrf_field(); ?>
                     <button type="submit">Đăng xuất</button>

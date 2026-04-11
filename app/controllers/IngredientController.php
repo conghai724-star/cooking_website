@@ -36,7 +36,7 @@ class IngredientController extends Controller
         $ingredients = $ingredientModel->allPaged('approved', 'library', $perPage, $offset, $kw, $filterCategoryId);
 
         $this->view('ingredients/index', [
-            'title' => 'Nguy�n li?u',
+'title' => 'Nguyên liệu',
             'useRecipeHubLayout' => true,
             'ingredients' => $ingredients,
             'ingredient_categories' => $ingredientCategories,
@@ -51,7 +51,7 @@ class IngredientController extends Controller
     {
         $ingredientId = (int) $id;
         if ($ingredientId <= 0) {
-            $this->renderNotFound('Kh�ng t�m th?y nguy�n li?u.');
+            $this->renderNotFound('Không tìm thấy nguyên liệu.');
             return;
         }
 
@@ -59,7 +59,7 @@ class IngredientController extends Controller
         $ingredientModel = $this->model('IngredientModel');
         $ingredient = $ingredientModel->findById($ingredientId);
         if (!$ingredient) {
-            $this->renderNotFound('Kh�ng t�m th?y nguy�n li?u.');
+            $this->renderNotFound('Không tìm thấy nguyên liệu.');
             return;
         }
 
@@ -67,7 +67,7 @@ class IngredientController extends Controller
         $isOwner = $viewerId > 0 && $viewerId === (int) ($ingredient['user_id'] ?? 0);
 
         if (($ingredient['status'] ?? 'approved') !== 'approved' && !is_admin() && !$isOwner) {
-            $this->renderNotFound('Kh�ng t�m th?y nguy�n li?u.');
+            $this->renderNotFound('Không tìm thấy nguyên liệu.');
             return;
         }
 
@@ -152,7 +152,7 @@ class IngredientController extends Controller
             $carb = trim((string) ($_POST['carb'] ?? ''));
 
             if ($name === '') {
-                $error = 'Vui l�ng nh?p t�n nguy�n li?u.';
+                $error = 'Vui lòng nhập tên nguyên liệu.';
             } else {
                 $categoryValue = $categoryId !== '' ? (int) $categoryId : null;
                 $descriptionValue = $description !== '' ? $description : null;
@@ -181,14 +181,14 @@ class IngredientController extends Controller
                         (int) current_user_id()
                     );
                     if ($id === false) {
-                        $error = 'Kh�ng th? g?i nguy�n li?u.';
+                        $error = 'Không thể gửi nguyên liệu.';
                     } else {
                         $ingredientModel->upsertNutrition($id, $caloriesValue, $proteinValue, $fatValue, $carbValue);
-                        $success = true;
+                        $this->redirect('/ingredients/' . $id . '?notice=created_success');
                     }
                 } catch (PDOException $e) {
                     if ($e->getCode() === '23000') {
-                        $error = 'T�n nguy�n li?u dang b? r�ng bu?c UNIQUE trong CSDL. Vui l�ng x�a UNIQUE ? c?t name.';
+                        $error = 'Tên nguyên liệu đã tồn tại hoặc bị trùng lặp.';
                     } else {
                         throw $e;
                     }
@@ -201,7 +201,7 @@ class IngredientController extends Controller
         $categories = $categoryModel->byType('ingredient');
 
         $this->view('ingredients/create', [
-            'title' => 'G�p � nguy�n li?u',
+            'title' => 'Góp ý nguyên liệu',
             'useRecipeHubLayout' => true,
             'categories' => $categories,
             'error' => $error,
@@ -218,7 +218,7 @@ class IngredientController extends Controller
         $ingredients = $ingredientModel->byUser((int) current_user_id());
 
         $this->view('ingredients/my', [
-            'title' => 'Nguy�n li?u c?a t�i',
+            'title' => 'Nguyên liệu của tôi',
             'useRecipeHubLayout' => true,
             'ingredients' => $ingredients,
             'has_user_column' => !empty($ingredients),
@@ -248,7 +248,7 @@ class IngredientController extends Controller
         $ingredientId = (int) $id;
         if ($ingredientId <= 0) {
             if ($isAjax) {
-                $this->jsonError('BAD_REQUEST', 'Kh�ng t�m th?y nguy�n li?u.', 400);
+                $this->jsonError('BAD_REQUEST', 'Không tìm thấy nguyên liệu.', 400);
             }
             $this->redirect('/ingredients');
         }
@@ -256,11 +256,11 @@ class IngredientController extends Controller
         $reason = trim((string) ($_POST['reason'] ?? ''));
         $details = trim((string) (($_POST['details'] ?? '') ?: ($_POST['reason_other'] ?? '')));
         $normalizedReason = strtolower($reason);
-        if ($reason !== '' && in_array($normalizedReason, ['kh�c', 'khac'], true) && $details !== '') {
+        if ($reason !== '' && in_array($normalizedReason, ['khác', 'khac'], true) && $details !== '') {
             $reason = $details;
         }
         if ($reason === '') {
-            $reason = 'N?i dung nguy�n li?u c� d?u hi?u vi ph?m.';
+            $reason = 'Nội dung nguyên liệu có dấu hiệu vi phạm.';
         }
 
         /** @var IngredientModel $ingredientModel */
@@ -271,15 +271,15 @@ class IngredientController extends Controller
             $notificationModel = $this->model('NotificationModel');
             $notificationModel->createForAdmins(
                 'report_ingredient',
-                'C� b�o c�o nguy�n li?u m?i (ID: ' . $ingredientId . ').'
+                'Có báo cáo nguyên liệu mới (ID: ' . $ingredientId . ').'
             );
         }
 
         if ($isAjax) {
             if ($ok) {
-                $this->jsonSuccess([], '�� g?i b�o c�o nguy�n li?u.', 201);
+            $this->jsonSuccess([], 'Đã gửi báo cáo nguyên liệu.', 201);
             }
-            $this->jsonError('CONFLICT', 'B?n d� b�o c�o nguy�n li?u n�y.', 409);
+            $this->jsonError('CONFLICT', 'Bạn đã báo cáo nguyên liệu này.', 409);
         }
 
         $this->redirect('/ingredients/' . $ingredientId . '?notice=' . ($ok ? 'ingredient_reported' : 'ingredient_reported_exists'));
@@ -299,6 +299,15 @@ class IngredientController extends Controller
         $ingredientModel = $this->model('IngredientModel');
         $ingredientModel->toggleSave((int) current_user_id(), $ingredientId);
         $saved = $ingredientModel->isSaved((int) current_user_id(), $ingredientId);
+
+        if ($this->isAjaxRequest()) {
+            $this->jsonResponse([
+                'success' => true,
+                'data' => ['saved' => $saved],
+                'message' => $saved ? 'Đã lưu nguyên liệu.' : 'Đã bỏ lưu nguyên liệu.',
+            ], 200);
+            return;
+        }
 
         $glue = str_contains($redirectTo, '?') ? '&' : '?';
         $this->redirect($redirectTo . $glue . 'notice=' . ($saved ? 'ingredient_saved' : 'ingredient_unsaved'));
@@ -320,14 +329,14 @@ class IngredientController extends Controller
             return;
         }
 
-        $reason = trim((string) ($activeLock['reason'] ?? 'Vi ph?m n?i dung c?ng d?ng'));
+        $reason = trim((string) ($activeLock['reason'] ?? 'Vi phạm nội dung cộng đồng'));
         if ($reason === '') {
-            $reason = 'Vi ph?m n?i dung c?ng d?ng';
+            $reason = 'Vi phạm nội dung cộng đồng';
         }
         $until = trim((string) ($activeLock['banned_until'] ?? ''));
         $notice = $until !== ''
-            ? 'B?n dang b? kh�a dang nguy�n li?u d?n ' . $until . '. L� do: ' . $reason
-            : 'B?n dang b? kh�a dang nguy�n li?u vinh vi?n. L� do: ' . $reason;
+            ? 'Bạn đang bị khóa đăng nguyên liệu đến ' . $until . '. Lý do: ' . $reason
+            : 'Bạn đang bị khóa đăng nguyên liệu vĩnh viễn. Lý do: ' . $reason;
 
         $separator = str_contains($fallbackRedirect, '?') ? '&' : '?';
         $this->redirect($fallbackRedirect . $separator . 'notice=' . rawurlencode($notice));

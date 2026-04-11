@@ -50,7 +50,7 @@ $buildCategoryListUrl = static function (?int $catId) use ($keyword): string {
         <div>
             <h1 class="text-4xl font-black tracking-tight text-slate-900">Nguyên liệu</h1>
             <p class="mt-3 text-lg text-slate-600">
-                Khám phá nguyên liệu tươi ngon, giá vị và thực phẩm theo mùa để truyền cảm hứng nấu ăn mỗi ngày.
+                Khám phá nguyên liệu tươi ngon, gia vị và thực phẩm theo mùa để truyền cảm hứng nấu ăn mỗi ngày.
             </p>
         </div>
         <div class="flex items-center gap-3">

@@ -195,3 +195,34 @@
 2026-04-08 15:16:35,233 - INFO - Fixed app\views\admin\users\index.php: auto repair
 2026-04-08 15:16:35,246 - INFO - Fixed app\views\admin\moderation\reports\index.php: auto repair
 2026-04-08 15:16:35,248 - INFO - Fixed 21 files.
+2026-04-09 07:16:43,675 - INFO - Loaded 128 mojibake fixes
+2026-04-09 07:16:43,681 - INFO - Found 86 files to check
+2026-04-09 07:16:43,738 - INFO - Fixed app\views\auth\admin_login.php: auto repair (ftfy.fix_text)
+2026-04-09 07:16:43,741 - INFO - Fixed app\views\auth\forgot_password.php: auto repair (utf8->cp1250)
+2026-04-09 07:16:43,807 - INFO - Fixed app\views\mealplans\index.php: auto repair (utf8->cp1250)
+2026-04-09 07:16:43,858 - INFO - Fixed app\views\recipes\create.php: auto repair (ftfy.fix_text)
+2026-04-09 07:16:43,898 - INFO - Fixed app\views\recipes\edit.php: auto repair (ftfy.fix_text)
+2026-04-09 07:16:43,919 - INFO - Fixed app\views\tips\index.php: auto repair (utf8->cp1250)
+2026-04-09 07:16:43,930 - INFO - Fixed app\views\tips\show.php: auto repair (utf8->cp1250)
+2026-04-09 07:16:43,979 - INFO - Fixed app\views\tips\partials\sidebar.php: auto repair (utf8->cp1250)
+2026-04-09 07:16:43,985 - INFO - Fixed app\views\recipes\partials\quick_actions.php: auto repair (utf8->cp1250)
+2026-04-09 07:16:43,994 - INFO - Fixed app\views\recipes\partials\report_modal.php: auto repair (ftfy.fix_text)
+2026-04-09 07:16:43,995 - INFO - Fixed app\views\partials\ingredient\hero.php: auto repair (cp1250->utf8)
+2026-04-09 07:16:44,006 - INFO - Fixed app\views\partials\ingredient\quick_info_actions_card.php: auto repair (utf8->cp1250)
+2026-04-09 07:16:44,013 - INFO - Fixed app\views\partials\shared\comment_report_dropdown.php: auto repair (utf8->cp1250)
+2026-04-09 07:16:44,023 - INFO - Fixed app\views\partials\shared\content_action_buttons.php: auto repair (utf8->cp1250)
+2026-04-09 07:16:44,034 - INFO - Fixed app\views\partials\shared\content_report_modal.php: auto repair (utf8->cp1250)
+2026-04-09 07:16:44,038 - INFO - Fixed app\views\partials\shared\report_content_form.php: auto repair (utf8->cp1250)
+2026-04-09 07:16:44,067 - INFO - Fixed app\views\admin\ingredients\index.php: auto repair (utf8->cp1250)
+2026-04-09 07:16:44,122 - INFO - Fixed app\views\admin\quizzes\index.php: auto repair (utf8->cp1250)
+2026-04-09 07:16:44,141 - INFO - Fixed app\views\admin\quizzes\show.php: auto repair (utf8->cp1250)
+2026-04-09 07:16:44,147 - INFO - Fixed app\views\admin\quizzes\users.php: auto repair (utf8->cp1250)
+2026-04-09 07:16:44,159 - INFO - Fixed app\views\admin\recipes\index.php: auto repair (utf8->cp1250)
+2026-04-09 07:16:44,164 - INFO - Fixed app\views\admin\recipes\show.php: auto repair (utf8->cp1250)
+2026-04-09 07:16:44,171 - INFO - Fixed app\views\admin\stats\index.php: auto repair (latin1->utf8)
+2026-04-09 07:16:44,191 - INFO - Fixed app\views\admin\moderation\bans\index.php: 'Đã gỡ ban thành công.' -> 'Đã gỡ ban thành công.', auto repair (utf8->cp1250)
+2026-04-09 07:16:44,196 - INFO - Fixed app\views\admin\moderation\ban_appeals\index.php: auto repair (utf8->cp1250)
+2026-04-09 07:16:44,209 - INFO - Fixed app\views\admin\moderation\relationships\index.php: auto repair (utf8->cp1250)
+2026-04-09 07:16:44,240 - INFO - Fixed app\views\admin\moderation\reports\index.php: auto repair (utf8->cp1250)
+2026-04-09 07:16:44,246 - INFO - Fixed app\views\admin\moderation\tips\index.php: auto repair (ftfy.fix_text)
+2026-04-09 07:16:44,246 - INFO - Fixed 28 files.

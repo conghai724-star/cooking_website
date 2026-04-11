@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../config/config.php';
 require_once APPROOT . '/app/helpers/auth_helper.php';
 require_once APPROOT . '/app/helpers/upload_helper.php';
@@ -8,6 +9,7 @@ require_once APPROOT . '/app/helpers/system_log_helper.php';
 require_once APPROOT . '/app/helpers/csrf_helper.php';
 require_once APPROOT . '/app/helpers/profanity_filter_helper.php';
 require_once APPROOT . '/app/helpers/encoding_helper.php';
+require_once APPROOT . '/app/helpers/request_guard_helper.php';
 require_once APPROOT . '/app/core/Router.php';
 require_once APPROOT . '/app/core/Controller.php';
 require_once APPROOT . '/app/core/Model.php';
@@ -30,8 +32,12 @@ $router->get('/login', ['AuthController', 'login']);
 $router->post('/login', ['AuthController', 'login']);
 $router->get('/forgot-password', ['AuthController', 'forgotPassword']);
 $router->post('/forgot-password', ['AuthController', 'forgotPassword']);
+$router->get('/reset-password', ['AuthController', 'resetPassword']);
+$router->post('/reset-password', ['AuthController', 'resetPassword']);
 $router->get('/register', ['AuthController', 'register']);
 $router->post('/register', ['AuthController', 'register']);
+$router->get('/auth/google', ['AuthController', 'googleLogin']);
+$router->get('/auth/google/callback', ['AuthController', 'googleCallback']);
 $router->post('/logout', ['AuthController', 'logout']);
 
 $router->get('/admin/login', ['AuthController', 'adminLogin']);
@@ -101,6 +107,7 @@ $router->get('/users/{id}/meal-plans', ['MealPlanController', 'userPlans']);
 $router->get('/recipes/create', ['RecipeController', 'create'], $userPermission('user.recipes.create'));
 $router->post('/recipes/create', ['RecipeController', 'create'], $userPermission('user.recipes.create'));
 $router->get('/recipes/my', ['RecipeController', 'myRecipes'], $userLogin());
+$router->get('/recipes/{id}/export/{format}', ['RecipeController', 'export']);
 $router->get('/recipes/{id}', ['RecipeController', 'show']);
 $router->get('/recipes/{id}/edit', ['RecipeController', 'edit'], $userPermission('user.recipes.edit_own'));
 $router->post('/recipes/{id}/edit', ['RecipeController', 'edit'], $userPermission('user.recipes.edit_own'));
@@ -154,6 +161,7 @@ $router->post('/admin/recipes/{id}/reject', ['admin/RecipeController', 'rejectRe
 $router->post('/admin/recipes/{id}/resubmit', ['admin/RecipeController', 'resubmitRecipe'], $adminPermission('admin.recipes.review'));
 $router->post('/admin/recipes/{id}/delete', ['admin/RecipeController', 'deleteRecipe'], $adminPermission('admin.recipes.manage'));
 $router->get('/admin/categories', ['admin/CategoryController', 'manageCategories'], $adminPermission('admin.categories.manage'));
+$router->post('/admin/categories/create', ['admin/CategoryController', 'createCategory'], $adminPermission('admin.categories.manage'));
 $router->get('/admin/comments', ['admin/CommentController', 'manageComments'], $adminPermission('admin.comments.moderate'));
 $router->post('/admin/comments/{id}/hide', ['admin/CommentController', 'hideComment'], $adminPermission('admin.comments.moderate'));
 $router->post('/admin/comments/{id}/restore', ['admin/CommentController', 'restoreComment'], $adminPermission('admin.comments.moderate'));
@@ -187,7 +195,4 @@ $router->get('/admin/mealplans', ['admin/MealPlanController', 'manageMealPlans']
 $router->post('/admin/mealplans/{id}/delete', ['admin/MealPlanController', 'deleteMealPlan'], $adminPermission('admin.mealplans.moderate'));
 
 $router->dispatch($_SERVER['REQUEST_URI'] ?? '/', $_SERVER['REQUEST_METHOD'] ?? 'GET');
-
-
-
 

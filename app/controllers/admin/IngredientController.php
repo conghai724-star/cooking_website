@@ -7,17 +7,49 @@ class IngredientController extends Controller
     public function manageIngredients(): void
     {
         require_admin_permission('admin.ingredients.review');
+        $page = max(1, (int) ($_GET['page'] ?? 1));
+        $perPage = 20;
+        $keyword = trim((string) ($_GET['q'] ?? ''));
+        $status = (string) ($_GET['status'] ?? '');
+        if (!in_array($status, ['', 'approved', 'rejected', 'pending'], true)) {
+            $status = '';
+        }
+        $categoryId = max(0, (int) ($_GET['category_id'] ?? 0));
+
         /** @var IngredientModel $ingredientModel */
         $ingredientModel = $this->model('IngredientModel');
         /** @var CategoryModel $categoryModel */
         $categoryModel = $this->model('CategoryModel');
 
-        $ingredients = $ingredientModel->all();
+        $totalIngredients = $ingredientModel->countByStatus(
+            $status !== '' ? $status : null,
+            'library',
+            $keyword !== '' ? $keyword : null,
+            $categoryId > 0 ? $categoryId : null
+        );
+        $totalPages = max(1, (int) ceil($totalIngredients / $perPage));
+        $page = min($page, $totalPages);
+        $offset = ($page - 1) * $perPage;
+        $ingredients = $ingredientModel->allPaged(
+            $status !== '' ? $status : null,
+            'library',
+            $perPage,
+            $offset,
+            $keyword !== '' ? $keyword : null,
+            $categoryId > 0 ? $categoryId : null
+        );
         $categories = $categoryModel->byType('ingredient');
 
         $this->adminView('admin/ingredients/index', [
             'ingredients' => $ingredients,
             'categories' => $categories,
+            'page' => $page,
+            'perPage' => $perPage,
+            'total' => $totalIngredients,
+            'totalPages' => $totalPages,
+            'keyword' => $keyword,
+            'status' => $status,
+            'categoryId' => $categoryId,
         ]);
     }
 
@@ -105,18 +137,20 @@ class IngredientController extends Controller
     {
         require_admin_permission('admin.ingredients.review');
         $ingredientId = (int) $id;
+        $page = max(1, (int) ($_POST['return_page'] ?? 1));
         if ($ingredientId > 0) {
             /** @var IngredientModel $ingredientModel */
             $ingredientModel = $this->model('IngredientModel');
             $ingredientModel->setStatus($ingredientId, 'approved', null);
         }
-        $this->redirect('/admin/ingredients');
+        $this->redirect('/admin/ingredients?page=' . $page);
     }
 
     public function rejectIngredient(string $id): void
     {
         require_admin_permission('admin.ingredients.review');
         $ingredientId = (int) $id;
+        $page = max(1, (int) ($_POST['return_page'] ?? 1));
         if ($ingredientId > 0) {
             $reason = trim((string) ($_POST['reason'] ?? ''));
             $reasonValue = $reason !== '' ? $reason : null;
@@ -124,13 +158,14 @@ class IngredientController extends Controller
             $ingredientModel = $this->model('IngredientModel');
             $ingredientModel->setStatus($ingredientId, 'rejected', $reasonValue);
         }
-        $this->redirect('/admin/ingredients');
+        $this->redirect('/admin/ingredients?page=' . $page);
     }
 
     public function deleteIngredient(string $id): void
     {
         require_admin_permission('admin.ingredients.manage');
         $ingredientId = (int) $id;
+        $page = max(1, (int) ($_POST['return_page'] ?? 1));
         if ($ingredientId > 0) {
             /** @var IngredientModel $ingredientModel */
             $ingredientModel = $this->model('IngredientModel');
@@ -139,7 +174,7 @@ class IngredientController extends Controller
             $adminId = (int) ($admin['id'] ?? 0);
             system_log_write('admin_action', 'admin.ingredient.delete', 'success', null, 'ingredient', $ingredientId, null, $adminId > 0 ? $adminId : null, (string) ($admin['role'] ?? 'admin'));
         }
-        $this->redirect('/admin/ingredients');
+        $this->redirect('/admin/ingredients?page=' . $page);
     }
 
     public function editIngredient(string $id): void

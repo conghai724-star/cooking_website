@@ -57,10 +57,10 @@ class CommentController extends Controller
         $activeLock = $penaltyModel->getActiveCommentLock((int) current_user_id());
         if ($activeLock) {
             $until = (string) ($activeLock['banned_until'] ?? '');
-            $reason = trim((string) ($activeLock['reason'] ?? 'Vi ph?m n?i dung c?ng d?ng'));
+            $reason = trim((string) ($activeLock['reason'] ?? 'Vi phạm nội dung cộng đồng'));
             $message = $until !== ''
-                ? ('B?n dang b? kh�a quy?n b�nh lu?n d?n ' . $until . '. L� do: ' . $reason)
-                : ('B?n dang b? kh�a quy?n b�nh lu?n vinh vi?n. L� do: ' . $reason);
+                ? ('Bạn đang bị khóa quyền bình luận đến ' . $until . '. Lý do: ' . $reason)
+                : ('Bạn đang bị khóa quyền bình luận vĩnh viễn. Lý do: ' . $reason);
 
             $this->respondStoreResult(false, $targetPath, $message);
             $this->redirect($targetPath . '?notice=comment_locked');
@@ -198,15 +198,15 @@ class CommentController extends Controller
                         $targetUserId,
                         $parentId > 0 ? 'comment_reply' : 'comment',
                         $parentId > 0
-                            ? ($actorName . ' da tra loi binh luan cua ban.')
-                            : ($actorName . ' da binh luan bai viet cua ban.'),
+                            ? ($actorName . ' đã trả lời bình luận của bạn.')
+                            : ($actorName . ' đã bình luận bài viết của bạn.'),
                         $targetPath
                     );
                 }
             }
         }
 
-        $this->respondStoreResult($ok, $targetPath, $ok ? '�� dang b�nh lu?n' : 'Kh�ng th? dang b�nh lu?n');
+        $this->respondStoreResult($ok, $targetPath, $ok ? 'Đã đăng bình luận' : 'Không thể đăng bình luận');
         $this->redirect($targetPath);
     }
 
@@ -312,7 +312,7 @@ class CommentController extends Controller
         $commentId = (int) $id;
         if ($commentId <= 0) {
             if ($this->isAjaxRequest()) {
-                $this->jsonError('VALIDATION_ERROR', 'Binh luan khong hop le.', 422);
+                $this->jsonError('VALIDATION_ERROR', 'Bình luận không hợp lệ.', 422);
             }
             $this->redirect('/recipes');
         }
@@ -322,13 +322,13 @@ class CommentController extends Controller
         $result = $commentModel->toggleVote($commentId, (int) current_user_id());
         if ($result === false) {
             if ($this->isAjaxRequest()) {
-                $this->jsonError('NOT_FOUND', 'Khong tim thay binh luan.', 404);
+                $this->jsonError('NOT_FOUND', 'Không tìm thấy bình luận.', 404);
             }
             $this->redirect('/recipes');
         }
 
         if ($this->isAjaxRequest()) {
-            $this->jsonSuccess($result, 'Da cap nhat vote.');
+            $this->jsonSuccess($result, 'Đã cập nhật lượt thích.');
         }
 
         $back = trim((string) ($_SERVER['HTTP_REFERER'] ?? ''));
@@ -337,5 +337,47 @@ class CommentController extends Controller
             $this->redirect($path !== '' ? $path : '/recipes');
         }
         $this->redirect('/recipes');
+    }
+
+    public function delete(string $id): void
+    {
+        require_login();
+
+        $commentId = (int) $id;
+        if ($commentId <= 0) {
+            $this->redirect('/recipes');
+        }
+
+        /** @var CommentModel $commentModel */
+        $commentModel = $this->model('CommentModel');
+        $comment = $commentModel->findById($commentId);
+        if (!$comment) {
+            $back = trim((string) ($_SERVER['HTTP_REFERER'] ?? ''));
+            if ($back !== '' && str_starts_with($back, URLROOT)) {
+                $path = substr($back, strlen(URLROOT));
+                $this->redirect($path);
+            }
+            $this->redirect('/recipes');
+        }
+
+        $targetPath = '/recipes';
+        $back = trim((string) ($_SERVER['HTTP_REFERER'] ?? ''));
+        if ($back !== '' && str_starts_with($back, URLROOT)) {
+            $path = substr($back, strlen(URLROOT));
+            $targetPath = $path !== '' ? $path : '/recipes';
+        }
+
+        $currentUserId = (int) current_user_id();
+        $commentOwnerId = (int) ($comment['user_id'] ?? 0);
+        
+        if ($currentUserId === $commentOwnerId) {
+            $commentModel->deleteById($commentId);
+        }
+
+        if ($this->isAjaxRequest()) {
+            $this->jsonSuccess(['deleted' => true], 'Đã xóa bình luận.');
+        }
+
+        $this->redirect($targetPath);
     }
 }

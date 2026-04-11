@@ -79,10 +79,15 @@ class RecipeModel extends Model
         return $this->db->resultSet();
     }
 
-    public function countApproved(?string $keyword = null): int
+    public function countApproved(?string $keyword = null, ?string $difficulty = null, ?int $maxCookingTime = null, ?string $healthyTagSlug = null): int
     {
-        $sql = 'SELECT COUNT(*) AS total FROM recipes r';
+        $sql = 'SELECT COUNT(DISTINCT r.id) AS total FROM recipes r';
         $conditions = [];
+        if ($healthyTagSlug !== null && $healthyTagSlug !== '') {
+            $sql .= ' INNER JOIN recipe_tags rt ON rt.recipe_id = r.id'
+                  . ' INNER JOIN tags t ON t.id = rt.tag_id';
+            $conditions[] = 't.slug = :healthy_tag_slug';
+        }
         if (array_key_exists('deleted_at', $this->getRecipeColumns())) {
             $conditions[] = 'r.deleted_at IS NULL';
         }
@@ -94,6 +99,12 @@ class RecipeModel extends Model
         }
         if ($keyword !== null && trim($keyword) !== '') {
             $conditions[] = '(r.title LIKE :keyword_title OR r.description LIKE :keyword_desc)';
+        }
+        if ($difficulty !== null && in_array($difficulty, ['easy', 'medium', 'hard'], true)) {
+            $conditions[] = 'r.difficulty = :difficulty';
+        }
+        if ($maxCookingTime !== null && $maxCookingTime > 0) {
+            $conditions[] = 'r.cooking_time IS NOT NULL AND r.cooking_time <= :max_time';
         }
         if ($conditions !== []) {
             $sql .= ' WHERE ' . implode(' AND ', $conditions);
@@ -105,17 +116,30 @@ class RecipeModel extends Model
             $this->db->bind(':keyword_title', $like);
             $this->db->bind(':keyword_desc', $like);
         }
+        if ($difficulty !== null && in_array($difficulty, ['easy', 'medium', 'hard'], true)) {
+            $this->db->bind(':difficulty', $difficulty);
+        }
+        if ($maxCookingTime !== null && $maxCookingTime > 0) {
+            $this->db->bind(':max_time', $maxCookingTime, PDO::PARAM_INT);
+        }
+        if ($healthyTagSlug !== null && $healthyTagSlug !== '') {
+            $this->db->bind(':healthy_tag_slug', $healthyTagSlug);
+        }
         $this->db->execute();
         $row = $this->db->single();
         return (int) ($row['total'] ?? 0);
     }
 
-    public function allApprovedPaged(int $limit, int $offset, ?string $keyword = null): array
+    public function allApprovedPaged(int $limit, int $offset, ?string $keyword = null, ?string $difficulty = null, ?int $maxCookingTime = null, ?string $healthyTagSlug = null): array
     {
-        $sql = 'SELECT r.*, u.name AS author_name, c.name AS category_name
+        $sql = 'SELECT DISTINCT r.*, u.name AS author_name, c.name AS category_name
                 FROM recipes r
                 LEFT JOIN users u ON u.id = r.user_id
                 LEFT JOIN categories c ON c.id = r.category_id';
+        if ($healthyTagSlug !== null && $healthyTagSlug !== '') {
+            $sql .= ' INNER JOIN recipe_tags rt ON rt.recipe_id = r.id'
+                  . ' INNER JOIN tags t ON t.id = rt.tag_id';
+        }
 
         $conditions = [];
         if (array_key_exists('deleted_at', $this->getRecipeColumns())) {
@@ -129,6 +153,15 @@ class RecipeModel extends Model
         }
         if ($keyword !== null && trim($keyword) !== '') {
             $conditions[] = '(r.title LIKE :keyword_title OR r.description LIKE :keyword_desc)';
+        }
+        if ($difficulty !== null && in_array($difficulty, ['easy', 'medium', 'hard'], true)) {
+            $conditions[] = 'r.difficulty = :difficulty';
+        }
+        if ($maxCookingTime !== null && $maxCookingTime > 0) {
+            $conditions[] = 'r.cooking_time IS NOT NULL AND r.cooking_time <= :max_time';
+        }
+        if ($healthyTagSlug !== null && $healthyTagSlug !== '') {
+            $conditions[] = 't.slug = :healthy_tag_slug';
         }
         if ($conditions !== []) {
             $sql .= ' WHERE ' . implode(' AND ', $conditions);
@@ -143,6 +176,15 @@ class RecipeModel extends Model
             $like = '%' . trim($keyword) . '%';
             $this->db->bind(':keyword_title', $like);
             $this->db->bind(':keyword_desc', $like);
+        }
+        if ($difficulty !== null && in_array($difficulty, ['easy', 'medium', 'hard'], true)) {
+            $this->db->bind(':difficulty', $difficulty);
+        }
+        if ($maxCookingTime !== null && $maxCookingTime > 0) {
+            $this->db->bind(':max_time', $maxCookingTime, PDO::PARAM_INT);
+        }
+        if ($healthyTagSlug !== null && $healthyTagSlug !== '') {
+            $this->db->bind(':healthy_tag_slug', $healthyTagSlug);
         }
         $this->db->execute();
 
@@ -411,22 +453,81 @@ class RecipeModel extends Model
             ->execute();
     }
 
-    public function allForAdmin(): array
+    private function adminRecipeConditions(): array
     {
-        $sql = 'SELECT r.*, u.name AS author_name, c.name AS category_name
-                FROM recipes r
-                LEFT JOIN users u ON u.id = r.user_id
-                LEFT JOIN categories c ON c.id = r.category_id';
-
         $conditions = [];
         if (array_key_exists('status', $this->getRecipeColumns())) {
-            // Admin khĂ´ng cA�º§n thA�º¥y bĂ i nhĂ¡p.
+            // Admin không cần thấy bài nháp.
             $conditions[] = '(r.status IS NULL OR r.status <> "draft")';
         }
         if (array_key_exists('user_state', $this->getRecipeColumns())) {
-            // BĂ i A�‘Ă£ gA�»­i duyA�»‡t thA�°A�»ng cĂ³ user_state="completed", vA�º«n phA�º£i hiA�»‡n cho admin duyA�»‡t.
+            // Bài đã gửi duyệt thường có user_state="completed", vẫn phải hiển cho admin duyệt.
             $conditions[] = '(r.user_state IS NULL OR r.user_state <> "draft")';
         }
+
+        return $conditions;
+    }
+
+    private function adminRecipeBaseQuery(): string
+    {
+        return 'SELECT r.*, u.name AS author_name, c.name AS category_name
+                FROM recipes r
+                LEFT JOIN users u ON u.id = r.user_id
+                LEFT JOIN categories c ON c.id = r.category_id';
+    }
+
+    public function countForAdmin(?string $keyword = null): int
+    {
+        $sql = 'SELECT COUNT(*) AS total FROM recipes r';
+        $conditions = $this->adminRecipeConditions();
+        if ($keyword !== null && trim($keyword) !== '') {
+            $conditions[] = '(r.title LIKE :keyword_title OR r.description LIKE :keyword_desc)';
+        }
+        if ($conditions !== []) {
+            $sql .= ' WHERE ' . implode(' AND ', $conditions);
+        }
+
+        $this->db->query($sql);
+        if ($keyword !== null && trim($keyword) !== '') {
+            $like = '%' . trim($keyword) . '%';
+            $this->db->bind(':keyword_title', $like);
+            $this->db->bind(':keyword_desc', $like);
+        }
+        $this->db->execute();
+        $row = $this->db->single();
+        return (int) ($row['total'] ?? 0);
+    }
+
+    public function allForAdminPaged(int $limit, int $offset, ?string $keyword = null): array
+    {
+        $sql = $this->adminRecipeBaseQuery();
+        $conditions = $this->adminRecipeConditions();
+        if ($keyword !== null && trim($keyword) !== '') {
+            $conditions[] = '(r.title LIKE :keyword_title OR r.description LIKE :keyword_desc)';
+        }
+        if ($conditions !== []) {
+            $sql .= ' WHERE ' . implode(' AND ', $conditions);
+        }
+
+        $sql .= ' ORDER BY r.id DESC LIMIT :limit OFFSET :offset';
+
+        $this->db->query($sql)
+            ->bind(':limit', $limit, PDO::PARAM_INT)
+            ->bind(':offset', $offset, PDO::PARAM_INT);
+        if ($keyword !== null && trim($keyword) !== '') {
+            $like = '%' . trim($keyword) . '%';
+            $this->db->bind(':keyword_title', $like);
+            $this->db->bind(':keyword_desc', $like);
+        }
+        $this->db->execute();
+
+        return $this->db->resultSet();
+    }
+
+    public function allForAdmin(): array
+    {
+        $sql = $this->adminRecipeBaseQuery();
+        $conditions = $this->adminRecipeConditions();
         if ($conditions !== []) {
             $sql .= ' WHERE ' . implode(' AND ', $conditions);
         }
@@ -743,6 +844,21 @@ class RecipeModel extends Model
             ->execute();
 
         return $this->db->resultSet();
+    }
+
+    public function estimateCaloriesByRecipe(int $recipeId): float
+    {
+        $sql = 'SELECT COALESCE(SUM(COALESCE(n.calories, 0)), 0) AS total_kcal
+                FROM recipe_ingredients ri
+                LEFT JOIN ingredient_nutrition n ON n.ingredient_id = ri.ingredient_id
+                WHERE ri.recipe_id = :recipe_id';
+
+        $this->db->query($sql)
+            ->bind(':recipe_id', $recipeId, PDO::PARAM_INT)
+            ->execute();
+
+        $row = $this->db->single();
+        return (float) ($row['total_kcal'] ?? 0);
     }
 
     // ========== Save/Bookmark Functions ==========

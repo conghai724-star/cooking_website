@@ -198,6 +198,22 @@ $approvedCount = count($approvedRecipes);
                 </div>
             <?php endif; ?>
         </div>
+
+        <?php if (!empty($totalPages) && $totalPages > 1): ?>
+            <div class="border-t border-slate-100 bg-slate-50 px-6 py-4">
+                <nav class="flex flex-wrap items-center justify-between gap-2 text-sm">
+                    <?php $prevDisabled = ($page ?? 1) <= 1; ?>
+                    <a class="inline-flex items-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-slate-700 hover:bg-slate-100<?= $prevDisabled ? ' pointer-events-none opacity-50' : ''; ?>" href="<?= URLROOT; ?>/admin/recipes?page=<?= max(1, ((int) ($page ?? 1) - 1)); ?>" <?= $prevDisabled ? 'aria-disabled="true" tabindex="-1"' : ''; ?>>Trước</a>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                            <a class="inline-flex h-9 min-w-[2rem] items-center justify-center rounded-lg border px-3 text-slate-700 <?= $i === ($page ?? 1) ? 'bg-primary text-white border-primary' : 'bg-white hover:bg-slate-100'; ?>" href="<?= URLROOT; ?>/admin/recipes?page=<?= $i; ?>"><?= $i; ?></a>
+                        <?php endfor; ?>
+                    </div>
+                    <?php $nextDisabled = ($page ?? 1) >= $totalPages; ?>
+                    <a class="inline-flex items-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-slate-700 hover:bg-slate-100<?= $nextDisabled ? ' pointer-events-none opacity-50' : ''; ?>" href="<?= URLROOT; ?>/admin/recipes?page=<?= min($totalPages, ((int) ($page ?? 1) + 1)); ?>" <?= $nextDisabled ? 'aria-disabled="true" tabindex="-1"' : ''; ?>>Tiếp</a>
+                </nav>
+            </div>
+        <?php endif; ?>
     </div>
 </div>
 

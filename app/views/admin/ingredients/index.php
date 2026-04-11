@@ -1,26 +1,47 @@
 <?php
 $ingredients = is_array($ingredients ?? null) ? $ingredients : [];
 $categories = is_array($categories ?? null) ? $categories : [];
+$page = max(1, (int) ($page ?? 1));
+$total = max(0, (int) ($total ?? count($ingredients)));
+$totalPages = max(1, (int) ($totalPages ?? 1));
+$page = min($page, $totalPages);
+$keyword = (string) ($keyword ?? '');
+$status = (string) ($status ?? '');
+$categoryId = max(0, (int) ($categoryId ?? 0));
 
 $success = isset($_GET['success']) && $_GET['success'] === '1';
 $error = (string) ($_GET['error'] ?? '');
 $errorMessage = '';
+
+$buildPageUrl = static function (int $targetPage) use ($keyword, $status, $categoryId): string {
+    $params = ['page' => max(1, $targetPage)];
+    if ($keyword !== '') {
+        $params['q'] = $keyword;
+    }
+    if ($status !== '') {
+        $params['status'] = $status;
+    }
+    if ($categoryId > 0) {
+        $params['category_id'] = $categoryId;
+    }
+    return URLROOT . '/admin/ingredients?' . http_build_query($params);
+};
 if ($error === 'missing_name') {
-    $errorMessage = 'Vui l\u00f2ng nh\u1eadp t\u00ean nguy\u00ean li\u1ec7u.';
+    $errorMessage = 'Vui lòng nhập tên nguyên liệu.';
 } elseif ($error === 'save_failed') {
-    $errorMessage = 'Kh\u00f4ng th\u1ec3 l\u01b0u nguy\u00ean li\u1ec7u. Vui l\u00f2ng th\u1eed l\u1ea1i.';
+    $errorMessage = 'Không thể lưu nguyên liệu. Vui lòng thử lại.';
 }
 ?>
 
 <div class="flex flex-col gap-6">
     <div class="flex flex-col gap-2">
-        <h1 class="text-2xl font-bold text-slate-900">Th\u01b0 vi\u1ec7n nguy\u00ean li\u1ec7u</h1>
-        <p class="text-sm text-slate-500">Admin c\u00f3 th\u1ec3 t\u1ea1o, s\u1eda, x\u00f3a. Ng\u01b0\u1eddi d\u00f9ng g\u1eedi nguy\u00ean li\u1ec7u s\u1ebd \u1ở tr\u1ea1ng th\u00e1i ch\u1edd duy\u1ec7t.</p>
+        <h1 class="text-2xl font-bold text-slate-900">Thư viện nguyên liệu</h1>
+        <p class="text-sm text-slate-500">Admin có thể tạo, sửa, xóa. Người dùng gửi nguyên liệu sẽ ở trạng thái chờ duyệt.</p>
     </div>
 
     <?php if ($success): ?>
         <div class="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
-            A�¿½A? thA?m nguyA?n li?u m?i.
+            Đã thêm nguyên liệu mới.
         </div>
     <?php endif; ?>
 
@@ -32,43 +53,43 @@ if ($error === 'missing_name') {
 
     <div class="bg-white rounded shadow-sm border border-slate-100 overflow-hidden">
         <div class="p-6 border-b border-slate-100 flex items-center justify-between">
-            <h3 class="font-semibold text-slate-800">Th\u00eam nguy\u00ean li\u1ec7u (Admin)</h3>
-            <button id="toggle-ingredient-form" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600" type="button">Th\u00eam m\u1edbi</button>
+            <h3 class="font-semibold text-slate-800">Thêm nguyên liệu (Admin)</h3>
+            <button id="toggle-ingredient-form" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600" type="button">Thêm mới</button>
         </div>
         <div id="ingredient-form" class="hidden">
             <form class="p-6 grid grid-cols-1 gap-4 md:grid-cols-2" method="post" action="<?= URLROOT; ?>/admin/ingredients/create" enctype="multipart/form-data">
                 <?= csrf_field(); ?>
                 <div>
-                    <label class="mb-1 block text-xs font-semibold text-slate-500">T\u00ean nguy\u00ean li\u1ec7u *</label>
+                    <label class="mb-1 block text-xs font-semibold text-slate-500">Tên nguyên liệu *</label>
                     <input class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" name="name" required>
                 </div>
                 <div>
-                    <label class="mb-1 block text-xs font-semibold text-slate-500">Danh m\u1ee5c</label>
+                    <label class="mb-1 block text-xs font-semibold text-slate-500">Danh mục</label>
                     <select class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" name="category_id">
-                        <option value="">-- Ch\u1ecdn danh m\u1ee5c --</option>
+                        <option value="">-- Chọn danh mục --</option>
                         <?php foreach ($categories as $category): ?>
                             <option value="<?= (int) $category['id']; ?>"><?= htmlspecialchars($category['name'], ENT_QUOTES, 'UTF-8'); ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="md:col-span-2">
-                    <label class="mb-1 block text-xs font-semibold text-slate-500">M\u00f4 t\u1ea3</label>
+                    <label class="mb-1 block text-xs font-semibold text-slate-500">Mô tả</label>
                     <textarea class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" name="description" rows="3"></textarea>
                 </div>
                 <div class="md:col-span-2">
-                    <label class="mb-1 block text-xs font-semibold text-slate-500">C\u00f4ng d\u1ee5ng</label>
+                    <label class="mb-1 block text-xs font-semibold text-slate-500">Công dụng</label>
                     <textarea class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" name="usage" rows="2"></textarea>
                 </div>
                 <div>
-                    <label class="mb-1 block text-xs font-semibold text-slate-500">SA�¡ chA�º¿</label>
+                    <label class="mb-1 block text-xs font-semibold text-slate-500">Sơ chế</label>
                     <textarea class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" name="preparation" rows="2"></textarea>
                 </div>
                 <div>
-                    <label class="mb-1 block text-xs font-semibold text-slate-500">BA�º£o quA�º£n</label>
+                    <label class="mb-1 block text-xs font-semibold text-slate-500">Bảo quản</label>
                     <textarea class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" name="storage" rows="2"></textarea>
                 </div>
                 <div class="md:col-span-2">
-                    <label class="mb-1 block text-xs font-semibold text-slate-500">HĂ¬nh A�º£nh</label>
+                    <label class="mb-1 block text-xs font-semibold text-slate-500">Hình ảnh</label>
                     <input class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" type="file" name="image" accept="image/*">
                 </div>
                 <div>
@@ -88,7 +109,7 @@ if ($error === 'missing_name') {
                     <input class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" name="carb">
                 </div>
                 <div class="md:col-span-2 flex justify-end">
-                    <button class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white" type="submit">L\u01b0u nguy\u00ean li\u1ec7u</button>
+                    <button class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white" type="submit">Lưu nguyên liệu</button>
                 </div>
             </form>
         </div>
@@ -96,18 +117,18 @@ if ($error === 'missing_name') {
 
     <div class="bg-white rounded shadow-sm border border-slate-100 overflow-hidden">
         <div class="p-6 border-b border-slate-100 flex items-center justify-between">
-            <h3 class="font-semibold text-slate-800">Danh s\u00e1ch nguy\u00ean li\u1ec7u</h3>
+            <h3 class="font-semibold text-slate-800">Danh sách nguyên liệu</h3>
         </div>
         <?php if (empty($ingredients)): ?>
-            <div class="p-6 text-sm text-slate-500">ChA�°a cĂ³ nguyĂªn liA�»‡u nĂ o.</div>
+            <div class="p-6 text-sm text-slate-500">Chưa có nguyên liệu nào.</div>
         <?php else: ?>
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-sm">
                     <thead class="bg-background-light text-slate-500">
                     <tr>
                         <th class="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider">Tên</th>
-                        <th class="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider">Danh mA�»¥c</th>
-                        <th class="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider">TrA�º¡ng thĂ¡i</th>
+                        <th class="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider">Danh mục</th>
+                        <th class="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider">Trạng thái</th>
                         <th class="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider">Hành động</th>
                     </tr>
                     </thead>
@@ -120,11 +141,11 @@ if ($error === 'missing_name') {
                             : ($status === 'rejected' ? 'bg-rose-100 text-rose-700' : 'bg-yellow-100 text-yellow-700');
                         $statusLabel = $status === 'approved'
                             ? 'Đã duyệt'
-                            : ($status === 'rejected' ? 'TA�»« chA�»‘i' : 'ChA�» duyA�»‡t');
+                            : ($status === 'rejected' ? 'Từ chối' : 'Chờ duyệt');
                         ?>
                         <tr>
                             <td class="px-6 py-4 font-semibold text-slate-900"><?= htmlspecialchars($ingredient['name'], ENT_QUOTES, 'UTF-8'); ?></td>
-                            <td class="px-6 py-4 text-slate-600"><?= htmlspecialchars($ingredient['category_name'] ?? 'ChA�°a phĂ¢n loA�º¡i', ENT_QUOTES, 'UTF-8'); ?></td>
+                            <td class="px-6 py-4 text-slate-600"><?= htmlspecialchars($ingredient['category_name'] ?? 'Chưa phân loại', ENT_QUOTES, 'UTF-8'); ?></td>
                             <td class="px-6 py-4">
                                 <div class="flex flex-col gap-2">
                                     <span class="rounded-full px-3 py-1 text-xs font-semibold <?= $statusClass; ?>"><?= $statusLabel; ?></span>
@@ -139,18 +160,21 @@ if ($error === 'missing_name') {
                                     <?php if ($status !== 'approved'): ?>
                                         <form method="post" action="<?= URLROOT; ?>/admin/ingredients/<?= (int) $ingredient['id']; ?>/approve">
                                             <?= csrf_field(); ?>
-                                            <button class="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700" type="submit">DuyA�»‡t</button>
+                                            <input type="hidden" name="return_page" value="<?= $page; ?>">
+                                            <button class="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700" type="submit">Duyệt</button>
                                         </form>
-                                        <form method="post" action="<?= URLROOT; ?>/admin/ingredients/<?= (int) $ingredient['id']; ?>/reject" class="flex items-center gap-2" onsubmit="return confirm('TA�»« chA�»‘i nguyĂªn liA�»‡u nĂ y?');">
+                                        <form method="post" action="<?= URLROOT; ?>/admin/ingredients/<?= (int) $ingredient['id']; ?>/reject" class="flex items-center gap-2" onsubmit="return confirm('Từ chối nguyên liệu này?');">
                                             <?= csrf_field(); ?>
-                                            <input class="w-40 rounded-md border border-slate-200 px-2 py-1 text-xs" name="reason" placeholder="Lý do tA�»« chA�»‘i">
-                                            <button class="rounded-md border border-rose-200 bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-700" type="submit">TA�»« chA�»‘i</button>
+                                            <input type="hidden" name="return_page" value="<?= $page; ?>">
+                                            <input class="w-40 rounded-md border border-slate-200 px-2 py-1 text-xs" name="reason" placeholder="Lý do từ chối">
+                                            <button class="rounded-md border border-rose-200 bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-700" type="submit">Từ chối</button>
                                         </form>
                                     <?php endif; ?>
                                     <?php if ($status === 'approved'): ?>
-                                        <a class="rounded-md border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-600" href="<?= URLROOT; ?>/admin/ingredients/<?= (int) $ingredient['id']; ?>/edit">SA�»­a</a>
-                                        <form method="post" action="<?= URLROOT; ?>/admin/ingredients/<?= (int) $ingredient['id']; ?>/delete" onsubmit="return confirm('XĂ³a nguyĂªn liA�»‡u nĂ y?');">
+                                        <a class="rounded-md border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-600" href="<?= URLROOT; ?>/admin/ingredients/<?= (int) $ingredient['id']; ?>/edit">Sửa</a>
+                                        <form method="post" action="<?= URLROOT; ?>/admin/ingredients/<?= (int) $ingredient['id']; ?>/delete" onsubmit="return confirm('Xóa nguyên liệu này?');">
                                             <?= csrf_field(); ?>
+                                            <input type="hidden" name="return_page" value="<?= $page; ?>">
                                             <button class="rounded-md border border-rose-200 bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-700" type="submit">Xóa</button>
                                         </form>
                                     <?php endif; ?>
@@ -161,6 +185,15 @@ if ($error === 'missing_name') {
                     </tbody>
                 </table>
             </div>
+            <?php if ($totalPages > 1): ?>
+                <div class="flex items-center justify-between border-t border-slate-100 bg-slate-50 px-6 py-4">
+                    <div class="text-sm text-slate-500">Trang <?= $page; ?> / <?= $totalPages; ?> · Tổng <?= $total; ?> nguyên liệu</div>
+                    <div class="flex items-center gap-2">
+                        <a class="rounded border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 <?= $page <= 1 ? 'pointer-events-none opacity-50' : ''; ?>" href="<?= $buildPageUrl(max(1, $page - 1)); ?>">Trước</a>
+                        <a class="rounded border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 <?= $page >= $totalPages ? 'pointer-events-none opacity-50' : ''; ?>" href="<?= $buildPageUrl(min($totalPages, $page + 1)); ?>">Sau</a>
+                    </div>
+                </div>
+            <?php endif; ?>
         <?php endif; ?>
     </div>
 </div>

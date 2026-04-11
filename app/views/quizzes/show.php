@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 $set = is_array($set ?? null) ? $set : [];
 $questions = is_array($questions ?? null) ? $questions : [];
 $certificate = is_array($certificate ?? null) ? $certificate : null;
@@ -29,7 +29,16 @@ $typeLabel = static function (string $type): string {
             <p class="mt-2 text-sm text-slate-600"><?= htmlspecialchars((string) ($set['description'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></p>
             <div class="mt-3 flex flex-wrap gap-3 text-xs font-semibold text-slate-600">
                 <span class="rounded-full bg-slate-100 px-3 py-1">Chủ đề: <?= htmlspecialchars((string) ($set['topic'] ?? 'Tổng hợp'), ENT_QUOTES, 'UTF-8'); ?></span>
-                <span class="rounded-full bg-slate-100 px-3 py-1">Độ khó: <?= htmlspecialchars((string) ($set['difficulty'] ?? 'easy'), ENT_QUOTES, 'UTF-8'); ?></span>
+                <?php
+                $diff = strtolower((string) ($set['difficulty'] ?? 'easy'));
+                $diffLabel = match($diff) {
+                    'easy' => 'Dễ',
+                    'medium' => 'Trung bình',
+                    'hard' => 'Khó',
+                    default => htmlspecialchars($diff, ENT_QUOTES, 'UTF-8')
+                };
+                ?>
+                <span class="rounded-full bg-slate-100 px-3 py-1">Độ khó: <?= $diffLabel; ?></span>
                 <span class="rounded-full bg-slate-100 px-3 py-1">Thời gian: <?= $timeLimitMinutes > 0 ? ($timeLimitMinutes . ' phút') : 'Không giới hạn'; ?></span>
                 <span class="rounded-full bg-slate-100 px-3 py-1">Số câu: <?= count($questions); ?></span>
                 <span class="rounded-full bg-slate-100 px-3 py-1">Tổng điểm: <?= $totalPoints; ?></span>

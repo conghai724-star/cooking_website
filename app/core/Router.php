@@ -61,6 +61,9 @@ class Router
         }
 
         $method = strtoupper($method);
+        if (function_exists('global_request_guard') && global_request_guard($path, $method) === false) {
+            return;
+        }
         if (in_array($method, ['POST', 'PUT', 'PATCH', 'DELETE'], true) && !csrf_verify_request()) {
             csrf_reject();
         }

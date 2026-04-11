@@ -41,7 +41,7 @@ class IngredientVisionController extends Controller
         $tmpBase = tempnam(sys_get_temp_dir(), 'rf_probe_');
         if (!is_string($tmpBase) || $tmpBase === '') {
             $payload['live_ok'] = false;
-            $payload['live_message'] = 'Khong tao duoc file tam de probe.';
+            $payload['live_message'] = 'Không tạo được file tạm để probe.';
             $this->jsonError('SERVICE_ERROR', 'AI live health check failed.', 422, $payload);
         }
         $tmpFile = $tmpBase . '.png';
@@ -51,10 +51,10 @@ class IngredientVisionController extends Controller
             // 1x1 transparent png
             $png = base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO5w2a4AAAAASUVORK5CYII=', true);
             if (!is_string($png) || $png === '') {
-                throw new RuntimeException('Khong tao duoc payload anh test.');
+                throw new RuntimeException('Không tạo được payload ảnh test.');
             }
             if (file_put_contents($tmpFile, $png) === false) {
-                throw new RuntimeException('Khong ghi duoc anh test de probe.');
+                throw new RuntimeException('Không ghi được ảnh test để probe.');
             }
 
             $service = new IngredientVisionService();
@@ -62,7 +62,7 @@ class IngredientVisionController extends Controller
             $count = count((array) ($result['detections'] ?? []));
 
             $payload['live_ok'] = true;
-            $payload['live_message'] = 'Roboflow reachable va model hop le.';
+            $payload['live_message'] = 'Roboflow reachable và model hợp lệ.';
             $payload['live_detection_count'] = $count;
             $this->jsonSuccess($payload, 'AI live health check passed.');
         } catch (Throwable $e) {
@@ -136,7 +136,7 @@ class IngredientVisionController extends Controller
     {
         $method = strtoupper((string) ($_SERVER['REQUEST_METHOD'] ?? 'GET'));
         if (!in_array($method, ['GET', 'POST'], true)) {
-            $this->jsonError('BAD_REQUEST', 'Phuong thuc khong hop le.', 400);
+            $this->jsonError('BAD_REQUEST', 'Phương thức không hợp lệ.', 400);
         }
 
         $payload = $this->readInput($method);
@@ -147,27 +147,27 @@ class IngredientVisionController extends Controller
         } catch (RuntimeException $e) {
             $this->jsonError('SERVICE_ERROR', $e->getMessage(), 422);
         } catch (Throwable $e) {
-            $this->jsonError('SERVER_ERROR', 'Khong the xu ly du lieu nguyen lieu luc nay.', 500);
+            $this->jsonError('SERVER_ERROR', 'Không thể xử lý dữ liệu nguyên liệu lúc này.', 500);
         }
 
-        $this->jsonSuccess($result, 'Goi y cong thuc thanh cong.');
+        $this->jsonSuccess($result, 'Gợi ý công thức thành công.');
     }
 
     public function detectIngredients(): void
     {
         $method = strtoupper((string) ($_SERVER['REQUEST_METHOD'] ?? 'GET'));
         if ($method !== 'POST') {
-            $this->jsonError('BAD_REQUEST', 'Phuong thuc khong hop le.', 400);
+            $this->jsonError('BAD_REQUEST', 'Phương thức không hợp lệ.', 400);
         }
 
         $file = $_FILES['image'] ?? null;
         if (!is_array($file) || (int) ($file['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK) {
-            $this->jsonError('VALIDATION_ERROR', 'Ban can upload anh hop le.', 422);
+            $this->jsonError('VALIDATION_ERROR', 'Bạn cần upload ảnh hợp lệ.', 422);
         }
 
         $tmpPath = (string) ($file['tmp_name'] ?? '');
         if ($tmpPath === '' || !is_file($tmpPath)) {
-            $this->jsonError('VALIDATION_ERROR', 'Khong tim thay file upload.', 422);
+            $this->jsonError('VALIDATION_ERROR', 'Không tìm thấy file upload.', 422);
         }
 
         try {
@@ -176,10 +176,10 @@ class IngredientVisionController extends Controller
         } catch (RuntimeException $e) {
             $this->jsonError('SERVICE_ERROR', $e->getMessage(), 422);
         } catch (Throwable $e) {
-            $this->jsonError('SERVER_ERROR', 'Khong the nhan dien anh luc nay.', 500);
+            $this->jsonError('SERVER_ERROR', 'Không thể nhận diện ảnh lúc này.', 500);
         }
 
-        $this->jsonSuccess($result, 'Nhan dien nguyen lieu thanh cong.');
+        $this->jsonSuccess($result, 'Nhận diện nguyên liệu thành công.');
     }
 
     private function readInput(string $method): array

@@ -3,9 +3,9 @@ $admin = current_admin() ?? [];
 $adminName = $admin['name'] ?? 'Admin';
 $adminRoleKey = (string) ($admin['role'] ?? 'admin');
 $adminRoleMap = [
-    'super_admin' => 'Super Admin',
-    'mod' => 'Moderator',
-    'support' => 'Support',
+    'super_admin' => 'Quản trị viên tối cao',
+    'mod' => 'Điều phối viên',
+    'support' => 'Hỗ trợ kỹ thuật',
 ];
 $adminRole = $adminRoleMap[$adminRoleKey] ?? ucfirst(str_replace('_', ' ', $adminRoleKey));
 $can = static fn(string $permission): bool => admin_has_permission($permission);
@@ -109,8 +109,8 @@ $adminNavItems = [
         <div class="p-6 flex items-center gap-3">
             <div class="bg-primary rounded-lg p-2 text-white"><span class="material-symbols-outlined">skillet</span></div>
             <div>
-                <h1 class="font-bold text-xl tracking-tight">RecipeAdmin</h1>
-                <p class="text-xs text-slate-500">Cooking Portal</p>
+                <h1 class="font-bold text-xl tracking-tight">Vua Đầu Bếp Admin</h1>
+                <p class="text-xs text-slate-500">Hệ thống quản lý ẩm thực</p>
             </div>
         </div>
         <nav class="flex-1 px-4 py-4 space-y-1">

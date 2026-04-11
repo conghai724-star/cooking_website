@@ -837,6 +837,130 @@ class QuizModel extends Model
         return (int) ($row['total'] ?? 0);
     }
 
+    private function normalizePositiveIds(array $ids): array
+    {
+        $normalized = [];
+        foreach ($ids as $id) {
+            $value = (int) $id;
+            if ($value > 0) {
+                $normalized[$value] = $value;
+            }
+        }
+        return array_values($normalized);
+    }
+
+    public function participantsPreviewBySetIdsForAdmin(array $setIds, int $limitPerSet = 3): array
+    {
+        $this->ensureSchema();
+
+        $ids = $this->normalizePositiveIds($setIds);
+        if ($ids === []) {
+            return [];
+        }
+
+        $limit = max(1, $limitPerSet);
+        $placeholders = [];
+        foreach ($ids as $idx => $_id) {
+            $placeholders[] = ':set_' . $idx;
+        }
+
+        $query = $this->db->query(
+            "SELECT qa.quiz_set_id,
+                    u.id AS user_id,
+                    u.name AS user_name,
+                    u.email AS user_email,
+                    COUNT(qa.id) AS attempts_count,
+                    MAX(qa.created_at) AS last_attempt_at,
+                    MAX(qa.score_percent) AS best_score_percent,
+                    MAX(CASE WHEN qa.is_passed = 1 THEN 1 ELSE 0 END) AS has_passed,
+                    COALESCE(qc.certificate_code, '') AS certificate_code
+             FROM quiz_attempts qa
+             INNER JOIN users u ON u.id = qa.user_id
+             LEFT JOIN quiz_certificates qc
+                    ON qc.quiz_set_id = qa.quiz_set_id
+                   AND qc.user_id = qa.user_id
+             WHERE qa.quiz_set_id IN (" . implode(', ', $placeholders) . ")
+             GROUP BY qa.quiz_set_id, u.id, u.name, u.email, qc.certificate_code
+             ORDER BY qa.quiz_set_id ASC, last_attempt_at DESC, qa.user_id DESC"
+        );
+        foreach ($ids as $idx => $setId) {
+            $query->bind(':set_' . $idx, $setId, PDO::PARAM_INT);
+        }
+        $query->execute();
+
+        $rows = $query->resultSet();
+        $grouped = [];
+        foreach ($rows as $row) {
+            $setId = (int) ($row['quiz_set_id'] ?? 0);
+            if ($setId <= 0) {
+                continue;
+            }
+            if (!isset($grouped[$setId])) {
+                $grouped[$setId] = [];
+            }
+            if (count($grouped[$setId]) >= $limit) {
+                continue;
+            }
+            $grouped[$setId][] = $row;
+        }
+
+        return $grouped;
+    }
+
+    public function passersPreviewBySetIdsForAdmin(array $setIds, int $limitPerSet = 3): array
+    {
+        $this->ensureSchema();
+
+        $ids = $this->normalizePositiveIds($setIds);
+        if ($ids === []) {
+            return [];
+        }
+
+        $limit = max(1, $limitPerSet);
+        $placeholders = [];
+        foreach ($ids as $idx => $_id) {
+            $placeholders[] = ':set_' . $idx;
+        }
+
+        $query = $this->db->query(
+            "SELECT qc.quiz_set_id,
+                    qc.id AS certificate_id,
+                    u.id AS user_id,
+                    u.name AS user_name,
+                    u.email AS user_email,
+                    qc.certificate_code,
+                    qc.score_percent,
+                    qc.awarded_reputation_points,
+                    qc.awarded_at
+             FROM quiz_certificates qc
+             INNER JOIN users u ON u.id = qc.user_id
+             WHERE qc.quiz_set_id IN (" . implode(', ', $placeholders) . ")
+             ORDER BY qc.quiz_set_id ASC, qc.awarded_at DESC, qc.id DESC"
+        );
+        foreach ($ids as $idx => $setId) {
+            $query->bind(':set_' . $idx, $setId, PDO::PARAM_INT);
+        }
+        $query->execute();
+
+        $rows = $query->resultSet();
+        $grouped = [];
+        foreach ($rows as $row) {
+            $setId = (int) ($row['quiz_set_id'] ?? 0);
+            if ($setId <= 0) {
+                continue;
+            }
+            if (!isset($grouped[$setId])) {
+                $grouped[$setId] = [];
+            }
+            if (count($grouped[$setId]) >= $limit) {
+                continue;
+            }
+            $grouped[$setId][] = $row;
+        }
+
+        return $grouped;
+    }
+
     public function participantsBySetForAdmin(int $setId): array
     {
         $this->ensureSchema();

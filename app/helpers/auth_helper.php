@@ -5,6 +5,16 @@ declare(strict_types=1);
 const USER_SESSION_NAME = 'cooking_user';
 const ADMIN_SESSION_NAME = 'cooking_admin';
 
+function session_cookie_secure(): bool
+{
+    $https = (string) ($_SERVER['HTTPS'] ?? '');
+    if ($https !== '' && strtolower($https) !== 'off') {
+        return true;
+    }
+
+    return (int) ($_SERVER['SERVER_PORT'] ?? 80) === 443;
+}
+
 function base_path_for_cookie(): string
 {
     if (defined('URLROOT')) {
@@ -39,8 +49,8 @@ function start_session_named(string $name): void
         'lifetime' => $params['lifetime'],
         'path' => $cookiePath,
         'domain' => $params['domain'],
-        'secure' => $params['secure'],
-        'httponly' => $params['httponly'],
+        'secure' => (bool) ($params['secure'] ?? false) || session_cookie_secure(),
+        'httponly' => true,
         'samesite' => 'Lax',
     ]);
 
@@ -357,6 +367,7 @@ function clear_user_session(): void
 function set_admin_session(array $data): void
 {
     start_session_named(ADMIN_SESSION_NAME);
+    session_regenerate_id(true);
     $_SESSION['admin'] = $data;
     $GLOBALS['_ADMIN_SESSION'] = ['admin' => $data];
     session_write_close();

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 $keyword = (string) ($keyword ?? '');
 $state = (string) ($state ?? 'all');
 $page = (int) ($page ?? 1);
@@ -40,7 +40,7 @@ $noticeMap = [
 
     <?php if ($notice !== ''): ?>
         <div class="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
-            <?= htmlspecialchars($noticeMap[$notice] ?? 'Thao tĂ¡c thĂ nh cĂ´ng.', ENT_QUOTES, 'UTF-8'); ?>
+            <?= htmlspecialchars($noticeMap[$notice] ?? 'Thao tác thành công.', ENT_QUOTES, 'UTF-8'); ?>
         </div>
     <?php endif; ?>
 
@@ -105,6 +105,18 @@ $noticeMap = [
                         $role = (string) ($user['role'] ?? 'user');
                         $accountState = (string) ($user['account_state'] ?? 'active');
                         $isSelf = $uid === $currentAdminId;
+
+                        $roleLabels = [
+                            'user' => 'Người dùng',
+                            'mod' => 'Kiểm duyệt viên',
+                            'support' => 'Hỗ trợ',
+                            'super_admin' => 'Quản trị viên',
+                        ];
+                        $stateLabels = [
+                            'active' => 'Hoạt động',
+                            'banned' => 'Bị ban',
+                            'deleted' => 'Đã xóa',
+                        ];
                         ?>
                         <tr>
                             <td class="px-6 py-4 text-slate-500"><?= $uid; ?></td>
@@ -112,7 +124,7 @@ $noticeMap = [
                             <td class="px-6 py-4 text-slate-600"><?= htmlspecialchars((string) ($user['email'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></td>
                             <td class="px-6 py-4">
                                 <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
-                                    <?= htmlspecialchars($role, ENT_QUOTES, 'UTF-8'); ?>
+                                    <?= htmlspecialchars($roleLabels[$role] ?? $role, ENT_QUOTES, 'UTF-8'); ?>
                                 </span>
                                 <?php if ($canManageRoles && !$isSelf && $accountState !== 'deleted'): ?>
                                     <form method="post" action="<?= URLROOT; ?>/admin/users/<?= $uid; ?>/role" class="mt-2 flex items-center gap-2">
@@ -140,7 +152,7 @@ $noticeMap = [
                                 }
                                 ?>
                                 <span class="rounded-full px-3 py-1 text-xs font-semibold <?= $stateClasses; ?>">
-                                    <?= htmlspecialchars($accountState, ENT_QUOTES, 'UTF-8'); ?>
+                                    <?= htmlspecialchars($stateLabels[$accountState] ?? $accountState, ENT_QUOTES, 'UTF-8'); ?>
                                 </span>
                                 <?php if ($accountState === 'banned'): ?>
                                     <div class="mt-1 text-xs text-slate-500">
@@ -164,43 +176,43 @@ $noticeMap = [
                                             <details class="relative">
                                                 <summary class="list-none cursor-pointer rounded border border-amber-300 px-3 py-1.5 text-xs font-semibold text-amber-700 hover:bg-amber-50">Ban</summary>
                                                 <div class="absolute right-0 z-20 mt-2 w-72 rounded-lg border border-slate-200 bg-white p-3 shadow-lg">
-                                                    <form method="post" action="<?= URLROOT; ?>/admin/users/<?= $uid; ?>/ban" class="space-y-2" onsubmit="return confirm('XĂ¡c nhA�º­n ban tĂ i khoA�º£n nĂ y?');">
+                                                <form method="post" action="<?= URLROOT; ?>/admin/users/<?= $uid; ?>/ban" class="space-y-2" onsubmit="return confirm('Xác nhận ban tài khoản này?');">
                                                         <?= csrf_field(); ?>
                                                         <label class="block text-xs font-semibold text-slate-600">Lý do ban</label>
                                                         <textarea name="ban_reason" rows="2" class="w-full rounded border border-slate-300 px-2 py-1 text-xs" placeholder="Nhập lý do..."></textarea>
-                                                        <label class="block text-xs font-semibold text-slate-600">ThA�»i gian ban</label>
+                                                        <label class="block text-xs font-semibold text-slate-600">Thời gian ban</label>
                                                         <select name="ban_days" class="w-full rounded border border-slate-300 px-2 py-1 text-xs">
-                                                            <option value="1">1 ngĂ y</option>
+                                                            <option value="1">1 ngày</option>
                                                             <option value="3">3 ngày</option>
                                                             <option value="7" selected>7 ngày</option>
                                                             <option value="30">30 ngày</option>
                                                             <option value="0">Vĩnh viễn</option>
                                                         </select>
-                                                        <button class="rounded bg-amber-500 px-3 py-1.5 text-xs font-semibold text-white hover:bg-amber-600" type="submit">XĂ¡c nhA�º­n ban</button>
+                                                        <button class="rounded bg-amber-500 px-3 py-1.5 text-xs font-semibold text-white hover:bg-amber-600" type="submit">Xác nhận ban</button>
                                                     </form>
                                                 </div>
                                             </details>
-                                            <form method="post" action="<?= URLROOT; ?>/admin/users/<?= $uid; ?>/delete" onsubmit="return confirm('XĂ³a mA�»m tĂ i khoA�º£n nĂ y?');">
+                                            <form method="post" action="<?= URLROOT; ?>/admin/users/<?= $uid; ?>/delete" onsubmit="return confirm('Xóa mềm tài khoản này?');">
                                                 <?= csrf_field(); ?>
                                                 <button class="rounded border border-rose-300 px-3 py-1.5 text-xs font-semibold text-rose-700 hover:bg-rose-50" type="submit">Xóa</button>
                                             </form>
                                         <?php elseif ($accountState === 'banned'): ?>
                                             <form method="post" action="<?= URLROOT; ?>/admin/users/<?= $uid; ?>/unban">
                                                 <?= csrf_field(); ?>
-                                                <button class="rounded border border-emerald-300 px-3 py-1.5 text-xs font-semibold text-emerald-700 hover:bg-emerald-50" type="submit">MA�»Ÿ ban</button>
+                                                <button class="rounded border border-emerald-300 px-3 py-1.5 text-xs font-semibold text-emerald-700 hover:bg-emerald-50" type="submit">Mở ban</button>
                                             </form>
-                                            <form method="post" action="<?= URLROOT; ?>/admin/users/<?= $uid; ?>/delete" onsubmit="return confirm('XĂ³a mA�»m tĂ i khoA�º£n nĂ y?');">
+                                            <form method="post" action="<?= URLROOT; ?>/admin/users/<?= $uid; ?>/delete" onsubmit="return confirm('Xóa mềm tài khoản này?');">
                                                 <?= csrf_field(); ?>
                                                 <button class="rounded border border-rose-300 px-3 py-1.5 text-xs font-semibold text-rose-700 hover:bg-rose-50" type="submit">Xóa</button>
                                             </form>
                                         <?php elseif ($accountState === 'deleted'): ?>
                                             <form method="post" action="<?= URLROOT; ?>/admin/users/<?= $uid; ?>/restore">
                                                 <?= csrf_field(); ?>
-                                                <button class="rounded border border-sky-300 px-3 py-1.5 text-xs font-semibold text-sky-700 hover:bg-sky-50" type="submit">KhĂ´i phA�»¥c</button>
+                                                <button class="rounded border border-sky-300 px-3 py-1.5 text-xs font-semibold text-sky-700 hover:bg-sky-50" type="submit">Khôi phục</button>
                                             </form>
                                         <?php endif; ?>
                                     <?php else: ?>
-                                        <span class="text-xs text-slate-400">Tài khoản A�‘A�º·c quyA�»n</span>
+                                        <span class="text-xs text-slate-400">Tài khoản được quản lý</span>
                                     <?php endif; ?>
                                 </div>
                             </td>
@@ -211,15 +223,15 @@ $noticeMap = [
             </div>
 
             <div class="flex items-center justify-between gap-4 border-t border-slate-100 px-6 py-4 text-sm">
-                <p class="text-slate-500">TA�»•ng: <?= $total; ?> tĂ i khoA�º£n</p>
+                <p class="text-slate-500">Tổng: <?= $total; ?> tài khoản</p>
                 <div class="flex items-center gap-2">
-                    <a href="<?= $page > 1 ? $buildUrl($page - 1) : '#'; ?>" class="rounded border px-3 py-1.5 <?= $page > 1 ? 'border-slate-300 text-slate-700 hover:bg-slate-50' : 'border-slate-200 text-slate-300 pointer-events-none'; ?>">TrA�°A�»›c</a>
+                    <a href="<?= $page > 1 ? $buildUrl($page - 1) : '#'; ?>" class="rounded border px-3 py-1.5 <?= $page > 1 ? 'border-slate-300 text-slate-700 hover:bg-slate-50' : 'border-slate-200 text-slate-300 pointer-events-none'; ?>">Trước</a>
                     <span class="text-slate-600">Trang <?= $page; ?>/<?= $totalPages; ?></span>
                     <a href="<?= $page < $totalPages ? $buildUrl($page + 1) : '#'; ?>" class="rounded border px-3 py-1.5 <?= $page < $totalPages ? 'border-slate-300 text-slate-700 hover:bg-slate-50' : 'border-slate-200 text-slate-300 pointer-events-none'; ?>">Sau</a>
                 </div>
             </div>
         <?php else: ?>
-            <div class="p-6 text-sm text-slate-500">Không tĂ¬m thA�º¥y ngA�°A�»i dĂ¹ng.</div>
+            <div class="p-6 text-sm text-slate-500">Không tìm thấy người dùng.</div>
         <?php endif; ?>
     </div>
 </div>

@@ -1,9 +1,29 @@
-﻿<?php
+<?php
 $status = (string) ($status ?? '');
 $type = (string) ($type ?? '');
 $keyword = (string) ($keyword ?? '');
 $rows = is_array($rows ?? null) ? $rows : [];
 $notice = (string) ($notice ?? '');
+$page = max(1, (int) ($page ?? 1));
+$perPage = max(1, (int) ($perPage ?? 20));
+$total = max(0, (int) ($total ?? count($rows)));
+$totalPages = max(1, (int) ($totalPages ?? 1));
+$page = min($page, $totalPages);
+
+$buildPageUrl = static function (int $targetPage) use ($keyword, $status, $type): string {
+    $params = ['page' => max(1, $targetPage)];
+    if ($keyword !== '') {
+        $params['q'] = $keyword;
+    }
+    if ($status !== '') {
+        $params['status'] = $status;
+    }
+    if ($type !== '') {
+        $params['type'] = $type;
+    }
+    return URLROOT . '/admin/reports?' . http_build_query($params);
+};
+
 $noticeText = match ($notice) {
     'updated' => 'Đã cập nhật trạng thái báo cáo.',
     'update_failed' => 'Không thể cập nhật trạng thái báo cáo.',
@@ -35,7 +55,7 @@ $badgeByKind = [
     'account' => ['Tài khoản', 'bg-rose-100 text-rose-700'],
 ];
 
-$commonHidden = static function (array $row) use ($status, $type, $keyword): array {
+$commonHidden = static function (array $row) use ($status, $type, $keyword, $page): array {
     return [
         'report_id' => (int) ($row['id'] ?? 0),
         'kind' => (string) ($row['kind'] ?? ''),
@@ -46,6 +66,7 @@ $commonHidden = static function (array $row) use ($status, $type, $keyword): arr
         'return_status' => $status,
         'return_type' => $type,
         'return_q' => $keyword,
+        'return_page' => $page,
     ];
 };
 
@@ -100,6 +121,20 @@ $renderActionDropdown = static function (
     echo '</form></div></details>';
 };
 
+$buildPageUrl = static function (int $targetPage) use ($keyword, $status, $type): string {
+    $params = ['page' => max(1, $targetPage)];
+    if ($keyword !== '') {
+        $params['q'] = $keyword;
+    }
+    if ($status !== '') {
+        $params['status'] = $status;
+    }
+    if ($type !== '') {
+        $params['type'] = $type;
+    }
+    return URLROOT . '/admin/reports?' . http_build_query($params);
+};
+
 $COMMON_ACTIONS = [
     'toggle_account_ban' => [
         'group' => 'user',
@@ -135,8 +170,8 @@ $ACTION_MAP = [
             'actions' => [
                 true => [
                     'action' => 'recipe_unhide',
-                    'label' => 'Gỡ Ẩn bài',
-                    'confirm' => 'Gỡ Ẩn công thức này?',
+                    'label' => 'Gỡ ẩn bài',
+                    'confirm' => 'Gỡ ẩn công thức này?',
                     'class' => 'border-emerald-300 text-emerald-700 hover:bg-emerald-50',
                 ],
                 false => [
@@ -153,14 +188,14 @@ $ACTION_MAP = [
             'actions' => [
                 true => [
                     'action' => 'recipe_restore',
-                    'label' => 'KhĂ´i phA�»¥c bĂ i',
-                    'confirm' => 'KhĂ´i phA�»¥c cĂ´ng thA�»©c nĂ y?',
+                    'label' => 'Khôi phục bài',
+                    'confirm' => 'Khôi phục công thức này?',
                     'class' => 'border-sky-300 text-sky-700 hover:bg-sky-50',
                 ],
                 false => [
                     'action' => 'recipe_delete',
                     'label' => 'Xóa bài',
-                    'confirm' => 'XĂ³a cĂ´ng thA�»©c nĂ y?',
+                    'confirm' => 'Xóa công thức này?',
                     'class' => 'border-rose-300 text-rose-700 hover:bg-rose-50',
                 ],
             ],
@@ -172,16 +207,16 @@ $ACTION_MAP = [
                 true => [
                     'action' => 'user_recipe_unlock',
                     'label' => 'Gỡ khóa đăng',
-                    'confirm' => 'GA�»¡ khóa A�‘A�ƒng cho tĂ i khoA�º£n nĂ y?',
+                    'confirm' => 'Gỡ khóa đăng cho tài khoản này?',
                     'class' => 'border-emerald-300 text-emerald-700 hover:bg-emerald-50',
                 ],
                 false => [
                     'action' => 'user_recipe_lock',
                     'label' => 'Khóa đăng',
-                    'confirm' => 'XĂ¡c nhA�º­n khóa quyA�»n A�‘A�ƒng bĂ i?',
+                    'confirm' => 'Xác nhận khóa quyền đăng bài?',
                     'with_duration' => 'lock_days',
                     'duration_label' => 'Thời gian khóa đăng',
-                    'reason_default' => 'Vi phA�º¡m cĂ´ng thA�»©c bA�»‹ bĂ¡o cĂ¡o',
+                    'reason_default' => 'Vi phạm công thức bị báo cáo',
                     'class' => 'border-indigo-300 text-indigo-700 hover:bg-indigo-50',
                 ],
             ],
@@ -196,14 +231,14 @@ $ACTION_MAP = [
             'actions' => [
                 true => [
                     'action' => 'comment_unhide',
-                    'label' => 'GA�»¡ A�º©n cmt',
-                    'confirm' => 'GA�»¡ A�º©n bĂ¬nh luA�º­n nĂ y?',
+                    'label' => 'Gỡ ẩn cmt',
+                    'confirm' => 'Gỡ ẩn bình luận này?',
                     'class' => 'border-emerald-300 text-emerald-700 hover:bg-emerald-50',
                 ],
                 false => [
                     'action' => 'comment_hide',
-                    'label' => 'A�º¨n cmt',
-                    'confirm' => 'A�º¨n bĂ¬nh luA�º­n nĂ y?',
+                    'label' => 'Ẩn cmt',
+                    'confirm' => 'Ẩn bình luận này?',
                     'class' => 'border-amber-300 text-amber-700 hover:bg-amber-50',
                 ],
             ],
@@ -214,14 +249,14 @@ $ACTION_MAP = [
             'actions' => [
                 true => [
                     'action' => 'comment_restore',
-                    'label' => 'KhĂ´i phA�»¥c cmt',
-                    'confirm' => 'KhĂ´i phA�»¥c bĂ¬nh luA�º­n nĂ y?',
+                    'label' => 'Khôi phục cmt',
+                    'confirm' => 'Khôi phục bình luận này?',
                     'class' => 'border-sky-300 text-sky-700 hover:bg-sky-50',
                 ],
                 false => [
                     'action' => 'comment_delete',
-                    'label' => 'XĂ³a bĂ¬nh luA�º­n',
-                    'confirm' => 'XĂ³a bĂ¬nh luA�º­n nĂ y?',
+                    'label' => 'Xóa bình luận',
+                    'confirm' => 'Xóa bình luận này?',
                     'class' => 'border-rose-300 text-rose-700 hover:bg-rose-50',
                 ],
             ],
@@ -232,16 +267,16 @@ $ACTION_MAP = [
             'actions' => [
                 true => [
                     'action' => 'user_comment_unlock',
-                    'label' => 'GA�»¡ khóa bĂ¬nh luA�º­n',
-                    'confirm' => 'GA�»¡ khóa bĂ¬nh luA�º­n cho ngA�°A�»i dĂ¹ng nĂ y?',
+                    'label' => 'Gỡ khóa bình luận',
+                    'confirm' => 'Gỡ khóa bình luận cho người dùng này?',
                     'class' => 'border-emerald-300 text-emerald-700 hover:bg-emerald-50',
                 ],
                 false => [
                     'action' => 'user_comment_lock',
-                    'label' => 'KhĂ³a bĂ¬nh luA�º­n',
-                    'confirm' => 'XĂ¡c nhA�º­n khóa quyA�»n bĂ¬nh luA�º­n?',
+                    'label' => 'Khóa bình luận',
+                    'confirm' => 'Xác nhận khóa quyền bình luận?',
                     'with_duration' => 'lock_days',
-                    'duration_label' => 'ThA�»i gian khóa bĂ¬nh luA�º­n',
+                    'duration_label' => 'Thời gian khóa bình luận',
                     'reason_default' => 'Vi phạm bình luận bị báo cáo',
                     'class' => 'border-indigo-300 text-indigo-700 hover:bg-indigo-50',
                 ],
@@ -256,14 +291,8 @@ $ACTION_MAP = [
             'actions' => [
                 true => [
                     'action' => 'content_unhide',
-                    'label' => 'GA�»¡ A�º©n',
-                    'confirm' => 'GA�»¡ A�º©n nA�»™i dung nĂ y?',
-                    'class' => 'border-emerald-300 text-emerald-700 hover:bg-emerald-50',
-                ],
-                false => [
-                    'action' => 'content_hide',
-                    'label' => '?n',
-                    'confirm' => 'A�º¨n nA�»™i dung nĂ y?',
+                    'label' => 'Gỡ ẩn',
+                    'confirm' => 'Gỡ ẩn nội dung này?',
                     'class' => 'border-amber-300 text-amber-700 hover:bg-amber-50',
                 ],
             ],
@@ -274,14 +303,14 @@ $ACTION_MAP = [
             'actions' => [
                 true => [
                     'action' => 'content_restore',
-                    'label' => 'KhĂ´i phA�»¥c',
-                    'confirm' => 'KhĂ´i phA�»¥c nA�»™i dung nĂ y?',
+                    'label' => 'Khôi phục',
+                    'confirm' => 'Khôi phục nội dung này?',
                     'class' => 'border-sky-300 text-sky-700 hover:bg-sky-50',
                 ],
                 false => [
                     'action' => 'content_delete',
                     'label' => 'Xóa',
-                    'confirm' => 'XĂ³a nA�»™i dung nĂ y?',
+                    'confirm' => 'Xóa nội dung này?',
                     'class' => 'border-rose-300 text-rose-700 hover:bg-rose-50',
                 ],
             ],
@@ -293,16 +322,16 @@ $ACTION_MAP = [
                 true => [
                     'action' => 'user_tip_unlock',
                     'label' => 'Gỡ khóa đăng mới',
-                    'confirm' => 'GA�»¡ khóa A�‘A�ƒng mA�º¹o cho tĂ i khoA�º£n nĂ y?',
+                    'confirm' => 'Gỡ khóa đăng mẹo cho tài khoản này?',
                     'class' => 'border-emerald-300 text-emerald-700 hover:bg-emerald-50',
                 ],
                 false => [
                     'action' => 'user_tip_lock',
-                    'label' => 'Khóa đăng m?o',
-                    'confirm' => 'XĂ¡c nhA�º­n khóa A�‘A�ƒng mA�º¹o?',
+                    'label' => 'Khóa đăng mẹo',
+                    'confirm' => 'Xác nhận khóa đăng mẹo?',
                     'with_duration' => 'lock_days',
                     'duration_label' => 'Thời gian khóa đăng',
-                    'reason_default' => 'Vi phA�º¡m mA�º¹o vA�º·t bA�»‹ bĂ¡o cĂ¡o',
+                    'reason_default' => 'Vi phạm mẹo vặt bị báo cáo',
                     'class' => 'border-indigo-300 text-indigo-700 hover:bg-indigo-50',
                 ],
             ],
@@ -316,14 +345,14 @@ $ACTION_MAP = [
             'actions' => [
                 true => [
                     'action' => 'content_unhide',
-                    'label' => 'GA�»¡ A�º©n',
-                    'confirm' => 'GA�»¡ A�º©n nguyĂªn liA�»‡u nĂ y?',
+                    'label' => 'Gỡ ẩn',
+                    'confirm' => 'Gỡ ẩn nguyên liệu này?',
                     'class' => 'border-emerald-300 text-emerald-700 hover:bg-emerald-50',
                 ],
                 false => [
                     'action' => 'content_hide',
-                    'label' => '?n',
-                    'confirm' => 'A�º¨n nguyĂªn liA�»‡u nĂ y?',
+                    'label' => 'Ẩn',
+                    'confirm' => 'Ẩn nguyên liệu này?',
                     'class' => 'border-amber-300 text-amber-700 hover:bg-amber-50',
                 ],
             ],
@@ -334,14 +363,14 @@ $ACTION_MAP = [
             'actions' => [
                 true => [
                     'action' => 'content_restore',
-                    'label' => 'KhĂ´i phA�»¥c',
-                    'confirm' => 'KhĂ´i phA�»¥c nguyĂªn liA�»‡u nĂ y?',
+                    'label' => 'Khôi phục',
+                    'confirm' => 'Khôi phục nguyên liệu này?',
                     'class' => 'border-sky-300 text-sky-700 hover:bg-sky-50',
                 ],
                 false => [
                     'action' => 'content_delete',
                     'label' => 'Xóa',
-                    'confirm' => 'XĂ³a nguyĂªn liA�»‡u nĂ y?',
+                    'confirm' => 'Xóa nguyên liệu này?',
                     'class' => 'border-rose-300 text-rose-700 hover:bg-rose-50',
                 ],
             ],
@@ -352,17 +381,17 @@ $ACTION_MAP = [
             'actions' => [
                 true => [
                     'action' => 'user_ingredient_unlock',
-                    'label' => 'GA�»¡ khóa A�‘A�ƒng nguyĂªn liA�»‡u',
-                    'confirm' => 'GA�»¡ khóa A�‘A�ƒng nguyĂªn liA�»‡u cho tĂ i khoA�º£n nĂ y?',
+                    'label' => 'Gỡ khóa đăng nguyên liệu',
+                    'confirm' => 'Gỡ khóa đăng nguyên liệu cho tài khoản này?',
                     'class' => 'border-emerald-300 text-emerald-700 hover:bg-emerald-50',
                 ],
                 false => [
                     'action' => 'user_ingredient_lock',
                     'label' => 'Khóa đăng nguyên liệu',
-                    'confirm' => 'XĂ¡c nhA�º­n khóa A�‘A�ƒng nguyĂªn liA�»‡u?',
+                    'confirm' => 'Xác nhận khóa đăng nguyên liệu?',
                     'with_duration' => 'lock_days',
                     'duration_label' => 'Thời gian khóa đăng',
-                    'reason_default' => 'Vi phA�º¡m nguyĂªn liA�»‡u bA�»‹ bĂ¡o cĂ¡o',
+                    'reason_default' => 'Vi phạm nguyên liệu bị báo cáo',
                     'class' => 'border-indigo-300 text-indigo-700 hover:bg-indigo-50',
                 ],
             ],
@@ -375,8 +404,8 @@ $ACTION_MAP = [
             'actions' => [
                 false => [
                     'action' => 'user_warn',
-                    'label' => 'CA�º£nh cĂ¡o',
-                    'confirm' => 'GA�»­i cA�º£nh cĂ¡o tA�»›i tĂ i khoA�º£n nĂ y?',
+                    'label' => 'Cảnh báo',
+                    'confirm' => 'Gửi cảnh báo tới tài khoản này?',
                     'class' => 'border-yellow-300 text-yellow-700 hover:bg-yellow-50',
                 ],
             ],
@@ -421,7 +450,7 @@ $renderActions = static function (
 
         $action = (string) ($actionData['action'] ?? '');
         $label = (string) ($actionData['label'] ?? '');
-        $confirm = (string) ($actionData['confirm'] ?? 'XĂ¡c nhA�º­n thao tĂ¡c nĂ y?');
+        $confirm = (string) ($actionData['confirm'] ?? 'Xác nhận thao tác này?');
         if ($action === '' || $label === '') {
             continue;
         }
@@ -439,7 +468,7 @@ $renderActions = static function (
 
         if (!empty($actionData['with_duration'])) {
             $durationField = (string) $actionData['with_duration'];
-            $durationLabel = $actionData['duration_label'] ?? 'ThA�»i gian';
+            $durationLabel = $actionData['duration_label'] ?? 'Thời gian';
             if (is_callable($durationLabel)) {
                 $durationLabel = (string) $durationLabel($row);
             }
@@ -502,8 +531,8 @@ $renderActions = static function (
 
 <div class="flex flex-col gap-6">
     <div class="flex flex-col gap-2">
-        <h1 class="text-2xl font-bold text-slate-900">BĂ¡o cĂ¡o vi phA�º¡m</h1>
-        <p class="text-sm text-slate-500">QuA�º£n lĂ½ chung bĂ¡o cĂ¡o bĂ i A�‘A�ƒng vĂ  bĂ¬nh luA�º­n trong mA�»™t mĂ n hĂ¬nh.</p>
+        <h1 class="text-2xl font-bold text-slate-900">Báo cáo vi phạm</h1>
+        <p class="text-sm text-slate-500">Quản lý chung báo cáo bài đăng và bình luận trong một màn hình.</p>
     </div>
 
     <?php if ($noticeText !== ''): ?>
@@ -518,11 +547,11 @@ $renderActions = static function (
                 type="text"
                 name="q"
                 value="<?= $e($keyword); ?>"
-                placeholder="TĂ¬m theo tiĂªu A�‘A�», lĂ½ do, ngA�°A�»i bĂ¡o cĂ¡o"
+                placeholder="Tìm theo tiêu đề, lý do, người báo cáo"
                 class="w-80 max-w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
             >
             <select name="type" class="rounded-lg border border-slate-300 px-3 py-2 text-sm">
-                <option value="" <?= $type === '' ? 'selected' : ''; ?>>TA�º¥t cA�º£ loA�º¡i</option>
+                <option value="" <?= $type === '' ? 'selected' : ''; ?>>Tất cả loại</option>
                 <option value="recipe" <?= $type === 'recipe' ? 'selected' : ''; ?>>Bài đăng</option>
                 <option value="tip" <?= $type === 'tip' ? 'selected' : ''; ?>>Mẹo vặt</option>
                 <option value="ingredient" <?= $type === 'ingredient' ? 'selected' : ''; ?>>Nguyên liệu</option>
@@ -531,38 +560,38 @@ $renderActions = static function (
                 <option value="account" <?= $type === 'account' ? 'selected' : ''; ?>>Tài khoản</option>
             </select>
             <select name="status" class="rounded-lg border border-slate-300 px-3 py-2 text-sm">
-                <option value="" <?= $status === '' ? 'selected' : ''; ?>>TA�º¥t cA�º£ trA�º¡ng thĂ¡i</option>
-                <option value="pending" <?= $status === 'pending' ? 'selected' : ''; ?>>ChA�» xA�»­ lĂ½</option>
+                <option value="" <?= $status === '' ? 'selected' : ''; ?>>Tất cả trạng thái</option>
+                <option value="pending" <?= $status === 'pending' ? 'selected' : ''; ?>>Chờ xử lý</option>
                 <option value="reviewed" <?= $status === 'reviewed' ? 'selected' : ''; ?>>Đã xem</option>
-                <option value="resolved" <?= $status === 'resolved' ? 'selected' : ''; ?>>A�Ă£ xA�»­ lĂ½</option>
+                <option value="resolved" <?= $status === 'resolved' ? 'selected' : ''; ?>>Đã xử lý</option>
             </select>
-            <button type="submit" class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white">LA�»c</button>
+            <button type="submit" class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white">Lọc</button>
         </form>
     </div>
 
     <div class="rounded-lg border border-slate-200 bg-white overflow-hidden">
         <div class="border-b border-slate-100 px-4 py-3">
-            <h2 class="font-semibold text-slate-900">Danh sách bĂ¡o cĂ¡o (<?= count($rows); ?>)</h2>
+            <h2 class="font-semibold text-slate-900">Danh sách báo cáo (<?= count($rows); ?>)</h2>
         </div>
         <div class="overflow-x-auto">
             <table class="w-full text-left text-sm">
                 <thead class="bg-slate-50 text-slate-600">
                     <tr>
                         <th class="px-4 py-3 font-semibold">ID</th>
-                        <th class="px-4 py-3 font-semibold">LoA�º¡i</th>
-                        <th class="px-4 py-3 font-semibold">NA�»™i dung bA�»‹ bĂ¡o cĂ¡o</th>
-                        <th class="px-4 py-3 font-semibold">NA�»™i dung bĂ¬nh luA�º­n</th>
+                        <th class="px-4 py-3 font-semibold">Loại</th>
+                        <th class="px-4 py-3 font-semibold">Nội dung bị báo cáo</th>
+                        <th class="px-4 py-3 font-semibold">Nội dung bình luận</th>
                         <th class="px-4 py-3 font-semibold">Lý do</th>
-                        <th class="px-4 py-3 font-semibold">NgA�°A�»i bĂ¡o cĂ¡o</th>
-                        <th class="px-4 py-3 font-semibold">TrA�º¡ng thĂ¡i</th>
-                        <th class="px-4 py-3 font-semibold">ThA�»i gian</th>
-                        <th class="px-4 py-3 font-semibold">XA�»­ lĂ½</th>
+                        <th class="px-4 py-3 font-semibold">Người báo cáo</th>
+                        <th class="px-4 py-3 font-semibold">Trạng thái</th>
+                        <th class="px-4 py-3 font-semibold">Thời gian</th>
+                        <th class="px-4 py-3 font-semibold">Xử lý</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
                 <?php if (empty($rows)): ?>
                     <tr>
-                        <td colspan="9" class="px-4 py-8 text-center text-slate-500">ChA�°a cĂ³ bĂ¡o cĂ¡o phĂ¹ hA�»£p bA�»™ lA�»c.</td>
+                        <td colspan="9" class="px-4 py-8 text-center text-slate-500">Chưa có báo cáo phù hợp.</td>
                     </tr>
                 <?php else: ?>
                     <?php foreach ($rows as $row): ?>
@@ -593,7 +622,7 @@ $renderActions = static function (
                             <td class="px-4 py-3 max-w-[320px]">
                                 <div class="line-clamp-2 text-slate-700"><?= $e($row['reason'] ?? ''); ?></div>
                             </td>
-                            <td class="px-4 py-3 text-slate-600"><?= $e($row['reporter_name'] ?? 'A�º¨n danh'); ?></td>
+                            <td class="px-4 py-3 text-slate-600"><?= $e($row['reporter_name'] ?? 'Ẩn danh'); ?></td>
                             <td class="px-4 py-3">
                                 <span class="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-700"><?= $e($row['status'] ?? ''); ?></span>
                             </td>
@@ -615,7 +644,7 @@ $renderActions = static function (
                                             'return_type' => $type,
                                             'return_q' => $keyword,
                                         ]); ?>
-                                        <button type="submit" class="rounded border border-emerald-300 px-2 py-1 text-xs font-semibold text-emerald-700 hover:bg-emerald-50">BA�» qua bĂ¡o cĂ¡o</button>
+                                        <button type="submit" class="rounded border border-emerald-300 px-2 py-1 text-xs font-semibold text-emerald-700 hover:bg-emerald-50">Bỏ qua báo cáo</button>
                                     </form>
                                 </div>
                             </td>
@@ -624,8 +653,15 @@ $renderActions = static function (
                 <?php endif; ?>
                 </tbody>
             </table>
+            <?php if ($totalPages > 1): ?>
+                <div class="flex items-center justify-between border-t border-slate-100 bg-slate-50 px-4 py-4">
+                    <div class="text-sm text-slate-500">Trang <?= $page; ?> / <?= $totalPages; ?> · Tổng <?= $total; ?> báo cáo</div>
+                    <div class="flex items-center gap-2">
+                        <a class="rounded border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 <?= $page <= 1 ? 'pointer-events-none opacity-50' : ''; ?>" href="<?= $buildPageUrl(max(1, $page - 1)); ?>">Trước</a>
+                        <a class="rounded border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 <?= $page >= $totalPages ? 'pointer-events-none opacity-50' : ''; ?>" href="<?= $buildPageUrl(min($totalPages, $page + 1)); ?>">Sau</a>
+                    </div>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 </div>
-
-

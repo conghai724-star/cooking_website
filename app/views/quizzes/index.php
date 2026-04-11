@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 $sets = is_array($sets ?? null) ? $sets : [];
 ?>
 
@@ -26,7 +26,16 @@ $sets = is_array($sets ?? null) ? $sets : [];
                     <article class="rounded-xl border border-slate-200 bg-white p-5" data-quiz-item data-quiz-search="<?= htmlspecialchars($searchText, ENT_QUOTES, 'UTF-8'); ?>">
                         <h2 class="text-lg font-semibold text-slate-900"><?= htmlspecialchars((string) ($set['title'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></h2>
                         <p class="mt-1 text-sm text-slate-500">Chủ đề: <?= htmlspecialchars((string) ($set['topic'] ?? 'Tổng hợp'), ENT_QUOTES, 'UTF-8'); ?></p>
-                        <p class="mt-1 text-sm text-slate-500">Độ khó: <?= htmlspecialchars((string) ($set['difficulty'] ?? 'easy'), ENT_QUOTES, 'UTF-8'); ?></p>
+                        <?php
+                        $diff = strtolower((string) ($set['difficulty'] ?? 'easy'));
+                        $diffLabel = match($diff) {
+                            'easy' => 'Dễ',
+                            'medium' => 'Trung bình',
+                            'hard' => 'Khó',
+                            default => htmlspecialchars($diff, ENT_QUOTES, 'UTF-8')
+                        };
+                        ?>
+                        <p class="mt-1 text-sm text-slate-500">Độ khó: <?= $diffLabel; ?></p>
                         <p class="mt-1 text-sm text-slate-500">Thời gian: <?= (int) ($set['time_limit_minutes'] ?? 0) > 0 ? ((int) ($set['time_limit_minutes'] ?? 0) . ' phút') : 'Không giới hạn'; ?></p>
                         <p class="mt-1 text-sm text-slate-500">Số câu hỏi: <?= (int) ($set['question_count'] ?? 0); ?></p>
                         <p class="mt-3 text-sm text-slate-600 line-clamp-3"><?= htmlspecialchars((string) ($set['description'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></p>

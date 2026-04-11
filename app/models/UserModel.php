@@ -94,6 +94,60 @@ class UserModel extends Model
         return $this->db->single();
     }
 
+    public function findByGoogleId(string $googleId): array|false
+    {
+        $this->db->query('SELECT * FROM users WHERE google_id = :google_id LIMIT 1')
+            ->bind(':google_id', $googleId)
+            ->execute();
+
+        return $this->db->single();
+    }
+
+    public function linkGoogleAccount(int $userId, string $googleId): bool
+    {
+        return $this->db
+            ->query('UPDATE users SET google_id = :google_id WHERE id = :id AND google_id IS NULL')
+            ->bind(':google_id', $googleId)
+            ->bind(':id', $userId)
+            ->execute();
+    }
+
+    public function createGoogleUser(string $name, string $email, string $googleId, string $avatar): array|false
+    {
+        $baseUsername = trim((string) preg_replace('/[^a-z0-9_]+/i', '_', strstr($email, '@', true) ?: $email), '_');
+        if ($baseUsername === '') {
+            $baseUsername = 'google_user';
+        }
+
+        $username = $baseUsername;
+        $suffix = 1;
+        while ($this->findByUsername($username)) {
+            $suffix++;
+            $username = $baseUsername . '_' . $suffix;
+        }
+        
+        $randomPassword = password_hash(bin2hex(random_bytes(16)), PASSWORD_DEFAULT);
+
+        $inserted = $this->db
+            ->query('INSERT INTO users (username, name, email, password, avatar, role, status, google_id, auth_provider, email_verified, created_at)
+                     VALUES (:username, :name, :email, :password, :avatar, :role, :status, :google_id, :auth_provider, 1,  NOW())')
+            ->bind(':username', $username)
+            ->bind(':name', $name)
+            ->bind(':email', $email)
+            ->bind(':password', $randomPassword)
+            ->bind(':avatar', $avatar)
+            ->bind(':role', 'user')
+            ->bind(':status', 'active')
+            ->bind(':google_id', $googleId)
+            ->bind(':auth_provider', 'google')
+            ->execute();
+            
+        if ($inserted) {
+            return $this->findByGoogleId($googleId);
+        }
+        return false;
+    }
+
     public function findByEmailExceptId(string $email, int $excludeId): array|false
     {
         $this->db->query('SELECT * FROM users WHERE email = :email AND id <> :exclude_id LIMIT 1')
@@ -111,6 +165,47 @@ class UserModel extends Model
             ->execute();
 
         return $this->db->single();
+    }
+
+    public function mapBasicByIds(array $ids): array
+    {
+        $normalized = [];
+        foreach ($ids as $id) {
+            $value = (int) $id;
+            if ($value > 0) {
+                $normalized[$value] = $value;
+            }
+        }
+
+        if ($normalized === []) {
+            return [];
+        }
+
+        $values = array_values($normalized);
+        $placeholders = [];
+        foreach ($values as $idx => $_id) {
+            $placeholders[] = ':id_' . $idx;
+        }
+
+        $query = $this->db->query(
+            'SELECT id, name, email
+             FROM users
+             WHERE id IN (' . implode(', ', $placeholders) . ')'
+        );
+        foreach ($values as $idx => $id) {
+            $query->bind(':id_' . $idx, $id, PDO::PARAM_INT);
+        }
+        $query->execute();
+
+        $map = [];
+        foreach ($query->resultSet() as $row) {
+            $userId = (int) ($row['id'] ?? 0);
+            if ($userId <= 0) {
+                continue;
+            }
+            $map[$userId] = $row;
+        }
+        return $map;
     }
 
     public function updateProfile(int $id, string $name, string $email): bool

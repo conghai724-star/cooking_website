@@ -54,7 +54,7 @@ class QuizController extends Controller
         };
 
         $this->view('quizzes/show', [
-            'title' => 'Lam quiz',
+            'title' => 'Làm bài kiểm tra',
             'useRecipeHubLayout' => true,
             'set' => $set,
             'questions' => $quizModel->questionsWithChoices($setId),

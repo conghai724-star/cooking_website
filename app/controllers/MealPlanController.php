@@ -52,7 +52,7 @@ class MealPlanController extends Controller
         $dayLocks = $mealPlanModel->getDayLocks($ownerId, $range['start'], $range['end']);
 
         $this->view('mealplans/index', [
-            'title' => 'LA�º­p kA�º¿ hoA�º¡ch bA�»¯a A�ƒn',
+            'title' => 'Lập kế hoạch bữa ăn',
             'useRecipeHubLayout' => true,
             'isOwner' => true,
             'planOwner' => current_user(),
@@ -100,7 +100,7 @@ class MealPlanController extends Controller
 
         if ($recipeId <= 0 || !$this->isValidDate($planDate) || !in_array($mealType, ['breakfast', 'lunch', 'dinner'], true)) {
             if ($this->isAjaxRequest()) {
-                $this->jsonResponse(['ok' => false, 'message' => 'Ă” kA�º¿ hoA�º¡ch khĂ´ng hA�»£p lA�»‡.'], 422);
+                $this->jsonResponse(['ok' => false, 'message' => 'Ô kế hoạch không hợp lệ.'], 422);
                 return;
             }
             $this->redirect('/meal-plans?notice=invalid_slot');
@@ -111,7 +111,7 @@ class MealPlanController extends Controller
         $recipe = $recipeModel->findById($recipeId);
         if (!$recipe) {
             if ($this->isAjaxRequest()) {
-                $this->jsonResponse(['ok' => false, 'message' => 'MĂ³n A�ƒn khĂ´ng tA�»“n tA�º¡i.'], 404);
+                $this->jsonResponse(['ok' => false, 'message' => 'Món ăn không tồn tại.'], 404);
                 return;
             }
             $this->redirect('/meal-plans?notice=invalid_recipe');
@@ -119,14 +119,14 @@ class MealPlanController extends Controller
 
         if (isset($recipe['status']) && (string) $recipe['status'] !== 'approved') {
             if ($this->isAjaxRequest()) {
-                $this->jsonResponse(['ok' => false, 'message' => 'MĂ³n A�ƒn chA�°a A�‘A�°A�»£c duyA�»‡t.'], 422);
+                $this->jsonResponse(['ok' => false, 'message' => 'Món ăn chưa được duyệt.'], 422);
                 return;
             }
             $this->redirect('/meal-plans?notice=invalid_recipe');
         }
         if (isset($recipe['user_state']) && (string) $recipe['user_state'] === 'draft') {
             if ($this->isAjaxRequest()) {
-                $this->jsonResponse(['ok' => false, 'message' => 'MĂ³n A�ƒn A�‘ang A�»Ÿ trA�º¡ng thĂ¡i nhĂ¡p.'], 422);
+                $this->jsonResponse(['ok' => false, 'message' => 'Món ăn đang ở trạng thái nháp.'], 422);
                 return;
             }
             $this->redirect('/meal-plans?notice=invalid_recipe');
@@ -136,7 +136,7 @@ class MealPlanController extends Controller
         $mealPlanModel = $this->model('MealPlanModel');
         if ($this->isPlanDateLocked($mealPlanModel, $userId, $planDate)) {
             if ($this->isAjaxRequest()) {
-                $this->jsonResponse(['ok' => false, 'message' => 'NgĂ y nĂ y A�‘Ă£ bA�»‹ khĂ³a, khĂ´ng thA�»ƒ chA�»‰nh sA�»­a.'], 422);
+                $this->jsonResponse(['ok' => false, 'message' => 'Ngày này đã bị khóa, không thể chỉnh sửa.'], 422);
                 return;
             }
             $this->redirect('/meal-plans?notice=slot_locked');
@@ -175,7 +175,7 @@ class MealPlanController extends Controller
 
             $this->jsonResponse([
                 'ok' => true,
-                'message' => 'ĐA� thA�m mA�n vA�o kế hoạch.',
+                'message' => 'Đã thêm món vào kế hoạch.',
                 'slot' => [
                     'date' => $planDate,
                     'meal_type' => $mealType,
@@ -206,7 +206,7 @@ class MealPlanController extends Controller
 
         if (!$this->isValidDate($planDate) || !in_array($mealType, ['breakfast', 'lunch', 'dinner'], true)) {
             if ($this->isAjaxRequest()) {
-                $this->jsonResponse(['ok' => false, 'message' => 'Ă” kA�º¿ hoA�º¡ch khĂ´ng hA�»£p lA�»‡.'], 422);
+                $this->jsonResponse(['ok' => false, 'message' => 'Ô kế hoạch không hợp lệ.'], 422);
                 return;
             }
             $this->redirect('/meal-plans?notice=invalid_slot');
@@ -216,7 +216,7 @@ class MealPlanController extends Controller
         $mealPlanModel = $this->model('MealPlanModel');
         if ($this->isPlanDateLocked($mealPlanModel, $userId, $planDate)) {
             if ($this->isAjaxRequest()) {
-                $this->jsonResponse(['ok' => false, 'message' => 'NgĂ y nĂ y A�‘Ă£ bA�»‹ khĂ³a, khĂ´ng thA�»ƒ chA�»‰nh sA�»­a.'], 422);
+                $this->jsonResponse(['ok' => false, 'message' => 'Ngày này đã bị khóa, không thể chỉnh sửa.'], 422);
                 return;
             }
             $this->redirect('/meal-plans?notice=slot_locked');
@@ -227,7 +227,7 @@ class MealPlanController extends Controller
         if ($this->isAjaxRequest()) {
             $this->jsonResponse([
                 'ok' => true,
-                'message' => 'ĐA� xA�a mA�n khỏi kế hoạch.',
+                'message' => 'Đã xóa món khỏi kế hoạch.',
                 'slot' => [
                     'date' => $planDate,
                     'meal_type' => $mealType,
@@ -338,7 +338,7 @@ class MealPlanController extends Controller
         $isLocked = (string) ($_POST['is_locked'] ?? '0') === '1';
         if (!$this->isValidDate($weekStartDate)) {
             if ($this->isAjaxRequest()) {
-                $this->jsonResponse(['ok' => false, 'message' => 'Ă” kA�º¿ hoA�º¡ch khĂ´ng hA�»£p lA�»‡.'], 422);
+                $this->jsonResponse(['ok' => false, 'message' => 'Ô kế hoạch không hợp lệ.'], 422);
                 return;
             }
             $this->redirect('/meal-plans?notice=invalid_slot');
@@ -352,7 +352,7 @@ class MealPlanController extends Controller
             $this->jsonResponse([
                 'ok' => true,
                 'is_locked' => $isLocked,
-                'message' => $isLocked ? 'ĐA� khA�a tuần kế hoạch nA�y.' : 'ĐA� mở khA�a tuần kế hoạch nA�y.',
+                'message' => $isLocked ? 'Đã khóa tuần kế hoạch này.' : 'Đã mở khóa tuần kế hoạch này.',
             ]);
             return;
         }
@@ -368,7 +368,7 @@ class MealPlanController extends Controller
         $isLocked = (string) ($_POST['is_locked'] ?? '0') === '1';
         if (!$this->isValidDate($lockDate)) {
             if ($this->isAjaxRequest()) {
-                $this->jsonResponse(['ok' => false, 'message' => 'Ă” kA�º¿ hoA�º¡ch khĂ´ng hA�»£p lA�»‡.'], 422);
+                $this->jsonResponse(['ok' => false, 'message' => 'Ô kế hoạch không hợp lệ.'], 422);
                 return;
             }
             $this->redirect('/meal-plans?notice=invalid_slot');
@@ -382,7 +382,7 @@ class MealPlanController extends Controller
             $this->jsonResponse([
                 'ok' => true,
                 'is_locked' => $isLocked,
-                'message' => $isLocked ? 'ĐA� khA�a ngA�y được chọn.' : 'ĐA� mở khA�a ngA�y được chọn.',
+                'message' => $isLocked ? 'Đã khóa ngày được chọn.' : 'Đã mở khóa ngày được chọn.',
             ]);
             return;
         }
@@ -460,7 +460,7 @@ class MealPlanController extends Controller
             $safetyModel = $this->model('UserSafetyModel');
             if ($safetyModel->isAnyBlockBetween($viewerId, $ownerId)) {
                 $this->renderForbidden('mealplans/forbidden', [
-                    'title' => 'KhĂ´ng thA�»ƒ xem kA�º¿ hoA�º¡ch',
+                    'title' => 'Không thể xem kế hoạch',
                     'useRecipeHubLayout' => true,
                     'owner' => $owner,
                     'visibility' => $visibility,
@@ -484,7 +484,7 @@ class MealPlanController extends Controller
 
         if (!$canView) {
             $this->renderForbidden('mealplans/forbidden', [
-                'title' => 'KhĂ´ng thA�»ƒ xem kA�º¿ hoA�º¡ch',
+                'title' => 'Không thể xem kế hoạch',
                 'useRecipeHubLayout' => true,
                 'owner' => $owner,
                 'visibility' => $visibility,
@@ -504,7 +504,7 @@ class MealPlanController extends Controller
             : '/users/' . $ownerId . '/meal-plans';
 
         $this->view('mealplans/index', [
-            'title' => 'KA�º¿ hoA�º¡ch bA�»¯a A�ƒn',
+            'title' => 'Kế hoạch bữa ăn',
             'useRecipeHubLayout' => true,
             'isOwner' => false,
             'planOwner' => $owner,
@@ -544,7 +544,7 @@ class MealPlanController extends Controller
         $days = [];
         if ($mode === 'day') {
             $dayOfWeek = (int) $pivotDate->format('N');
-            $label = $dayOfWeek === 7 ? 'ChA�»§ nhA�º­t' : ('ThA�»© ' . ($dayOfWeek + 1));
+            $label = $dayOfWeek === 7 ? 'Chủ nhật' : ('Thứ ' . ($dayOfWeek + 1));
             $days[] = [
                 'date' => $pivotDate->format('Y-m-d'),
                 'label' => $label,
@@ -569,7 +569,7 @@ class MealPlanController extends Controller
             $days[] = [
                 'date' => $day->format('Y-m-d'),
                 'label' => $i === 6 ? 'CN' : ('T' . ($i + 2)),
-                'full_label' => $i === 6 ? 'ChA�»§ nhA�º­t' : ('ThA�»© ' . ($i + 2)),
+                'full_label' => $i === 6 ? 'Chủ nhật' : ('Thứ ' . ($i + 2)),
             ];
         }
 
@@ -587,7 +587,7 @@ class MealPlanController extends Controller
 
     private function notFound(): void
     {
-        $this->renderNotFound('KhĂ´ng tĂ¬m thA�º¥y kA�º¿ hoA�º¡ch bA�»¯a A�ƒn.');
+        $this->renderNotFound('Không tìm thấy kế hoạch bữa ăn.');
     }
 
     private function isValidDate(string $date): bool

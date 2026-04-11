@@ -30,9 +30,9 @@ $success = (bool) ($success ?? false);
                 <input class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" name="name" required>
             </div>
             <div>
-                <label class="mb-1 block text-xs font-semibold text-slate-500">Danh m?c</label>
+                <label class="mb-1 block text-xs font-semibold text-slate-500">Danh mục</label>
                 <select class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" name="category_id">
-                    <option value="">-- Ch?n danh m?c --</option>
+                    <option value="">-- Chọn danh mục --</option>
                     <?php foreach ($categories as $category): ?>
                         <option value="<?= (int) $category['id']; ?>"><?= htmlspecialchars($category['name'], ENT_QUOTES, 'UTF-8'); ?></option>
                     <?php endforeach; ?>

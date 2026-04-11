@@ -4,13 +4,22 @@ declare(strict_types=1);
 
 final class RecipeController extends Controller
 {
+    private const PAGE_SIZE = 15;
+
     public function manageRecipes(): void
     {
         require_admin_permission('admin.recipes.review');
 
+        $page = max(1, (int) ($_GET['page'] ?? 1));
+        $perPage = self::PAGE_SIZE;
+
         /** @var RecipeModel $recipeModel */
         $recipeModel = $this->model('RecipeModel');
-        $recipes = $recipeModel->allForAdmin();
+        $totalRecipes = $recipeModel->countForAdmin();
+        $totalPages = max(1, (int) ceil($totalRecipes / $perPage));
+        $page = min($page, $totalPages);
+        $offset = ($page - 1) * $perPage;
+        $recipes = $recipeModel->allForAdminPaged($perPage, $offset);
 
         /** @var CategoryModel $categoryModel */
         $categoryModel = $this->model('CategoryModel');
@@ -19,6 +28,10 @@ final class RecipeController extends Controller
         $this->adminView('admin/recipes/index', [
             'recipes' => $recipes,
             'categories' => $categories,
+            'page' => $page,
+            'perPage' => $perPage,
+            'totalRecipes' => $totalRecipes,
+            'totalPages' => $totalPages,
         ]);
     }
 
@@ -156,12 +169,30 @@ final class RecipeController extends Controller
     public function manageTips(): void
     {
         require_admin_permission('admin.tips.review');
+        $page = max(1, (int) ($_GET['page'] ?? 1));
+        $perPage = 20;
+        $keyword = trim((string) ($_GET['q'] ?? ''));
+        $status = (string) ($_GET['status'] ?? '');
+        if (!in_array($status, ['', 'approved', 'rejected', 'pending'], true)) {
+            $status = '';
+        }
+
         /** @var TipModel $tipModel */
         $tipModel = $this->model('TipModel');
-        $tips = $tipModel->all();
+        $totalTips = $tipModel->countByStatus($status !== '' ? $status : null, $keyword !== '' ? $keyword : null);
+        $totalPages = max(1, (int) ceil($totalTips / $perPage));
+        $page = min($page, $totalPages);
+        $offset = ($page - 1) * $perPage;
+        $tips = $tipModel->allPaged($status !== '' ? $status : null, $perPage, $offset, $keyword !== '' ? $keyword : null);
 
         $this->adminView('admin/moderation/tips/index', [
             'tips' => $tips,
+            'page' => $page,
+            'perPage' => $perPage,
+            'total' => $totalTips,
+            'totalPages' => $totalPages,
+            'keyword' => $keyword,
+            'status' => $status,
         ]);
     }
 
@@ -169,36 +200,39 @@ final class RecipeController extends Controller
     {
         require_admin_permission('admin.tips.review');
         $tipId = (int) $id;
+        $page = max(1, (int) ($_POST['return_page'] ?? 1));
         if ($tipId <= 0) {
-            $this->redirect('/admin/tips');
+            $this->redirect('/admin/tips?page=' . $page);
         }
         /** @var TipModel $tipModel */
         $tipModel = $this->model('TipModel');
         $tipModel->setStatus($tipId, 'approved', null);
-        $this->redirect('/admin/tips');
+        $this->redirect('/admin/tips?page=' . $page);
     }
 
     public function rejectTip(string $id): void
     {
         require_admin_permission('admin.tips.review');
         $tipId = (int) $id;
+        $page = max(1, (int) ($_POST['return_page'] ?? 1));
         if ($tipId <= 0) {
-            $this->redirect('/admin/tips');
+            $this->redirect('/admin/tips?page=' . $page);
         }
         $reason = trim((string) ($_POST['reason'] ?? ''));
         $reasonValue = $reason !== '' ? $reason : null;
         /** @var TipModel $tipModel */
         $tipModel = $this->model('TipModel');
         $tipModel->setStatus($tipId, 'rejected', $reasonValue);
-        $this->redirect('/admin/tips');
+        $this->redirect('/admin/tips?page=' . $page);
     }
 
     public function deleteTip(string $id): void
     {
         require_admin_permission('admin.tips.manage');
         $tipId = (int) $id;
+        $page = max(1, (int) ($_POST['return_page'] ?? 1));
         if ($tipId <= 0) {
-            $this->redirect('/admin/tips');
+            $this->redirect('/admin/tips?page=' . $page);
         }
         /** @var TipModel $tipModel */
         $tipModel = $this->model('TipModel');
@@ -206,6 +240,6 @@ final class RecipeController extends Controller
         $admin = current_admin();
         $adminId = (int) ($admin['id'] ?? 0);
         system_log_write('admin_action', 'admin.tip.delete', 'success', null, 'tip', $tipId, null, $adminId > 0 ? $adminId : null, (string) ($admin['role'] ?? 'admin'));
-        $this->redirect('/admin/tips');
+        $this->redirect('/admin/tips?page=' . $page);
     }
 }

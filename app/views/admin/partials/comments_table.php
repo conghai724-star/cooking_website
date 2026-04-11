@@ -1,4 +1,4 @@
-﻿<div class="overflow-x-auto">
+<div class="overflow-x-auto">
     <table class="w-full text-left text-sm">
         <thead class="bg-background-light text-slate-500">
         <tr>
@@ -25,6 +25,12 @@
                 $contentType = (string) ($item['content_type'] ?? 'recipe');
                 $commentStatus = (string) ($item['status'] ?? 'visible');
                 $reportCount = (int) ($item['report_count'] ?? 0);
+                $contentTypeLabel = match ($contentType) {
+                    'tip' => 'Mẹo vặt',
+                    'ingredient' => 'Nguyên liệu',
+                    'post' => 'Bài đăng',
+                    default => 'Công thức',
+                };
                 $targetLink = match ($contentType) {
                     'tip' => URLROOT . '/tips/' . $targetId,
                     'ingredient' => URLROOT . '/ingredients/' . $targetId,
@@ -34,7 +40,7 @@
                 ?>
                 <tr>
                     <td class="px-6 py-4 font-semibold text-slate-700">#<?= $id; ?></td>
-                    <td class="px-6 py-4 text-slate-600"><?= htmlspecialchars($contentType, ENT_QUOTES, 'UTF-8'); ?></td>
+                    <td class="px-6 py-4 text-slate-600"><?= htmlspecialchars($contentTypeLabel, ENT_QUOTES, 'UTF-8'); ?></td>
                     <td class="px-6 py-4 max-w-[360px]">
                         <div class="line-clamp-2 text-slate-700"><?= htmlspecialchars((string) ($item['content'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></div>
                     </td>
@@ -46,7 +52,7 @@
                     </td>
                     <td class="px-6 py-4">
                         <?php if ($reportCount > 0): ?>
-                            <span class="rounded-full bg-rose-100 px-3 py-1 text-xs font-semibold text-rose-700"><?= $reportCount; ?> report</span>
+                            <span class="rounded-full bg-rose-100 px-3 py-1 text-xs font-semibold text-rose-700"><?= $reportCount; ?> báo cáo</span>
                         <?php else: ?>
                             <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">0</span>
                         <?php endif; ?>

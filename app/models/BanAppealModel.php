@@ -123,6 +123,73 @@ final class BanAppealModel extends Model
         return $query->resultSet();
     }
 
+    public function countForAdmin(?string $status = null, ?string $keyword = null): int
+    {
+        $this->ensureTable();
+
+        $sql = 'SELECT COUNT(*) AS total
+                FROM ban_appeals ba
+                INNER JOIN users u ON u.id = ba.user_id
+                WHERE 1 = 1';
+
+        if ($status !== null && $status !== '') {
+            $sql .= ' AND ba.status = :status';
+        }
+        if ($keyword !== null && trim($keyword) !== '') {
+            $sql .= ' AND (u.name LIKE :kw_name OR u.email LIKE :kw_email OR ba.appeal_reason LIKE :kw_reason)';
+        }
+
+        $query = $this->db->query($sql);
+        if ($status !== null && $status !== '') {
+            $query->bind(':status', $status);
+        }
+        if ($keyword !== null && trim($keyword) !== '') {
+            $like = '%' . trim($keyword) . '%';
+            $query->bind(':kw_name', $like)
+                ->bind(':kw_email', $like)
+                ->bind(':kw_reason', $like);
+        }
+        $query->execute();
+        $row = $query->single();
+        return (int) ($row['total'] ?? 0);
+    }
+
+    public function listForAdminPaged(?string $status = null, ?string $keyword = null, int $limit = 20, int $offset = 0): array
+    {
+        $this->ensureTable();
+        $sql = "SELECT ba.*,
+                       u.name AS user_name,
+                       u.email AS user_email,
+                       reviewer.name AS reviewer_name
+                FROM ban_appeals ba
+                INNER JOIN users u ON u.id = ba.user_id
+                LEFT JOIN users reviewer ON reviewer.id = ba.reviewed_by
+                WHERE 1 = 1";
+
+        if ($status !== null && $status !== '') {
+            $sql .= ' AND ba.status = :status';
+        }
+        if ($keyword !== null && trim($keyword) !== '') {
+            $sql .= ' AND (u.name LIKE :kw_name OR u.email LIKE :kw_email OR ba.appeal_reason LIKE :kw_reason)';
+        }
+        $sql .= ' ORDER BY ba.created_at DESC, ba.id DESC LIMIT :limit OFFSET :offset';
+
+        $query = $this->db->query($sql);
+        if ($status !== null && $status !== '') {
+            $query->bind(':status', $status);
+        }
+        if ($keyword !== null && trim($keyword) !== '') {
+            $like = '%' . trim($keyword) . '%';
+            $query->bind(':kw_name', $like)
+                ->bind(':kw_email', $like)
+                ->bind(':kw_reason', $like);
+        }
+        $query->bind(':limit', $limit, PDO::PARAM_INT);
+        $query->bind(':offset', $offset, PDO::PARAM_INT);
+        $query->execute();
+        return $query->resultSet();
+    }
+
     public function findById(int $id): array|false
     {
         $this->ensureTable();

@@ -53,17 +53,17 @@ if ($image !== '') {
                 <textarea class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" name="usage" rows="2"><?= htmlspecialchars((string) ($ingredient['usage'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></textarea>
             </div>
             <div>
-                <label class="mb-1 block text-xs font-semibold text-slate-500">Cách sơ chế</label>
+                <label class="mb-1 block text-xs font-semibold text-slate-500">Sơ chế</label>
                 <textarea class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" name="preparation" rows="2"><?= htmlspecialchars((string) ($ingredient['preparation'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></textarea>
             </div>
             <div>
-                <label class="mb-1 block text-xs font-semibold text-slate-500">Cách bảo quản</label>
+                <label class="mb-1 block text-xs font-semibold text-slate-500">Bảo quản</label>
                 <textarea class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" name="storage" rows="2"><?= htmlspecialchars((string) ($ingredient['storage'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></textarea>
             </div>
             <div class="md:col-span-2">
                 <label class="mb-1 block text-xs font-semibold text-slate-500">Hình ảnh</label>
                 <?php if ($imageUrl !== ''): ?>
-                    <img class="mb-3 h-40 w-full rounded-lg object-cover" src="<?= htmlspecialchars($imageUrl, ENT_QUOTES, 'UTF-8'); ?>" alt="Ingredient image">
+                    <img class="mb-3 h-40 w-full rounded-lg object-cover" src="<?= htmlspecialchars($imageUrl, ENT_QUOTES, 'UTF-8'); ?>" alt="Hình ảnh nguyên liệu">
                 <?php endif; ?>
                 <input class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" type="file" name="image" accept="image/*">
             </div>

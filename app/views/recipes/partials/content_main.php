@@ -1,7 +1,13 @@
-﻿<?php
+<?php
 $recipe = is_array($recipe ?? null) ? $recipe : [];
 $ingredients = is_array($ingredients ?? null) ? $ingredients : [];
 $steps = is_array($steps ?? null) ? $steps : [];
+
+$difficultyLabels = [
+    'easy' => 'Dễ',
+    'medium' => 'Trung bình',
+    'hard' => 'Khó',
+];
 ?>
 <div class="detail-main" style="min-width:0;">
     <div class="mb-8 grid grid-cols-2 gap-4 md:grid-cols-4">
@@ -15,7 +21,7 @@ $steps = is_array($steps ?? null) ? $steps : [];
         </div>
         <div class="rounded-2xl border border-primary/20 bg-primary/10 p-4 text-center">
             <p class="text-xs font-bold uppercase tracking-wide text-slate-500">Độ khó</p>
-            <p class="text-lg font-black"><?= htmlspecialchars((string) ($recipe['difficulty'] ?? 'Dễ'), ENT_QUOTES, 'UTF-8'); ?></p>
+            <p class="text-lg font-black"><?= htmlspecialchars($difficultyLabels[strtolower((string) ($recipe['difficulty'] ?? ''))] ?? (string) ($recipe['difficulty'] ?? 'Dễ'), ENT_QUOTES, 'UTF-8'); ?></p>
         </div>
         <div class="rounded-2xl border border-primary/20 bg-primary/10 p-4 text-center">
             <p class="text-xs font-bold uppercase tracking-wide text-slate-500">Khẩu phần</p>

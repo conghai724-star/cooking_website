@@ -17,71 +17,71 @@ $q = (string) ($filters['q'] ?? '');
 
 <div class="flex flex-col gap-6">
     <div class="flex flex-col gap-2">
-        <h1 class="text-2xl font-bold text-slate-900">Nhat ky he thong</h1>
-        <p class="text-sm text-slate-500">Theo doi thao tac dang nhap, sua/xoa noi dung va hanh dong quan tri.</p>
+        <h1 class="text-2xl font-bold text-slate-900">Nhật ký hệ thống</h1>
+        <p class="text-sm text-slate-500">Theo dõi thao tác đăng nhập, sửa/xóa nội dung và hành động quản trị.</p>
     </div>
 
     <div class="rounded-lg border border-slate-200 bg-white p-4">
         <form method="get" action="<?= URLROOT; ?>/admin/logs" class="flex flex-wrap items-end gap-3">
             <label class="flex flex-col gap-1 text-xs font-semibold text-slate-600">
-                Event
+                Sự kiện
                 <select name="event_type" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal">
-                    <option value="" <?= $eventType === '' ? 'selected' : ''; ?>>Tat ca</option>
-                    <option value="auth" <?= $eventType === 'auth' ? 'selected' : ''; ?>>auth</option>
-                    <option value="user_action" <?= $eventType === 'user_action' ? 'selected' : ''; ?>>user_action</option>
-                    <option value="content_action" <?= $eventType === 'content_action' ? 'selected' : ''; ?>>content_action</option>
-                    <option value="admin_action" <?= $eventType === 'admin_action' ? 'selected' : ''; ?>>admin_action</option>
+                    <option value="" <?= $eventType === '' ? 'selected' : ''; ?>>Tất cả</option>
+                    <option value="auth" <?= $eventType === 'auth' ? 'selected' : ''; ?>>Đăng nhập/Đăng xuất</option>
+                    <option value="user_action" <?= $eventType === 'user_action' ? 'selected' : ''; ?>>Hành động người dùng</option>
+                    <option value="content_action" <?= $eventType === 'content_action' ? 'selected' : ''; ?>>Hành động nội dung</option>
+                    <option value="admin_action" <?= $eventType === 'admin_action' ? 'selected' : ''; ?>>Hành động admin</option>
                 </select>
             </label>
             <label class="flex flex-col gap-1 text-xs font-semibold text-slate-600">
-                Result
+                Kết quả
                 <select name="result" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal">
-                    <option value="" <?= $result === '' ? 'selected' : ''; ?>>Tat ca</option>
-                    <option value="success" <?= $result === 'success' ? 'selected' : ''; ?>>success</option>
-                    <option value="failed" <?= $result === 'failed' ? 'selected' : ''; ?>>failed</option>
-                    <option value="blocked" <?= $result === 'blocked' ? 'selected' : ''; ?>>blocked</option>
+                    <option value="" <?= $result === '' ? 'selected' : ''; ?>>Tất cả</option>
+                    <option value="success" <?= $result === 'success' ? 'selected' : ''; ?>>Thành công</option>
+                    <option value="failed" <?= $result === 'failed' ? 'selected' : ''; ?>>Thất bại</option>
+                    <option value="blocked" <?= $result === 'blocked' ? 'selected' : ''; ?>>Bị chặn</option>
                 </select>
             </label>
             <label class="flex flex-col gap-1 text-xs font-semibold text-slate-600">
-                Action key
+                Mã hành động
                 <input type="text" name="action_key" value="<?= $e($actionKey); ?>" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal" placeholder="vd: admin.user.lock">
             </label>
             <label class="flex flex-col gap-1 text-xs font-semibold text-slate-600">
-                Actor ID
+                ID người thực hiện
                 <input type="number" min="0" name="actor_id" value="<?= $actorId > 0 ? $actorId : ''; ?>" class="w-28 rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal" placeholder="id">
             </label>
             <label class="flex flex-col gap-1 text-xs font-semibold text-slate-600">
-                From
+                Từ ngày
                 <input type="date" name="from" value="<?= $e($from); ?>" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal">
             </label>
             <label class="flex flex-col gap-1 text-xs font-semibold text-slate-600">
-                To
+                Đến ngày
                 <input type="date" name="to" value="<?= $e($to); ?>" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal">
             </label>
             <label class="flex min-w-[220px] flex-col gap-1 text-xs font-semibold text-slate-600">
-                Keyword
+                Từ khóa
                 <input type="text" name="q" value="<?= $e($q); ?>" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal" placeholder="reason/meta/ip">
             </label>
-            <button class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white" type="submit">Loc</button>
+            <button class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white" type="submit">Lọc</button>
         </form>
     </div>
 
     <div class="rounded-lg border border-slate-200 bg-white overflow-hidden">
         <div class="flex items-center justify-between border-b border-slate-100 px-4 py-3">
-            <h3 class="font-semibold text-slate-800">Log gan day (<?= $total; ?>)</h3>
+            <h3 class="font-semibold text-slate-800">Log gần đây (<?= $total; ?>)</h3>
         </div>
         <div class="overflow-x-auto">
             <table class="w-full text-left text-sm">
                 <thead class="bg-slate-50 text-slate-600">
                     <tr>
                         <th class="px-4 py-2 font-semibold">ID</th>
-                        <th class="px-4 py-2 font-semibold">Thoi gian</th>
-                        <th class="px-4 py-2 font-semibold">Event</th>
-                        <th class="px-4 py-2 font-semibold">Action</th>
-                        <th class="px-4 py-2 font-semibold">Actor</th>
-                        <th class="px-4 py-2 font-semibold">Target</th>
-                        <th class="px-4 py-2 font-semibold">Result</th>
-                        <th class="px-4 py-2 font-semibold">Reason</th>
+                        <th class="px-4 py-2 font-semibold">Thời gian</th>
+                        <th class="px-4 py-2 font-semibold">Sự kiện</th>
+                        <th class="px-4 py-2 font-semibold">Hành động</th>
+                        <th class="px-4 py-2 font-semibold">Người thực hiện</th>
+                        <th class="px-4 py-2 font-semibold">Đối tượng</th>
+                        <th class="px-4 py-2 font-semibold">Kết quả</th>
+                        <th class="px-4 py-2 font-semibold">Lý do</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
@@ -119,7 +119,12 @@ $q = (string) ($filters['q'] ?? '');
                                 </td>
                                 <td class="px-4 py-2">
                                     <span class="rounded-full px-2 py-0.5 text-xs font-semibold <?= $resultClass; ?>">
-                                        <?= $e($resultValue); ?>
+                                        <?= match($resultValue) {
+                                            'success' => 'Thành công',
+                                            'failed' => 'Thất bại',
+                                            'blocked' => 'Bị chặn',
+                                            default => $e($resultValue)
+                                        }; ?>
                                     </span>
                                 </td>
                                 <td class="px-4 py-2 max-w-[360px]">
@@ -149,11 +154,11 @@ $q = (string) ($filters['q'] ?? '');
                     ?>
                     <?php if ($page > 1): ?>
                         <?php $baseParams['page'] = $page - 1; ?>
-                        <a class="rounded border border-slate-300 px-3 py-1 text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/admin/logs?<?= http_build_query($baseParams); ?>">Prev</a>
+                        <a class="rounded border border-slate-300 px-3 py-1 text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/admin/logs?<?= http_build_query($baseParams); ?>">Trước</a>
                     <?php endif; ?>
                     <?php if ($page < $totalPages): ?>
                         <?php $baseParams['page'] = $page + 1; ?>
-                        <a class="rounded border border-slate-300 px-3 py-1 text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/admin/logs?<?= http_build_query($baseParams); ?>">Next</a>
+                        <a class="rounded border border-slate-300 px-3 py-1 text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/admin/logs?<?= http_build_query($baseParams); ?>">Tiếp</a>
                     <?php endif; ?>
                 </div>
             </div>

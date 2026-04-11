@@ -8,7 +8,7 @@
             </p>
         <?php else: ?>
             <p class="mt-3 text-sm text-slate-600">
-                Ke hoach bua an cua <?= htmlspecialchars((string) (($owner['name'] ?? $owner['username'] ?? 'người dùng')), ENT_QUOTES, 'UTF-8'); ?>
+                Kế hoạch bữa ăn của <?= htmlspecialchars((string) (($owner['name'] ?? $owner['username'] ?? 'người dùng')), ENT_QUOTES, 'UTF-8'); ?>
                 dang de o che do
                 <?php
                 $label = match ((string) ($visibility ?? 'private')) {

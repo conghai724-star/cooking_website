@@ -144,6 +144,8 @@ final class UserController extends Controller
     {
         require_admin_permission('admin.users.ban');
 
+        $page = max(1, (int) ($_GET['page'] ?? 1));
+        $perPage = 20;
         $keyword = trim((string) ($_GET['q'] ?? ''));
         $type = (string) ($_GET['type'] ?? '');
         if (!in_array($type, ['', 'account', 'comment', 'recipe'], true)) {
@@ -218,11 +220,21 @@ final class UserController extends Controller
             return $bt <=> $at;
         });
 
+        $total = count($rows);
+        $totalPages = max(1, (int) ceil($total / $perPage));
+        $page = min($page, $totalPages);
+        $offset = ($page - 1) * $perPage;
+        $rows = array_slice($rows, $offset, $perPage);
+
         $this->adminView('admin/moderation/bans/index', [
             'rows' => $rows,
             'keyword' => $keyword,
             'type' => $type,
             'status' => $status,
+            'page' => $page,
+            'perPage' => $perPage,
+            'total' => $total,
+            'totalPages' => $totalPages,
             'notice' => (string) ($_GET['notice'] ?? ''),
         ]);
     }
@@ -255,6 +267,7 @@ final class UserController extends Controller
         $returnQ = trim((string) ($_POST['return_q'] ?? ''));
         $returnType = (string) ($_POST['return_type'] ?? '');
         $returnStatus = (string) ($_POST['return_status'] ?? '');
+        $returnPage = max(1, (int) ($_POST['return_page'] ?? 1));
         if ($returnQ !== '') {
             $qs['q'] = $returnQ;
         }
@@ -264,6 +277,9 @@ final class UserController extends Controller
         if ($returnStatus !== '') {
             $qs['status'] = $returnStatus;
         }
+        if ($returnPage > 1) {
+            $qs['page'] = $returnPage;
+        }
         $qs['notice'] = $ok ? 'released' : 'release_failed';
 
         $this->redirect('/admin/bans?' . http_build_query($qs));
@@ -272,6 +288,8 @@ final class UserController extends Controller
     public function manageBanAppeals(): void
     {
         require_admin_permission('admin.users.ban');
+        $page = max(1, (int) ($_GET['page'] ?? 1));
+        $perPage = 20;
         $status = (string) ($_GET['status'] ?? '');
         if (!in_array($status, ['', 'pending', 'reviewing', 'approved', 'rejected'], true)) {
             $status = '';
@@ -280,11 +298,19 @@ final class UserController extends Controller
 
         /** @var BanAppealModel $appealModel */
         $appealModel = $this->model('BanAppealModel');
+        $total = $appealModel->countForAdmin($status !== '' ? $status : null, $keyword !== '' ? $keyword : null);
+        $totalPages = max(1, (int) ceil($total / $perPage));
+        $page = min($page, $totalPages);
+        $offset = ($page - 1) * $perPage;
 
         $this->adminView('admin/moderation/ban_appeals/index', [
-            'rows' => $appealModel->listForAdmin($status !== '' ? $status : null, $keyword !== '' ? $keyword : null),
+            'rows' => $appealModel->listForAdminPaged($status !== '' ? $status : null, $keyword !== '' ? $keyword : null, $perPage, $offset),
             'status' => $status,
             'keyword' => $keyword,
+            'page' => $page,
+            'perPage' => $perPage,
+            'total' => $total,
+            'totalPages' => $totalPages,
             'notice' => (string) ($_GET['notice'] ?? ''),
         ]);
     }
@@ -332,7 +358,22 @@ final class UserController extends Controller
             }
         }
 
-        $this->redirect('/admin/ban-appeals?notice=' . ($ok ? 'reviewed' : 'review_failed'));
+        $qs = [];
+        $returnQ = trim((string) ($_POST['return_q'] ?? ''));
+        $returnStatus = (string) ($_POST['return_status'] ?? '');
+        $returnPage = max(1, (int) ($_POST['return_page'] ?? 1));
+        if ($returnQ !== '') {
+            $qs['q'] = $returnQ;
+        }
+        if ($returnStatus !== '') {
+            $qs['status'] = $returnStatus;
+        }
+        if ($returnPage > 1) {
+            $qs['page'] = $returnPage;
+        }
+
+        $qs['notice'] = $ok ? 'reviewed' : 'review_failed';
+        $this->redirect('/admin/ban-appeals?' . http_build_query($qs));
     }
 
     public function penalizeUser(string $id): void

@@ -1,5 +1,5 @@
 <?php
-$sidebarCategory = (string) ($sidebarCategory ?? 'ChA�°a phĂ¢n loA�º¡i');
+$sidebarCategory = (string) ($sidebarCategory ?? 'Chưa phân loại');
 $sidebarViews = (int) ($sidebarViews ?? 0);
 $sidebarAuthor = (string) ($sidebarAuthor ?? 'Không rõ');
 $sidebarAuthorId = (int) ($sidebarAuthorId ?? 0);
@@ -9,12 +9,10 @@ $sidebarTipId = (int) ($sidebarTipId ?? 0);
 $sidebarTipPath = (string) ($sidebarTipPath ?? '/tips');
 $sidebarTitle = (string) ($sidebarTitle ?? 'Mẹo vặt');
 
-$quickInfoTitle = 'ThĂ�??�€�?Ă�??�´ng tin nhanh';
-$quickInfoItems = [
-    ['label' => 'Danh mục', 'value' => $sidebarCategory !== '' ? $sidebarCategory : 'ChA�°a phĂ¢n loA�º¡i'],
-    ['label' => 'LA�°A�»£t xem', 'value' => (string) $sidebarViews],
-    ['label' => 'TĂ¡c giA�º£', 'value' => $sidebarAuthor],
-];
+$quickInfoTitle = 'Thông tin nhanh';
+$quickInfoCategory = $sidebarCategory !== '' ? $sidebarCategory : 'Chưa phân loại';
+$quickInfoViews = $sidebarViews;
+$quickInfoAuthor = $sidebarAuthor;
 
 $quickInfoShowActions = true;
 $quickInfoActionsContainerId = 'tip-action-box';
@@ -33,13 +31,13 @@ $actionSaveHiddenFields = [
     'redirect_to' => $sidebarTipPath,
 ];
 $actionIsSaved = $sidebarIsSaved;
-$actionSaveLabelOn = 'ĐA� lưu mẹo';
-$actionSaveLabelOff = 'LA�°u mA�º¹o';
-$actionSaveSuccessToast = 'ĐA� cập nhật lưu mẹo vặt.';
-$actionSaveErrorToast = 'KhA�ng thA�»ƒ lA�°u mA�º¹o vA�º·t lĂºc nĂ y.';
+$actionSaveLabelOn = 'Đã lưu mẹo';
+$actionSaveLabelOff = 'Lưu mẹo';
+$actionSaveSuccessToast = 'Đã cập nhật lưu mẹo vặt.';
+$actionSaveErrorToast = 'Không thể lưu mẹo vặt lúc này.';
 
 $actionEnableShare = true;
-$actionShareText = 'Xem mA�º¹o vA�º·t nĂ y';
+$actionShareText = 'Xem mẹo vặt này';
 $actionShareTitle = $sidebarTitle;
 
 $actionEnableReport = function_exists('user_has_permission') && user_has_permission('user.tips.report');
@@ -48,11 +46,11 @@ $actionReportModalTarget = '#tip-report-modal';
 $actionReportTriggerId = 'btn-tip-report-trigger';
 $actionReportAction = URLROOT . '/tips/' . $sidebarTipId . '/report';
 $actionReportOtherTargetId = 'tip-report-other';
-$actionReportSuccessToast = 'A�¿½A? g?i bA?o cA?o m?o v?t.';
-$actionReportErrorToast = 'KhA�ng thA�»ƒ gA�»­i bĂ¡o cĂ¡o mA�º¹o vA�º·t.';
+$actionReportSuccessToast = 'Đã gửi báo cáo mẹo vặt.';
+$actionReportErrorToast = 'Không thể gửi báo cáo mẹo vặt.';
 $actionReportHiddenFields = ['redirect_to' => $sidebarTipPath];
 ?>
 
 <aside class="detail-side space-y-6" >
-    <?php require APPROOT . '/app/views/partials/shared/quick_info_actions_card.php'; ?>
+    <?php require APPROOT . '/app/views/partials/shared/quick_info/quick_info_actions_card.php'; ?>
 </aside>

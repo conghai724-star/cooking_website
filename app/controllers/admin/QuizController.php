@@ -13,16 +13,26 @@ final class QuizController extends Controller
 
         $notice = (string) ($_GET['notice'] ?? '');
         $noticeText = match ($notice) {
-            'created' => 'Da tao bo cau hoi.',
-            'updated' => 'Da cap nhat bo cau hoi.',
-            'deleted' => 'Da xoa bo cau hoi.',
-            'certificate_deleted' => 'Da xoa chung nhan.',
-            'save_failed' => 'Khong the luu bo cau hoi. Kiem tra lai du lieu.',
-            'delete_failed' => 'Khong the xoa. Thu lai.',
+            'created' => 'Đã tạo bộ câu hỏi.',
+            'updated' => 'Đã cập nhật bộ câu hỏi.',
+            'deleted' => 'Đã xóa bộ câu hỏi.',
+            'certificate_deleted' => 'Đã xóa chứng nhận.',
+            'save_failed' => 'Không thể lưu bộ câu hỏi. Kiểm tra lại dữ liệu.',
+            'delete_failed' => 'Không thể xóa. Thử lại.',
             default => '',
         };
 
         $sets = $quizModel->listSetsForAdmin();
+        $setIds = [];
+        foreach ($sets as $setRow) {
+            $setId = (int) ($setRow['id'] ?? 0);
+            if ($setId > 0) {
+                $setIds[] = $setId;
+            }
+        }
+
+        $participantsPreviewBySet = $quizModel->participantsPreviewBySetIdsForAdmin($setIds, 3);
+        $passersPreviewBySet = $quizModel->passersPreviewBySetIdsForAdmin($setIds, 3);
         $participantPreviews = [];
         $passerPreviews = [];
         foreach ($sets as $setRow) {
@@ -31,7 +41,7 @@ final class QuizController extends Controller
                 continue;
             }
 
-            $participants = $quizModel->participantsBySetForAdmin($setId);
+            $participants = $participantsPreviewBySet[$setId] ?? [];
             $participantLabels = [];
             foreach ($participants as $participant) {
                 $name = trim((string) ($participant['user_name'] ?? ''));
@@ -40,7 +50,7 @@ final class QuizController extends Controller
             }
             $participantPreviews[$setId] = array_slice($participantLabels, 0, 3);
 
-            $passers = $quizModel->passersBySetForAdmin($setId);
+            $passers = $passersPreviewBySet[$setId] ?? [];
             $passerLabels = [];
             foreach ($passers as $passer) {
                 $name = trim((string) ($passer['user_name'] ?? ''));
@@ -98,8 +108,8 @@ final class QuizController extends Controller
 
         $notice = (string) ($_GET['notice'] ?? '');
         $noticeText = match ($notice) {
-            'certificate_deleted' => 'Da xoa chung nhan.',
-            'delete_failed' => 'Khong the xoa. Thu lai.',
+            'certificate_deleted' => 'Đã xóa chứng nhận.',
+            'delete_failed' => 'Không thể xóa. Thử lại.',
             default => '',
         };
 
@@ -487,4 +497,3 @@ final class QuizController extends Controller
         ];
     }
 }
-

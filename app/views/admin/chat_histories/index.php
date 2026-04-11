@@ -19,8 +19,8 @@ $q = (string) ($filters['q'] ?? '');
 
 <div class="flex flex-col gap-6">
     <div class="flex flex-col gap-2">
-        <h1 class="text-2xl font-bold text-slate-900">Lich su chat</h1>
-        <p class="text-sm text-slate-500">Xem tin nhan, intent match va state hoi thoai cua nguoi dung.</p>
+        <h1 class="text-2xl font-bold text-slate-900">Lịch sử chat</h1>
+        <p class="text-sm text-slate-500">Xem tin nhắn, intent match và state hội thoại của người dùng.</p>
     </div>
 
     <div class="rounded-lg border border-slate-200 bg-white p-4">
@@ -32,7 +32,7 @@ $q = (string) ($filters['q'] ?? '');
             <label class="flex flex-col gap-1 text-xs font-semibold text-slate-600">
                 Intent
                 <select name="intent" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal">
-                    <option value="">Tat ca</option>
+                    <option value="">Tất cả</option>
                     <?php foreach ($intentOptions as $opt): ?>
                         <option value="<?= $e($opt); ?>" <?= $intent === $opt ? 'selected' : ''; ?>><?= $e($opt); ?></option>
                     <?php endforeach; ?>
@@ -41,39 +41,39 @@ $q = (string) ($filters['q'] ?? '');
             <label class="flex flex-col gap-1 text-xs font-semibold text-slate-600">
                 Code
                 <select name="code" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal">
-                    <option value="">Tat ca</option>
+                    <option value="">Tất cả</option>
                     <?php foreach ($codeOptions as $opt): ?>
                         <option value="<?= $e($opt); ?>" <?= $code === $opt ? 'selected' : ''; ?>><?= $e($opt); ?></option>
                     <?php endforeach; ?>
                 </select>
             </label>
             <label class="flex flex-col gap-1 text-xs font-semibold text-slate-600">
-                From
+                Từ ngày
                 <input type="date" name="from" value="<?= $e($from); ?>" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal">
             </label>
             <label class="flex flex-col gap-1 text-xs font-semibold text-slate-600">
-                To
+                Đến ngày
                 <input type="date" name="to" value="<?= $e($to); ?>" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal">
             </label>
             <label class="flex min-w-[240px] flex-col gap-1 text-xs font-semibold text-slate-600">
-                Keyword
-                <input type="text" name="q" value="<?= $e($q); ?>" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal" placeholder="message/meta">
+                Từ khóa
+                <input type="text" name="q" value="<?= $e($q); ?>" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal" placeholder="tin nhắn/meta">
             </label>
-            <button class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white" type="submit">Loc</button>
+            <button class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white" type="submit">Lọc</button>
         </form>
     </div>
 
     <div class="grid gap-6 xl:grid-cols-[2fr_1fr]">
         <div class="rounded-lg border border-slate-200 bg-white overflow-hidden">
             <div class="flex items-center justify-between border-b border-slate-100 px-4 py-3">
-                <h3 class="font-semibold text-slate-800">Ban ghi chat (<?= $total; ?>)</h3>
+                <h3 class="font-semibold text-slate-800">Bản ghi chat (<?= $total; ?>)</h3>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-sm">
                     <thead class="bg-slate-50 text-slate-600">
                         <tr>
                             <th class="px-4 py-2 font-semibold">ID</th>
-                            <th class="px-4 py-2 font-semibold">Thoi gian</th>
+                            <th class="px-4 py-2 font-semibold">Thời gian</th>
                             <th class="px-4 py-2 font-semibold">User</th>
                             <th class="px-4 py-2 font-semibold">Intent</th>
                             <th class="px-4 py-2 font-semibold">Code</th>
@@ -82,7 +82,7 @@ $q = (string) ($filters['q'] ?? '');
                     </thead>
                     <tbody class="divide-y divide-slate-100">
                         <?php if ($rows === []): ?>
-                            <tr><td colspan="6" class="px-4 py-8 text-center text-slate-500">Khong co ban ghi.</td></tr>
+                            <tr><td colspan="6" class="px-4 py-8 text-center text-slate-500">Không có bản ghi.</td></tr>
                         <?php else: ?>
                             <?php foreach ($rows as $row): ?>
                                 <tr>
@@ -115,11 +115,11 @@ $q = (string) ($filters['q'] ?? '');
                         <?php $baseParams = $_GET; ?>
                         <?php if ($page > 1): ?>
                             <?php $baseParams['page'] = $page - 1; ?>
-                            <a class="rounded border border-slate-300 px-3 py-1 text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/admin/chat-histories?<?= http_build_query($baseParams); ?>">Prev</a>
+                            <a class="rounded border border-slate-300 px-3 py-1 text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/admin/chat-histories?<?= http_build_query($baseParams); ?>">Trước</a>
                         <?php endif; ?>
                         <?php if ($page < $totalPages): ?>
                             <?php $baseParams['page'] = $page + 1; ?>
-                            <a class="rounded border border-slate-300 px-3 py-1 text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/admin/chat-histories?<?= http_build_query($baseParams); ?>">Next</a>
+                            <a class="rounded border border-slate-300 px-3 py-1 text-slate-700 hover:bg-slate-50" href="<?= URLROOT; ?>/admin/chat-histories?<?= http_build_query($baseParams); ?>">Tiếp</a>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -128,11 +128,11 @@ $q = (string) ($filters['q'] ?? '');
 
         <div class="rounded-lg border border-slate-200 bg-white overflow-hidden">
             <div class="border-b border-slate-100 px-4 py-3">
-                <h3 class="font-semibold text-slate-800">State gan nhat</h3>
+                <h3 class="font-semibold text-slate-800">Trạng thái gần nhất</h3>
             </div>
             <div class="divide-y divide-slate-100">
                 <?php if ($states === []): ?>
-                    <div class="px-4 py-6 text-sm text-slate-500">Chua co state du lieu.</div>
+                    <div class="px-4 py-6 text-sm text-slate-500">Chưa có dữ liệu trạng thái.</div>
                 <?php else: ?>
                     <?php foreach ($states as $state): ?>
                         <div class="px-4 py-3 text-sm">

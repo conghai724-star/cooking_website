@@ -1,57 +1,57 @@
-﻿<?php
+<?php
 $csrf = csrf_token();
 ?>
 <section class="w-full">
     <div class="mx-auto w-full max-w-6xl space-y-6">
         <div class="rounded-2xl border border-primary/10 bg-white p-6 shadow-sm">
-            <h1 class="text-2xl font-black tracking-tight text-slate-900">Demo AI NhA�º­n DiA�»‡n NguyĂªn LiA�»‡u</h1>
+            <h1 class="text-2xl font-black tracking-tight text-slate-900">Demo AI Nhận Diện Nguyên Liệu</h1>
             <p class="mt-2 text-sm text-slate-600">
-                Flow demo hoĂ n chA�»‰nh: <strong>Upload A�º£nh</strong> A�†’ <strong>AI nhA�º­n diA�»‡n nguyĂªn liA�»‡u</strong> A�†’ <strong>gA�»£i Ă½ mĂ³n A�ƒn phĂ¹ hA�»£p</strong>.
+                Flow demo hoàn chỉnh: <strong>Upload Ảnh</strong> → <strong>AI nhận diện nguyên liệu</strong> → <strong>gợi ý món ăn phù hợp</strong>.
             </p>
         </div>
 
         <div class="grid grid-cols-1 gap-6 xl:grid-cols-3">
             <div class="space-y-4 rounded-2xl border border-primary/10 bg-white p-5 shadow-sm xl:col-span-2">
-                <h2 class="text-lg font-bold text-slate-900">1) Upload A�º£nh nguyĂªn liA�»‡u</h2>
+                <h2 class="text-lg font-bold text-slate-900">1) Upload Ảnh nguyên liệu</h2>
 
                 <div id="ai-dropzone" class="rounded-2xl border-2 border-dashed border-amber-300 bg-amber-50/50 p-6 text-center transition hover:border-primary">
                     <input id="ai-image-input" type="file" accept="image/png,image/jpeg" multiple class="hidden">
-                    <p class="text-sm font-semibold text-slate-700">KĂ©o thA�º£ 1 hoA�º·c nhiA�»u A�º£nh nguyĂªn liA�»‡u vĂ o A�‘Ă¢y hoA�º·c</p>
+                    <p class="text-sm font-semibold text-slate-700">Kéo thả 1 hoặc nhiều Ảnh nguyên liệu vào đây hoặc</p>
                     <div class="mt-3 flex flex-wrap items-center justify-center gap-2">
-                        <button id="ai-pick-image" type="button" class="rounded-xl bg-primary px-4 py-2 text-sm font-bold text-white hover:opacity-90">ChA�»n A�º£nh</button>
-                        <button id="ai-capture-image" type="button" class="rounded-xl border border-primary/40 px-4 py-2 text-sm font-semibold text-primary hover:bg-amber-50">ChA�»¥p A�º£nh</button>
+                        <button id="ai-pick-image" type="button" class="rounded-xl bg-primary px-4 py-2 text-sm font-bold text-white hover:opacity-90">Chọn Ảnh</button>
+                        <button id="ai-capture-image" type="button" class="rounded-xl border border-primary/40 px-4 py-2 text-sm font-semibold text-primary hover:bg-amber-50">Chụp Ảnh</button>
                     </div>
-                    <p class="mt-3 text-xs text-slate-500">HA�»— trA�»£ JPG / PNG. CĂ³ thA�»ƒ chA�»n nhiA�»u A�º£nh A�‘A�»ƒ tĂ¬m mĂ³n tA�»± A�‘A�»™ng, khĂ´ng cA�º§n gĂµ bĂ n phĂ­m.</p>
+                    <p class="mt-3 text-xs text-slate-500">Hỗ trợ JPG / PNG. Có thể chọn nhiều Ảnh để tìm món tự động, không cần gõ bàn phím.</p>
                 </div>
 
                 <div>
-                    <h3 class="mb-2 text-sm font-semibold text-slate-700">A�º¢nh A�‘Ă£ chA�»n</h3>
+                    <h3 class="mb-2 text-sm font-semibold text-slate-700">Ảnh đã chọn</h3>
                     <div id="ai-selected-images" class="flex min-h-12 flex-wrap gap-2 rounded-xl border border-slate-200 bg-slate-50 p-2 text-xs text-slate-500">
-                        ChA�°a cĂ³ A�º£nh nĂ o.
+                        Chưa có Ảnh nào.
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
                     <div>
-                        <h3 class="mb-2 text-sm font-semibold text-slate-700">2) Preview A�º£nh</h3>
+                        <h3 class="mb-2 text-sm font-semibold text-slate-700">2) Preview Ảnh</h3>
                         <div id="ai-preview-wrap" class="relative overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
-                            <img id="ai-preview-image" alt="A�º¢nh preview" class="h-72 w-full object-cover opacity-0 transition">
+                            <img id="ai-preview-image" alt="Ảnh preview" class="h-72 w-full object-cover opacity-0 transition">
                             <canvas id="ai-preview-canvas" class="pointer-events-none absolute inset-0 h-full w-full"></canvas>
-                            <div id="ai-preview-empty" class="absolute inset-0 flex items-center justify-center text-sm text-slate-400">ChA�°a cĂ³ A�º£nh</div>
+                            <div id="ai-preview-empty" class="absolute inset-0 flex items-center justify-center text-sm text-slate-400">Chưa có Ảnh</div>
                         </div>
                     </div>
 
                     <div>
-                        <h3 class="mb-2 text-sm font-semibold text-slate-700">3) KA�º¿t quA�º£ nhA�º­n diA�»‡n AI</h3>
+                        <h3 class="mb-2 text-sm font-semibold text-slate-700">3) Kết quả nhận diện AI</h3>
                         <div id="ai-detections-list" class="h-72 overflow-auto rounded-xl border border-slate-200 bg-white p-3 text-sm text-slate-600">
-                            ChA�°a nhA�º­n diA�»‡n.
+                            Chưa nhận diện.
                         </div>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
                     <div>
-                        <label for="ai-limit" class="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">SA�»‘ mĂ³n gA�»£i Ă½</label>
+                        <label for="ai-limit" class="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">Số món gợi ý</label>
                         <input id="ai-limit" type="number" min="1" max="20" value="8" class="w-full rounded-xl border-slate-300 text-sm focus:border-primary focus:ring-primary">
                     </div>
                     <div>
@@ -59,35 +59,35 @@ $csrf = csrf_token();
                         <input id="ai-max-calories" type="number" min="0" step="1" class="w-full rounded-xl border-slate-300 text-sm focus:border-primary focus:ring-primary" placeholder="VD: 550">
                     </div>
                     <div>
-                        <label for="ai-keyword" class="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">TA�»« khóa mĂ³n</label>
-                        <input id="ai-keyword" type="text" class="w-full rounded-xl border-slate-300 text-sm focus:border-primary focus:ring-primary" placeholder="xĂ o, canh, chay...">
+                        <label for="ai-keyword" class="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">Từ khóa món</label>
+                        <input id="ai-keyword" type="text" class="w-full rounded-xl border-slate-300 text-sm focus:border-primary focus:ring-primary" placeholder="xào, canh, chay...">
                     </div>
                 </div>
 
                 <div class="flex flex-wrap items-center gap-3">
-                    <button id="ai-detect-btn" type="button" class="rounded-xl border border-primary/40 px-5 py-2.5 text-sm font-semibold text-primary hover:bg-amber-50">NhA�º­n diA�»‡n AI</button>
-                    <button id="ai-run-btn" type="button" class="rounded-xl bg-primary px-5 py-2.5 text-sm font-bold text-white transition hover:opacity-90">GA�»£i Ă½ mĂ³n A�ƒn</button>
-                    <button id="ai-one-click-btn" type="button" class="rounded-xl bg-emerald-600 px-5 py-2.5 text-sm font-bold text-white transition hover:opacity-90">TĂ¬m mĂ³n ngay (1 chA�º¡m)</button>
+                    <button id="ai-detect-btn" type="button" class="rounded-xl border border-primary/40 px-5 py-2.5 text-sm font-semibold text-primary hover:bg-amber-50">Nhận diện AI</button>
+                    <button id="ai-run-btn" type="button" class="rounded-xl bg-primary px-5 py-2.5 text-sm font-bold text-white transition hover:opacity-90">Gợi ý món ăn</button>
+                    <button id="ai-one-click-btn" type="button" class="rounded-xl bg-emerald-600 px-5 py-2.5 text-sm font-bold text-white transition hover:opacity-90">Tìm món ngay (1 chạm)</button>
                 </div>
 
-                <p id="ai-status" aria-live="polite" class="text-sm text-slate-500">SA�ºµn sĂ ng.</p>
+                <p id="ai-status" aria-live="polite" class="text-sm text-slate-500">Sẵn sàng.</p>
             </div>
 
             <div class="space-y-4 rounded-2xl border border-primary/10 bg-white p-5 shadow-sm">
                 <h2 class="text-lg font-bold text-slate-900">Flow Demo</h2>
                 <ol class="space-y-2 text-sm text-slate-600">
-                    <li>1. Upload A�º£nh nguyĂªn liA�»‡u</li>
+                    <li>1. Upload Ảnh nguyên liệu</li>
                     <li>2. AI detect + confidence + bounding box</li>
-                    <li>3. Map nhĂ£n sang tiA�º¿ng ViA�»‡t</li>
-                    <li>4. GA�»£i Ă½ cĂ´ng thA�»©c phĂ¹ hA�»£p</li>
+                    <li>3. Map nhãn sang tiếng Việt</li>
+                    <li>4. Gợi ý công thức phù hợp</li>
                 </ol>
-                <div id="ai-meta" class="rounded-xl bg-slate-50 p-3 text-sm text-slate-600">ChA�°a cĂ³ dA�»¯ liA�»‡u.</div>
+                <div id="ai-meta" class="rounded-xl bg-slate-50 p-3 text-sm text-slate-600">Chưa có dữ liệu.</div>
                 <div id="ai-error" role="alert" aria-live="assertive" class="hidden rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"></div>
             </div>
         </div>
 
         <div class="rounded-2xl border border-primary/10 bg-white p-5 shadow-sm">
-            <h2 class="text-lg font-bold text-slate-900">4) Món gA�»£i Ă½</h2>
+            <h2 class="text-lg font-bold text-slate-900">4) Món gợi ý</h2>
             <div id="ai-result-grid" class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3"></div>
         </div>
     </div>
@@ -148,7 +148,7 @@ $csrf = csrf_token();
             } catch (err) {
                 return {
                     success: false,
-                    message: 'Server tra ve JSON khong hop le.',
+                    message: 'Máy chủ trả về JSON không hợp lệ.',
                     raw: text,
                 };
             }
@@ -157,7 +157,7 @@ $csrf = csrf_token();
         if (text === '') {
             return {
                 success: false,
-                message: 'Server khong tra ve du lieu.',
+                message: 'Máy chủ không trả về dữ liệu.',
             };
         }
 
@@ -222,11 +222,11 @@ $csrf = csrf_token();
 
     const renderDetections = (detections) => {
         if (!detections.length) {
-            detectionsListEl.textContent = 'ChA�°a nhA�º­n diA�»‡n.';
+            detectionsListEl.textContent = 'Chưa nhận diện.';
             return;
         }
         detectionsListEl.innerHTML = `
-            <p class="mb-2 font-semibold text-slate-800">Nguyên liệu phĂ¡t hiA�»‡n:</p>
+            <p class="mb-2 font-semibold text-slate-800">Nguyên liệu phát hiện:</p>
             <ul class="space-y-2">
                 ${detections.map((d) => `<li class="flex items-center justify-between rounded-lg border border-slate-200 px-3 py-2"><span>${d.vi_label || d.label}</span><span class="text-xs font-semibold text-primary">${Math.round(Number(d.confidence || 0) * 100)}%</span></li>`).join('')}
             </ul>
@@ -235,12 +235,12 @@ $csrf = csrf_token();
 
     const renderSelectedImages = () => {
         if (!selectedImageFiles.length) {
-            selectedImagesEl.textContent = 'ChA�°a cĂ³ A�º£nh nĂ o.';
+            selectedImagesEl.textContent = 'Chưa có Ảnh nào.';
             return;
         }
         selectedImagesEl.innerHTML = selectedImageFiles.map((file, idx) => `
             <button type="button" data-preview-idx="${idx}" class="rounded-lg border border-slate-300 bg-white px-2 py-1 text-left text-xs text-slate-700 hover:border-primary">
-                A�º¢nh ${idx + 1}: ${String(file.name || 'image').slice(0, 26)}
+                Ảnh ${idx + 1}: ${String(file.name || 'ảnh').slice(0, 26)}
             </button>
         `).join('');
         selectedImagesEl.querySelectorAll('[data-preview-idx]').forEach((btn) => {
@@ -272,7 +272,7 @@ $csrf = csrf_token();
 
         const data = await readApiPayload(response);
         if (!response.ok || !data.success) {
-            throw new Error((data && data.message) ? data.message : 'Không thA�»ƒ nhA�º­n diA�»‡n A�º£nh.');
+            throw new Error((data && data.message) ? data.message : 'Không thể nhận diện Ảnh.');
         }
         const out = data.data || {};
         return Array.isArray(out.detections) ? out.detections : [];
@@ -281,7 +281,7 @@ $csrf = csrf_token();
     const detectIngredients = async () => {
         setError('');
         if (!selectedImageFiles.length) {
-            throw new Error('BA�º¡n cA�º§n chA�»n Ă­t nhA�º¥t 1 A�º£nh nguyĂªn liA�»‡u.');
+            throw new Error('Bạn cần chọn ít nhất 1 Ảnh nguyên liệu.');
         }
 
         const merged = new Map();
@@ -304,8 +304,8 @@ $csrf = csrf_token();
         currentDetections = Array.isArray(selectedImageFiles[0]?._detections) ? selectedImageFiles[0]._detections : [];
         renderDetections(aggregatedDetections);
         drawBoxes(currentDetections);
-        setStatus('A�Ă£ nhA�º­n diA�»‡n xong.');
-        metaEl.textContent = `A�Ă£ nhA�º­n diA�»‡n ${selectedImageFiles.length} A�º£nh, tĂ¬m A�‘A�°A�»£c ${aggregatedDetections.length} nguyĂªn liA�»‡u khĂ¡c nhau.`;
+        setStatus('Đã nhận diện xong.');
+        metaEl.textContent = `Đã nhận diện ${selectedImageFiles.length} Ảnh, tìm được ${aggregatedDetections.length} nguyên liệu khác nhau.`;
     };
 
     const toPayload = () => {
@@ -337,7 +337,7 @@ $csrf = csrf_token();
     const renderCards = (recipes) => {
         resultGridEl.innerHTML = '';
         if (!Array.isArray(recipes) || recipes.length === 0) {
-            resultGridEl.innerHTML = '<div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-500">ChA�°a cĂ³ mĂ³n phĂ¹ hA�»£p.</div>';
+            resultGridEl.innerHTML = '<div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-500">Chưa có món phù hợp.</div>';
             return;
         }
 
@@ -355,14 +355,14 @@ $csrf = csrf_token();
                 : null;
 
             card.innerHTML = `
-                ${imageUrl ? `<img src="${imageUrl}" alt="A�º¢nh mĂ³n A�ƒn" class="h-40 w-full object-cover">` : ''}
+                ${imageUrl ? `<img src="${imageUrl}" alt="Ảnh món ăn" class="h-40 w-full object-cover">` : ''}
                 <div class="p-4">
-                    <p class="mb-1 text-xs font-semibold text-slate-400">Món gA�»£i Ă½ #${index + 1}</p>
-                    <h3 class="text-base font-bold text-slate-900">${recipe.title || 'CĂ´ng thA�»©c'}</h3>
+                    <p class="mb-1 text-xs font-semibold text-slate-400">Món gợi ý #${index + 1}</p>
+                    <h3 class="text-base font-bold text-slate-900">${recipe.title || 'Công thức'}</h3>
                     <p class="mt-2 line-clamp-2 text-sm text-slate-600">${recipe.description || ''}</p>
                     <div class="mt-3 flex items-center justify-between gap-2">
-                        <span class="text-xs font-semibold text-primary">${match != null ? `Match: ${match}%` : 'Match: N/A'}</span>
-                        <a class="rounded-lg bg-amber-100 px-3 py-1.5 text-xs font-bold text-amber-700 hover:bg-amber-200" href="${recipe.url || '#'}">Xem chi tiA�º¿t</a>
+                        <span class="text-xs font-semibold text-primary">${match != null ? `Độ khớp: ${match}%` : 'Độ khớp: N/A'}</span>
+                        <a class="rounded-lg bg-amber-100 px-3 py-1.5 text-xs font-bold text-amber-700 hover:bg-amber-200" href="${recipe.url || '#'}">Xem chi tiết</a>
                     </div>
                 </div>
             `;
@@ -373,11 +373,11 @@ $csrf = csrf_token();
     const runSuggestion = async () => {
         setError('');
         runBtn.disabled = true;
-        setStatus('A�ang gA�»£i Ă½ mĂ³n A�ƒn...');
+        setStatus('Đang gợi ý món ăn...');
 
         try {
             if (!aggregatedDetections.length) {
-                throw new Error('BA�º¡n cA�º§n chA�º¡y bA�°A�»›c nhA�º­n diA�»‡n AI trA�°A�»›c.');
+                throw new Error('Bạn cần chạy bước nhận diện AI trước.');
             }
 
             const response = await fetch(suggestEndpoint, {
@@ -395,18 +395,18 @@ $csrf = csrf_token();
             const data = await readApiPayload(response);
 
             if (!response.ok || !data.success) {
-                throw new Error((data && data.message) ? data.message : 'Không thA�»ƒ gA�»£i Ă½ cĂ´ng thA�»©c.');
+                throw new Error((data && data.message) ? data.message : 'Không thể gợi ý công thức.');
             }
 
             const out = data.data || {};
             const recipes = Array.isArray(out.recipes) ? out.recipes : [];
             const resolvedIngredients = Array.isArray(out.resolved_ingredients) ? out.resolved_ingredients : [];
             renderCards(recipes);
-            metaEl.textContent = `Map A�‘A�°A�»£c ${resolvedIngredients.length} nguyĂªn liA�»‡u, tĂ¬m thA�º¥y ${recipes.length} mĂ³n A�ƒn.`;
-            setStatus('HoĂ n tA�º¥t flow demo.');
+            metaEl.textContent = `Map được ${resolvedIngredients.length} nguyên liệu, tìm thấy ${recipes.length} món ăn.`;
+            setStatus('Hoàn tất flow demo.');
         } catch (err) {
-            setError((err && err.message) ? String(err.message) : 'CĂ³ lA�»—i xA�º£y ra.');
-            setStatus('ThA�º¥t bA�º¡i.');
+            setError((err && err.message) ? String(err.message) : 'Có lỗi xảy ra.');
+            setStatus('Thất bại.');
             renderCards([]);
         } finally {
             runBtn.disabled = false;
@@ -418,7 +418,7 @@ $csrf = csrf_token();
         if (!list.length) return;
         const imageFiles = list.filter((f) => ['image/png', 'image/jpeg'].includes(f.type));
         if (!imageFiles.length) {
-            setError('ChA�»‰ hA�»— trA�»£ JPG/PNG.');
+            setError('Chỉ hỗ trợ JPG/PNG.');
             return;
         }
         selectedImageFiles = imageFiles.slice(0, 10);
@@ -428,8 +428,8 @@ $csrf = csrf_token();
         renderSelectedImages();
         loadPreview(selectedImageFiles[0]);
         setError('');
-        setStatus(`A�Ă£ chA�»n ${selectedImageFiles.length} A�º£nh. SA�ºµn sĂ ng nhA�º­n diA�»‡n AI.`);
-        metaEl.textContent = 'MA�º¹o: bA�º¥m "TĂ¬m mĂ³n ngay (1 chA�º¡m)" A�‘A�»ƒ chA�º¡y tA�»± A�‘A�»™ng toĂ n bA�»™ flow.';
+        setStatus(`Đã chọn ${selectedImageFiles.length} Ảnh. Sẵn sàng nhận diện AI.`);
+        metaEl.textContent = 'Mẹo: bấm "Tìm món ngay (1 chạm)" để chạy tự động toàn bộ flow.';
     };
 
     pickBtn.addEventListener('click', () => inputEl.click());
@@ -459,8 +459,8 @@ $csrf = csrf_token();
         try {
             await detectIngredients();
         } catch (err) {
-            setError((err && err.message) ? String(err.message) : 'Không thA�»ƒ nhA�º­n diA�»‡n A�º£nh.');
-            setStatus('ThA�º¥t bA�º¡i.');
+            setError((err && err.message) ? String(err.message) : 'Không thể nhận diện Ảnh.');
+            setStatus('Thất bại.');
         } finally {
             detectBtn.disabled = false;
         }
@@ -475,10 +475,10 @@ $csrf = csrf_token();
         try {
             await detectIngredients();
             await runSuggestion();
-            setStatus('HoĂ n tA�º¥t tĂ¬m mĂ³n tA�»± A�‘A�»™ng.');
+            setStatus('Hoàn tất tìm món tự động.');
         } catch (err) {
-            setError((err && err.message) ? String(err.message) : 'Không thA�»ƒ tĂ¬m mĂ³n tA�»± A�‘A�»™ng.');
-            setStatus('ThA�º¥t bA�º¡i.');
+            setError((err && err.message) ? String(err.message) : 'Không thể tìm món tự động.');
+            setStatus('Thất bại.');
         } finally {
             oneClickBtn.disabled = false;
             detectBtn.disabled = false;

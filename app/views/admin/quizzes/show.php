@@ -4,7 +4,7 @@ $questions = is_array($questions ?? null) ? $questions : [];
 $participants = is_array($participants ?? null) ? $participants : [];
 $passers = is_array($passers ?? null) ? $passers : [];
 $noticeText = (string) ($noticeText ?? '');
-$showUserDetails = (bool) ($showUserDetails ?? false);
+$showUserDễtails = (bool) ($showUserDễtails ?? false);
 
 $initialQuestions = [];
 foreach ($questions as $question) {
@@ -74,16 +74,16 @@ foreach ($questions as $question) {
 <div class="space-y-6">
     <div class="flex items-center justify-between">
         <div>
-            <h1 class="text-2xl font-bold text-slate-900">Cap nhat bo cau hoi</h1>
-            <p class="text-sm text-slate-500">Moi cau hoi su dung form rieng theo loai da chon.</p>
+            <h1 class="text-2xl font-bold text-slate-900">Cập nhật bộ câu hỏi</h1>
+            <p class="text-sm text-slate-500">Mỗi câu hỏi sử dụng form riêng theo loại đã chọn.</p>
         </div>
         <div class="flex items-center gap-2">
-            <a href="<?= URLROOT; ?>/admin/quizzes/<?= (int) ($set['id'] ?? 0); ?>/users" class="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">Chi tiet user</a>
-            <a href="<?= URLROOT; ?>/admin/quizzes" class="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">Quay lai</a>
+            <a href="<?= URLROOT; ?>/admin/quizzes/<?= (int) ($set['id'] ?? 0); ?>/users" class="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">Chi tiết user</a>
+            <a href="<?= URLROOT; ?>/admin/quizzes" class="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">Quay lại</a>
         </div>
     </div>
 
-    <?php if ($showUserDetails): ?>
+    <?php if ($showUserDễtails): ?>
     <?php if ($noticeText !== ''): ?>
         <div class="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
             <?= htmlspecialchars($noticeText, ENT_QUOTES, 'UTF-8'); ?>
@@ -94,23 +94,23 @@ foreach ($questions as $question) {
         <section class="rounded-xl border border-slate-200 bg-white p-5">
             <div class="mb-3 flex items-center justify-between">
                 <h2 class="text-base font-semibold text-slate-900">Danh sách tham gia</h2>
-                <span class="rounded bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-700"><?= count($participants); ?> ngA�°A�»i</span>
+                <span class="rounded bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-700"><?= count($participants); ?> người</span>
             </div>
             <div class="overflow-x-auto">
                 <table class="min-w-full text-sm">
                     <thead>
                         <tr class="text-left text-slate-500">
-                            <th class="py-2 pr-3">NgA�°A�»i dĂ¹ng</th>
-                            <th class="py-2 pr-3">LA�º§n lĂ m</th>
+                            <th class="py-2 pr-3">Người dùng</th>
+                            <th class="py-2 pr-3">Lần làm</th>
                             <th class="py-2 pr-3">Điểm cao nhất</th>
-                            <th class="py-2 pr-3">LA�º§n gA�º§n nhA�º¥t</th>
-                            <th class="py-2">TrA�º¡ng thĂ¡i</th>
+                            <th class="py-2 pr-3">Lần gần nhất</th>
+                            <th class="py-2">Trạng thái</th>
                         </tr>
                     </thead>
                     <tbody>
                     <?php if ($participants === []): ?>
                         <tr>
-                            <td colspan="5" class="py-3 text-slate-500">ChA�°a cĂ³ ngA�°A�»i tham gia.</td>
+                            <td colspan="5" class="py-3 text-slate-500">Chưa có người tham gia.</td>
                         </tr>
                     <?php else: ?>
                         <?php foreach ($participants as $participant): ?>
@@ -133,11 +133,11 @@ foreach ($questions as $question) {
                                 <td class="py-2 pr-3 text-slate-700"><?= htmlspecialchars((string) ($participant['last_attempt_at'] ?? '-'), ENT_QUOTES, 'UTF-8'); ?></td>
                                 <td class="py-2 text-slate-700">
                                     <?php if ($hasCertificate): ?>
-                                        <span class="rounded bg-emerald-100 px-2 py-1 text-xs font-semibold text-emerald-700">A�Ă£ A�‘A�º¡t</span>
+                                        <span class="rounded bg-emerald-100 px-2 py-1 text-xs font-semibold text-emerald-700">Đã đạt</span>
                                     <?php elseif ($hasPassed): ?>
                                         <span class="rounded bg-amber-100 px-2 py-1 text-xs font-semibold text-amber-700">Đã qua bài</span>
                                     <?php else: ?>
-                                        <span class="rounded bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-600">ChA�°a A�‘A�º¡t</span>
+                                        <span class="rounded bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-600">Chưa đạt</span>
                                     <?php endif; ?>
                                 </td>
                             </tr>
@@ -150,25 +150,25 @@ foreach ($questions as $question) {
 
         <section class="rounded-xl border border-slate-200 bg-white p-5">
             <div class="mb-3 flex items-center justify-between">
-                <h2 class="text-base font-semibold text-slate-900">Danh sĂ¡ch A�‘Ă£ A�‘A�º¡t chA�»©ng chA�»‰</h2>
-                <span class="rounded bg-emerald-100 px-2 py-1 text-xs font-semibold text-emerald-700"><?= count($passers); ?> ngA�°A�»i</span>
+                <h2 class="text-base font-semibold text-slate-900">Danh sách đã đạt chứng chỉ</h2>
+                <span class="rounded bg-emerald-100 px-2 py-1 text-xs font-semibold text-emerald-700"><?= count($passers); ?> người</span>
             </div>
             <div class="overflow-x-auto">
                 <table class="min-w-full text-sm">
                     <thead>
                         <tr class="text-left text-slate-500">
-                            <th class="py-2 pr-3">NgA�°A�»i dĂ¹ng</th>
+                            <th class="py-2 pr-3">Người dùng</th>
                             <th class="py-2 pr-3">Điểm</th>
-                            <th class="py-2 pr-3">Uy tĂ­n cA�»™ng</th>
-                            <th class="py-2 pr-3">MĂ£ chA�»©ng chA�»‰</th>
-                            <th class="py-2">NgĂ y cA�º¥p</th>
+                            <th class="py-2 pr-3">Uy tín cộng</th>
+                            <th class="py-2 pr-3">Mã chứng chỉ</th>
+                            <th class="py-2">Ngày cấp</th>
                             <th class="py-2 text-right">Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>
                     <?php if ($passers === []): ?>
                         <tr>
-                            <td colspan="6" class="py-3 text-slate-500">ChA�°a cĂ³ ngA�°A�»i A�‘A�º¡t chA�»©ng chA�»‰.</td>
+                            <td colspan="6" class="py-3 text-slate-500">Chưa có người đạt chứng chỉ.</td>
                         </tr>
                     <?php else: ?>
                         <?php foreach ($passers as $passer): ?>
@@ -189,10 +189,10 @@ foreach ($questions as $question) {
                                 <td class="py-2 pr-3 text-slate-700"><?= htmlspecialchars((string) ($passer['certificate_code'] ?? '-'), ENT_QUOTES, 'UTF-8'); ?></td>
                                 <td class="py-2 text-slate-700"><?= htmlspecialchars((string) ($passer['awarded_at'] ?? '-'), ENT_QUOTES, 'UTF-8'); ?></td>
                                 <td class="py-2 text-right">
-                                    <form method="post" action="<?= URLROOT; ?>/admin/quiz-certificates/<?= (int) ($passer['certificate_id'] ?? 0); ?>/delete" onsubmit="return confirm('BA�º¡n cĂ³ chA�º¯c muA�»‘n xĂ³a chA�»©ng nhA�º­n nĂ y?');">
+                                    <form method="post" action="<?= URLROOT; ?>/admin/quiz-certificates/<?= (int) ($passer['certificate_id'] ?? 0); ?>/delete" onsubmit="return confirm('Bạn có chắc muốn xóa chứng nhận này?');">
                                         <?= csrf_field(); ?>
                                         <input type="hidden" name="set_id" value="<?= (int) ($set['id'] ?? 0); ?>">
-                                        <button type="submit" class="rounded border border-rose-300 px-2 py-1 text-xs font-semibold text-rose-700 hover:bg-rose-50">XĂ³a chA�»©ng nhA�º­n</button>
+                                        <button type="submit" class="rounded border border-rose-300 px-2 py-1 text-xs font-semibold text-rose-700 hover:bg-rose-50">Xóa chứng nhận</button>
                                     </form>
                                 </td>
                             </tr>
@@ -210,48 +210,48 @@ foreach ($questions as $question) {
         <div class="rounded-xl border border-slate-200 bg-white p-5 space-y-4">
             <div class="grid gap-4 md:grid-cols-3">
                 <label class="text-sm font-medium text-slate-700">
-                    Tieu de
+                    Tiêu đề
                     <input type="text" name="title" required maxlength="255" value="<?= htmlspecialchars((string) ($set['title'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
                 </label>
                 <label class="text-sm font-medium text-slate-700">
-                    Chu de
+                    Chủ đề
                     <input type="text" name="topic" maxlength="120" value="<?= htmlspecialchars((string) ($set['topic'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
                 </label>
                 <label class="text-sm font-medium text-slate-700">
-                    Do kho
+                    Độ khó
                     <select name="difficulty" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
                         <?php $difficulty = (string) ($set['difficulty'] ?? 'easy'); ?>
-                        <option value="easy" <?= $difficulty === 'easy' ? 'selected' : ''; ?>>De</option>
-                        <option value="medium" <?= $difficulty === 'medium' ? 'selected' : ''; ?>>Trung binh</option>
-                        <option value="hard" <?= $difficulty === 'hard' ? 'selected' : ''; ?>>Kho</option>
+                        <option value="easy" <?= $difficulty === 'easy' ? 'selected' : ''; ?>>Dễ</option>
+                        <option value="medium" <?= $difficulty === 'medium' ? 'selected' : ''; ?>>Trung bình</option>
+                        <option value="hard" <?= $difficulty === 'hard' ? 'selected' : ''; ?>>Khó</option>
                     </select>
                 </label>
             </div>
 
             <label class="block text-sm font-medium text-slate-700">
-                Mo ta
+                Mô tả
                 <textarea name="description" rows="2" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"><?= htmlspecialchars((string) ($set['description'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></textarea>
             </label>
 
             <div class="rounded-lg border border-slate-200 bg-slate-50 p-3">
-                <p class="text-sm font-semibold text-slate-800">Thoi gian lam bai</p>
-                <p class="mt-1 text-xs text-slate-500">Nhap so phut. De 0 neu khong gioi han.</p>
+                <p class="text-sm font-semibold text-slate-800">Thời gian làm bài</p>
+                <p class="mt-1 text-xs text-slate-500">Nhập số phút. Để 0 nếu không giới hạn.</p>
                 <label class="mt-3 block text-sm font-medium text-slate-700">
-                    Gioi han thoi gian (phut)
+                    Giới hạn thời gian (phút)
                     <input type="number" min="0" max="600" step="1" name="time_limit_minutes" value="<?= (int) ($set['time_limit_minutes'] ?? 0); ?>" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" placeholder="0">
                 </label>
             </div>
 
             <div class="rounded-lg border border-slate-200 bg-slate-50 p-3">
-                <p class="text-sm font-semibold text-slate-800">Dieu kien dat chung chi</p>
-                <p class="mt-1 text-xs text-slate-500">De trong = mac dinh phai dung het cau va dat toi da diem.</p>
+                <p class="text-sm font-semibold text-slate-800">Điều kiện đạt chứng chỉ</p>
+                <p class="mt-1 text-xs text-slate-500">Để trống = mặc định phải đúng hết câu và đạt tối đa điểm.</p>
                 <div class="mt-3 grid gap-3 md:grid-cols-2">
                     <label class="text-sm font-medium text-slate-700">
-                        So cau dung toi thieu
+                        Số câu đúng tối thiểu
                         <input type="number" min="0" step="1" name="pass_min_correct" value="<?= (int) ($set['pass_min_correct'] ?? 0); ?>" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" placeholder="0">
                     </label>
                     <label class="text-sm font-medium text-slate-700">
-                        So diem toi thieu
+                        Số điểm tối thiểu
                         <input type="number" min="0" step="1" name="pass_min_points" value="<?= (int) ($set['pass_min_points'] ?? 0); ?>" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" placeholder="0">
                     </label>
                 </div>
@@ -262,17 +262,17 @@ foreach ($questions as $question) {
                 <label class="text-sm font-medium text-slate-700">
                     Chon form cau hoi
                     <select id="add-question-type" class="mt-1 rounded-lg border border-slate-300 px-3 py-2 text-sm">
-                        <option value="single_choice">Trac nghiem 1 dap an</option>
-                        <option value="multiple_choice">Chon nhieu dap an</option>
-                        <option value="fill_blank">Dien vao cho trong</option>
-                        <option value="ordering">Sap xep thu tu</option>
+                        <option value="single_choice">Trắc nghiệm 1 đáp án</option>
+                        <option value="multiple_choice">Chọn nhiều đáp án</option>
+                        <option value="fill_blank">Điền vào chỗ trống</option>
+                        <option value="ordering">Sắp xếp thứ tự</option>
                     </select>
                 </label>
-                <button type="button" id="quiz-prev-btn" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">Trang truoc</button>
-                <button type="button" id="quiz-next-btn" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">Trang tiep theo</button>
+                <button type="button" id="quiz-prev-btn" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">Trang trước</button>
+                <button type="button" id="quiz-next-btn" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">Trang tiếp theo</button>
                 <p id="quiz-page-indicator" class="text-sm text-slate-600"></p>
-                <button type="button" id="add-question-btn" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">+ Them cau hoi</button>
-                <button type="submit" class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white">Luu cap nhat</button>
+                <button type="button" id="add-question-btn" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">+ Thêm câu hỏi</button>
+                <button type="submit" class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white">Lưu cập nhật</button>
             </div>
         </div>
     </form>
@@ -294,10 +294,10 @@ foreach ($questions as $question) {
     let currentPage = 1;
 
     function typeLabel(type) {
-        if (type === 'single_choice') return 'Trac nghiem 1 dap an';
-        if (type === 'multiple_choice') return 'Chon nhieu dap an';
-        if (type === 'fill_blank') return 'Dien vao cho trong';
-        return 'Sap xep thu tu';
+        if (type === 'single_choice') return 'Trắc nghiệm 1 đáp án';
+        if (type === 'multiple_choice') return 'Chọn nhiều đáp án';
+        if (type === 'fill_blank') return 'Điền vào chỗ trống';
+        return 'Sắp xếp thứ tự';
     }
 
     function escapeHtml(value) {
@@ -320,18 +320,18 @@ foreach ($questions as $question) {
                 <div class="grid gap-3 md:grid-cols-2">
                     ${[1, 2, 3, 4].map((n) => `
                         <label class="text-sm font-medium text-slate-700">
-                            Dap an ${n}
+                            Đáp án ${n}
                             <input type="text" name="questions[${index}][options][]" required value="${optionValues[n - 1]}" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
                         </label>
                     `).join('')}
                 </div>
                 <div class="space-y-2">
-                    <p class="text-sm font-medium text-slate-700">Dap an dung</p>
+                    <p class="text-sm font-medium text-slate-700">Đáp án đúng</p>
                     <div class="flex flex-wrap gap-3">
                         ${[1, 2, 3, 4].map((n) => `
                             <label class="inline-flex items-center gap-2 text-sm text-slate-700">
                                 <input type="radio" name="questions[${index}][correct_single]" value="${n}" ${selected === n ? 'checked' : ''}>
-                                <span>Dap an ${n}</span>
+                                <span>Đáp án ${n}</span>
                             </label>
                         `).join('')}
                     </div>
@@ -351,13 +351,13 @@ foreach ($questions as $question) {
                 <input type="hidden" name="questions[${index}][answer_key]" value="">
                 <div class="grid gap-3 md:grid-cols-2">
                     <label class="text-sm font-medium text-slate-700">
-                        So dap an
+                        Số đáp án
                         <select name="questions[${index}][option_count]" class="mc-option-count mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
                             ${[2,3,4,5,6,7,8].map((n) => `<option value="${n}" ${n === optionCount ? 'selected' : ''}>${n}</option>`).join('')}
                         </select>
                     </label>
                     <label class="text-sm font-medium text-slate-700">
-                        So dap an dung
+                        Số đáp án đúng
                         <select name="questions[${index}][correct_count]" class="mc-correct-count mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" data-selected="${correctCount}"></select>
                     </label>
                 </div>
@@ -365,12 +365,12 @@ foreach ($questions as $question) {
                     ${[1,2,3,4,5,6,7,8].map((n) => `
                         <div class="mc-row grid grid-cols-[1fr_auto] items-center gap-3">
                             <label class="text-sm font-medium text-slate-700">
-                                Dap an ${n}
+                                Đáp án ${n}
                                 <input type="text" name="questions[${index}][options][]" value="${optionValues[n - 1]}" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
                             </label>
                             <label class="inline-flex items-center gap-2 text-sm text-slate-700 mt-5">
                                 <input type="checkbox" class="mc-correct" name="questions[${index}][correct_multi][]" value="${n}" ${selectedCorrect.includes(n) ? 'checked' : ''}>
-                                <span>Dung</span>
+                                <span>Đúng</span>
                             </label>
                         </div>
                     `).join('')}
@@ -386,11 +386,11 @@ foreach ($questions as $question) {
                 <input type="hidden" name="questions[${index}][choice_lines]" value="">
                 <input type="hidden" name="questions[${index}][answer_key]" value="">
                 <label class="block text-sm font-medium text-slate-700">
-                    Cau hoi mau (dung {{1}}, {{2}}...)
+                    Câu hỏi mẫu (dùng {{1}}, {{2}}...)
                     <textarea name="questions[${index}][fill_template]" rows="3" required class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">${template}</textarea>
                 </label>
                 <label class="block text-sm font-medium text-slate-700">
-                    So o trong
+                    Số ô trống
                     <select name="questions[${index}][fill_blank_count]" class="fill-blank-count mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
                         ${[1,2,3,4,5,6].map((n) => `<option value="${n}" ${n === blankCount ? 'selected' : ''}>${n}</option>`).join('')}
                     </select>
@@ -398,7 +398,7 @@ foreach ($questions as $question) {
                 <div class="fill-blank-list space-y-2">
                     ${[1,2,3,4,5,6].map((n) => `
                         <label class="fill-blank-item block text-sm font-medium text-slate-700">
-                            O trong ${n}
+                            Ô trống ${n}
                             <input type="text" name="questions[${index}][fill_blank_answers][]" value="${escapeHtml(blankAnswers[n - 1] || '')}" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
                         </label>
                     `).join('')}
@@ -415,7 +415,7 @@ foreach ($questions as $question) {
             <input type="hidden" name="questions[${index}][choice_lines]" value="">
             <input type="hidden" name="questions[${index}][answer_key]" value="">
             <label class="block text-sm font-medium text-slate-700">
-                So muc sap xep
+                Số mục sắp xếp
                 <select name="questions[${index}][ordering_count]" class="ordering-count mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
                     ${[2,3,4,5,6,7,8].map((n) => `<option value="${n}" ${n === itemCount ? 'selected' : ''}>${n}</option>`).join('')}
                 </select>
@@ -424,11 +424,11 @@ foreach ($questions as $question) {
                 ${[1,2,3,4,5,6,7,8].map((n) => `
                     <div class="ordering-row grid grid-cols-[1fr_auto] items-end gap-3">
                         <label class="text-sm font-medium text-slate-700">
-                            Muc ${n}
+                            Mục ${n}
                             <input type="text" name="questions[${index}][ordering_items][]" value="${itemValues[n - 1]}" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
                         </label>
                         <label class="text-sm font-medium text-slate-700">
-                            Vi tri dung
+                            Vị trí đúng
                             <select name="questions[${index}][ordering_positions][]" class="ordering-position mt-1 rounded-lg border border-slate-300 px-3 py-2 text-sm" data-selected="${Number.parseInt(orderingPositions[n - 1] || String(n), 10) || n}"></select>
                         </label>
                     </div>
@@ -442,35 +442,35 @@ foreach ($questions as $question) {
         const text = escapeHtml(data.text || '');
         const points = Math.max(1, Number.parseInt(data.points || '1', 10) || 1);
         const explanation = escapeHtml(data.explanation || '');
-        const imagePreview = existingImage ? `<div class="mt-2"><img src="<?= URLROOT; ?>/uploads/${encodeURIComponent(existingImage)}" class="h-24 rounded border border-slate-300" alt="Anh cau hoi"></div>` : '';
+        const imagePreview = existingImage ? `<div class="mt-2"><img src="<?= URLROOT; ?>/uploads/${encodeURIComponent(existingImage)}" class="h-24 rounded border border-slate-300" alt="Ảnh câu hỏi"></div>` : '';
         const wrap = document.createElement('div');
         wrap.className = 'quiz-question rounded-lg border border-slate-200 bg-slate-50 p-4 space-y-3';
         wrap.innerHTML = `
             <div class="flex items-center justify-between gap-2">
-                <h3 class="text-sm font-semibold text-slate-800">Cau hoi #${index + 1}</h3>
+                <h3 class="text-sm font-semibold text-slate-800">Câu hỏi #${index + 1}</h3>
                 <div class="flex items-center gap-2">
                     <span class="rounded bg-slate-200 px-2 py-1 text-xs font-semibold text-slate-700">${typeLabel(type)}</span>
-                    <button type="button" class="remove-question rounded border border-rose-300 px-2 py-1 text-xs font-semibold text-rose-600 hover:bg-rose-50">Xoa</button>
+                    <button type="button" class="remove-question rounded border border-rose-300 px-2 py-1 text-xs font-semibold text-rose-600 hover:bg-rose-50">Xóa</button>
                 </div>
             </div>
             <input type="hidden" name="questions[${index}][question_type]" value="${type}">
             <label class="block text-sm font-medium text-slate-700">
-                Noi dung cau hoi
+                Nội dung câu hỏi
                 <textarea name="questions[${index}][text]" rows="2" required class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">${text}</textarea>
             </label>
             <label class="block text-sm font-medium text-slate-700">
-                Diem cau hoi
+                Điểm câu hỏi
                 <input type="number" min="1" step="1" name="questions[${index}][points]" value="${points}" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
             </label>
             <label class="block text-sm font-medium text-slate-700">
-                Anh cau hoi (khong bat buoc)
+                Ảnh câu hỏi (không bắt buộc)
                 <input type="file" name="question_images[${index}]" accept="image/*" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm bg-white">
                 <input type="hidden" name="questions[${index}][existing_image]" value="${existingImage}">
                 ${imagePreview}
             </label>
             <div class="question-type-fields">${fieldsTemplate(index, type, data)}</div>
             <label class="block text-sm font-medium text-slate-700">
-                Giai thich (khong bat buoc)
+                Giải thích (không bắt buộc)
                 <textarea name="questions[${index}][explanation]" rows="2" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">${explanation}</textarea>
             </label>
         `;
@@ -599,7 +599,7 @@ foreach ($questions as $question) {
     function reindexQuestions() {
         getQuestionBlocks().forEach((block, index) => {
             const title = block.querySelector('h3');
-            if (title) title.textContent = `Cau hoi #${index + 1}`;
+            if (title) title.textContent = `Câu hỏi #${index + 1}`;
             block.querySelectorAll('textarea, input, select').forEach((field) => {
                 const name = field.getAttribute('name') || '';
                 field.setAttribute('name', name.replace(/questions\[\d+\]/, `questions[${index}]`).replace(/question_images\[\d+\]/, `question_images[${index}]`));
@@ -643,7 +643,7 @@ foreach ($questions as $question) {
         if (pageIndicator) {
             const from = total > 0 ? start + 1 : 0;
             const to = Math.min(end, total);
-            pageIndicator.textContent = total > 0 ? `Trang ${currentPage}/${totalPages} - Cau ${from} den ${to}` : 'Trang 1/1';
+            pageIndicator.textContent = total > 0 ? `Trang ${currentPage}/${totalPages} - Câu ${from} đến ${to}` : 'Trang 1/1';
         }
         if (prevBtn) prevBtn.disabled = currentPage === 1;
         if (nextBtn) nextBtn.disabled = currentPage >= totalPages;

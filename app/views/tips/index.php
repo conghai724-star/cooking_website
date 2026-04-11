@@ -45,7 +45,7 @@ $buildPageUrl = static function (int $targetPage) use ($keyword): string {
         </form>
 
         <?php if (empty($tips)): ?>
-            <div class="rounded-xl border border-slate-200 bg-white p-6 text-sm text-slate-500">Chưa có mẹo vặt được duyệt.</div>
+            <div class="rounded-xl border border-slate-200 bg-white p-6 text-sm text-slate-500">Chưa có mẹo vặt nào được duyệt.</div>
         <?php else: ?>
             <div class="grid grid-cols-1 gap-6">
                 <?php foreach ($tips as $tip): ?>
@@ -66,7 +66,7 @@ $buildPageUrl = static function (int $targetPage) use ($keyword): string {
                                 <div>
                                     <div class="mb-4 flex items-center gap-2">
                                         <span class="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">Kỹ thuật</span>
-                                        <span class="text-xs text-slate-400">🕒 5 phút đọc</span>
+                                        <span class="text-xs text-slate-400">Đọc 5 phút</span>
                                     </div>
                                     <h2 class="mb-4 text-2xl font-bold leading-tight text-slate-900 md:text-3xl">
                                         <?= htmlspecialchars((string) ($tip['title'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>

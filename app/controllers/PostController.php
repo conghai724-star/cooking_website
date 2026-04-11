@@ -21,7 +21,7 @@ class PostController extends Controller
         $posts = $postModel->allApprovedPaged($perPage, $offset, $keyword !== '' ? $keyword : null);
 
         $this->view('posts/index', [
-            'title' => 'Cong dong hoi dap',
+            'title' => 'Cộng đồng hỏi đáp',
             'useRecipeHubLayout' => true,
             'posts' => $posts,
             'page' => $page,
@@ -34,7 +34,7 @@ class PostController extends Controller
     {
         $postId = (int) $id;
         if ($postId <= 0) {
-            $this->renderNotFound('Khong tim thay bai viet.');
+            $this->renderNotFound('Không tìm thấy bài viết.');
             return;
         }
 
@@ -42,7 +42,7 @@ class PostController extends Controller
         $postModel = $this->model('PostModel');
         $post = $postModel->findById($postId);
         if (!$post) {
-            $this->renderNotFound('Khong tim thay bai viet.');
+            $this->renderNotFound('Không tìm thấy bài viết.');
             return;
         }
 
@@ -50,7 +50,7 @@ class PostController extends Controller
         $isOwner = $viewerId > 0 && $viewerId === (int) ($post['user_id'] ?? 0);
         $status = (string) ($post['status'] ?? 'approved');
         if (!$isOwner && !is_admin() && $status !== 'approved') {
-            $this->renderNotFound('Khong tim thay bai viet.');
+            $this->renderNotFound('Không tìm thấy bài viết.');
             return;
         }
 
@@ -59,7 +59,7 @@ class PostController extends Controller
         $comments = $commentModel->byPost($postId);
 
         $this->view('posts/show', [
-            'title' => (string) ($post['title'] ?? 'Bai viet'),
+            'title' => (string) ($post['title'] ?? 'Bài viết'),
             'useRecipeHubLayout' => true,
             'post' => $post,
             'comments' => $comments,
@@ -77,7 +77,7 @@ class PostController extends Controller
             $title = trim(profanity_mask($title));
             $content = trim(profanity_mask($content));
             if ($title === '' || $content === '') {
-                $error = 'Vui long nhap tieu de va noi dung.';
+                $error = 'Vui lòng nhập tiêu đề và nội dung.';
             } else {
                 $image = upload_image('image', APPROOT . '/public/uploads');
 
@@ -86,7 +86,7 @@ class PostController extends Controller
                 $postId = $postModel->create((int) current_user_id(), $title, $content, $image !== '' ? $image : null);
 
                 if ($postId === false) {
-                    $error = 'Khong the dang bai viet luc nay.';
+                    $error = 'Không thể đăng bài viết lúc này.';
                 } else {
                     system_log_write(
                         'content_action',
@@ -105,7 +105,7 @@ class PostController extends Controller
         }
 
         $this->view('posts/create', [
-            'title' => 'Dang cau hoi',
+            'title' => 'Đăng câu hỏi',
             'useRecipeHubLayout' => true,
             'error' => $error,
         ]);
@@ -134,7 +134,7 @@ class PostController extends Controller
             $title = trim(profanity_mask($title));
             $content = trim(profanity_mask($content));
             if ($title === '' || $content === '') {
-                $error = 'Vui long nhap tieu de va noi dung.';
+                $error = 'Vui lòng nhập tiêu đề và nội dung.';
             } else {
                 $image = upload_image('image', APPROOT . '/public/uploads');
                 $imageValue = $image !== '' ? $image : (string) ($post['image'] ?? '');
@@ -146,7 +146,7 @@ class PostController extends Controller
                     $imageValue !== '' ? $imageValue : null
                 );
                 if (!$ok) {
-                    $error = 'Khong the cap nhat bai viet.';
+                    $error = 'Không thể cập nhật bài viết.';
                 } else {
                     system_log_write(
                         'content_action',
@@ -165,7 +165,7 @@ class PostController extends Controller
         }
 
         $this->view('posts/edit', [
-            'title' => 'Sua bai viet',
+            'title' => 'Sửa bài viết',
             'useRecipeHubLayout' => true,
             'post' => $post,
             'error' => $error,
@@ -224,10 +224,10 @@ class PostController extends Controller
             $this->redirect($redirectTo . '?notice=post_report_invalid');
         }
 
-        $reason = trim((string) ($_POST['reason'] ?? 'Noi dung khong phu hop'));
+        $reason = trim((string) ($_POST['reason'] ?? 'Nội dung không phù hợp'));
         $details = trim((string) ($_POST['details'] ?? ''));
         if ($reason === '') {
-            $reason = 'Noi dung khong phu hop';
+            $reason = 'Nội dung không phù hợp';
         }
 
         if ($postModel->hasReported($currentUserId, $postId)) {
@@ -246,7 +246,7 @@ class PostController extends Controller
             $notificationModel->create(
                 $ownerId,
                 'report_post',
-                'Bai viet cua ban da nhan mot bao cao tu cong dong.',
+                'Bài viết của bạn đã nhận một báo cáo từ cộng đồng.',
                 $redirectTo
             );
         }

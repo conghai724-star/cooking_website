@@ -52,6 +52,14 @@ class ChatHistoryAdminService
 
         $stateRows = $historyModel->latestStateByUser(20);
         $userModel = new UserModel();
+        $stateUserIds = [];
+        foreach ($stateRows as $stateRow) {
+            $uid = (int) ($stateRow['user_id'] ?? 0);
+            if ($uid > 0) {
+                $stateUserIds[$uid] = $uid;
+            }
+        }
+        $usersById = $userModel->mapBasicByIds(array_values($stateUserIds));
         $states = [];
         foreach ($stateRows as $stateRow) {
             $uid = (int) ($stateRow['user_id'] ?? 0);
@@ -59,7 +67,7 @@ class ChatHistoryAdminService
                 continue;
             }
 
-            $user = $userModel->findById($uid);
+            $user = $usersById[$uid] ?? null;
             $meta = json_decode((string) ($stateRow['meta_json'] ?? ''), true);
             $chatState = is_array($meta['chat_state'] ?? null) ? $meta['chat_state'] : null;
             if (!is_array($chatState)) {

@@ -38,6 +38,42 @@ function send_email_change_verification(
     return $sent;
 }
 
+function send_password_reset_email(
+    string $toEmail,
+    string $resetUrl,
+    string $displayName = '',
+    string $expiresAtText = '30 phút'
+): bool {
+    $name = trim($displayName) !== '' ? trim($displayName) : 'bạn';
+    $subject = '[Cooking Website] Đặt lại mật khẩu';
+    $safeName = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
+    $safeUrl = htmlspecialchars($resetUrl, ENT_QUOTES, 'UTF-8');
+    $safeExpire = htmlspecialchars($expiresAtText, ENT_QUOTES, 'UTF-8');
+
+    $htmlBody = '<!doctype html><html lang="vi"><head><meta charset="UTF-8"><title>Đặt lại mật khẩu</title></head>'
+        . '<body style="font-family:Arial,sans-serif;line-height:1.6;color:#0f172a;">'
+        . '<h2 style="margin:0 0 12px;">Đặt lại mật khẩu</h2>'
+        . '<p>Xin chào <strong>' . $safeName . '</strong>,</p>'
+        . '<p>Bạn vừa yêu cầu đặt lại mật khẩu cho tài khoản Cooking Website.</p>'
+        . '<p><a href="' . $safeUrl . '" style="display:inline-block;padding:10px 14px;background:#f59f0a;color:#fff;text-decoration:none;border-radius:8px;font-weight:700;">Đặt lại mật khẩu</a></p>'
+        . '<p>Hoặc mở liên kết này trong trình duyệt:</p>'
+        . '<p><a href="' . $safeUrl . '">' . $safeUrl . '</a></p>'
+        . '<p>Liên kết sẽ hết hạn sau <strong>' . $safeExpire . '</strong>.</p>'
+        . '<p>Nếu bạn không yêu cầu, hãy bỏ qua email này.</p>'
+        . '</body></html>';
+
+    $textBody = "Xin chào {$name},\n\n"
+        . "Bạn vừa yêu cầu đặt lại mật khẩu cho tài khoản Cooking Website.\n"
+        . "Mở liên kết sau để tiếp tục: {$resetUrl}\n"
+        . "Liên kết sẽ hết hạn sau {$expiresAtText}.\n"
+        . "Nếu bạn không yêu cầu, hãy bỏ qua email này.\n";
+
+    $sent = send_mail_message($toEmail, $subject, $htmlBody, $textBody);
+    log_outgoing_mail($toEmail, $subject, $textBody);
+
+    return $sent;
+}
+
 function send_mail_message(string $toEmail, string $subject, string $htmlBody, string $textBody = ''): bool
 {
     $driver = defined('MAIL_DRIVER') ? strtolower((string) MAIL_DRIVER) : 'mail';

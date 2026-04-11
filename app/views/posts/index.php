@@ -16,11 +16,11 @@ $buildPageUrl = static function (int $targetPage) use ($keyword): string {
     <div class="mx-auto max-w-5xl space-y-6">
         <div class="flex flex-wrap items-center justify-between gap-3">
             <div>
-                <h1 class="text-4xl font-black text-slate-900 md:text-5xl">Cong dong hoi dap</h1>
-                <p class="mt-2 text-sm text-slate-500">Dang cau hoi, chia se kinh nghiem bep va nhan giai dap tu moi nguoi.</p>
+                <h1 class="text-4xl font-black text-slate-900 md:text-5xl">Cộng đồng hỏi đáp</h1>
+                <p class="mt-2 text-sm text-slate-500">Đăng câu hỏi, chia sẻ kinh nghiệm bếp và nhận giải đáp từ mọi người.</p>
             </div>
             <?php if (is_logged_in()): ?>
-                <a href="<?= URLROOT; ?>/posts/create" class="rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-white">Dang cau hoi</a>
+                <a href="<?= URLROOT; ?>/posts/create" class="rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-white">Đăng câu hỏi</a>
             <?php endif; ?>
         </div>
 
@@ -29,12 +29,12 @@ $buildPageUrl = static function (int $targetPage) use ($keyword): string {
                 type="text"
                 name="q"
                 value="<?= htmlspecialchars($keyword, ENT_QUOTES, 'UTF-8'); ?>"
-                placeholder="Tim cau hoi..."
+                placeholder="Tìm câu hỏi..."
                 class="w-full max-w-md rounded-xl border border-slate-200 px-4 py-2.5 text-sm focus:border-primary focus:ring-primary"
             >
-            <button type="submit" class="rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white">Tim kiem</button>
+            <button type="submit" class="rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white">Tìm kiếm</button>
             <?php if ($keyword !== ''): ?>
-                <a href="<?= URLROOT; ?>/posts" class="rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-600">Xoa loc</a>
+                <a href="<?= URLROOT; ?>/posts" class="rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-600">Xóa lọc</a>
             <?php endif; ?>
         </form>
 
@@ -45,7 +45,7 @@ $buildPageUrl = static function (int $targetPage) use ($keyword): string {
                 <?php foreach ($posts as $item): ?>
                     <?php
                     $postId = (int) ($item['id'] ?? 0);
-                    $title = (string) ($item['title'] ?? 'Bai dang');
+                    $title = (string) ($item['title'] ?? 'Bài đăng');
                     $content = trim((string) ($item['content'] ?? ''));
                     $excerpt = function_exists('mb_substr') ? mb_substr($content, 0, 180, 'UTF-8') : substr($content, 0, 180);
                     $contentLen = function_exists('mb_strlen') ? mb_strlen($content, 'UTF-8') : strlen($content);
@@ -55,11 +55,11 @@ $buildPageUrl = static function (int $targetPage) use ($keyword): string {
                     ?>
                     <article class="rounded-2xl border border-slate-200 bg-white p-5">
                         <div class="mb-2 flex items-center gap-2 text-xs text-slate-500">
-                            <span><?= htmlspecialchars((string) ($item['author_name'] ?? 'An danh'), ENT_QUOTES, 'UTF-8'); ?></span>
+                            <span><?= htmlspecialchars((string) ($item['author_name'] ?? 'Ẩn danh'), ENT_QUOTES, 'UTF-8'); ?></span>
                             <span>•</span>
                             <span><?= htmlspecialchars((string) substr((string) ($item['created_at'] ?? ''), 0, 16), ENT_QUOTES, 'UTF-8'); ?></span>
                             <span>•</span>
-                            <span><?= (int) ($item['comment_count'] ?? 0); ?> binh luan</span>
+                            <span><?= (int) ($item['comment_count'] ?? 0); ?> bình luận</span>
                         </div>
                         <h2 class="text-xl font-bold text-slate-900">
                             <a href="<?= URLROOT; ?>/posts/<?= $postId; ?>" class="hover:text-primary">
@@ -74,12 +74,10 @@ $buildPageUrl = static function (int $targetPage) use ($keyword): string {
 
         <?php if ($totalPages > 1): ?>
             <div class="flex items-center justify-center gap-2 pt-2">
-                <a href="<?= $buildPageUrl(max(1, $page - 1)); ?>" class="rounded-lg border border-slate-200 px-3 py-1.5 text-sm <?= $page <= 1 ? 'pointer-events-none opacity-40' : ''; ?>">Truoc</a>
+                <a href="<?= $buildPageUrl(max(1, $page - 1)); ?>" class="rounded-lg border border-slate-200 px-3 py-1.5 text-sm <?= $page <= 1 ? 'pointer-events-none opacity-40' : ''; ?>">Trước</a>
                 <span class="text-sm text-slate-500">Trang <?= $page; ?>/<?= $totalPages; ?></span>
                 <a href="<?= $buildPageUrl(min($totalPages, $page + 1)); ?>" class="rounded-lg border border-slate-200 px-3 py-1.5 text-sm <?= $page >= $totalPages ? 'pointer-events-none opacity-40' : ''; ?>">Sau</a>
             </div>
         <?php endif; ?>
     </div>
 </div>
-
-

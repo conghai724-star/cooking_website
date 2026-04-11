@@ -5,11 +5,11 @@ $csrf = csrf_token();
 <section class="w-full">
     <div class="mx-auto w-full max-w-7xl space-y-6">
         <div class="rounded-2xl border border-primary/10 bg-white p-6 shadow-sm">
-            <h1 class="text-2xl font-black tracking-tight text-slate-900">TĂ¬m mĂ³n bA�º±ng kĂ©o thA�º£ nguyĂªn liA�»‡u</h1>
-            <p class="mt-2 text-sm text-slate-600">KĂ©o thA�º£ vĂ o khay bĂªn phA�º£i, hoA�º·c <strong class="font-semibold text-slate-800">nhA�º¥p A�‘Ăºp</strong> vĂ o nguyĂªn liA�»‡u A�‘A�»ƒ thĂªm vĂ o khay / nhA�º¥p A�‘Ăºp lA�º§n nA�»¯a A�‘A�»ƒ bA�». LA�°A�»›i mA�»—i trang: 5 cA�»™t Ă— 2 hĂ ng (10 mA�»¥c).</p>
+            <h1 class="text-2xl font-black tracking-tight text-slate-900">Tìm món bằng kéo thả nguyên liệu</h1>
+            <p class="mt-2 text-sm text-slate-600">Kéo thả vào khay bên phải, hoặc <strong class="font-semibold text-slate-800">nhấp đúp</strong> vào nguyên liệu để thêm vào khay / nhấp đúp lần nữa để bỏ. Lưới mỗi trang: 5 cột × 2 hàng (10 mục).</p>
             <div class="mt-4 max-w-xl">
-                <label for="ingredient-search" class="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">TĂ¬m nhanh nguyĂªn liA�»‡u</label>
-                <input id="ingredient-search" name="keyword" type="search" placeholder="VĂ­ dA�»¥: cĂ , thA�»‹t, tĂ´m..." class="w-full rounded-xl border-slate-300 text-sm focus:border-primary focus:ring-primary">
+                <label for="ingredient-search" class="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">Tìm nhanh nguyên liệu</label>
+                <input id="ingredient-search" name="keyword" type="search" placeholder="Ví dụ: cá, thịt, tôm..." class="w-full rounded-xl border-slate-300 text-sm focus:border-primary focus:ring-primary">
             </div>
         </div>
 
@@ -17,7 +17,7 @@ $csrf = csrf_token();
             <div class="space-y-4 xl:col-span-3">
                 <?php if ($ingredientGroups === []): ?>
                     <div class="rounded-2xl border border-slate-200 bg-white p-6 text-sm text-slate-500">
-                        ChA�°a cĂ³ dA�»¯ liA�»‡u nguyĂªn liA�»‡u A�‘A�»ƒ hiA�»ƒn thA�»‹.
+                        Chưa có dữ liệu nguyên liệu để hiển thị.
                     </div>
                 <?php else: ?>
                     <?php
@@ -25,18 +25,18 @@ $csrf = csrf_token();
                     foreach ($ingredientGroups as $category => $items) {
                         $categoryName = (string) $category;
                         $emoji = match (true) {
-                            $categoryName === 'Rau cA�»§' => 'đŸ¥¬',
-                            $categoryName === 'ThA�»‹t' => 'đŸ¥©',
-                            $categoryName === 'HA�º£i sA�º£n' => 'đŸŸ',
-                            $categoryName === 'Gia vA�»‹' => 'đŸ§�?',
-                            strcasecmp($categoryName, 'Spices') === 0 => 'đŸ§'',
-                            default => 'đŸ§º',
+                            $categoryName === 'Rau củ' => '🥬',
+                            $categoryName === 'Thịt' => '🥩',
+                            $categoryName === 'Hải sản' => '🐟',
+                            $categoryName === 'Gia vị' => '🧂',
+                            strcasecmp($categoryName, 'Spices') === 0 => '🧂',
+                            default => '🧺',
                         };
                         $groupEntries[] = ['name' => $categoryName, 'emoji' => $emoji, 'items' => $items];
                     }
                     ?>
                     <div class="overflow-hidden rounded-2xl border border-primary/10 bg-white shadow-sm">
-                        <div class="flex gap-1 overflow-x-auto border-b border-slate-200 bg-slate-50/90 px-2 py-2" role="tablist" aria-label="ChA�»n nhĂ³m nguyĂªn liA�»‡u">
+                        <div class="flex gap-1 overflow-x-auto border-b border-slate-200 bg-slate-50/90 px-2 py-2" role="tablist" aria-label="Chọn nhóm nguyên liệu">
                             <?php foreach ($groupEntries as $ti => $g): ?>
                                 <?php
                                 $tabId = 'ingredient-drag-tab-' . $ti;
@@ -77,12 +77,12 @@ $csrf = csrf_token();
                                     <div class="mb-3 flex flex-wrap items-center justify-between gap-2">
                                         <p class="text-sm text-slate-600">
                                             <span class="font-bold text-slate-800"><?= htmlspecialchars($g['emoji'] . ' ' . $g['name'], ENT_QUOTES, 'UTF-8'); ?></span>
-                                            A�€” <span data-group-count><?= count($items); ?></span> mA�»¥c (cuA�»™n ngang tab phĂ­a trĂªn A�‘A�»ƒ A�‘A�»•i nhĂ³m)
+                                            — <span data-group-count><?= count($items); ?></span> mục (cuộn ngang tab phía trên để đổi nhóm)
                                         </p>
                                     </div>
                                     <div class="relative grid grid-cols-5 gap-2 sm:gap-3">
                                         <p data-group-empty class="col-span-full hidden rounded-lg border border-dashed border-slate-200 bg-white px-4 py-6 text-center text-sm text-slate-500">
-                                            Không cĂ³ nguyĂªn liA�»‡u khA�»›p Ă´ tĂ¬m nhanh A�€” thA�»­ tA�»« khóa khĂ¡c hoA�º·c chA�»n tab nhĂ³m khĂ¡c.
+                                            Không có nguyên liệu khớp ô tìm nhanh — thử từ khóa khác hoặc chọn tab nhóm khác.
                                         </p>
                                         <?php foreach ($items as $item): ?>
                                             <?php
@@ -98,7 +98,7 @@ $csrf = csrf_token();
                                                     data-ingredient-card
                                                     data-ingredient-id="<?= $id; ?>"
                                                     data-ingredient-name="<?= htmlspecialchars($name, ENT_QUOTES, 'UTF-8'); ?>"
-                                                    title="NhA�º¥p A�‘Ăºp A�‘A�»ƒ thĂªm hoA�º·c bA�» khA�»i khay"
+                                                    title="Nhấp đúp để thêm hoặc bỏ khỏi khay"
                                                     class="w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                                                 >
                                                     <?php if ($imageUrl !== ''): ?>
@@ -112,7 +112,7 @@ $csrf = csrf_token();
                                         <?php endforeach; ?>
                                     </div>
                                     <div class="mt-3 flex items-center justify-end gap-2">
-                                        <button type="button" data-page-prev class="rounded border border-slate-300 px-2 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-40">TrA�°A�»›c</button>
+                                        <button type="button" data-page-prev class="rounded border border-slate-300 px-2 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-40">Trước</button>
                                         <span class="text-xs text-slate-500" data-page-label>Trang 1/1</span>
                                         <button type="button" data-page-next class="rounded border border-slate-300 px-2 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-40">Sau</button>
                                     </div>
@@ -125,17 +125,17 @@ $csrf = csrf_token();
 
             <aside class="space-y-4 xl:col-span-1">
                 <div id="drop-basket" class="rounded-2xl border-2 border-dashed border-amber-300 bg-amber-50/60 p-4">
-                    <h3 class="text-base font-bold text-slate-900">Khay nguyĂªn liA�»‡u</h3>
-                    <p class="mt-1 text-xs text-slate-600">KĂ©o thA�º£ vĂ o A�‘Ă¢y; hoA�º·c nhA�º¥p A�‘Ăºp nguyĂªn liA�»‡u A�»Ÿ lA�°A�»›i. Trong khay, nhA�º¥p A�‘Ăºp tĂªn A�‘A�»ƒ bA�».</p>
+                    <h3 class="text-base font-bold text-slate-900">Khay nguyên liệu</h3>
+                    <p class="mt-1 text-xs text-slate-600">Kéo thả vào đây; hoặc nhấp đúp nguyên liệu ở lưới. Trong khay, nhấp đúp tên để bỏ.</p>
                     <div id="selected-ingredients" class="mt-3 min-h-20 space-y-2">
-                        <p class="text-sm text-slate-500">ChA�°a cĂ³ nguyĂªn liA�»‡u.</p>
+                        <p class="text-sm text-slate-500">Chưa có nguyên liệu.</p>
                     </div>
-                    <button id="clear-selected" type="button" class="mt-3 w-full rounded-lg border border-slate-300 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">XĂ³a tA�º¥t cA�º£</button>
+                    <button id="clear-selected" type="button" class="mt-3 w-full rounded-lg border border-slate-300 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">Xóa tất cả</button>
                 </div>
 
                 <div class="rounded-2xl border border-primary/10 bg-white p-4 shadow-sm">
-                    <h3 class="text-base font-bold text-slate-900">Món A�ƒn gA�»£i Ă½</h3>
-                    <p id="search-status" aria-live="polite" class="mt-1 text-xs text-slate-500">SA�ºµn sĂ ng.</p>
+                    <h3 class="text-base font-bold text-slate-900">Món ăn gợi ý</h3>
+                    <p id="search-status" aria-live="polite" class="mt-1 text-xs text-slate-500">Sẵn sàng.</p>
                     <div id="search-error" role="alert" class="mt-2 hidden rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-700"></div>
                 </div>
             </aside>
@@ -208,7 +208,7 @@ $csrf = csrf_token();
         const rawText = await response.text();
         const text = String(rawText || '').trim();
         if (text === '') {
-            return { success: false, message: 'Server khĂ´ng trA�º£ dA�»¯ liA�»‡u.' };
+            return { success: false, message: 'Server không trả dữ liệu.' };
         }
         try {
             return JSON.parse(text);
@@ -232,7 +232,7 @@ $csrf = csrf_token();
     const renderSelected = () => {
         const values = Array.from(selected.values());
         if (!values.length) {
-            selectedEl.innerHTML = '<p class="text-sm text-slate-500">ChA�°a cĂ³ nguyĂªn liA�»‡u.</p>';
+            selectedEl.innerHTML = '<p class="text-sm text-slate-500">Chưa có nguyên liệu.</p>';
             syncIngredientGridSelection();
             return;
         }
@@ -240,7 +240,7 @@ $csrf = csrf_token();
             <div
                 class="cursor-pointer select-none rounded-lg border border-slate-200 bg-white px-2 py-1.5 hover:bg-slate-50"
                 data-basket-ingredient-id="${item.id}"
-                title="NhA�º¥p A�‘Ăºp A�‘A�»ƒ bA�» khA�»i khay"
+                title="Nhấp đúp để bỏ khỏi khay"
             >
                 <span class="text-xs font-semibold text-slate-700">${item.name}</span>
             </div>
@@ -260,7 +260,7 @@ $csrf = csrf_token();
 
     const renderCards = (recipes) => {
         if (!Array.isArray(recipes) || recipes.length === 0) {
-            resultGridEl.innerHTML = '<div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-500">ChA�°a cĂ³ mĂ³n phĂ¹ hA�»£p.</div>';
+            resultGridEl.innerHTML = '<div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-500">Chưa có món phù hợp.</div>';
             return;
         }
         resultGridEl.innerHTML = recipes.map((recipe, index) => {
@@ -268,7 +268,7 @@ $csrf = csrf_token();
             const imageUrl = image !== ''
                 ? (image.startsWith('http') ? image : `<?= URLROOT; ?>/uploads/${image.replace(/^\/+/, '')}`)
                 : '';
-            const title = String(recipe.title || 'CĂ´ng thA�»©c');
+            const title = String(recipe.title || 'Công thức');
             const desc = String(recipe.description || '');
             const url = String(recipe.url || '#');
             const mc = recipe.matched_count != null ? Number(recipe.matched_count) : null;
@@ -284,24 +284,24 @@ $csrf = csrf_token();
             }
             const parts = [];
             if (mc != null && ti != null && ti > 0) {
-                parts.push(`${mc}/${ti} trong mĂ³n`);
+                parts.push(`${mc}/${ti} trong món`);
             }
             if (pctSel != null && mc != null) {
-                parts.push(`${pctSel}% nguyĂªn liA�»‡u bA�º¡n chA�»n (${mc}/${basketN})`);
+                parts.push(`${pctSel}% nguyên liệu bạn chọn (${mc}/${basketN})`);
             }
             const metaLine = parts.length ? `<p class="mt-2 text-[11px] leading-snug text-slate-500">${parts.join(' · ')}</p>` : '';
             return `
                 <article class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-                    ${imageUrl ? `<img src="${imageUrl}" alt="A�º¢nh mĂ³n A�ƒn" class="h-36 w-full object-cover">` : ''}
+                    ${imageUrl ? `<img src="${imageUrl}" alt="Ảnh món ăn" class="h-36 w-full object-cover">` : ''}
                     <div class="p-3">
                         <div class="flex flex-wrap items-start justify-between gap-2">
-                            <p class="text-[11px] font-semibold text-slate-400">MĂ³n #${index + 1}</p>
-                            ${pctRecipe != null ? `<span class="rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-bold text-primary">${pctRecipe}% nguyĂªn liA�»‡u mĂ³n</span>` : ''}
+                            <p class="text-[11px] font-semibold text-slate-400">Món #${index + 1}</p>
+                            ${pctRecipe != null ? `<span class="rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-bold text-primary">${pctRecipe}% nguyên liệu món</span>` : ''}
                         </div>
                         <h4 class="mt-1 line-clamp-2 text-sm font-bold text-slate-900">${title}</h4>
                         <p class="mt-1 line-clamp-2 text-xs text-slate-600">${desc}</p>
                         ${metaLine}
-                        <a href="${url}" class="mt-2 inline-flex rounded-lg bg-amber-100 px-3 py-1.5 text-xs font-bold text-amber-700 hover:bg-amber-200">Xem chi tiA�º¿t</a>
+                        <a href="${url}" class="mt-2 inline-flex rounded-lg bg-amber-100 px-3 py-1.5 text-xs font-bold text-amber-700 hover:bg-amber-200">Xem chi tiết</a>
                     </div>
                 </article>
             `;
@@ -311,13 +311,13 @@ $csrf = csrf_token();
     const runSearch = async () => {
         const ingredients = Array.from(selected.values()).map((v) => v.name).filter(Boolean);
         if (!ingredients.length) {
-            setStatus('KĂ©o thA�º£ nguyĂªn liA�»‡u A�‘A�»ƒ bA�º¯t A�‘A�º§u.');
+            setStatus('Kéo thả nguyên liệu để bắt đầu.');
             setError('');
             renderCards([]);
             return;
         }
 
-        setStatus('Ă„ang tìm mĂ³n...');
+        setStatus('Đang tìm món...');
         setError('');
 
         try {
@@ -337,14 +337,14 @@ $csrf = csrf_token();
             });
             const data = await readApiPayload(response);
             if (!response.ok || !data.success) {
-                throw new Error((data && data.message) ? data.message : 'Không thA�»ƒ tĂ¬m mĂ³n lĂºc nĂ y.');
+                throw new Error((data && data.message) ? data.message : 'Không thể tìm món lúc này.');
             }
             const recipes = Array.isArray(data.data && data.data.recipes) ? data.data.recipes : [];
             renderCards(recipes);
-            setStatus(`A�Ă£ tĂ¬m thA�º¥y ${recipes.length} mĂ³n phĂ¹ hA�»£p.`);
+            setStatus(`Đã tìm thấy ${recipes.length} món phù hợp.`);
         } catch (err) {
-            setStatus('TĂ¬m kiA�º¿m thA�º¥t bA�º¡i.');
-            setError((err && err.message) ? String(err.message) : 'CĂ³ lA�»—i xA�º£y ra.');
+            setStatus('Tìm kiếm thất bại.');
+            setError((err && err.message) ? String(err.message) : 'Có lỗi xảy ra.');
         }
     };
 
@@ -493,4 +493,3 @@ $csrf = csrf_token();
     renderCards([]);
 })();
 </script>
-

@@ -43,20 +43,20 @@ $noticeText = match ($notice) {
                 <?= csrf_field(); ?>
                 <input type="text" name="title" required maxlength="255" value="<?= htmlspecialchars((string) ($banner['title'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>" placeholder="Tiêu đề banner" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
                 <textarea name="subtitle" rows="3" placeholder="Mô tả ngắn" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"><?= htmlspecialchars((string) ($banner['subtitle'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></textarea>
-                <input type="text" name="image_url" maxlength="255" value="<?= htmlspecialchars((string) ($banner['image_url'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>" placeholder="URL ảnh banner" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
-                <p class="text-xs text-slate-500">Dán link ảnh ngoài (ví dụ: <code>https://images.unsplash.com/...</code>).</p>
+                <input type="text" name="image_url" maxlength="255" value="<?= htmlspecialchars((string) ($banner['image_url'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>" placeholder="URL Ảnh banner" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
+                <p class="text-xs text-slate-500">Dán link Ảnh ngoài (ví dụ: <code>https://images.unsplash.com/...</code>).</p>
                 <div>
-                    <label class="mb-1 block text-xs font-semibold text-slate-600">Hoặc tải ảnh từ thiết bị</label>
+                    <label class="mb-1 block text-xs font-semibold text-slate-600">Hoặc tải Ảnh từ thiết bị</label>
                     <input type="file" name="image_file" accept=".jpg,.jpeg,.png,.webp,.gif" class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm">
                 </div>
                 <?php if ($bannerImageSrc !== ''): ?>
                     <div class="overflow-hidden rounded-lg border border-slate-200">
-                        <img src="<?= htmlspecialchars($bannerImageSrc, ENT_QUOTES, 'UTF-8'); ?>" alt="Banner preview" class="h-44 w-full object-cover">
+                        <img src="<?= htmlspecialchars($bannerImageSrc, ENT_QUOTES, 'UTF-8'); ?>" alt="Xem trước banner" class="h-44 w-full object-cover">
                     </div>
                 <?php endif; ?>
                 <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
                     <input type="text" name="cta_text" maxlength="80" value="<?= htmlspecialchars((string) ($banner['cta_text'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>" placeholder="Nút CTA" class="rounded-lg border border-slate-300 px-3 py-2 text-sm">
-                    <input type="text" name="cta_url" maxlength="255" value="<?= htmlspecialchars((string) ($banner['cta_url'] ?? '/recipes'), ENT_QUOTES, 'UTF-8'); ?>" placeholder="Link CTA (vd: /recipes)" class="rounded-lg border border-slate-300 px-3 py-2 text-sm">
+                    <input type="text" name="cta_url" maxlength="255" value="<?= htmlspecialchars((string) ($banner['cta_url'] ?? '/recipes'), ENT_QUOTES, 'UTF-8'); ?>" placeholder="Liên kết CTA (vd: /recipes)" class="rounded-lg border border-slate-300 px-3 py-2 text-sm">
                 </div>
                 <label class="inline-flex items-center gap-2 text-sm">
                     <input type="checkbox" name="is_active" value="1" checked>
@@ -89,7 +89,7 @@ $noticeText = match ($notice) {
             <?= csrf_field(); ?>
             <input type="date" name="for_date" value="<?= htmlspecialchars($forDate, ENT_QUOTES, 'UTF-8'); ?>" class="rounded-lg border border-slate-300 px-3 py-2 text-sm">
             <select name="recipe_id" class="rounded-lg border border-slate-300 px-3 py-2 text-sm">
-                <option value="">-- Chọn công thức approved --</option>
+                <option value="">-- Chọn công thức đã duyệt --</option>
                 <?php foreach ($recipes as $recipe): ?>
                     <?php $rid = (int) ($recipe['id'] ?? 0); ?>
                     <option value="<?= $rid; ?>" <?= ((int) ($recipeOfDay['id'] ?? 0) === $rid) ? 'selected' : ''; ?>>

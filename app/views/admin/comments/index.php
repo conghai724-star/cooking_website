@@ -6,19 +6,19 @@ $reportedOnly = !empty($reportedOnly);
 $notice = (string) ($notice ?? '');
 
 $noticeMap = [
-    'hidden' => 'Da an binh luan.',
-    'restored' => 'Da khoi phuc binh luan.',
-    'deleted' => 'Da xoa binh luan.',
-    'penalty_applied' => 'Da ap dung hinh thuc xu ly nguoi vi pham.',
-    'penalty_failed' => 'Không thể ap dung hinh thuc xu ly.',
+    'hidden' => 'Đã ẩn bình luận.',
+    'restored' => 'Đã khôi phục bình luận.',
+    'deleted' => 'Đã xóa bình luận.',
+    'penalty_applied' => 'Đã áp dụng hình thức xử lý người vi phạm.',
+    'penalty_failed' => 'Không thể áp dụng hình thức xử lý.',
 ];
 $noticeText = $noticeMap[$notice] ?? '';
 ?>
 
 <div class="flex flex-col gap-6">
     <div class="flex flex-col gap-2">
-        <h1 class="text-2xl font-bold text-slate-900">Quan ly binh luan</h1>
-        <p class="text-sm text-slate-500">An, xoa, khoi phuc binh luan vi pham.</p>
+        <h1 class="text-2xl font-bold text-slate-900">Quản lý bình luận</h1>
+        <p class="text-sm text-slate-500">Ẩn, xóa, khôi phục bình luận vi phạm.</p>
     </div>
 
     <?php if ($noticeText !== ''): ?>

@@ -1,4 +1,4 @@
-﻿<?php
+?<?php
 $ingredientHeroImage = (string) ($ingredientHeroImage ?? '');
 $ingredientHeroTitle = (string) ($ingredientHeroTitle ?? 'Nguyên liệu');
 $ingredientHeroTag = (string) ($ingredientHeroTag ?? 'Nguyên liệu');

@@ -34,7 +34,7 @@ class UserController extends Controller
         $isAjax = $this->isAjaxRequest();
         $followingNow = false;
         $changed = false;
-        $message = 'A�Ă£ cA�º­p nhA�º­t theo dĂµi.';
+        $message = 'Đã cập nhật theo dõi.';
 
         if ($targetUserId > 0 && $targetUserId !== $currentUserId) {
             /** @var UserModel $userModel */
@@ -46,7 +46,7 @@ class UserController extends Controller
             $penaltyModel = $this->model('UserPenaltyModel');
             $activeFollowLock = $penaltyModel->getActiveFollowLock($currentUserId);
             if ($activeFollowLock !== null) {
-                $message = 'TĂ i khoA�º£n A�‘ang bA�»‹ khĂ³a theo dĂµi tA�º¡m thA�»i.';
+                $message = 'Tài khoản đang bị khóa theo dõi tạm thời.';
                 system_log_write('user_action', 'user.follow', 'blocked', 'follow_locked', 'user', $targetUserId, [
                     'target_user_id' => $targetUserId,
                 ], $currentUserId, (string) (current_user()['role'] ?? 'user'));
@@ -56,7 +56,7 @@ class UserController extends Controller
                 $followModel->follow($currentUserId, $targetUserId);
                 $followingNow = $followModel->isFollowing($currentUserId, $targetUserId);
                 $changed = true;
-                $message = $followingNow ? 'A�Ă£ theo dĂµi.' : 'A�Ă£ cA�º­p nhA�º­t theo dĂµi.';
+                $message = $followingNow ? 'Đã theo dõi.' : 'Đã cập nhật theo dõi.';
                 if ($followingNow) {
                     system_log_write('user_action', 'user.follow', 'success', null, 'user', $targetUserId, [
                         'target_user_id' => $targetUserId,
@@ -67,15 +67,15 @@ class UserController extends Controller
                     $notificationModel->create(
                         $targetUserId,
                         'follow',
-                        $actorName . ' A�‘Ă£ theo dĂµi bA�º¡n.',
+                        $actorName . ' đã theo dõi bạn.',
                         '/users/' . $currentUserId
                     );
                 }
             } else {
-                $message = 'KhĂ´ng thA�»ƒ theo dĂµi tĂ i khoA�º£n nĂ y.';
+                $message = 'Không thể theo dõi tài khoản này.';
             }
         } else {
-            $message = 'KhĂ´ng thA�»ƒ theo dĂµi tĂ i khoA�º£n nĂ y.';
+            $message = 'Không thể theo dõi tài khoản này.';
         }
 
         if ($isAjax) {
@@ -100,19 +100,19 @@ class UserController extends Controller
         $currentUserId = (int) current_user_id();
         $isAjax = $this->isAjaxRequest();
         $changed = false;
-        $message = 'A�Ă£ cA�º­p nhA�º­t theo dĂµi.';
+        $message = 'Đã cập nhật theo dõi.';
 
         if ($targetUserId > 0 && $targetUserId !== $currentUserId) {
             /** @var FollowModel $followModel */
             $followModel = $this->model('FollowModel');
             $followModel->unfollow($currentUserId, $targetUserId);
             $changed = true;
-            $message = 'A�Ă£ hA�»§y theo dĂµi.';
+            $message = 'Đã hủy theo dõi.';
             system_log_write('user_action', 'user.unfollow', 'success', null, 'user', $targetUserId, [
                 'target_user_id' => $targetUserId,
             ], $currentUserId, (string) (current_user()['role'] ?? 'user'));
         } else {
-            $message = 'KhĂ´ng thA�»ƒ hA�»§y theo dĂµi tĂ i khoA�º£n nĂ y.';
+            $message = 'Không thể hủy theo dõi tài khoản này.';
         }
 
         if ($isAjax) {
@@ -210,7 +210,7 @@ class UserController extends Controller
             $notificationModel = $this->model('NotificationModel');
             $notificationModel->createForAdmins(
                 'report_user',
-                'CĂ³ bĂ¡o cĂ¡o tĂ i khoA�º£n mA�»›i (user ID: ' . $targetUserId . ').'
+                'Có báo cáo tài khoản mới (user ID: ' . $targetUserId . ').'
             );
         }
         $this->redirect('/users/' . $targetUserId . '?notice=' . ($ok ? 'report_user_success' : 'user_action_failed'));
@@ -300,7 +300,7 @@ class UserController extends Controller
             $activeTargets[] = [
                 'target_type' => 'user_ban',
                 'target_id' => (int) ($accountBan['id'] ?? 0),
-                'label' => 'Ban tĂ i khoA�º£n',
+                'label' => 'Ban tài khoản',
                 'reason' => (string) ($accountBan['reason'] ?? ''),
                 'expires_at' => (string) ($accountBan['ban_until'] ?? ''),
                 'created_at' => (string) ($accountBan['created_at'] ?? ''),
@@ -310,12 +310,12 @@ class UserController extends Controller
         foreach ($penaltyModel->listActiveAppealableByUserId($userId) as $row) {
             $action = (string) ($row['action'] ?? '');
             $label = match (true) {
-                str_starts_with($action, 'comment_lock_') => 'KhĂ³a bĂ¬nh luA�º­n',
-                str_starts_with($action, 'recipe_post_lock_') => 'KhÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³a Ă„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¢Ă„â€Ă‚Â¢Ä‚Â¢Ă¢â€Â¬Ă‚ÂÄ‚â€Ă‚Â¬Ă„â€Ă¢â‚¬Â¹Ä‚â€¦Ă¢â‚¬Å“Ă„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚Â Ă„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¢ng cÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â´ng thĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡Ä‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â»Ä‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â©c',
-                str_starts_with($action, 'tip_post_lock_') => 'KhÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³a Ă„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¢Ă„â€Ă‚Â¢Ä‚Â¢Ă¢â€Â¬Ă‚ÂÄ‚â€Ă‚Â¬Ă„â€Ă¢â‚¬Â¹Ä‚â€¦Ă¢â‚¬Å“Ă„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚Â Ă„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¢ng mĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡Ä‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚ÂºÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¹o',
-                str_starts_with($action, 'ingredient_post_lock_') => 'KhÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³a Ă„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¢Ă„â€Ă‚Â¢Ä‚Â¢Ă¢â€Â¬Ă‚ÂÄ‚â€Ă‚Â¬Ă„â€Ă¢â‚¬Â¹Ä‚â€¦Ă¢â‚¬Å“Ă„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚Â Ă„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¢ng nguyÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Âªn liĂ„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡Ä‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â»Ä‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¢Ă„â€Ă‚Â¢Ä‚Â¢Ă¢â€Â¬Ă‚ÂÄ‚â€Ă‚Â¬Ă„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡u',
-                str_starts_with($action, 'follow_lock_') => 'KhÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â³a theo dÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Âµi',
-                str_starts_with($action, 'ban_') => 'Ban tĂ i khoA�º£n',
+                str_starts_with($action, 'comment_lock_') => 'Khóa bình luận',
+                str_starts_with($action, 'recipe_post_lock_') => 'Khóa đăng công thức',
+                str_starts_with($action, 'tip_post_lock_') => 'Khóa đăng mẹo',
+                str_starts_with($action, 'ingredient_post_lock_') => 'Khóa đăng nguyên liệu',
+                str_starts_with($action, 'follow_lock_') => 'Khóa theo dõi',
+                str_starts_with($action, 'ban_') => 'Ban tài khoản',
                 default => $action,
             };
             $activeTargets[] = [
@@ -329,7 +329,7 @@ class UserController extends Controller
         }
 
         $this->view('user/appeals', [
-            'title' => 'KhiA�º¿u nA�º¡i xA�»­ lĂ½ tĂ i khoA�º£n',
+            'title' => 'Khiếu nại xử lý tài khoản',
             'useRecipeHubLayout' => true,
             'targets' => $activeTargets,
             'appeals' => $appealModel->listByUser($userId),
@@ -401,17 +401,17 @@ class UserController extends Controller
         $userId = (int) current_user_id();
         $user = $userModel->findById($userId);
         if (!$user) {
-            $this->renderNotFound('KhAA�¿½A�¿A�½ng tAA�¿½A�¿A�½m th?y ngu?i dAA�¿½A�¿A�½ng.');
+            $this->renderNotFound('Không tìm thấy người dùng.');
             return;
         }
 
         $notice = (string) ($_GET['notice'] ?? '');
         if ($notice === 'email_verified') {
-            $message = 'Email A�‘A�ƒng nhA�º­p A�‘A�°A�»£c cA�º­p nhA�º­t.';
+            $message = 'Email đăng nhập được cập nhật.';
         } elseif ($notice === 'email_token_invalid') {
-            $error = 'LiAA�¿½A�¿A�½n k?t xAA�¿½A�¿A�½c nh?n khAA�¿½A�¿A�½ng h?p l? ho?c dAA�¿½A�¿A�½ h?t h?n.';
+            $error = 'Liên kết xác nhận không hợp lệ hoặc đã hết hạn.';
         } elseif ($notice === 'email_already_used') {
-            $error = 'Email m?i dAA�¿½A�¿A�½ du?c s? d?ng.';
+            $error = 'Email mới đã được sử dụng.';
         }
 
         if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
@@ -426,23 +426,23 @@ class UserController extends Controller
             $passwordChangeRequested = ($newPassword !== '' || $confirmNewPassword !== '');
 
             if ($name === '' || $email === '') {
-                $error = 'Vui lAA�¿½A�¿A�½ng nh?p d?y d? tAA�¿½A�¿A�½n vAA�¿½A�¿A�½ email.';
+                $error = 'Vui lòng nhập đầy đủ tên và email.';
             } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $error = 'Email khAAA�¿½A�¿A�½ng hAA�¿½A�»A�£p lAA�¿½A�»A�€¡.';
+                $error = 'Email không hợp lệ.';
             } elseif (mb_strlen($name) > 100) {
-                $error = 'TAA�¿½A�¿A�½n t?i da 100 kAA�¿½A�¿A�½ t?.';
+                $error = 'Tên tối đa 100 ký tự.';
             } elseif (mb_strlen($bio) > 500) {
-                $error = 'Gi?i thi?u t?i da 500 kAA�¿½A�¿A�½ t?.';
+                $error = 'Giới thiệu tối đa 500 ký tự.';
             } elseif ($userModel->findByEmailExceptId($email, $userId)) {
-                $error = 'Email dAA�¿½A�¿A�½ du?c s? d?ng.';
+                $error = 'Email đã được sử dụng.';
             } elseif ($passwordChangeRequested && strlen($newPassword) < 6) {
-                $error = 'MAA�¿½A�ºA�­t khAA�¿½A�ºA�©u mAA�¿½A�»A�€ºi phAA�¿½A�ºA�£i cAAA�¿½A�¿A�½ AAA�¿½A�¿A�½t nhAA�¿½A�ºA�¥t 6 kAAA�¿½A�¿A�½ tAA�¿½A�»A�±.';
+                $error = 'Mật khẩu mới phải có ít nhất 6 ký tự.';
             } elseif ($passwordChangeRequested && $newPassword !== $confirmNewPassword) {
-                $error = 'XAAA�¿½A�¿A�½c nhAA�¿½A�ºA�­n mAA�¿½A�ºA�­t khAA�¿½A�ºA�©u mAA�¿½A�»A�€ºi khAAA�¿½A�¿A�½ng khAA�¿½A�»A�€ºp.';
+                $error = 'Xác nhận mật khẩu mới không khớp.';
             } elseif ($emailChanged || $passwordChangeRequested) {
                 $authUser = $userModel->findAuthById($userId);
                 if (!$authUser || !password_verify($currentPassword, (string) ($authUser['password'] ?? ''))) {
-                    $error = 'C?n nh?p dAA�¿½A�¿A�½ng m?t kh?u hi?n t?i d? d?i email ho?c m?t kh?u.';
+                    $error = 'Cần nhập đúng mật khẩu hiện tại để đổi email hoặc mật khẩu.';
                 }
             }
 
@@ -461,7 +461,7 @@ class UserController extends Controller
                 if ($ok && $passwordChangeRequested) {
                     $ok = $userModel->updatePassword($userId, $newPassword);
                     if (!$ok) {
-                        $error = 'KhAA�¿½A�¿A�½ng thAA�¿½A�»A�’ cAA�¿½A�ºA�­p nhAA�¿½A�ºA�­t mAA�¿½A�ºA�­t khAA�¿½A�ºA�©u.';
+                        $error = 'Không thể cập nhật mật khẩu.';
                     }
                 }
 
@@ -484,25 +484,25 @@ class UserController extends Controller
 
                         $verifyPath = URLROOT . '/profile/verify-email-change?token=' . rawurlencode($token);
                         $verifyUrl = $this->absoluteUrl($verifyPath);
-                        $sendOk = send_email_change_verification($email, $verifyUrl, (string) ($user['name'] ?? ''), '30 phAA�¿½A�¿A�½t');
+                        $sendOk = send_email_change_verification($email, $verifyUrl, (string) ($user['name'] ?? ''), '30 phút');
                         $message = $sendOk
-                            ? 'AA�¿½A�¿A�½AA�¿½A�¿A�½ g?i email xAA�¿½A�¿A�½c nh?n d?i email. Vui lAA�¿½A�¿A�½ng ki?m tra h?p thu. LiAA�¿½A�¿A�½n k?t h?t h?n sau 30 phAA�¿½A�¿A�½t.'
-                            : 'AA�¿½A�¿A�½AA�¿½A�¿A�½ t?o yAA�¿½A�¿A�½u c?u d?i email. TrAA�¿½A�¿A�½n localhost: vui lAA�¿½A�¿A�½ng xem file storage/logs/mail.log d? l?y liAA�¿½A�¿A�½n k?t xAA�¿½A�¿A�½c nh?n (h?t h?n sau 30 phAA�¿½A�¿A�½t).';
+                            ? 'Đã gửi email xác nhận đổi email. Vui lòng kiểm tra hộp thư. Liên kết hết hạn sau 30 phút.'
+                            : 'Đã tạo yêu cầu đổi email. Trên localhost: vui lòng xem file storage/logs/mail.log để lấy liên kết xác nhận (hết hạn sau 30 phút).';
                     } else {
                         $message = $passwordChangeRequested
-                            ? 'CAA�¿½A�ºA�­p nhAA�¿½A�ºA�­t hAA�¿½A�»A�€œ sAA�¿½A�¡ vAAA�¿½A�¿A�½ mAA�¿½A�ºA�­t khAA�¿½A�ºA�©u thAAA�¿½A�¿A�½nh cAAA�¿½A�¿A�½ng.'
-                            : 'CAA�¿½A�ºA�­p nhAA�¿½A�ºA�­t hAA�¿½A�»A�€œ sAA�¿½A�¡ thAAA�¿½A�¿A�½nh cAAA�¿½A�¿A�½ng.';
+                            ? 'Cập nhật hồ sơ và mật khẩu thành công.'
+                            : 'Cập nhật hồ sơ thành công.';
                     }
 
                     $user = $userModel->findById($userId) ?: $user;
                 } elseif ($error === '') {
-                    $error = 'KhAA�¿½A�¿A�½ng thAA�¿½A�»A�’ cAA�¿½A�ºA�­p nhAA�¿½A�ºA�­t hAA�¿½A�»A�€œ sAA�¿½A�¡.';
+                    $error = 'Không thể cập nhật hồ sơ.';
                 }
             }
         }
 
         $this->view('user/edit', [
-            'title' => 'SAA�¿½A�»A�­a hAA�¿½A�»A�€œ sAA�¿½A�¡',
+            'title' => 'Sửa hồ sơ',
             'useRecipeHubLayout' => true,
             'user' => $user,
             'message' => $message,
@@ -578,14 +578,14 @@ class UserController extends Controller
         if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             $newPassword = $_POST['new_password'] ?? '';
             if (strlen($newPassword) < 6) {
-                $error = 'MAA�¿½A�ºA�­t khAA�¿½A�ºA�©u mAA�¿½A�»A�€ºi phAA�¿½A�ºA�£i cAAA�¿½A�¿A�½ AAA�¿½A�¿A�½t nhAA�¿½A�ºA�¥t 6 kAAA�¿½A�¿A�½ tAA�¿½A�»A�±.';
+                $error = 'Mật khẩu mới phải có ít nhất 6 ký tự.';
             } else {
                 /** @var UserModel $userModel */
                 $userModel = $this->model('UserModel');
                 $uid = (int) current_user_id();
                 $userModel->updatePassword($uid, $newPassword);
                 system_log_write('auth', 'user.change_password', 'success', null, 'user', $uid, null, $uid, (string) (current_user()['role'] ?? 'user'));
-                $message = 'AA�¿½A�¿A�½?i m?t kh?u thAA�¿½A�¿A�½nh cAA�¿½A�¿A�½ng.';
+                $message = 'Đổi mật khẩu thành công.';
             }
         }
 
@@ -598,7 +598,7 @@ class UserController extends Controller
     private function renderProfile(int $profileUserId): void
     {
         if ($profileUserId <= 0) {
-            $this->renderNotFound('KhAA�¿½A�¿A�½ng tAAA�¿½A�¿A�½m thAA�¿½A�ºA�¥y ngAA�¿½A�°AA�¿½A�»A�i dAAA�¿½A�¿A�½ng.');
+            $this->renderNotFound('Không tìm thấy người dùng.');
             return;
         }
 
@@ -619,7 +619,7 @@ class UserController extends Controller
 
         $user = $userModel->findById($profileUserId);
         if (!$user) {
-            $this->renderNotFound('KhAA�¿½A�¿A�½ng tAAA�¿½A�¿A�½m thAA�¿½A�ºA�¥y ngAA�¿½A�°AA�¿½A�»A�i dAAA�¿½A�¿A�½ng.');
+            $this->renderNotFound('Không tìm thấy người dùng.');
             return;
         }
 
@@ -668,7 +668,7 @@ class UserController extends Controller
         }
 
         $this->view('user/profile', [
-            'title' => 'HÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡Ă„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â»Ă„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¢Ä‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¢Ă„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¬Ä‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚Â¦Ă„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€¦Ă¢â‚¬Å“ sÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¢Ă„â€Ă‚Â¢Ä‚Â¢Ă¢â€Â¬Ă‚ÂÄ‚â€Ă‚Â¬Ă„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â Ă„â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă‚Â¢Ä‚Â¢Ă¢â‚¬ÂĂ‚Â¬Ä‚â€Ă‚ÂÄ‚â€Ă¢â‚¬ÂÄ‚Â¢Ă¢â€Â¬Ă‚ÂĂ„â€Ă¢â‚¬ÂÄ‚â€Ă‚Â¡',
+            'title' => 'Hồ sơ',
             'useRecipeHubLayout' => true,
             'user' => $user,
             'recipes' => $recipes,
@@ -701,7 +701,7 @@ class UserController extends Controller
             $type = 'followers';
         }
         if ($profileUserId <= 0) {
-            $this->renderNotFound('KhAA�¿½A�¿A�½ng tAAA�¿½A�¿A�½m thAA�¿½A�ºA�¥y ngAA�¿½A�°AA�¿½A�»A�i dAAA�¿½A�¿A�½ng.');
+            $this->renderNotFound('Không tìm thấy người dùng.');
             return;
         }
 
@@ -714,7 +714,7 @@ class UserController extends Controller
 
         $profileUser = $userModel->findById($profileUserId);
         if (!$profileUser) {
-            $this->renderNotFound('KhAA�¿½A�¿A�½ng tAAA�¿½A�¿A�½m thAA�¿½A�ºA�¥y ngAA�¿½A�°AA�¿½A�»A�i dAAA�¿½A�¿A�½ng.');
+            $this->renderNotFound('Không tìm thấy người dùng.');
             return;
         }
 
@@ -735,7 +735,7 @@ class UserController extends Controller
         $items = $type === 'followers' ? $followers : $following;
 
         $this->view('user/connections', [
-            'title' => $type === 'followers' ? 'NgA�°A�»i theo dĂµi' : 'A�ang theo dĂµi',
+            'title' => $type === 'followers' ? 'Người theo dõi' : 'Đang theo dõi',
             'useRecipeHubLayout' => true,
             'profile_user' => $profileUser,
             'items' => $items,

@@ -11,7 +11,7 @@ $tagTypeLabels = [
     <div class="mx-auto max-w-5xl py-4">
         <div class="mb-6">
             <h1 class="text-3xl font-black text-slate-900">ChA�»‰nh sA�»­a cĂ´ng thA�»©c</h1>
-            <p class="mt-1 text-slate-500">CA�º­p nhA�º­t A�‘A�º§y A�‘A�»§ thĂ´ng tin, nguyĂªn liA�»‡u vĂ  cĂ¡c bA�°A�»›c thA�»±c hiA�»‡n.</p>
+            <p class="mt-1 text-slate-500">CA�º­p nhA�º­t A�'A�º§y A�'A�»§ thĂ´ng tin, nguyĂªn liA�»‡u vĂ  cĂ¡c bA�°A�»›c thA�»±c hiA�»‡n.</p>
         </div>
 
         <?php if (!empty($error)): ?>
@@ -26,7 +26,7 @@ $tagTypeLabels = [
                 <h2 class="mb-5 text-xl font-bold">ThĂ´ng tin cA�¡ bA�º£n</h2>
                 <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
                     <div class="md:col-span-2">
-                        <label class="mb-2 block text-sm font-semibold text-slate-700">TiĂªu A�‘A�»</label>
+                        <label class="mb-2 block text-sm font-semibold text-slate-700">TiĂªu A�'A�»</label>
                         <input class="w-full rounded-xl border border-slate-200 px-4 py-3 focus:border-primary focus:ring-primary" type="text" name="title" value="<?= htmlspecialchars((string) ($recipe['title'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>" required>
                     </div>
 
@@ -46,12 +46,12 @@ $tagTypeLabels = [
                         <label class="mb-2 block text-sm font-semibold text-slate-700">A�A�»™ khĂ³</label>
                         <select class="w-full rounded-xl border border-slate-200 px-4 py-3 focus:border-primary focus:ring-primary" name="difficulty">
                             <option value="easy" <?= (($recipe['difficulty'] ?? 'easy') === 'easy') ? 'selected' : ''; ?>>DA�»…</option>
-                            <option value="medium" <?= (($recipe['difficulty'] ?? '') === 'medium') ? 'selected' : ''; ?>>Trung bÄ'â€žĂ¢â'¬ÂšÄ'Â¢Ă¢â€šÂ¬Ă'žĂ"'Ă'¢Ä'Â¢Ă¢â'¬ÂšĂ'¬Ä''Ă'šÄ'â€žĂ¢â'¬ÂšÄ'Â¢Ă¢â€šÂ¬Ă'šĂ"â€šĂ¢â'¬ÂšÄ''Ă'¬nh</option>
-                            <option value="hard" <?= (($recipe['difficulty'] ?? '') === 'hard') ? 'selected' : ''; ?>>KhÄ'â€žĂ¢â'¬ÂšÄ'Â¢Ă¢â€šÂ¬Ă'žĂ"'Ă'¢Ä'Â¢Ă¢â'¬ÂšĂ'¬Ä''Ă'šÄ'â€žĂ¢â'¬ÂšÄ'Â¢Ă¢â€šÂ¬Ă'šĂ"â€šĂ¢â'¬ÂšÄ''Ă'³</option>
+                            <option value="medium" <?= (($recipe['difficulty'] ?? '') === 'medium') ? 'selected' : ''; ?>>Trung bĂ"'Ä'Â¢Ă¢â€šÂ¬Ă…Â¾Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ä'"'Ä''Ă'¢Ă"'Ă'¢Ä'Â¢Ă¢â€šÂ¬Ă…Â¡Ä''Ă'¬Ă"''Ă…Â¾Ă"'"'Ä''Ă'¢Ä'"'Ä''Ă'¢Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ă"''€''Ä''Ă…Â¡Ä'"'Ä'Â¢Ă¢â€šÂ¬Ă…Â¾Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ä'"'Ä''Ă'¢Ă"'Ă'¢Ä'Â¢Ă¢â€šÂ¬Ă…Â¡Ä''Ă'¬Ă"''Ă…Â¡Ă"'"Ä'Â¢Ă¢â€šÂ¬Ă…Â¡Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ä'"''Ä''¬nh</option>
+                            <option value="hard" <?= (($recipe['difficulty'] ?? '') === 'hard') ? 'selected' : ''; ?>>KhĂ"'Ä'Â¢Ă¢â€šÂ¬Ă…Â¾Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ä'"'Ä''Ă'¢Ă"'Ă'¢Ä'Â¢Ă¢â€šÂ¬Ă…Â¡Ä''Ă'¬Ă"''Ă…Â¾Ă"'"'Ä''Ă'¢Ä'"'Ä''Ă'¢Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ă"''€''Ä''Ă…Â¡Ä'"'Ä'Â¢Ă¢â€šÂ¬Ă…Â¾Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ä'"'Ä''Ă'¢Ă"'Ă'¢Ä'Â¢Ă¢â€šÂ¬Ă…Â¡Ä''Ă'¬Ă"''Ă…Â¡Ă"'"Ä'Â¢Ă¢â€šÂ¬Ă…Â¡Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ä'"''Ä''Ă'³</option>
                         </select>
                     </div>
                     <div class="md:col-span-2">
-                        <label class="mb-2 block text-sm font-semibold text-slate-700">Tags mÄ'â€žĂ¢â'¬ÂšÄ'Â¢Ă¢â€šÂ¬Ă'žĂ"'Ă'¢Ä'Â¢Ă¢â'¬ÂšĂ'¬Ä''Ă'šÄ'â€žĂ¢â'¬ÂšÄ'Â¢Ă¢â€šÂ¬Ă'šĂ"â€šĂ¢â'¬ÂšÄ''Ă'³n Ă"â€šĂ¢â'¬ÂžÄ'Â¢Ă¢â€šÂ¬Ă'šĂ"'Ă'¢Ä'Â¢Ă¢â'¬ÂšĂ'¬Ä''Ă'žÄ'â€žĂ¢â'¬ÂšÄ'Â¢Ă¢â€šÂ¬Ă' Ă"'Ă'¢Ä'Â¢Ă¢â'¬ÂšĂ'¬Ä'Â¢Ă¢â'¬ÂžĂ'¢n</label>
+                        <label class="mb-2 block text-sm font-semibold text-slate-700">Tags mĂ"'Ä'Â¢Ă¢â€šÂ¬Ă…Â¾Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ä'"'Ä''Ă'¢Ă"'Ă'¢Ä'Â¢Ă¢â€šÂ¬Ă…Â¡Ä''Ă'¬Ă"''Ă…Â¾Ă"'"'Ä''Ă'¢Ä'"'Ä''Ă'¢Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ă"''€''Ä''Ă…Â¡Ä'"'Ä'Â¢Ă¢â€šÂ¬Ă…Â¾Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ä'"'Ä''Ă'¢Ă"'Ă'¢Ä'Â¢Ă¢â€šÂ¬Ă…Â¡Ä''Ă'¬Ă"''Ă…Â¡Ă"'"Ä'Â¢Ă¢â€šÂ¬Ă…Â¡Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ä'"''Ä''Ă'³n Ä'"Ä'Â¢Ă¢â€šÂ¬Ă…Â¡Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¾Ä'"'Ä''Ă'¢Ă"'Ă'¢Ä'Â¢Ă¢â€šÂ¬Ă…Â¡Ä''Ă'¬Ă"''Ă…Â¡Ă"'"'Ä''Ă'¢Ä'"'Ä''Ă'¢Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ă"''€''Ä''Ă…Â¾Ä'"'Ä'Â¢Ă¢â€šÂ¬Ă…Â¾Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ä'"'Ä''Ă'¢Ă"'Ă'¢Ä'Â¢Ă¢â€šÂ¬Ă…Â¡Ä''Ă'¬Ă"'' Ă"'Ä''Ă'¢Ä'"'Ä''Ă'¢Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ă"''€'Ä''Ă'¢Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¾Ă"''Ă'¢n</label>
                         <?php if ($tagsByType === []): ?>
                             <p class="rounded-xl border border-dashed border-slate-300 px-4 py-3 text-sm text-slate-500">
                                 ChA�°a cĂ³ dA�»¯ liA�»‡u tags. HĂ£y chA�º¡y migration tags trA�°A�»›c.
@@ -118,7 +118,7 @@ $tagTypeLabels = [
                                     <input class="w-full rounded-lg border border-slate-200 px-3 py-2" type="text" name="ingredient_name[]" value="<?= htmlspecialchars((string) ($item['ingredient_name'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>">
                                 </div>
                                 <div class="md:col-span-3">
-                                    <label class="mb-1 block text-xs font-semibold text-slate-500">SA�»‘ lA�°A�»£ng</label>
+                                    <label class="mb-1 block text-xs font-semibold text-slate-500">SA�»' lA�°A�»£ng</label>
                                     <input class="w-full rounded-lg border border-slate-200 px-3 py-2" type="text" name="ingredient_quantity[]" value="<?= htmlspecialchars((string) ($item['quantity'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>">
                                 </div>
                                 <div class="md:col-span-2">
@@ -126,7 +126,7 @@ $tagTypeLabels = [
                                     <input class="w-full rounded-lg border border-slate-200 px-3 py-2" type="text" name="ingredient_unit[]" value="<?= htmlspecialchars((string) ($item['unit'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>">
                                 </div>
                                 <div class="md:col-span-1 flex items-end">
-                                    <button class="remove-ingredient w-full rounded-lg border border-rose-300 px-2 py-2 text-sm text-rose-600 hover:bg-rose-50" type="button">XÄ'â€žĂ¢â'¬ÂšÄ'Â¢Ă¢â€šÂ¬Ă'žĂ"'Ă'¢Ä'Â¢Ă¢â'¬ÂšĂ'¬Ä''Ă'šÄ'â€žĂ¢â'¬ÂšÄ'Â¢Ă¢â€šÂ¬Ă'šĂ"â€šĂ¢â'¬ÂšÄ''Ă'³a</button>
+                                    <button class="remove-ingredient w-full rounded-lg border border-rose-300 px-2 py-2 text-sm text-rose-600 hover:bg-rose-50" type="button">XĂ"'Ä'Â¢Ă¢â€šÂ¬Ă…Â¾Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ä'"'Ä''Ă'¢Ă"'Ă'¢Ä'Â¢Ă¢â€šÂ¬Ă…Â¡Ä''Ă'¬Ă"''Ă…Â¾Ă"'"'Ä''Ă'¢Ä'"'Ä''Ă'¢Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ă"''€''Ä''Ă…Â¡Ä'"'Ä'Â¢Ă¢â€šÂ¬Ă…Â¾Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ä'"'Ä''Ă'¢Ă"'Ă'¢Ä'Â¢Ă¢â€šÂ¬Ă…Â¡Ä''Ă'¬Ă"''Ă…Â¡Ă"'"Ä'Â¢Ă¢â€šÂ¬Ă…Â¡Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ä'"''Ä''Ă'³a</button>
                                 </div>
                             </div>
                         <?php endforeach; ?>
@@ -137,7 +137,7 @@ $tagTypeLabels = [
                                 <input class="w-full rounded-lg border border-slate-200 px-3 py-2" type="text" name="ingredient_name[]" placeholder="VĂ­ dA�»¥: ThA�»‹t gĂ ">
                             </div>
                             <div class="md:col-span-3">
-                                <label class="mb-1 block text-xs font-semibold text-slate-500">SA�»‘ lA�°A�»£ng</label>
+                                <label class="mb-1 block text-xs font-semibold text-slate-500">SA�»' lA�°A�»£ng</label>
                                 <input class="w-full rounded-lg border border-slate-200 px-3 py-2" type="text" name="ingredient_quantity[]" placeholder="1">
                             </div>
                             <div class="md:col-span-2">
@@ -145,7 +145,7 @@ $tagTypeLabels = [
                                 <input class="w-full rounded-lg border border-slate-200 px-3 py-2" type="text" name="ingredient_unit[]" placeholder="kg">
                             </div>
                             <div class="md:col-span-1 flex items-end">
-                                <button class="remove-ingredient w-full rounded-lg border border-rose-300 px-2 py-2 text-sm text-rose-600 hover:bg-rose-50" type="button">XÄ'â€žĂ¢â'¬ÂšÄ'Â¢Ă¢â€šÂ¬Ă'žĂ"'Ă'¢Ä'Â¢Ă¢â'¬ÂšĂ'¬Ä''Ă'šÄ'â€žĂ¢â'¬ÂšÄ'Â¢Ă¢â€šÂ¬Ă'šĂ"â€šĂ¢â'¬ÂšÄ''Ă'³a</button>
+                                <button class="remove-ingredient w-full rounded-lg border border-rose-300 px-2 py-2 text-sm text-rose-600 hover:bg-rose-50" type="button">XĂ"'Ä'Â¢Ă¢â€šÂ¬Ă…Â¾Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ä'"'Ä''Ă'¢Ă"'Ă'¢Ä'Â¢Ă¢â€šÂ¬Ă…Â¡Ä''Ă'¬Ă"''Ă…Â¾Ă"'"'Ä''Ă'¢Ä'"'Ä''Ă'¢Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ă"''€''Ä''Ă…Â¡Ä'"'Ä'Â¢Ă¢â€šÂ¬Ă…Â¾Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ä'"'Ä''Ă'¢Ă"'Ă'¢Ä'Â¢Ă¢â€šÂ¬Ă…Â¡Ä''Ă'¬Ă"''Ă…Â¡Ă"'"Ä'Â¢Ă¢â€šÂ¬Ă…Â¡Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ä'"''Ä''Ă'³a</button>
                             </div>
                         </div>
                     <?php endif; ?>
@@ -164,7 +164,7 @@ $tagTypeLabels = [
                             <div class="step-item rounded-xl border border-slate-200 p-4">
                                 <div class="mb-2 flex items-center justify-between">
                                     <p class="step-label text-sm font-bold text-slate-700">BA�°A�»›c <?= (int) ($step['step_number'] ?? 1); ?></p>
-                                    <button class="remove-step rounded-lg border border-rose-300 px-2 py-1 text-xs text-rose-600 hover:bg-rose-50" type="button">XÄ'â€žĂ¢â'¬ÂšÄ'Â¢Ă¢â€šÂ¬Ă'žĂ"'Ă'¢Ä'Â¢Ă¢â'¬ÂšĂ'¬Ä''Ă'šÄ'â€žĂ¢â'¬ÂšÄ'Â¢Ă¢â€šÂ¬Ă'šĂ"â€šĂ¢â'¬ÂšÄ''Ă'³a</button>
+                                    <button class="remove-step rounded-lg border border-rose-300 px-2 py-1 text-xs text-rose-600 hover:bg-rose-50" type="button">XĂ"'Ä'Â¢Ă¢â€šÂ¬Ă…Â¾Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ä'"'Ä''Ă'¢Ă"'Ă'¢Ä'Â¢Ă¢â€šÂ¬Ă…Â¡Ä''Ă'¬Ă"''Ă…Â¾Ă"'"'Ä''Ă'¢Ä'"'Ä''Ă'¢Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ă"''€''Ä''Ă…Â¡Ä'"'Ä'Â¢Ă¢â€šÂ¬Ă…Â¾Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ä'"'Ä''Ă'¢Ă"'Ă'¢Ä'Â¢Ă¢â€šÂ¬Ă…Â¡Ä''Ă'¬Ă"''Ă…Â¡Ă"'"Ä'Â¢Ă¢â€šÂ¬Ă…Â¡Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ä'"''Ä''Ă'³a</button>
                                 </div>
                                 <div class="space-y-3">
                                     <textarea class="min-h-[100px] w-full rounded-lg border border-slate-200 px-3 py-2" name="step_content[]"><?= htmlspecialchars((string) ($step['content'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></textarea>
@@ -180,7 +180,7 @@ $tagTypeLabels = [
                         <div class="step-item rounded-xl border border-slate-200 p-4">
                             <div class="mb-2 flex items-center justify-between">
                                 <p class="step-label text-sm font-bold text-slate-700">BA�°A�»›c 1</p>
-                                <button class="remove-step rounded-lg border border-rose-300 px-2 py-1 text-xs text-rose-600 hover:bg-rose-50" type="button">XÄ'â€žĂ¢â'¬ÂšÄ'Â¢Ă¢â€šÂ¬Ă'žĂ"'Ă'¢Ä'Â¢Ă¢â'¬ÂšĂ'¬Ä''Ă'šÄ'â€žĂ¢â'¬ÂšÄ'Â¢Ă¢â€šÂ¬Ă'šĂ"â€šĂ¢â'¬ÂšÄ''Ă'³a</button>
+                                <button class="remove-step rounded-lg border border-rose-300 px-2 py-1 text-xs text-rose-600 hover:bg-rose-50" type="button">XĂ"'Ä'Â¢Ă¢â€šÂ¬Ă…Â¾Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ä'"'Ä''Ă'¢Ă"'Ă'¢Ä'Â¢Ă¢â€šÂ¬Ă…Â¡Ä''Ă'¬Ă"''Ă…Â¾Ă"'"'Ä''Ă'¢Ä'"'Ä''Ă'¢Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ă"''€''Ä''Ă…Â¡Ä'"'Ä'Â¢Ă¢â€šÂ¬Ă…Â¾Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ä'"'Ä''Ă'¢Ă"'Ă'¢Ä'Â¢Ă¢â€šÂ¬Ă…Â¡Ä''Ă'¬Ă"''Ă…Â¡Ă"'"Ä'Â¢Ă¢â€šÂ¬Ă…Â¡Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ä'"''Ä''Ă'³a</button>
                             </div>
                             <div class="space-y-3">
                                 <textarea class="min-h-[100px] w-full rounded-lg border border-slate-200 px-3 py-2" name="step_content[]" placeholder="MĂ´ tA�º£ bA�°A�»›c thA�»±c hiA�»‡n..."></textarea>
@@ -211,10 +211,10 @@ $tagTypeLabels = [
         <div class="grid grid-cols-1 gap-3 rounded-xl border border-slate-200 p-4 md:grid-cols-12">
             <div class="md:col-span-6">
                 <label class="mb-1 block text-xs font-semibold text-slate-500">TĂªn nguyĂªn liA�»‡u</label>
-                <input class="w-full rounded-lg border border-slate-200 px-3 py-2" type="text" name="ingredient_name[]" placeholder="VĂ­ dA�»¥: MuA�»‘i">
+                <input class="w-full rounded-lg border border-slate-200 px-3 py-2" type="text" name="ingredient_name[]" placeholder="VĂ­ dA�»¥: MuA�»'i">
             </div>
             <div class="md:col-span-3">
-                <label class="mb-1 block text-xs font-semibold text-slate-500">SA�»‘ lA�°A�»£ng</label>
+                <label class="mb-1 block text-xs font-semibold text-slate-500">SA�»' lA�°A�»£ng</label>
                 <input class="w-full rounded-lg border border-slate-200 px-3 py-2" type="text" name="ingredient_quantity[]" placeholder="1">
             </div>
             <div class="md:col-span-2">
@@ -222,7 +222,7 @@ $tagTypeLabels = [
                 <input class="w-full rounded-lg border border-slate-200 px-3 py-2" type="text" name="ingredient_unit[]" placeholder="muA�»—ng">
             </div>
             <div class="md:col-span-1 flex items-end">
-                <button class="remove-ingredient w-full rounded-lg border border-rose-300 px-2 py-2 text-sm text-rose-600 hover:bg-rose-50" type="button">XÄ'â€žĂ¢â'¬ÂšÄ'Â¢Ă¢â€šÂ¬Ă'žĂ"'Ă'¢Ä'Â¢Ă¢â'¬ÂšĂ'¬Ä''Ă'šÄ'â€žĂ¢â'¬ÂšÄ'Â¢Ă¢â€šÂ¬Ă'šĂ"â€šĂ¢â'¬ÂšÄ''Ă'³a</button>
+                <button class="remove-ingredient w-full rounded-lg border border-rose-300 px-2 py-2 text-sm text-rose-600 hover:bg-rose-50" type="button">XĂ"'Ä'Â¢Ă¢â€šÂ¬Ă…Â¾Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ä'"'Ä''Ă'¢Ă"'Ă'¢Ä'Â¢Ă¢â€šÂ¬Ă…Â¡Ä''Ă'¬Ă"''Ă…Â¾Ă"'"'Ä''Ă'¢Ä'"'Ä''Ă'¢Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ă"''€''Ä''Ă…Â¡Ä'"'Ä'Â¢Ă¢â€šÂ¬Ă…Â¾Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ä'"'Ä''Ă'¢Ă"'Ă'¢Ä'Â¢Ă¢â€šÂ¬Ă…Â¡Ä''Ă'¬Ă"''Ă…Â¡Ă"'"Ä'Â¢Ă¢â€šÂ¬Ă…Â¡Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ä'"''Ä''Ă'³a</button>
             </div>
         </div>
     `;
@@ -259,7 +259,7 @@ $tagTypeLabels = [
         step.innerHTML = `
             <div class="mb-2 flex items-center justify-between">
                 <p class="step-label text-sm font-bold text-slate-700">BA�°A�»›c</p>
-                <button class="remove-step rounded-lg border border-rose-300 px-2 py-1 text-xs text-rose-600 hover:bg-rose-50" type="button">XÄ'â€žĂ¢â'¬ÂšÄ'Â¢Ă¢â€šÂ¬Ă'žĂ"'Ă'¢Ä'Â¢Ă¢â'¬ÂšĂ'¬Ä''Ă'šÄ'â€žĂ¢â'¬ÂšÄ'Â¢Ă¢â€šÂ¬Ă'šĂ"â€šĂ¢â'¬ÂšÄ''Ă'³a</button>
+                <button class="remove-step rounded-lg border border-rose-300 px-2 py-1 text-xs text-rose-600 hover:bg-rose-50" type="button">XĂ"'Ä'Â¢Ă¢â€šÂ¬Ă…Â¾Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ä'"'Ä''Ă'¢Ă"'Ă'¢Ä'Â¢Ă¢â€šÂ¬Ă…Â¡Ä''Ă'¬Ă"''Ă…Â¾Ă"'"'Ä''Ă'¢Ä'"'Ä''Ă'¢Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ă"''€''Ä''Ă…Â¡Ä'"'Ä'Â¢Ă¢â€šÂ¬Ă…Â¾Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ä'"'Ä''Ă'¢Ă"'Ă'¢Ä'Â¢Ă¢â€šÂ¬Ă…Â¡Ä''Ă'¬Ă"''Ă…Â¡Ă"'"Ä'Â¢Ă¢â€šÂ¬Ă…Â¡Ă"'Ă'¢Ä'¢'Ă'¬Ä'â€šĂ…Â¡Ä'"''Ä''Ă'³a</button>
             </div>
             <div class="space-y-3">
                 <textarea class="min-h-[100px] w-full rounded-lg border border-slate-200 px-3 py-2" name="step_content[]" placeholder="MĂ´ tA�º£ bA�°A�»›c thA�»±c hiA�»‡n..."></textarea>

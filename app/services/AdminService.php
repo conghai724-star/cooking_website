@@ -479,11 +479,23 @@ final class AdminService
             return $bt <=> $at;
         });
 
+        $page = max(1, (int) ($query['page'] ?? 1));
+        $perPage = 20;
+        $total = count($rows);
+        $totalPages = max(1, (int) ceil($total / $perPage));
+        $page = min($page, $totalPages);
+        $offset = ($page - 1) * $perPage;
+        $rows = array_slice($rows, $offset, $perPage);
+
         return [
             'status' => $status,
             'type' => $type,
             'keyword' => $keyword,
             'rows' => $rows,
+            'page' => $page,
+            'perPage' => $perPage,
+            'total' => $total,
+            'totalPages' => $totalPages,
         ];
     }
 
@@ -917,7 +929,7 @@ final class AdminService
             }
         }
 
-        
+
         return $ok;
     }
 

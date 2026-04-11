@@ -1,0 +1,33 @@
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Local development and editor metadata
+/.vscode/
+/.idea/
+*.iml
+/.githooks/
+
+# Runtime and generated files
+/vendor/
+/node_modules/
+/public/uploads/
+/storage/logs/
+/storage/*.log
+*.log
+*.cache
+*.tmp
+*.swp
+
+database/dumps/
+
+# Project-specific temporary files
+composer.phar
+temp_test.py
+test_*.php
+TODO*.md
+
+# OS generated files
+.DS_Store
+Thumbs.db

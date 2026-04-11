@@ -68,6 +68,7 @@ class ModerationAdminService
         $returnStatus = (string) ($post['return_status'] ?? '');
         $returnType = (string) ($post['return_type'] ?? '');
         $returnKeyword = trim((string) ($post['return_q'] ?? ''));
+        $returnPage = max(1, (int) ($post['return_page'] ?? 1));
 
         if ($returnStatus !== '') {
             $qs['status'] = $returnStatus;
@@ -77,6 +78,9 @@ class ModerationAdminService
         }
         if ($returnKeyword !== '') {
             $qs['q'] = $returnKeyword;
+        }
+        if ($returnPage > 1) {
+            $qs['page'] = $returnPage;
         }
 
         return $qs;
